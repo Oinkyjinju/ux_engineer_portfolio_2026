@@ -86,7 +86,7 @@ const CHARS = "!<>-_\\/[]{}—=+*^?#~ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 function ScrambleText({ text, tag: Tag = "span", className = "" }: {
   text: string;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: keyof React.JSX.IntrinsicElements;
   className?: string;
 }) {
   const ref = useRef<HTMLElement>(null);

@@ -63,7 +63,7 @@ interface Props {
 
 // ─── Main canvas ──────────────────────────────────────────────────────────────
 export default function SandboxCanvas({ onSelect }: Props) {
-  const [timeScale, setTimeScale] = useState(PHYSICS.timeScaleNormal);
+  const [timeScale, setTimeScale] = useState<number>(PHYSICS.timeScaleNormal);
 
   // Track how many objects are currently hovered
   // (needed so un-hovering one doesn't cancel another's slow-mo)
