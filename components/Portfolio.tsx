@@ -1,26 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import AnimatedBackground from "./AnimatedBackground";
 import ScrollReveal from "./ScrollReveal";
 import ProjectRow from "./ProjectRow";
+import PhysicsSandbox from "./PhysicsSandbox";
+import { ProjectThumbnail } from "./ProjectThumbnails";
 import { useMousePosition } from "@/hooks/useMousePosition";
 import { useScrollY } from "@/hooks/useScrollY";
-import { projects } from "@/data/projects";
+import { projects, type Project } from "@/data/projects";
 
 const labItems = [
   { title: "Betjeman & Barton",  tech: "HTML · CSS · JS",    desc: "Responsive redesign. Vanilla code, no frameworks.", c: "#b45309" },
   { title: "Front-End Modules",  tech: "PHP · WordPress",    desc: "30+ production components powering justcapital.com.", c: "#047857" },
   { title: "This Portfolio",     tech: "Next.js · React",    desc: "Built from scratch. You're looking at it.", c: "#3730a3" },
-];
-
-const skills = [
-  { label: "Figma",       c: "#a259ff" },
-  { label: "HTML/CSS",    c: "#e44d26" },
-  { label: "JavaScript",  c: "#f7df1e" },
-  { label: "PHP",         c: "#777bb4" },
-  { label: "React",       c: "#61dafb" },
-  { label: "7 Languages", c: "#059669" },
 ];
 
 const footerLinks = [
@@ -29,17 +23,23 @@ const footerLinks = [
   { label: "GitHub",   href: "https://github.com/Oinkyjinju" },
 ];
 
-const heroWords = ["I design", " products ", "and", " build them."] as const;
-
 export default function Portfolio() {
   const [dark, setDark] = useState(true);
-  const [heroVisible, setHeroVisible] = useState(false);
   const mouse = useMousePosition();
   const scrollY = useScrollY();
 
+  // ── Cursor thumbnail ─────────────────────────────────────────────────────
+  const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const springX = useSpring(rawX, { stiffness: 650, damping: 46, mass: 0.45 });
+  const springY = useSpring(rawY, { stiffness: 650, damping: 46, mass: 0.45 });
+
   useEffect(() => {
-    setTimeout(() => setHeroVisible(true), 300);
-  }, []);
+    const onMove = (e: MouseEvent) => { rawX.set(e.clientX); rawY.set(e.clientY); };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [rawX, rawY]);
 
   const theme = {
     ...(dark
@@ -157,115 +157,11 @@ export default function Portfolio() {
         </div>
       </nav>
 
-      {/* ── HERO ── */}
-      <section
-        style={{
-          padding: "clamp(140px, 20vh, 220px) clamp(20px, 5vw, 64px) clamp(80px, 12vh, 140px)",
-          maxWidth: 1060,
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 2,
-        }}
-      >
-        <div style={{ opacity: heroVisible ? 1 : 0, transition: "opacity 0.8s ease" }}>
-          <p
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 12,
-              color: "var(--text-tertiary)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              marginBottom: 24,
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(10px)",
-              transition: "all 0.6s ease 0.3s",
-            }}
-          >
-            Senior UX Engineer
-          </p>
-
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(40px, 7vw, 78px)",
-              fontWeight: 400,
-              lineHeight: 1.08,
-              letterSpacing: "-0.03em",
-              color: "var(--text-primary)",
-              maxWidth: 780,
-              marginBottom: 28,
-            }}
-          >
-            {heroWords.map((word, i) => (
-              <span
-                key={i}
-                style={{
-                  display: "inline",
-                  opacity: heroVisible ? 1 : 0,
-                  transition: `opacity 0.6s ease ${0.4 + i * 0.15}s`,
-                  ...(word === "and"
-                    ? {
-                        fontStyle: "italic",
-                        background: "linear-gradient(135deg, #7C3AED, #2563EB, #059669)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundSize: "200% 200%",
-                      }
-                    : {}),
-                }}
-              >
-                {word}
-              </span>
-            ))}
-          </h1>
-
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "clamp(16px, 1.8vw, 19px)",
-              fontWeight: 300,
-              color: "var(--text-secondary)",
-              lineHeight: 1.65,
-              maxWidth: 560,
-              marginBottom: 36,
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? "translateY(0)" : "translateY(15px)",
-              transition: "all 0.7s ease 0.9s",
-            }}
-          >
-            4+ years as sole designer at JUST Capital, where I expanded into owning
-            the front-end codebase. Research → design → production code, one person.
-          </p>
-
-          <div
-            style={{
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-              opacity: heroVisible ? 1 : 0,
-              transition: "opacity 0.7s ease 1.1s",
-            }}
-          >
-            {skills.map((s) => (
-              <span
-                key={s.label}
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  color: dark ? s.c : "var(--text-secondary)",
-                  border: `1px solid ${s.c}25`,
-                  borderRadius: 20,
-                  padding: "4px 12px",
-                  background: `${s.c}08`,
-                  backdropFilter: "blur(4px)",
-                }}
-              >
-                {s.label}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── HERO — Physics Sandbox ── */}
+      {/* Full-viewport 3D canvas. Scroll past it to reach the work list. */}
+      <div style={{ position: "relative", zIndex: 2, marginTop: 64 }}>
+        <PhysicsSandbox />
+      </div>
 
       {/* ── WORK ── */}
       <section
@@ -308,7 +204,13 @@ export default function Portfolio() {
         </ScrollReveal>
 
         {projects.map((project, i) => (
-          <ProjectRow key={project.id} project={project} index={i} />
+          <div
+            key={project.id}
+            onMouseEnter={() => setHoveredProject(project)}
+            onMouseLeave={() => setHoveredProject(null)}
+          >
+            <ProjectRow project={project} index={i} />
+          </div>
         ))}
       </section>
 
@@ -392,6 +294,31 @@ export default function Portfolio() {
           ))}
         </div>
       </section>
+
+      {/* ── CURSOR THUMBNAIL ── */}
+      <AnimatePresence>
+        {hoveredProject && (
+          <motion.div
+            key={hoveredProject.id}
+            initial={{ opacity: 0, scale: 0.84, rotate: -6 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            exit={{ opacity: 0, scale: 0.9, rotate: 4 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: "fixed",
+              left: springX,
+              top: springY,
+              x: 32,
+              y: "-50%",
+              pointerEvents: "none",
+              zIndex: 9999,
+              filter: "drop-shadow(0 32px 48px rgba(0,0,0,0.7))",
+            }}
+          >
+            <ProjectThumbnail project={hoveredProject} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── FOOTER ── */}
       <footer
