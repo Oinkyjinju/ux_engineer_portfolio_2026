@@ -2,173 +2,152 @@
 
 import { useRef, useEffect } from "react";
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  opacity: number;
-  hue: number;
-}
-
-interface BlobConfig {
-  x: number;
-  y: number;
-  r: number;
-  color: string;
-}
-
 interface Props {
   scrollY: number;
   mouse: { x: number; y: number };
   dark: boolean;
 }
 
+// Large aurora orbs — moved via sinusoidal paths, blended with "screen" mode for additive glow
+const ORBS = [
+  { cx: 0.22, cy: 0.28, r: 0.54, hue: 270, speed: 0.00055, phX: 0.0, phY: 0.0, ampX: 0.22, ampY: 0.18, a: 0.60 }, // violet
+  { cx: 0.70, cy: 0.16, r: 0.60, hue: 232, speed: 0.00040, phX: 2.1, phY: 1.5, ampX: 0.18, ampY: 0.22, a: 0.52 }, // blue
+  { cx: 0.48, cy: 0.80, r: 0.50, hue: 308, speed: 0.00068, phX: 1.0, phY: 3.1, ampX: 0.26, ampY: 0.14, a: 0.50 }, // magenta
+  { cx: 0.84, cy: 0.54, r: 0.40, hue: 196, speed: 0.00048, phX: 3.4, phY: 0.9, ampX: 0.14, ampY: 0.24, a: 0.38 }, // cyan
+] as const;
+
 export default function AnimatedBackground({ scrollY, mouse, dark }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const frameRef = useRef(0);
+  // Keep refs so the RAF loop reads latest values without restarting
+  const stateRef = useRef({ scrollY, mouse, dark });
+  useEffect(() => { stateRef.current = { scrollY, mouse, dark }; }, [scrollY, mouse, dark]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d", { alpha: false })!;
 
-    let animId: number;
+    let W = 0, H = 0, t = 0;
+    let smx = -1, smy = -1; // smoothed mouse
+    let raf: number;
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width  = W;
+      canvas.height = H;
+      if (smx < 0) { smx = W / 2; smy = H / 2; }
+    }
     resize();
     window.addEventListener("resize", resize);
 
-    if (particlesRef.current.length === 0) {
-      for (let i = 0; i < 60; i++) {
-        particlesRef.current.push({
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          size: Math.random() * 2.5 + 0.5,
-          opacity: Math.random() * 0.4 + 0.1,
-          hue: Math.random() * 360,
-        });
+    function draw() {
+      t++;
+      const { mouse: m, scrollY: sy } = stateRef.current;
+      const sf = sy * 0.0003; // scroll parallax factor
+
+      // Ease mouse toward target
+      smx += ((m.x > 0 ? m.x : smx) - smx) * 0.05;
+      smy += ((m.y > 0 ? m.y : smy) - smy) * 0.05;
+
+      // ── 1. Dark base coat ─────────────────────────────────────────────────
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#060910";
+      ctx.fillRect(0, 0, W, H);
+
+      // ── 2. Aurora orbs with screen blending (additive glow) ───────────────
+      ctx.globalCompositeOperation = "screen";
+      for (const o of ORBS) {
+        const ox = (o.cx + Math.sin(t * o.speed + o.phX) * o.ampX) * W;
+        const oy = (o.cy + Math.cos(t * o.speed * 1.27 + o.phY) * o.ampY - sf) * H;
+        const r  = o.r * Math.min(W, H);
+
+        const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, r);
+        g.addColorStop(0,    `hsla(${o.hue}, 90%, 70%, ${o.a})`);
+        g.addColorStop(0.28, `hsla(${o.hue}, 84%, 55%, ${o.a * 0.55})`);
+        g.addColorStop(0.6,  `hsla(${o.hue}, 78%, 40%, ${o.a * 0.18})`);
+        g.addColorStop(1,    `hsla(${o.hue}, 70%, 22%, 0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
       }
+
+      // ── 3. Grid — more visible than before ────────────────────────────────
+      ctx.globalCompositeOperation = "source-over";
+      const gs  = 72;
+      const off = (sy * 0.12) % gs;
+
+      ctx.strokeStyle = "rgba(140, 160, 255, 0.06)";
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x <= W; x += gs) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      }
+      for (let y = -gs + off; y < H + gs; y += gs) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+
+      // Brighter accent lines every 3rd row — gives depth
+      ctx.strokeStyle = "rgba(170, 140, 255, 0.11)";
+      ctx.lineWidth = 0.8;
+      for (let y = (gs * 3) - ((sy * 0.12) % (gs * 3)); y < H + gs * 3; y += gs * 3) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+
+      // ── 4. Double mouse spotlight ──────────────────────────────────────────
+      ctx.globalCompositeOperation = "screen";
+
+      // Outer soft halo
+      const s1 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 330);
+      s1.addColorStop(0,   "rgba(150, 90, 255, 0.22)");
+      s1.addColorStop(0.4, "rgba(90, 60, 215, 0.10)");
+      s1.addColorStop(1,   "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = s1;
+      ctx.fillRect(0, 0, W, H);
+
+      // Inner sharp bright core
+      const s2 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 75);
+      s2.addColorStop(0,   "rgba(218, 196, 255, 0.22)");
+      s2.addColorStop(0.6, "rgba(160, 110, 255, 0.07)");
+      s2.addColorStop(1,   "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = s2;
+      ctx.fillRect(0, 0, W, H);
+
+      // ── 5. Edge vignette (multiply darkens corners) ───────────────────────
+      ctx.globalCompositeOperation = "multiply";
+      const vig = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.92);
+      vig.addColorStop(0, "rgba(255, 255, 255, 1)");
+      vig.addColorStop(1, "rgba(8, 6, 20, 0.76)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, W, H);
+
+      raf = requestAnimationFrame(draw);
     }
 
-    const draw = () => {
-      frameRef.current++;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const t = frameRef.current * 0.008;
-      const scrollFactor = scrollY * 0.0003;
-
-      const blobs: BlobConfig[] = [
-        { x: 0.2 + Math.sin(t * 0.7) * 0.1,    y: 0.3 + Math.cos(t * 0.5) * 0.15,  r: 350, color: dark ? "rgba(37,99,235,0.08)"   : "rgba(37,99,235,0.06)"   },
-        { x: 0.75 + Math.cos(t * 0.6) * 0.12,  y: 0.2 + Math.sin(t * 0.8) * 0.1,   r: 300, color: dark ? "rgba(124,58,237,0.07)"  : "rgba(124,58,237,0.05)"  },
-        { x: 0.5 + Math.sin(t * 0.4 + 2) * 0.15, y: 0.7 + Math.cos(t * 0.3) * 0.12, r: 400, color: dark ? "rgba(5,150,105,0.06)"  : "rgba(5,150,105,0.04)"   },
-        { x: 0.85 + Math.cos(t * 0.5 + 1) * 0.08, y: 0.8 + Math.sin(t * 0.7 + 1) * 0.1, r: 280, color: dark ? "rgba(234,88,12,0.05)" : "rgba(234,88,12,0.04)" },
-      ];
-
-      blobs.forEach((b) => {
-        const grd = ctx.createRadialGradient(
-          b.x * canvas.width, (b.y - scrollFactor) * canvas.height, 0,
-          b.x * canvas.width, (b.y - scrollFactor) * canvas.height, b.r
-        );
-        grd.addColorStop(0, b.color);
-        grd.addColorStop(1, "transparent");
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      });
-
-      // Scrolling grid
-      const gridOpacity = dark ? 0.04 : 0.06;
-      ctx.strokeStyle = dark ? `rgba(255,255,255,${gridOpacity})` : `rgba(0,0,0,${gridOpacity})`;
-      ctx.lineWidth = 0.5;
-      const gridSize = 80;
-      const offsetY = (scrollY * 0.15) % gridSize;
-
-      for (let x = 0; x < canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = -gridSize + offsetY; y < canvas.height + gridSize; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      // Mouse spotlight
-      if (mouse.x > 0 && mouse.y > 0) {
-        const mouseGrd = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 250);
-        mouseGrd.addColorStop(0, dark ? "rgba(124,58,237,0.12)" : "rgba(124,58,237,0.08)");
-        mouseGrd.addColorStop(0.5, dark ? "rgba(37,99,235,0.05)" : "rgba(37,99,235,0.03)");
-        mouseGrd.addColorStop(1, "transparent");
-        ctx.fillStyle = mouseGrd;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-
-      // Particles + connections
-      particlesRef.current.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          p.x += (dx / dist) * 1.5;
-          p.y += (dy / dist) * 1.5;
-        }
-
-        const hue = (p.hue + frameRef.current * 0.1) % 360;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = dark
-          ? `hsla(${hue}, 60%, 65%, ${p.opacity})`
-          : `hsla(${hue}, 50%, 45%, ${p.opacity * 0.7})`;
-        ctx.fill();
-
-        particlesRef.current.forEach((p2) => {
-          const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
-          if (d < 120 && d > 0) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = dark
-              ? `hsla(${hue}, 40%, 60%, ${0.06 * (1 - d / 120)})`
-              : `hsla(${hue}, 30%, 40%, ${0.05 * (1 - d / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-      });
-
-      animId = requestAnimationFrame(draw);
-    };
-
     draw();
-
     return () => {
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };
-  }, [dark, scrollY, mouse]);
+  }, []); // single RAF loop, never restarts
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
+      />
+      {/* Film grain overlay for texture */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: "none",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "150px 150px",
+          opacity: 0.065,
+          mixBlendMode: "overlay",
+        }}
+      />
+    </>
   );
 }
