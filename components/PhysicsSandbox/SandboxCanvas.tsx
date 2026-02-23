@@ -59,10 +59,11 @@ function TimeScaleController({ scale }: { scale: number }) {
 // ─── Props ────────────────────────────────────────────────────────────────────
 interface Props {
   onSelect: (item: SandboxItem) => void;
+  dark: boolean;
 }
 
 // ─── Main canvas ──────────────────────────────────────────────────────────────
-export default function SandboxCanvas({ onSelect }: Props) {
+export default function SandboxCanvas({ onSelect, dark }: Props) {
   const [timeScale, setTimeScale] = useState<number>(PHYSICS.timeScaleNormal);
 
   // Track how many objects are currently hovered
@@ -150,6 +151,7 @@ export default function SandboxCanvas({ onSelect }: Props) {
             item={item}
             onHoverChange={handleHoverChange}
             onSelect={onSelect}
+            dark={dark}
           />
         ))}
       </Physics>

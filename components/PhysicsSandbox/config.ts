@@ -30,7 +30,7 @@ export const PHYSICS = {
 // ─────────────────────────────────────────────
 // OBJECT SHAPES
 // ─────────────────────────────────────────────
-export type ObjectShape = "roundedBox" | "sphere" | "capsule" | "torus" | "octahedron";
+export type ObjectShape = "roundedBox" | "sphere" | "capsule" | "torus" | "octahedron" | "tv" | "aircraft" | "phone" | "code";
 
 // ─────────────────────────────────────────────
 // PROJECT DATA
@@ -61,8 +61,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     id: "just-intelligence",
     label: "JUST",
     sublabel: "Intelligence",
-    color: "#60a5fa",
-    shape: "roundedBox",
+    color: "#145064",           // JUST Capital teal
+    shape: "sphere",
     initialPosition: [-2.2, 9, 0.1],
     initialLinvel: [0.3, 0, 0],
     title: "JUST Intelligence",
@@ -75,8 +75,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     id: "just-wordpress",
     label: "Component",
     sublabel: "System",
-    color: "#34d399",
-    shape: "sphere",
+    color: "#145064",           // JUST Capital teal
+    shape: "code",
     initialPosition: [-0.8, 11, -0.2],
     initialLinvel: [-0.5, 0, 0],
     title: "Component System",
@@ -89,8 +89,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     id: "netflix-disney",
     label: "Netflix &",
     sublabel: "Disney+",
-    color: "#f87171",
-    shape: "capsule",
+    color: "#E50914",           // Netflix red
+    shape: "tv",
     initialPosition: [0.4, 10, 0.3],
     initialLinvel: [0.2, 0, 0],
     title: "Netflix & Disney+",
@@ -103,8 +103,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     id: "iata",
     label: "IATA",
     sublabel: "Training",
-    color: "#a78bfa",
-    shape: "torus",
+    color: "#004E81",           // Wordbank / IATA navy
+    shape: "aircraft",
     initialPosition: [1.6, 12, -0.1],
     initialLinvel: [-0.3, 0, 0],
     title: "IATA Training",
@@ -117,8 +117,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     id: "storycorps",
     label: "Story",
     sublabel: "Corps",
-    color: "#fb923c",
-    shape: "octahedron",
+    color: "#EF553F",           // StoryCorps coral
+    shape: "phone",
     initialPosition: [2.8, 10, 0.2],
     initialLinvel: [-0.4, 0, 0],
     title: "StoryCorps",

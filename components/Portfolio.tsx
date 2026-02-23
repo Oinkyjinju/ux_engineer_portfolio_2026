@@ -137,7 +137,9 @@ export default function Portfolio() {
               color: "var(--text-secondary)",
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: 6,
+              minWidth: 76,
               transition: "all 0.3s ease",
               backdropFilter: "blur(8px)",
             }}
@@ -160,7 +162,7 @@ export default function Portfolio() {
       {/* ── HERO — Physics Sandbox ── */}
       {/* Full-viewport 3D canvas. Scroll past it to reach the work list. */}
       <div style={{ position: "relative", zIndex: 2, marginTop: 64 }}>
-        <PhysicsSandbox />
+        <PhysicsSandbox dark={dark} />
       </div>
 
       {/* ── WORK ── */}
@@ -225,7 +227,7 @@ export default function Portfolio() {
               fontFamily: "var(--font-mono)",
               fontSize: 14,
               fontWeight: 400,
-              color: "#f97316",
+              color: "var(--text-tertiary)",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               marginBottom: 28,

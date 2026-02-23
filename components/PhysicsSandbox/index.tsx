@@ -48,7 +48,7 @@ function SandboxLoader() {
 }
 
 // ─── Hint text overlay ────────────────────────────────────────────────────────
-function Hint() {
+function Hint({ dark }: { dark: boolean }) {
   return (
     <div
       style={{
@@ -58,7 +58,7 @@ function Hint() {
         transform: "translateX(-50%)",
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: 11,
-        color: "rgba(255,255,255,0.22)",
+        color: dark ? "rgba(255,255,255,0.22)" : "rgba(0,0,0,0.28)",
         letterSpacing: "0.07em",
         textTransform: "uppercase",
         pointerEvents: "none",
@@ -72,7 +72,7 @@ function Hint() {
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
-export default function PhysicsSandbox() {
+export default function PhysicsSandbox({ dark }: { dark: boolean }) {
   const [selected, setSelected] = useState<SandboxItem | null>(null);
 
   return (
@@ -86,11 +86,11 @@ export default function PhysicsSandbox() {
     >
       {/* 3D canvas — SSR disabled */}
       <Suspense fallback={<SandboxLoader />}>
-        <SandboxCanvas onSelect={setSelected} />
+        <SandboxCanvas onSelect={setSelected} dark={dark} />
       </Suspense>
 
       {/* Interaction hint */}
-      <Hint />
+      <Hint dark={dark} />
 
       {/* 2D overlay — Framer Motion, always in the DOM for AnimatePresence */}
       <CaseStudyOverlay item={selected} onClose={() => setSelected(null)} />
