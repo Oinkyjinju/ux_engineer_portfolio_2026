@@ -18,9 +18,9 @@ const labItems = [
 ];
 
 const footerLinks = [
-  { label: "Email",    href: "mailto:oinkyjinju@gmail.com" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/jinjuparkoinky" },
-  { label: "GitHub",   href: "https://github.com/Oinkyjinju" },
+  { label: "Email",    href: "#contact" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/jinjuparkoinky/" },
+  { label: "GitHub",   href: "https://github.com/Oinkyjinju/ux_engineer_portfolio_2026" },
 ];
 
 export default function Portfolio() {
@@ -177,9 +177,6 @@ export default function Portfolio() {
         <ScrollReveal>
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
               paddingBottom: 12,
               borderBottom: "1px solid var(--border)",
               marginBottom: 0,
@@ -197,9 +194,6 @@ export default function Portfolio() {
             >
               Selected Work
             </h2>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-tertiary)" }}>
-              {projects.length} projects
-            </span>
           </div>
         </ScrollReveal>
 
@@ -267,7 +261,7 @@ export default function Portfolio() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#7dd3fc" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "rgba(249,115,22,0.62)" }}>
                   {item.tech}
                 </span>
                 <h3
@@ -312,11 +306,17 @@ export default function Portfolio() {
               position: "fixed",
               left: springX,
               top: springY,
-              x: 32,
+              x: "-50%",
               y: "-50%",
               pointerEvents: "none",
               zIndex: 9999,
-              filter: "drop-shadow(0 32px 48px rgba(0,0,0,0.7))",
+              borderRadius: 18,
+              overflow: "hidden",
+              boxShadow: [
+                `0 0 0 2px ${hoveredProject.accent}99`,
+                `0 0 40px ${hoveredProject.accent}50`,
+                `0 32px 60px rgba(0,0,0,0.65)`,
+              ].join(", "),
             }}
           >
             <ProjectThumbnail project={hoveredProject} />
@@ -327,10 +327,9 @@ export default function Portfolio() {
       {/* ── FOOTER ── */}
       <footer
         style={{
-          padding: "36px clamp(20px, 5vw, 64px)",
+          padding: "36px clamp(32px, 6vw, 96px)",
           borderTop: "1px solid var(--border)",
-          maxWidth: 1060,
-          margin: "0 auto",
+          width: "100%",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -338,6 +337,7 @@ export default function Portfolio() {
           zIndex: 2,
           flexWrap: "wrap",
           gap: 16,
+          boxSizing: "border-box",
         }}
       >
         <div style={{ display: "flex", gap: 20 }}>
@@ -360,7 +360,7 @@ export default function Portfolio() {
           ))}
         </div>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-tertiary)" }}>
-          Built with Next.js · © 2026
+          Jinju Park © 2026
         </span>
       </footer>
     </div>

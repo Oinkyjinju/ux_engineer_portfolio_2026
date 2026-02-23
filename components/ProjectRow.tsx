@@ -25,22 +25,22 @@ export default function ProjectRow({ project, index }: Props) {
           padding: "28px 0",
           borderBottom: "1px solid var(--border)",
           position: "relative",
-          overflow: "hidden",
           cursor: "pointer",
         }}
       >
-        {/* Hover sweep */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: `linear-gradient(90deg, transparent, ${project.accent}08, transparent)`,
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? "translateX(0)" : "translateX(-100%)",
-            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-            pointerEvents: "none",
-          }}
-        />
+        {/* Clipping wrapper for sweep only — keeps overflow:hidden away from the arrow */}
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(90deg, transparent, ${project.accent}08, transparent)`,
+              opacity: hovered ? 1 : 0,
+              transform: hovered ? "translateX(0)" : "translateX(-100%)",
+              transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          />
+        </div>
 
         <div
           style={{

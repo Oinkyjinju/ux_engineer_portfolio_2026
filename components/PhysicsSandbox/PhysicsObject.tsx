@@ -7,6 +7,18 @@ import { RigidBody, type RapierRigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 import { type SandboxItem, PHYSICS, type ObjectShape } from "./config";
 
+// ─── Map each shape to the most appropriate Rapier collider type ──────────────
+// "ball"   → perfect sphere collider — best for sphere geometry
+// "cuboid" → axis-aligned bounding box — best for box geometry
+// "hull"   → convex hull — best for complex/irregular shapes
+function getColliderType(shape: ObjectShape): "ball" | "cuboid" | "hull" {
+  switch (shape) {
+    case "sphere":     return "ball";
+    case "roundedBox": return "cuboid";
+    default:           return "hull"; // capsule, torus, octahedron
+  }
+}
+
 // ─── Geometry per shape ───────────────────────────────────────────────────────
 function ShapeGeometry({ shape }: { shape: ObjectShape }) {
   switch (shape) {
@@ -181,7 +193,7 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
   return (
     <RigidBody
       ref={rigidRef}
-      colliders="hull"
+      colliders={getColliderType(item.shape)}
       position={item.initialPosition}
       linearVelocity={item.initialLinvel}
       restitution={PHYSICS.restitution}
@@ -225,7 +237,7 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
       <Text
         position={[0, -0.1, 0.7]}
         fontSize={0.13}
-        color="rgba(255,255,255,0.65)"
+        color="#b8b8b8"
         anchorX="center"
         anchorY="middle"
         renderOrder={1}
