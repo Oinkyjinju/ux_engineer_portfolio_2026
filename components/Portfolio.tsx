@@ -12,9 +12,9 @@ import { useScrollY } from "@/hooks/useScrollY";
 import { projects, type Project } from "@/data/projects";
 
 const labItems = [
-  { title: "Betjeman & Barton",  tech: "HTML · CSS · JS",    desc: "Responsive redesign. Vanilla code, no frameworks.", c: "#b45309" },
-  { title: "Front-End Modules",  tech: "PHP · WordPress",    desc: "30+ production components powering justcapital.com.", c: "#047857" },
-  { title: "This Portfolio",     tech: "Next.js · React",    desc: "Built from scratch. You're looking at it.", c: "#3730a3" },
+  { title: "Front-End Modules",  tech: "PHP · WordPress",    desc: "30+ production components powering justcapital.com." },
+  { title: "This Portfolio",     tech: "Next.js · React",    desc: "Built from scratch. You're looking at it." },
+  { title: "Betjeman & Barton",  tech: "HTML · CSS · JS",    desc: "Responsive redesign. Vanilla code, no frameworks." },
 ];
 
 const footerLinks = [
@@ -188,7 +188,7 @@ export default function Portfolio() {
             <h2
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 400,
                 color: "var(--text-tertiary)",
                 letterSpacing: "0.08em",
@@ -197,7 +197,7 @@ export default function Portfolio() {
             >
               Selected Work
             </h2>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-tertiary)" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-tertiary)" }}>
               {projects.length} projects
             </span>
           </div>
@@ -229,9 +229,9 @@ export default function Portfolio() {
           <h2
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: 400,
-              color: "var(--text-tertiary)",
+              color: "#f97316",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               marginBottom: 28,
@@ -241,7 +241,7 @@ export default function Portfolio() {
           </h2>
         </ScrollReveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, alignItems: "stretch" }}>
           {labItems.map((item, i) => (
             <ScrollReveal key={item.title} delay={i * 0.1}>
               <div
@@ -253,9 +253,13 @@ export default function Portfolio() {
                   backdropFilter: "blur(12px)",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
+                  minHeight: 130,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = `${item.c}40`;
+                  e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)";
                   e.currentTarget.style.transform = "translateY(-3px)";
                 }}
                 onMouseLeave={(e) => {
@@ -263,7 +267,7 @@ export default function Portfolio() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: item.c }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#7dd3fc" }}>
                   {item.tech}
                 </span>
                 <h3
