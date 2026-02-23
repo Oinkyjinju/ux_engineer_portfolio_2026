@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { Text } from "@react-three/drei";
+import { Text, Billboard } from "@react-three/drei";
 import {
   RigidBody,
   BallCollider,
@@ -14,9 +14,7 @@ import {
 import * as THREE from "three";
 import { type SandboxItem, PHYSICS, type ObjectShape } from "./config";
 
-// ─── Invisible bounding mesh — used for pointer events on all shapes ──────────
-// transparent + depthWrite:false so it doesn't occlude the visual meshes,
-// but IS included in raycasting (Three.js raycasts opacity=0 meshes).
+// ─── Invisible bounding mesh — pointer events only, fully transparent ─────────
 function EventBounds({ shape }: { shape: ObjectShape }) {
   switch (shape) {
     case "sphere":     return <sphereGeometry args={[0.82, 8, 8]} />;
@@ -40,7 +38,6 @@ function ShapeCollider({ shape }: { shape: ObjectShape }) {
     case "capsule":    return <CapsuleCollider args={[0.375, 0.48]} />;
     case "torus":      return <CylinderCollider args={[0.28, 0.86]} />;
     case "octahedron": return <BallCollider args={[0.72]} />;
-    // Compound shapes — approximate bounding cuboid
     case "tv":         return <CuboidCollider args={[0.85, 0.6, 0.07]} />;
     case "aircraft":   return <CuboidCollider args={[1.2, 0.12, 0.12]} />;
     case "phone":      return <CuboidCollider args={[0.36, 0.74, 0.05]} />;
@@ -50,16 +47,10 @@ function ShapeCollider({ shape }: { shape: ObjectShape }) {
 }
 
 // ─── Visual meshes per shape ──────────────────────────────────────────────────
-// Each compound shape is a group of meshes sharing the project accent color.
-// Screen/glass insets use a fixed near-black color.
-// emissive is set on each mesh; the useFrame traverse animates emissiveIntensity
-// only on meshes whose emissive is non-black (skips screens, home bar, etc.).
 function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
-  const c = color; // shorthand
+  const c = color;
 
   switch (shape) {
-
-    // ── Sphere ──────────────────────────────────────────────────────────────
     case "sphere":
       return (
         <mesh castShadow receiveShadow>
@@ -67,8 +58,6 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
           <meshStandardMaterial color={c} roughness={0.72} metalness={0.06} emissive={c} emissiveIntensity={0} />
         </mesh>
       );
-
-    // ── Rounded Box ─────────────────────────────────────────────────────────
     case "roundedBox":
       return (
         <mesh castShadow receiveShadow>
@@ -76,8 +65,6 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
           <meshStandardMaterial color={c} roughness={0.78} metalness={0.04} emissive={c} emissiveIntensity={0} />
         </mesh>
       );
-
-    // ── Capsule ─────────────────────────────────────────────────────────────
     case "capsule":
       return (
         <mesh castShadow receiveShadow>
@@ -85,8 +72,6 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
           <meshStandardMaterial color={c} roughness={0.78} metalness={0.04} emissive={c} emissiveIntensity={0} />
         </mesh>
       );
-
-    // ── Torus ───────────────────────────────────────────────────────────────
     case "torus":
       return (
         <mesh castShadow receiveShadow>
@@ -94,8 +79,6 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
           <meshStandardMaterial color={c} roughness={0.78} metalness={0.04} emissive={c} emissiveIntensity={0} />
         </mesh>
       );
-
-    // ── Octahedron ──────────────────────────────────────────────────────────
     case "octahedron":
       return (
         <mesh castShadow receiveShadow>
@@ -104,26 +87,22 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
         </mesh>
       );
 
-    // ── TV (Netflix) — flat display with stand ───────────────────────────────
+    // ── TV ──────────────────────────────────────────────────────────────────
     case "tv":
       return (
         <>
-          {/* Outer bezel/body */}
           <mesh castShadow receiveShadow>
             <boxGeometry args={[1.72, 1.15, 0.11]} />
             <meshStandardMaterial color={c} roughness={0.42} metalness={0.18} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Screen glass — near-black inset */}
           <mesh receiveShadow position={[0, 0.03, 0.062]}>
             <boxGeometry args={[1.5, 0.93, 0.01]} />
             <meshStandardMaterial color="#050510" roughness={0.04} metalness={0.7} emissive="#000000" emissiveIntensity={0} />
           </mesh>
-          {/* Thin stand neck */}
           <mesh castShadow position={[0, -0.74, 0]}>
             <boxGeometry args={[0.11, 0.34, 0.09]} />
             <meshStandardMaterial color={c} roughness={0.5} metalness={0.12} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Base */}
           <mesh castShadow receiveShadow position={[0, -0.93, 0]}>
             <boxGeometry args={[0.68, 0.07, 0.26]} />
             <meshStandardMaterial color={c} roughness={0.5} metalness={0.12} emissive={c} emissiveIntensity={0} />
@@ -131,31 +110,26 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
         </>
       );
 
-    // ── Aircraft (IATA) — side-profile plane: fuselage + swept wings + tail ──
+    // ── Aircraft ─────────────────────────────────────────────────────────────
     case "aircraft":
       return (
         <>
-          {/* Fuselage */}
           <mesh castShadow receiveShadow>
             <boxGeometry args={[2.4, 0.2, 0.2]} />
             <meshStandardMaterial color={c} roughness={0.5} metalness={0.22} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Nose taper — slightly smaller box at +X tip */}
           <mesh castShadow position={[1.18, 0, 0]}>
             <boxGeometry args={[0.22, 0.13, 0.13]} />
             <meshStandardMaterial color={c} roughness={0.5} metalness={0.22} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Main wings — swept back slightly, spread in Z */}
           <mesh castShadow receiveShadow position={[0.08, -0.02, 0]} rotation={[0, 0.2, 0]}>
             <boxGeometry args={[0.8, 0.045, 1.15]} />
             <meshStandardMaterial color={c} roughness={0.48} metalness={0.25} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Vertical tail fin */}
           <mesh castShadow position={[-1.0, 0.22, 0]}>
             <boxGeometry args={[0.44, 0.42, 0.042]} />
             <meshStandardMaterial color={c} roughness={0.52} metalness={0.18} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Horizontal stabilizer */}
           <mesh castShadow position={[-1.0, 0, 0]}>
             <boxGeometry args={[0.38, 0.038, 0.52]} />
             <meshStandardMaterial color={c} roughness={0.52} metalness={0.18} emissive={c} emissiveIntensity={0} />
@@ -163,26 +137,22 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
         </>
       );
 
-    // ── Phone (StoryCorps) — upright smartphone ──────────────────────────────
+    // ── Phone ─────────────────────────────────────────────────────────────────
     case "phone":
       return (
         <>
-          {/* Body */}
           <mesh castShadow receiveShadow>
             <boxGeometry args={[0.72, 1.48, 0.09]} />
             <meshStandardMaterial color={c} roughness={0.52} metalness={0.1} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Screen glass */}
           <mesh position={[0, 0.04, 0.051]}>
             <boxGeometry args={[0.6, 1.15, 0.01]} />
             <meshStandardMaterial color="#050510" roughness={0.04} metalness={0.55} emissive="#000000" emissiveIntensity={0} />
           </mesh>
-          {/* Home indicator bar */}
           <mesh position={[0, -0.6, 0.053]}>
             <boxGeometry args={[0.22, 0.032, 0.005]} />
             <meshStandardMaterial color="#e0d8e4" roughness={0.35} metalness={0.1} emissive="#000000" emissiveIntensity={0} />
           </mesh>
-          {/* Front camera pill */}
           <mesh position={[0, 0.62, 0.053]}>
             <boxGeometry args={[0.11, 0.038, 0.005]} />
             <meshStandardMaterial color="#0a0a18" roughness={0.2} metalness={0.3} emissive="#000000" emissiveIntensity={0} />
@@ -190,25 +160,21 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
         </>
       );
 
-    // ── Code card (Component System) — terminal window with code lines ────────
+    // ── Code card ─────────────────────────────────────────────────────────────
     case "code": {
-      // Accent line colors derived from the teal base
-      const lineA = "#1aa8cc";  // bright teal line
-      const lineB = "#0e8eaa";  // mid teal
-      const lineC = "#0bbfab";  // teal-green accent
+      const lineA = "#1aa8cc";
+      const lineB = "#0e8eaa";
+      const lineC = "#0bbfab";
       return (
         <>
-          {/* Card body */}
           <mesh castShadow receiveShadow>
             <boxGeometry args={[1.45, 1.15, 0.1]} />
             <meshStandardMaterial color={c} roughness={0.68} metalness={0.05} emissive={c} emissiveIntensity={0} />
           </mesh>
-          {/* Title bar strip */}
           <mesh position={[0, 0.475, 0.057]}>
             <boxGeometry args={[1.42, 0.17, 0.005]} />
             <meshStandardMaterial color="#0d3a49" roughness={0.6} metalness={0.05} emissive="#0d3a49" emissiveIntensity={0} />
           </mesh>
-          {/* Traffic light dots */}
           <mesh position={[-0.55, 0.475, 0.063]}>
             <sphereGeometry args={[0.042, 12, 12]} />
             <meshStandardMaterial color="#e74c3c" roughness={0.4} metalness={0.1} emissive="#e74c3c" emissiveIntensity={0} />
@@ -221,7 +187,6 @@ function ShapeVisual({ shape, color }: { shape: ObjectShape; color: string }) {
             <sphereGeometry args={[0.042, 12, 12]} />
             <meshStandardMaterial color="#2ecc71" roughness={0.4} metalness={0.1} emissive="#2ecc71" emissiveIntensity={0} />
           </mesh>
-          {/* Code lines */}
           <mesh position={[-0.13, 0.24, 0.057]}>
             <boxGeometry args={[0.88, 0.052, 0.005]} />
             <meshStandardMaterial color={lineA} roughness={0.5} metalness={0.05} emissive={lineA} emissiveIntensity={0} />
@@ -266,12 +231,14 @@ interface Props {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function PhysicsObject({ item, onHoverChange, onSelect, dark }: Props) {
-  const rigidRef = useRef<RapierRigidBody>(null);
-  const groupRef = useRef<THREE.Group>(null);
+  const rigidRef      = useRef<RapierRigidBody>(null);
+  const groupRef      = useRef<THREE.Group>(null);
+  // World-space anchor for labels — positioned in useFrame, never rotates with the body
+  const labelAnchorRef = useRef<THREE.Group>(null);
 
   const [hovered, setHovered] = useState(false);
 
-  // ── Drag state (all refs so they never trigger re-renders) ──────────────────
+  // ── Drag state ──────────────────────────────────────────────────────────────
   const isDragging      = useRef(false);
   const dragPlane       = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
   const pointerNDC      = useRef(new THREE.Vector2());
@@ -281,47 +248,101 @@ export default function PhysicsObject({ item, onHoverChange, onSelect, dark }: P
   const scaleCurrent    = useRef(1);
   const emissiveCurrent = useRef(0);
 
+  // ── Floating behavior ───────────────────────────────────────────────────────
+  // Stagger initial nudge so all 5 objects don't kick simultaneously
+  const nudgeTimer = useRef(0.5 + Math.random() * 2.5);
+
   const { camera, gl, raycaster } = useThree();
 
-  // ── Per-frame: scale + emissive lerp + drag ───────────────────────────────
+  // ── Per-frame ─────────────────────────────────────────────────────────────
   useFrame((_, delta) => {
     const grp = groupRef.current;
-    if (!grp) return;
 
-    // Scale animation
-    scaleTarget.current = hovered || isDragging.current ? 1.14 : 1;
-    scaleCurrent.current = THREE.MathUtils.lerp(scaleCurrent.current, scaleTarget.current, delta * 9);
-    grp.scale.setScalar(scaleCurrent.current);
+    // ── Scale animation ────────────────────────────────────────────────────
+    if (grp) {
+      scaleTarget.current = hovered || isDragging.current ? 1.14 : 1;
+      scaleCurrent.current = THREE.MathUtils.lerp(scaleCurrent.current, scaleTarget.current, delta * 9);
+      grp.scale.setScalar(scaleCurrent.current);
 
-    // Emissive glow — traverse group, animate only non-black emissive materials
-    const emissiveTarget = hovered ? 0.3 : 0;
-    emissiveCurrent.current = THREE.MathUtils.lerp(emissiveCurrent.current, emissiveTarget, delta * 8);
-    grp.traverse((obj) => {
-      if ((obj as THREE.Mesh).isMesh) {
-        const mat = (obj as THREE.Mesh).material as THREE.MeshStandardMaterial;
-        if (mat?.emissive && (mat.emissive.r + mat.emissive.g + mat.emissive.b) > 0.02) {
-          mat.emissiveIntensity = emissiveCurrent.current;
+      // Emissive glow on all non-black emissive materials
+      const emissiveTarget = hovered ? 0.3 : 0;
+      emissiveCurrent.current = THREE.MathUtils.lerp(emissiveCurrent.current, emissiveTarget, delta * 8);
+      grp.traverse((obj) => {
+        if ((obj as THREE.Mesh).isMesh) {
+          const mat = (obj as THREE.Mesh).material as THREE.MeshStandardMaterial;
+          if (mat?.emissive && (mat.emissive.r + mat.emissive.g + mat.emissive.b) > 0.02) {
+            mat.emissiveIntensity = emissiveCurrent.current;
+          }
         }
-      }
-    });
+      });
+    }
 
-    // Drag movement — project NDC onto drag plane
-    if (isDragging.current && rigidRef.current) {
+    if (!rigidRef.current) return;
+
+    // ── Drag: project NDC onto drag plane ─────────────────────────────────
+    if (isDragging.current) {
       raycaster.setFromCamera(pointerNDC.current, camera);
       const hit = new THREE.Vector3();
       raycaster.ray.intersectPlane(dragPlane.current, hit);
-
       dragVelocity.current
         .subVectors(hit, prevDragPos.current)
         .divideScalar(Math.max(delta, 0.001));
       prevDragPos.current.copy(hit);
-
       rigidRef.current.setNextKinematicTranslation(hit);
+    }
+
+    const pos = rigidRef.current.translation();
+
+    // ── World-space label anchor: stays above the body regardless of rotation ─
+    if (labelAnchorRef.current) {
+      labelAnchorRef.current.position.set(pos.x, pos.y + 1.35, pos.z);
+    }
+
+    // ── Floating forces (only for dynamic, non-dragged bodies) ──────────────
+    if (!isDragging.current) {
+      const vel = rigidRef.current.linvel();
+
+      // Gentle X centering — keep objects inside the viewport bounds
+      const pullX = -pos.x * 0.35;
+      rigidRef.current.addForce({ x: pullX, y: 0, z: 0 }, true);
+
+      // Extra snap-back if object strays outside the wall area
+      if (Math.abs(pos.x) > 5.5) {
+        rigidRef.current.addForce({ x: -Math.sign(pos.x) * 6, y: 0, z: 0 }, true);
+      }
+
+      // Z centering — keep in the camera plane so objects stay visible
+      if (Math.abs(pos.z) > 0.4) {
+        rigidRef.current.addForce({ x: 0, y: 0, z: -pos.z * 6 }, true);
+      }
+
+      // ── Periodic nudge — prevents objects from settling permanently ───────
+      nudgeTimer.current -= delta;
+      if (nudgeTimer.current <= 0) {
+        nudgeTimer.current = 1.5 + Math.random() * 2.5; // next nudge in 1.5–4s
+        const speed = Math.sqrt(vel.x * vel.x + vel.y * vel.y);
+
+        // Scale impulse: much stronger if nearly stopped, gentler if already moving
+        const strength = speed < 1.5 ? 1.6 : speed < 3.5 ? 0.9 : 0.4;
+
+        rigidRef.current.applyImpulse({
+          x: (Math.random() - 0.5) * 9 * strength,
+          // Upward-biased (60–100% chance of going up) to fight gravity
+          y: (Math.random() * 0.6 + 0.5) * 11 * strength,
+          z: 0,
+        }, true);
+
+        // Random spin so objects tumble interestingly
+        rigidRef.current.applyTorqueImpulse({
+          x: (Math.random() - 0.5) * 2.5,
+          y: (Math.random() - 0.5) * 2.5,
+          z: (Math.random() - 0.5) * 5,
+        }, true);
+      }
     }
   });
 
-  // ── Pointer handlers ─────────────────────────────────────────────────────────
-  // onMove / onUp are inline closures so each drag captures THIS instance's refs
+  // ── Pointer handlers — inline closures capture this instance's refs ──────────
   const handlePointerDown = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
       e.stopPropagation();
@@ -355,8 +376,7 @@ export default function PhysicsObject({ item, onHoverChange, onSelect, dark }: P
         if (!isDragging.current) return;
         isDragging.current = false;
         document.body.style.cursor = "auto";
-
-        rigidRef.current?.setBodyType(0, true); // Dynamic
+        rigidRef.current?.setBodyType(0, true);
         rigidRef.current?.setLinvel(
           { x: dragVelocity.current.x * 0.4, y: dragVelocity.current.y * 0.4, z: 0 },
           true
@@ -396,64 +416,87 @@ export default function PhysicsObject({ item, onHoverChange, onSelect, dark }: P
     [item, onSelect]
   );
 
-  // ── Text colors adapt to dark/light mode ─────────────────────────────────────
-  const labelColor    = dark ? "#ffffff" : "#111111";
-  const sublabelColor = dark ? "#b8b8b8" : "#555555";
+  // ── Label colors (dark/light aware) ─────────────────────────────────────────
+  const labelColor    = dark ? "#ffffff" : "#0a0a0a";
+  const sublabelColor = dark ? "#cccccc" : "#444444";
+  const outlineCol    = dark ? "#000000" : "#ffffff";
+
+  // Initial label anchor position matches initial physics spawn point
+  const [ix, iy, iz] = item.initialPosition;
 
   return (
-    <RigidBody
-      ref={rigidRef}
-      colliders={false}
-      position={item.initialPosition}
-      linearVelocity={item.initialLinvel}
-      restitution={PHYSICS.restitution}
-      friction={PHYSICS.friction}
-      linearDamping={PHYSICS.linearDamping}
-      angularDamping={PHYSICS.angularDamping}
-    >
-      {/* ── Physics collider ── */}
-      <ShapeCollider shape={item.shape} />
+    <>
+      {/* ── Physics body ── */}
+      <RigidBody
+        ref={rigidRef}
+        colliders={false}
+        position={item.initialPosition}
+        linearVelocity={item.initialLinvel}
+        restitution={PHYSICS.restitution}
+        friction={PHYSICS.friction}
+        linearDamping={PHYSICS.linearDamping}
+        angularDamping={PHYSICS.angularDamping}
+      >
+        <ShapeCollider shape={item.shape} />
 
-      {/* ── Scene group — scaled by useFrame ── */}
-      <group ref={groupRef}>
+        {/* Visual + event group — scales together */}
+        <group ref={groupRef}>
+          {/* Transparent bounding mesh — sole owner of pointer events */}
+          <mesh
+            onPointerDown={handlePointerDown}
+            onPointerEnter={handlePointerEnter}
+            onPointerLeave={handlePointerLeave}
+            onClick={handleClick}
+          >
+            <EventBounds shape={item.shape} />
+            <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+          </mesh>
 
-        {/* ── Transparent bounding mesh — sole owner of pointer events ── */}
-        <mesh
-          onPointerDown={handlePointerDown}
-          onPointerEnter={handlePointerEnter}
-          onPointerLeave={handlePointerLeave}
-          onClick={handleClick}
-        >
-          <EventBounds shape={item.shape} />
-          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-        </mesh>
+          {/* Visual shape */}
+          <ShapeVisual shape={item.shape} color={item.color} />
+        </group>
+      </RigidBody>
 
-        {/* ── Visual meshes (no events) ── */}
-        <ShapeVisual shape={item.shape} color={item.color} />
-
-        {/* ── Text labels ── */}
-        <Text
-          position={[0, 0.17, 0.85]}
-          fontSize={0.21}
-          fontWeight={700}
-          color={labelColor}
-          anchorX="center"
-          anchorY="middle"
-          renderOrder={1}
-        >
-          {item.label}
-        </Text>
-        <Text
-          position={[0, -0.1, 0.85]}
-          fontSize={0.13}
-          color={sublabelColor}
-          anchorX="center"
-          anchorY="middle"
-          renderOrder={1}
-        >
-          {item.sublabel}
-        </Text>
+      {/* ── World-space label anchor ─────────────────────────────────────────
+          Positioned via useFrame to track the rigid body's translation.
+          NOT inside the RigidBody, so it never inherits physics rotation.
+          Billboard inside ensures text always faces the camera.          ── */}
+      <group
+        ref={labelAnchorRef}
+        position={[ix, iy + 1.35, iz]}
+      >
+        <Billboard>
+          {/* Primary label */}
+          <Text
+            position={[0, 0.15, 0]}
+            fontSize={0.23}
+            fontWeight={700}
+            color={labelColor}
+            outlineWidth={0.028}
+            outlineColor={outlineCol}
+            outlineOpacity={0.75}
+            anchorX="center"
+            anchorY="middle"
+            renderOrder={5}
+          >
+            {item.label}
+          </Text>
+          {/* Sublabel */}
+          <Text
+            position={[0, -0.12, 0]}
+            fontSize={0.145}
+            color={sublabelColor}
+            outlineWidth={0.022}
+            outlineColor={outlineCol}
+            outlineOpacity={0.65}
+            anchorX="center"
+            anchorY="middle"
+            renderOrder={5}
+          >
+            {item.sublabel}
+          </Text>
+        </Billboard>
       </group>
-    </RigidBody>
+    </>
   );
 }

@@ -22,13 +22,17 @@ function FloorBody() {
           <meshStandardMaterial visible={false} />
         </mesh>
       </RigidBody>
+      {/* Ceiling — objects bounce back down if thrown hard upward */}
+      <RigidBody type="fixed" colliders="cuboid" position={[0, 7, 0]}>
+        <mesh><boxGeometry args={[40, 0.2, 10]} /><meshStandardMaterial visible={false} /></mesh>
+      </RigidBody>
       {/* Left wall */}
       <RigidBody type="fixed" colliders="cuboid" position={[-7, 0, 0]}>
-        <mesh><boxGeometry args={[0.2, 20, 10]} /><meshStandardMaterial visible={false} /></mesh>
+        <mesh><boxGeometry args={[0.2, 24, 10]} /><meshStandardMaterial visible={false} /></mesh>
       </RigidBody>
       {/* Right wall */}
       <RigidBody type="fixed" colliders="cuboid" position={[7, 0, 0]}>
-        <mesh><boxGeometry args={[0.2, 20, 10]} /><meshStandardMaterial visible={false} /></mesh>
+        <mesh><boxGeometry args={[0.2, 24, 10]} /><meshStandardMaterial visible={false} /></mesh>
       </RigidBody>
     </>
   );

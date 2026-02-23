@@ -2,20 +2,20 @@
 // PHYSICS TUNING — tweak these to change feel
 // ─────────────────────────────────────────────
 export const PHYSICS = {
-  /** World gravity vector — increase Y magnitude for faster drops */
-  gravity: [0, -14, 0] as [number, number, number],
+  /** World gravity — lighter than real so objects float and drift */
+  gravity: [0, -4, 0] as [number, number, number],
 
-  /** Bounciness 0–1. 0 = dead stop, 1 = super bouncy */
-  restitution: 0.45,
+  /** Bounciness 0–1 — fairly bouncy so objects rebound off floor energetically */
+  restitution: 0.65,
 
   /** Surface friction 0–1 */
-  friction: 0.6,
+  friction: 0.4,
 
-  /** Velocity drag — higher = objects slow down faster in air */
-  linearDamping: 0.4,
+  /** Low air drag — objects stay in motion longer between nudges */
+  linearDamping: 0.2,
 
-  /** Rotation drag */
-  angularDamping: 0.35,
+  /** Rotation drag — allows satisfying tumbling */
+  angularDamping: 0.18,
 
   /** Normal speed multiplier */
   timeScaleNormal: 1,
@@ -63,8 +63,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     sublabel: "Intelligence",
     color: "#145064",           // JUST Capital teal
     shape: "sphere",
-    initialPosition: [-2.2, 9, 0.1],
-    initialLinvel: [0.3, 0, 0],
+    initialPosition: [-2.5, 9, 0],
+    initialLinvel: [1.8, 5, 0],
     title: "JUST Intelligence",
     description: "Corporate Accountability Data Platform",
     tags: ["Product Design", "Data Visualization", "Front-End Dev"],
@@ -77,8 +77,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     sublabel: "System",
     color: "#145064",           // JUST Capital teal
     shape: "code",
-    initialPosition: [-0.8, 11, -0.2],
-    initialLinvel: [-0.5, 0, 0],
+    initialPosition: [-0.6, 11, 0],
+    initialLinvel: [-2.0, 3, 0],
     title: "Component System",
     description: "Scalable Design Engineering",
     tags: ["Design Systems", "PHP/WordPress", "Front-End Dev"],
@@ -91,8 +91,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     sublabel: "Disney+",
     color: "#E50914",           // Netflix red
     shape: "tv",
-    initialPosition: [0.4, 10, 0.3],
-    initialLinvel: [0.2, 0, 0],
+    initialPosition: [0.5, 10, 0],
+    initialLinvel: [0.8, 6, 0],
     title: "Netflix & Disney+",
     description: "Multilingual Design Operations",
     tags: ["Design Ops", "Typography", "Team Leadership"],
@@ -105,8 +105,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     sublabel: "Training",
     color: "#004E81",           // Wordbank / IATA navy
     shape: "aircraft",
-    initialPosition: [1.6, 12, -0.1],
-    initialLinvel: [-0.3, 0, 0],
+    initialPosition: [1.8, 12, 0],
+    initialLinvel: [-2.5, 4, 0],
     title: "IATA Training",
     description: "Cross-Cultural UX · WeChat",
     tags: ["Cross-Cultural UX", "Mobile Design", "Growth"],
@@ -119,8 +119,8 @@ export const SANDBOX_ITEMS: SandboxItem[] = [
     sublabel: "Corps",
     color: "#EF553F",           // StoryCorps coral
     shape: "phone",
-    initialPosition: [2.8, 10, 0.2],
-    initialLinvel: [-0.4, 0, 0],
+    initialPosition: [3.0, 10, 0],
+    initialLinvel: [-1.5, 5, 0],
     title: "StoryCorps",
     description: "Mobile App Redesign",
     tags: ["Mobile Design", "iOS & Android", "Shipped"],
