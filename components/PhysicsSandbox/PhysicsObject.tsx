@@ -3,38 +3,49 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
-import { RigidBody, type RapierRigidBody } from "@react-three/rapier";
+import {
+  RigidBody,
+  BallCollider,
+  CuboidCollider,
+  CapsuleCollider,
+  CylinderCollider,
+  type RapierRigidBody,
+} from "@react-three/rapier";
 import * as THREE from "three";
 import { type SandboxItem, PHYSICS, type ObjectShape } from "./config";
-
-// ─── Map each shape to the most appropriate Rapier collider type ──────────────
-// "ball"   → perfect sphere collider — best for sphere geometry
-// "cuboid" → axis-aligned bounding box — best for box geometry
-// "hull"   → convex hull — best for complex/irregular shapes
-function getColliderType(shape: ObjectShape): "ball" | "cuboid" | "hull" {
-  switch (shape) {
-    case "sphere":     return "ball";
-    case "roundedBox": return "cuboid";
-    default:           return "hull"; // capsule, torus, octahedron
-  }
-}
 
 // ─── Geometry per shape ───────────────────────────────────────────────────────
 function ShapeGeometry({ shape }: { shape: ObjectShape }) {
   switch (shape) {
     case "sphere":
-      return <sphereGeometry args={[0.72, 40, 40]} />;
+      return <sphereGeometry args={[0.72, 32, 32]} />;
     case "capsule":
       return <capsuleGeometry args={[0.48, 0.75, 8, 24]} />;
     case "torus":
-      // convex-hull collider will approximate this as a thick disc — fine for gameplay
-      return <torusGeometry args={[0.58, 0.28, 20, 60]} />;
+      return <torusGeometry args={[0.58, 0.28, 16, 48]} />;
     case "octahedron":
       return <octahedronGeometry args={[0.82, 0]} />;
     case "roundedBox":
     default:
-      // drei RoundedBox is prettier, but for collider simplicity use regular box
       return <boxGeometry args={[1.25, 1.25, 1.25]} />;
+  }
+}
+
+// ─── Explicit collider per shape — more reliable than auto-detection ──────────
+// colliders={false} on RigidBody + explicit child collider = guaranteed physics
+function ShapeCollider({ shape }: { shape: ObjectShape }) {
+  switch (shape) {
+    // Perfect ball collider — exact fit for sphere mesh (r=0.72)
+    case "sphere":     return <BallCollider args={[0.72]} />;
+    // Axis-aligned box — exact fit for boxGeometry 1.25³  (half-extents = 0.625)
+    case "roundedBox": return <CuboidCollider args={[0.625, 0.625, 0.625]} />;
+    // Capsule: halfHeight = cylinderLength/2 = 0.375, radius = 0.48
+    case "capsule":    return <CapsuleCollider args={[0.375, 0.48]} />;
+    // Torus: approximate as a wide-flat cylinder (halfH = tube radius, r = outer radius)
+    case "torus":      return <CylinderCollider args={[0.28, 0.86]} />;
+    // Octahedron: circumscribed ball gives great collision response
+    case "octahedron": return <BallCollider args={[0.72]} />;
+    default:           return <BallCollider args={[0.70]} />;
   }
 }
 
@@ -193,7 +204,7 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
   return (
     <RigidBody
       ref={rigidRef}
-      colliders={getColliderType(item.shape)}
+      colliders={false}          // ← disable auto-detection; explicit collider below
       position={item.initialPosition}
       linearVelocity={item.initialLinvel}
       restitution={PHYSICS.restitution}
@@ -201,6 +212,9 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
       linearDamping={PHYSICS.linearDamping}
       angularDamping={PHYSICS.angularDamping}
     >
+      {/* ── Explicit collider — correct shape, correct size, guaranteed stable ── */}
+      <ShapeCollider shape={item.shape} />
+
       {/* ── 3D mesh ── */}
       <mesh
         ref={meshRef}
@@ -215,8 +229,8 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
         <meshStandardMaterial
           ref={matRef}
           color={item.color}
-          roughness={0.78}   /* ← raise for more clay/matte; lower for glossy */
-          metalness={0.04}   /* ← keep near 0 for clay look */
+          roughness={0.78}
+          metalness={0.04}
           emissive={item.color}
           emissiveIntensity={0}
         />

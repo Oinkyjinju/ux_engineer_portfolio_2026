@@ -42,40 +42,53 @@ export default function AnimatedBackground({ scrollY, mouse, dark }: Props) {
 
     function draw() {
       t++;
-      const { mouse: m, scrollY: sy } = stateRef.current;
+      const { mouse: m, scrollY: sy, dark } = stateRef.current;
       const sf = sy * 0.0003; // scroll parallax factor
 
-      // Ease mouse toward target
-      smx += ((m.x > 0 ? m.x : smx) - smx) * 0.05;
-      smy += ((m.y > 0 ? m.y : smy) - smy) * 0.05;
+      // Ease mouse toward target — 0.14 = snappier tracking (was 0.05)
+      smx += ((m.x > 0 ? m.x : smx) - smx) * 0.14;
+      smy += ((m.y > 0 ? m.y : smy) - smy) * 0.14;
 
-      // ── 1. Dark base coat ─────────────────────────────────────────────────
+      // ── 1. Base coat ───────────────────────────────────────────────────────
       ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = "#060910";
+      ctx.fillStyle = dark ? "#060910" : "#F4F3EF";
       ctx.fillRect(0, 0, W, H);
 
-      // ── 2. Aurora orbs with screen blending (additive glow) ───────────────
-      ctx.globalCompositeOperation = "screen";
+      // ── 2. Aurora orbs ─────────────────────────────────────────────────────
       for (const o of ORBS) {
         const ox = (o.cx + Math.sin(t * o.speed + o.phX) * o.ampX) * W;
         const oy = (o.cy + Math.cos(t * o.speed * 1.27 + o.phY) * o.ampY - sf) * H;
         const r  = o.r * Math.min(W, H);
 
         const g = ctx.createRadialGradient(ox, oy, 0, ox, oy, r);
-        g.addColorStop(0,    `hsla(${o.hue}, 90%, 70%, ${o.a})`);
-        g.addColorStop(0.28, `hsla(${o.hue}, 84%, 55%, ${o.a * 0.55})`);
-        g.addColorStop(0.6,  `hsla(${o.hue}, 78%, 40%, ${o.a * 0.18})`);
-        g.addColorStop(1,    `hsla(${o.hue}, 70%, 22%, 0)`);
+
+        if (dark) {
+          // Additive screen blend — vivid aurora glow on dark bg
+          ctx.globalCompositeOperation = "screen";
+          g.addColorStop(0,    `hsla(${o.hue}, 90%, 70%, ${o.a})`);
+          g.addColorStop(0.28, `hsla(${o.hue}, 84%, 55%, ${o.a * 0.55})`);
+          g.addColorStop(0.6,  `hsla(${o.hue}, 78%, 40%, ${o.a * 0.18})`);
+          g.addColorStop(1,    `hsla(${o.hue}, 70%, 22%, 0)`);
+        } else {
+          // Soft multiply tint on light bg — barely-visible pastel wash
+          ctx.globalCompositeOperation = "multiply";
+          g.addColorStop(0,    `hsla(${o.hue}, 55%, 72%, ${o.a * 0.18})`);
+          g.addColorStop(0.35, `hsla(${o.hue}, 50%, 80%, ${o.a * 0.08})`);
+          g.addColorStop(1,    `hsla(${o.hue}, 40%, 90%, 0)`);
+        }
+
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, W, H);
       }
 
-      // ── 3. Grid — more visible than before ────────────────────────────────
+      // ── 3. Grid ────────────────────────────────────────────────────────────
       ctx.globalCompositeOperation = "source-over";
       const gs  = 72;
       const off = (sy * 0.12) % gs;
 
-      ctx.strokeStyle = "rgba(140, 160, 255, 0.06)";
+      ctx.strokeStyle = dark
+        ? "rgba(140, 160, 255, 0.06)"
+        : "rgba(100, 100, 160, 0.07)";
       ctx.lineWidth = 0.5;
       for (let x = 0; x <= W; x += gs) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
@@ -84,39 +97,68 @@ export default function AnimatedBackground({ scrollY, mouse, dark }: Props) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
       }
 
-      // Brighter accent lines every 3rd row — gives depth
-      ctx.strokeStyle = "rgba(170, 140, 255, 0.11)";
+      // Brighter accent lines every 3rd row
+      ctx.strokeStyle = dark
+        ? "rgba(170, 140, 255, 0.11)"
+        : "rgba(120, 100, 200, 0.08)";
       ctx.lineWidth = 0.8;
       for (let y = (gs * 3) - ((sy * 0.12) % (gs * 3)); y < H + gs * 3; y += gs * 3) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
       }
 
-      // ── 4. Double mouse spotlight ──────────────────────────────────────────
-      ctx.globalCompositeOperation = "screen";
+      // ── 4. Mouse spotlight ─────────────────────────────────────────────────
+      if (dark) {
+        // Dark: additive screen glow
+        ctx.globalCompositeOperation = "screen";
 
-      // Outer soft halo
-      const s1 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 330);
-      s1.addColorStop(0,   "rgba(150, 90, 255, 0.22)");
-      s1.addColorStop(0.4, "rgba(90, 60, 215, 0.10)");
-      s1.addColorStop(1,   "rgba(0, 0, 0, 0)");
-      ctx.fillStyle = s1;
-      ctx.fillRect(0, 0, W, H);
+        const s1 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 330);
+        s1.addColorStop(0,   "rgba(150, 90, 255, 0.22)");
+        s1.addColorStop(0.4, "rgba(90, 60, 215, 0.10)");
+        s1.addColorStop(1,   "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = s1;
+        ctx.fillRect(0, 0, W, H);
 
-      // Inner sharp bright core
-      const s2 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 75);
-      s2.addColorStop(0,   "rgba(218, 196, 255, 0.22)");
-      s2.addColorStop(0.6, "rgba(160, 110, 255, 0.07)");
-      s2.addColorStop(1,   "rgba(0, 0, 0, 0)");
-      ctx.fillStyle = s2;
-      ctx.fillRect(0, 0, W, H);
+        const s2 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 75);
+        s2.addColorStop(0,   "rgba(218, 196, 255, 0.22)");
+        s2.addColorStop(0.6, "rgba(160, 110, 255, 0.07)");
+        s2.addColorStop(1,   "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = s2;
+        ctx.fillRect(0, 0, W, H);
+      } else {
+        // Light: subtle warm sunspot on the bg
+        ctx.globalCompositeOperation = "source-over";
 
-      // ── 5. Edge vignette (multiply darkens corners) ───────────────────────
-      ctx.globalCompositeOperation = "multiply";
-      const vig = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.92);
-      vig.addColorStop(0, "rgba(255, 255, 255, 1)");
-      vig.addColorStop(1, "rgba(8, 6, 20, 0.76)");
-      ctx.fillStyle = vig;
-      ctx.fillRect(0, 0, W, H);
+        const s1 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 280);
+        s1.addColorStop(0,   "rgba(180, 140, 255, 0.10)");
+        s1.addColorStop(0.5, "rgba(140, 100, 220, 0.04)");
+        s1.addColorStop(1,   "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = s1;
+        ctx.fillRect(0, 0, W, H);
+
+        const s2 = ctx.createRadialGradient(smx, smy, 0, smx, smy, 60);
+        s2.addColorStop(0,   "rgba(160, 120, 255, 0.08)");
+        s2.addColorStop(1,   "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = s2;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      // ── 5. Edge vignette ───────────────────────────────────────────────────
+      if (dark) {
+        ctx.globalCompositeOperation = "multiply";
+        const vig = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.92);
+        vig.addColorStop(0, "rgba(255, 255, 255, 1)");
+        vig.addColorStop(1, "rgba(8, 6, 20, 0.76)");
+        ctx.fillStyle = vig;
+        ctx.fillRect(0, 0, W, H);
+      } else {
+        // Light mode: soft warm edge fade
+        ctx.globalCompositeOperation = "source-over";
+        const vig = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.88);
+        vig.addColorStop(0,   "rgba(0,0,0,0)");
+        vig.addColorStop(1,   "rgba(200,195,210,0.14)");
+        ctx.fillStyle = vig;
+        ctx.fillRect(0, 0, W, H);
+      }
 
       raf = requestAnimationFrame(draw);
     }
@@ -134,7 +176,7 @@ export default function AnimatedBackground({ scrollY, mouse, dark }: Props) {
         ref={canvasRef}
         style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
       />
-      {/* Film grain overlay for texture */}
+      {/* Film grain overlay — opacity reduced in light mode via CSS var trick */}
       <div
         style={{
           position: "fixed",
@@ -144,7 +186,7 @@ export default function AnimatedBackground({ scrollY, mouse, dark }: Props) {
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           backgroundRepeat: "repeat",
           backgroundSize: "150px 150px",
-          opacity: 0.065,
+          opacity: 0.055,
           mixBlendMode: "overlay",
         }}
       />
