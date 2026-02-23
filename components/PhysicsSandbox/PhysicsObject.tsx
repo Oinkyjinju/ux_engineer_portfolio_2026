@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import {
@@ -104,49 +104,11 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
     }
   });
 
-  // ── Global pointermove/up listeners (attached when drag starts) ───────────────
-  useEffect(() => {
-    const canvas = gl.domElement;
-
-    const onMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      pointerNDC.current.set(
-        ((e.clientX - rect.left) / rect.width) * 2 - 1,
-        -((e.clientY - rect.top) / rect.height) * 2 + 1
-      );
-    };
-
-    const onUp = () => {
-      if (!isDragging.current) return;
-      isDragging.current = false;
-      document.body.style.cursor = "auto";
-
-      // Switch back to dynamic and throw
-      rigidRef.current?.setBodyType(0, true); // 0 = Dynamic
-      rigidRef.current?.setLinvel(
-        { x: dragVelocity.current.x * 0.4, y: dragVelocity.current.y * 0.4, z: 0 },
-        true
-      );
-      rigidRef.current?.setAngvel(
-        { x: dragVelocity.current.y * 0.3, y: -dragVelocity.current.x * 0.3, z: 0 },
-        true
-      );
-
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerup", onUp);
-    };
-
-    // Store cleanup refs so pointerdown can re-add them
-    (canvas as any).__sandboxMove = onMove;
-    (canvas as any).__sandboxUp   = onUp;
-
-    return () => {
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerup", onUp);
-    };
-  }, [gl]);
-
   // ── Pointer handlers on the mesh ─────────────────────────────────────────────
+  // IMPORTANT: onMove and onUp are created as inline closures inside handlePointerDown.
+  // This guarantees each drag operation captures THIS instance's refs (pointerNDC,
+  // rigidRef, dragVelocity, isDragging) — not a shared canvas attribute that gets
+  // overwritten by whichever PhysicsObject mounted last.
   const handlePointerDown = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
       e.stopPropagation();
@@ -161,8 +123,9 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
       prevDragPos.current.set(pos.x, pos.y, pos.z);
       dragVelocity.current.set(0, 0, 0);
 
-      // Seed NDC from event
-      const rect = gl.domElement.getBoundingClientRect();
+      // Seed NDC from the initiating event
+      const canvas = gl.domElement;
+      const rect = canvas.getBoundingClientRect();
       pointerNDC.current.set(
         ((e.clientX - rect.left) / rect.width) * 2 - 1,
         -((e.clientY - rect.top) / rect.height) * 2 + 1
@@ -171,10 +134,37 @@ export default function PhysicsObject({ item, onHoverChange, onSelect }: Props) 
       // Switch to kinematic so we drive position directly
       rigidRef.current.setBodyType(2, true); // 2 = KinematicPositionBased
 
-      // Attach global listeners
-      const canvas = gl.domElement;
-      canvas.addEventListener("pointermove", (canvas as any).__sandboxMove);
-      canvas.addEventListener("pointerup",   (canvas as any).__sandboxUp);
+      // ── Inline closures — capture THIS instance's refs, not a shared attribute ──
+      const onMove = (ev: PointerEvent) => {
+        const r = canvas.getBoundingClientRect();
+        pointerNDC.current.set(
+          ((ev.clientX - r.left) / r.width) * 2 - 1,
+          -((ev.clientY - r.top) / r.height) * 2 + 1
+        );
+      };
+
+      const onUp = () => {
+        if (!isDragging.current) return;
+        isDragging.current = false;
+        document.body.style.cursor = "auto";
+
+        // Switch back to dynamic and apply throw impulse
+        rigidRef.current?.setBodyType(0, true); // 0 = Dynamic
+        rigidRef.current?.setLinvel(
+          { x: dragVelocity.current.x * 0.4, y: dragVelocity.current.y * 0.4, z: 0 },
+          true
+        );
+        rigidRef.current?.setAngvel(
+          { x: dragVelocity.current.y * 0.3, y: -dragVelocity.current.x * 0.3, z: 0 },
+          true
+        );
+
+        canvas.removeEventListener("pointermove", onMove);
+        canvas.removeEventListener("pointerup",   onUp);
+      };
+
+      canvas.addEventListener("pointermove", onMove);
+      canvas.addEventListener("pointerup",   onUp);
     },
     [gl]
   );
