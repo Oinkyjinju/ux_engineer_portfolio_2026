@@ -3,7 +3,7 @@
 // ─── Dynamic import prevents Three.js / Rapier from running on the server ────
 // Three.js uses browser APIs (WebGL, canvas) that don't exist in Node.
 import dynamic from "next/dynamic";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useCallback } from "react";
 import { type SandboxItem } from "./config";
 import CaseStudyOverlay from "./CaseStudyOverlay";
 
@@ -66,28 +66,60 @@ function Hint({ dark }: { dark: boolean }) {
         zIndex: 10,
       }}
     >
-      hover · click to explore
+      drag · throw · click to explore
     </div>
   );
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 export default function PhysicsSandbox({ dark }: { dark: boolean }) {
-  const [selected, setSelected] = useState<SandboxItem | null>(null);
+  const [selected,  setSelected]  = useState<SandboxItem | null>(null);
+  const [returnKey, setReturnKey] = useState(0);
+  const handleReset = useCallback(() => setReturnKey((k) => k + 1), []);
 
   return (
     <section
       style={{
         position: "relative",
         width: "100%",
-        height: "100svh",       // short-viewport-height for mobile safety
+        height: "100svh",
         overflow: "hidden",
       }}
     >
       {/* 3D canvas — SSR disabled */}
       <Suspense fallback={<SandboxLoader />}>
-        <SandboxCanvas onSelect={setSelected} dark={dark} />
+        <SandboxCanvas onSelect={setSelected} dark={dark} returnKey={returnKey} />
       </Suspense>
+
+      {/* Reset positions button */}
+      <button
+        onClick={handleReset}
+        aria-label="Reset object positions"
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "6px 14px",
+          borderRadius: 99,
+          border: dark ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(0,0,0,0.1)",
+          background: dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.05)",
+          color: dark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.4)",
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 11,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          cursor: "pointer",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          transition: "opacity 0.18s",
+        }}
+      >
+        ↺ reset
+      </button>
 
       {/* Interaction hint */}
       <Hint dark={dark} />
