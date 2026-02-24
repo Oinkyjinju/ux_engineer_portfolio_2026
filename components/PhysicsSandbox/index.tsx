@@ -66,7 +66,7 @@ function Hint({ dark }: { dark: boolean }) {
         zIndex: 10,
       }}
     >
-      drag · hover to slow · click to open
+      hover · click to explore
     </div>
   );
 }
