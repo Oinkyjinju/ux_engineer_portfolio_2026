@@ -17,8 +17,8 @@ export const projects: Project[] = [
     tags: ["Product Design", "Data Visualization", "Front-End Dev"],
     year: "2021–present",
     company: "JUST Capital",
-    accent: "#60a5fa",
-    gradient: "135deg, #1e3a5f, #2563EB",
+    accent: "#145064",
+    gradient: "135deg, #0a2c35, #145064",
   },
   {
     id: "just-wordpress",
@@ -27,8 +27,8 @@ export const projects: Project[] = [
     tags: ["Design Systems", "PHP/WordPress", "Front-End Dev"],
     year: "2023–present",
     company: "JUST Capital",
-    accent: "#34d399",
-    gradient: "135deg, #064e3b, #059669",
+    accent: "#145064",
+    gradient: "135deg, #0a2c35, #145064",
   },
   {
     id: "netflix-disney",
@@ -37,8 +37,8 @@ export const projects: Project[] = [
     tags: ["Design Ops", "Typography", "Team Leadership"],
     year: "2018–present",
     company: "Wordbank → Unfold",
-    accent: "#f87171",
-    gradient: "135deg, #7f1d1d, #DC2626",
+    accent: "#E50914",
+    gradient: "135deg, #136878, #E50914",
   },
   {
     id: "iata",
@@ -47,8 +47,8 @@ export const projects: Project[] = [
     tags: ["Cross-Cultural UX", "Mobile Design", "Growth"],
     year: "2023",
     company: "Wordbank → IATA",
-    accent: "#a78bfa",
-    gradient: "135deg, #4c1d95, #7C3AED",
+    accent: "#004E81",
+    gradient: "135deg, #002847, #004E81",
   },
   {
     id: "storycorps",
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     tags: ["Mobile Design", "iOS & Android", "Shipped"],
     year: "2021",
     company: "Echobind",
-    accent: "#fb923c",
-    gradient: "135deg, #9a3412, #EA580C",
+    accent: "#EF553F",
+    gradient: "135deg, #7a2010, #EF553F",
   },
 ];

@@ -12,15 +12,15 @@ import { useScrollY } from "@/hooks/useScrollY";
 import { projects, type Project } from "@/data/projects";
 
 const labItems = [
-  { title: "Betjeman & Barton",  tech: "HTML · CSS · JS",    desc: "Responsive redesign. Vanilla code, no frameworks.", c: "#b45309" },
-  { title: "Front-End Modules",  tech: "PHP · WordPress",    desc: "30+ production components powering justcapital.com.", c: "#047857" },
-  { title: "This Portfolio",     tech: "Next.js · React",    desc: "Built from scratch. You're looking at it.", c: "#3730a3" },
+  { title: "Front-End Modules",  tech: "PHP · WordPress",    desc: "30+ production components powering justcapital.com." },
+  { title: "This Portfolio",     tech: "Next.js · React",    desc: "Built from scratch. You're looking at it." },
+  { title: "Betjeman & Barton",  tech: "HTML · CSS · JS",    desc: "Responsive redesign. Vanilla code, no frameworks." },
 ];
 
 const footerLinks = [
-  { label: "Email",    href: "mailto:oinkyjinju@gmail.com" },
-  { label: "LinkedIn", href: "https://linkedin.com/in/jinjuparkoinky" },
-  { label: "GitHub",   href: "https://github.com/Oinkyjinju" },
+  { label: "Email",    href: "#contact" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/jinjuparkoinky/" },
+  { label: "GitHub",   href: "https://github.com/Oinkyjinju/ux_engineer_portfolio_2026" },
 ];
 
 export default function Portfolio() {
@@ -137,7 +137,9 @@ export default function Portfolio() {
               color: "var(--text-secondary)",
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: 6,
+              minWidth: 76,
               transition: "all 0.3s ease",
               backdropFilter: "blur(8px)",
             }}
@@ -160,7 +162,7 @@ export default function Portfolio() {
       {/* ── HERO — Physics Sandbox ── */}
       {/* Full-viewport 3D canvas. Scroll past it to reach the work list. */}
       <div style={{ position: "relative", zIndex: 2, marginTop: 64 }}>
-        <PhysicsSandbox />
+        <PhysicsSandbox dark={dark} />
       </div>
 
       {/* ── WORK ── */}
@@ -177,9 +179,6 @@ export default function Portfolio() {
         <ScrollReveal>
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
               paddingBottom: 12,
               borderBottom: "1px solid var(--border)",
               marginBottom: 0,
@@ -188,7 +187,7 @@ export default function Portfolio() {
             <h2
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 400,
                 color: "var(--text-tertiary)",
                 letterSpacing: "0.08em",
@@ -197,9 +196,6 @@ export default function Portfolio() {
             >
               Selected Work
             </h2>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-tertiary)" }}>
-              {projects.length} projects
-            </span>
           </div>
         </ScrollReveal>
 
@@ -229,7 +225,7 @@ export default function Portfolio() {
           <h2
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: 400,
               color: "var(--text-tertiary)",
               letterSpacing: "0.08em",
@@ -241,7 +237,7 @@ export default function Portfolio() {
           </h2>
         </ScrollReveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, alignItems: "stretch" }}>
           {labItems.map((item, i) => (
             <ScrollReveal key={item.title} delay={i * 0.1}>
               <div
@@ -253,9 +249,13 @@ export default function Portfolio() {
                   backdropFilter: "blur(12px)",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
+                  minHeight: 130,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = `${item.c}40`;
+                  e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)";
                   e.currentTarget.style.transform = "translateY(-3px)";
                 }}
                 onMouseLeave={(e) => {
@@ -263,7 +263,7 @@ export default function Portfolio() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: item.c }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "rgba(249,115,22,0.62)" }}>
                   {item.tech}
                 </span>
                 <h3
@@ -308,11 +308,17 @@ export default function Portfolio() {
               position: "fixed",
               left: springX,
               top: springY,
-              x: 32,
+              x: "-50%",
               y: "-50%",
               pointerEvents: "none",
               zIndex: 9999,
-              filter: "drop-shadow(0 32px 48px rgba(0,0,0,0.7))",
+              borderRadius: 18,
+              overflow: "hidden",
+              boxShadow: [
+                `0 0 0 2px ${hoveredProject.accent}99`,
+                `0 0 40px ${hoveredProject.accent}50`,
+                `0 32px 60px rgba(0,0,0,0.65)`,
+              ].join(", "),
             }}
           >
             <ProjectThumbnail project={hoveredProject} />
@@ -323,10 +329,9 @@ export default function Portfolio() {
       {/* ── FOOTER ── */}
       <footer
         style={{
-          padding: "36px clamp(20px, 5vw, 64px)",
+          padding: "36px clamp(32px, 6vw, 96px)",
           borderTop: "1px solid var(--border)",
-          maxWidth: 1060,
-          margin: "0 auto",
+          width: "100%",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -334,6 +339,7 @@ export default function Portfolio() {
           zIndex: 2,
           flexWrap: "wrap",
           gap: 16,
+          boxSizing: "border-box",
         }}
       >
         <div style={{ display: "flex", gap: 20 }}>
@@ -356,7 +362,7 @@ export default function Portfolio() {
           ))}
         </div>
         <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-tertiary)" }}>
-          Built with Next.js · © 2026
+          Jinju Park © 2026
         </span>
       </footer>
     </div>
