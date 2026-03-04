@@ -52,7 +52,7 @@ function NetflixThumbnail({ project }: { project: Project }) {
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
       border: `1px solid ${p.borderHi}`,
-      boxShadow: `0 0 0 1px ${p.border}, ${p.shadow}`,
+      boxShadow: `0 0 0 1px ${p.border}, var(--thumbnail-shadow, ${p.shadow})`,
       fontFamily: "system-ui, sans-serif",
     }}>
       {/* Ambient glow */}
@@ -146,7 +146,7 @@ function JustIntelligenceThumbnail({ project }: { project: Project }) {
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
       border: `1px solid ${p.borderHi}`,
-      boxShadow: p.shadow,
+      boxShadow: `var(--thumbnail-shadow, ${p.shadow})`,
       fontFamily: "monospace",
     }}>
       {/* Glow */}
@@ -213,7 +213,7 @@ function ComponentSystemThumbnail({ project }: { project: Project }) {
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
       border: `1px solid ${p.borderHi}`,
-      boxShadow: p.shadow,
+      boxShadow: `var(--thumbnail-shadow, ${p.shadow})`,
       fontFamily: "monospace",
     }}>
       <div style={{ position: "absolute", width: 280, height: 280, borderRadius: "50%", background: p.glow, top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
@@ -269,7 +269,7 @@ function IATAThumbnail({ project }: { project: Project }) {
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
       border: `1px solid ${p.borderHi}`,
-      boxShadow: p.shadow,
+      boxShadow: `var(--thumbnail-shadow, ${p.shadow})`,
       fontFamily: "system-ui, sans-serif",
     }}>
       <div style={{ position: "absolute", width: 280, height: 280, borderRadius: "50%", background: p.glow, top: "50%", left: "40%", transform: "translate(-50%,-50%)" }} />
@@ -332,7 +332,7 @@ function StoryCorpsThumbnail({ project }: { project: Project }) {
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
       border: `1px solid ${p.borderHi}`,
-      boxShadow: p.shadow,
+      boxShadow: `var(--thumbnail-shadow, ${p.shadow})`,
       fontFamily: "system-ui, sans-serif",
     }}>
       <div style={{ position: "absolute", width: 280, height: 280, borderRadius: "50%", background: p.glow, top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />

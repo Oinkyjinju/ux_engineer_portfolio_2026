@@ -1,157 +1,190 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import AnimatedBackground from "./AnimatedBackground";
-import ScrollReveal from "./ScrollReveal";
-import ProjectRow from "./ProjectRow";
-import PhysicsSandbox from "./PhysicsSandbox";
-import { ProjectThumbnail } from "./ProjectThumbnails";
-import { useMousePosition } from "@/hooks/useMousePosition";
-import { useScrollY } from "@/hooks/useScrollY";
-import { projects, type Project } from "@/data/projects";
+import HeroSection        from "./HeroSection";
+import AboutSection       from "./AboutSection";
+import WorkStage          from "./WorkStage";
+import ProcessSection     from "./ProcessSection";
+import ContactSection     from "./ContactSection";
 
-const labItems = [
-  { title: "Front-End Modules",  tech: "PHP · WordPress",    desc: "30+ production components powering justcapital.com." },
-  { title: "This Portfolio",     tech: "Next.js · React",    desc: "Built from scratch. You're looking at it." },
-  { title: "Betjeman & Barton",  tech: "HTML · CSS · JS",    desc: "Responsive redesign. Vanilla code, no frameworks." },
+const LAB_ITEMS = [
+  {
+    title: "Physics Sandbox",
+    tech: "Three.js · React",
+    desc: "Draggable 3D objects with deterministic choreography.",
+    href: "/",
+  },
+  {
+    title: "Graph Demo",
+    tech: "D3.js · Next.js",
+    desc: "Force-directed data visualization, interactive.",
+    href: "/graph",
+  },
+  {
+    title: "OS Dashboard",
+    tech: "React · CSS",
+    desc: "Desktop-style UI with draggable windows.",
+    href: "/os",
+  },
 ];
 
-const footerLinks = [
+const FOOTER_LINKS = [
   { label: "Email",    href: "#contact" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/jinjuparkoinky/" },
   { label: "GitHub",   href: "https://github.com/Oinkyjinju/ux_engineer_portfolio_2026" },
 ];
 
+interface RippleState { x: number; y: number; newDark: boolean }
+
 export default function Portfolio() {
-  const [dark, setDark] = useState(true);
-  const mouse = useMousePosition();
-  const scrollY = useScrollY();
-
-  // ── Cursor thumbnail ─────────────────────────────────────────────────────
-  const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const springX = useSpring(rawX, { stiffness: 650, damping: 46, mass: 0.45 });
-  const springY = useSpring(rawY, { stiffness: 650, damping: 46, mass: 0.45 });
-
+  const [dark, setDark]         = useState(true);
+  const [ripple, setRipple]     = useState<RippleState | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onMove = (e: MouseEvent) => { rawX.set(e.clientX); rawY.set(e.clientY); };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [rawX, rawY]);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const theme = {
-    ...(dark
-      ? {
-          "--bg": "#06060A",
-          "--text-primary": "#F0EEE9",
-          "--text-secondary": "#9B9A97",
-          "--text-tertiary": "#5E5D5A",
-          "--border": "rgba(255,255,255,0.06)",
-          "--card-bg": "rgba(255,255,255,0.02)",
-        }
-      : {
-          "--bg": "#F5F4F0",
-          "--text-primary": "#18181A",
-          "--text-secondary": "#5C5B58",
-          "--text-tertiary": "#8E8D8A",
-          "--border": "rgba(0,0,0,0.08)",
-          "--card-bg": "rgba(0,0,0,0.02)",
-        }),
-    "--font-display": "'Playfair Display', Georgia, serif",
-    "--font-body":    "'Source Sans 3', system-ui, sans-serif",
-    "--font-mono":    "'JetBrains Mono', monospace",
-  } as React.CSSProperties;
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setRipple({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, newDark: !dark });
+  };
+
+  const theme = dark
+    ? {
+        "--bg":             "#09090E",
+        "--text-primary":   "#EDEAE3",
+        "--text-secondary": "#7D7A73",
+        "--text-tertiary":  "#4A4846",
+        "--border":         "rgba(255,255,255,0.07)",
+        "--card-bg":        "rgba(255,255,255,0.025)",
+        "--accent":         "#F5A623",
+        "--accent-muted":   "rgba(245,166,35,0.12)",
+        "--code-blue":      "#5B9FFF",
+        "--font-display":   "'Instrument Serif', Georgia, serif",
+        "--font-body":      "'Inter', system-ui, sans-serif",
+        "--font-mono":      "'JetBrains Mono', monospace",
+      }
+    : {
+        "--bg":             "#F8F7F2",
+        "--text-primary":   "#0E0D0A",
+        "--text-secondary": "#5A5855",
+        "--text-tertiary":  "#8E8C89",
+        "--border":         "rgba(0,0,0,0.09)",
+        "--card-bg":        "rgba(0,0,0,0.03)",
+        "--accent":         "#2563EB",
+        "--accent-muted":   "rgba(37,99,235,0.1)",
+        "--code-blue":      "#4F46E5",
+        "--thumbnail-shadow": "0 0 0 0 transparent",
+        "--font-display":   "'Instrument Serif', Georgia, serif",
+        "--font-body":      "'Inter', system-ui, sans-serif",
+        "--font-mono":      "'JetBrains Mono', monospace",
+      };
+
+  const mono  = "'JetBrains Mono', monospace";
+  const sans  = "'Inter', system-ui, sans-serif";
+  const serif = "'Instrument Serif', Georgia, serif";
 
   return (
     <div
       style={{
-        ...theme,
+        ...(theme as React.CSSProperties),
         backgroundColor: "var(--bg)",
         minHeight: "100vh",
-        transition: "background-color 0.5s ease",
+        transition: "background-color 0.4s ease",
         position: "relative",
       }}
     >
-      <AnimatedBackground scrollY={scrollY} mouse={mouse} dark={dark} />
+      <AnimatedBackground dark={dark} />
 
-      {/* ── NAV ── */}
+      {/* Ripple mode-switch overlay */}
+      <AnimatePresence>
+        {ripple && (
+          <motion.div
+            key={ripple.newDark ? "to-dark" : "to-light"}
+            initial={{ clipPath: `circle(0px at ${ripple.x}px ${ripple.y}px)` }}
+            animate={{ clipPath: `circle(200vmax at ${ripple.x}px ${ripple.y}px)` }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            onAnimationComplete={() => { setDark(ripple.newDark); setRipple(null); }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9998,
+              backgroundColor: ripple.newDark ? "#09090E" : "#F8F7F2",
+              pointerEvents: "none",
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* NAV */}
       <nav
         style={{
+          position: "fixed",
+          top: 0, left: 0, right: 0, zIndex: 100,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "18px clamp(20px, 5vw, 64px)",
-          position: "fixed",
-          top: 0, left: 0, right: 0,
-          zIndex: 100,
-          backgroundColor: dark ? "rgba(6,6,10,0.7)" : "rgba(245,244,240,0.7)",
-          backdropFilter: "blur(24px) saturate(1.4)",
-          borderBottom: "1px solid var(--border)",
-          transition: "background-color 0.5s ease",
+          padding: "0 clamp(24px, 5vw, 64px)",
+          height: 60,
+          backgroundColor: scrolled
+            ? (dark ? "rgba(9,9,14,0.82)" : "rgba(248,247,242,0.82)")
+            : "transparent",
+          backdropFilter: scrolled ? "blur(20px) saturate(1.6)" : "none",
+          borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+          transition: "all 0.35s ease",
         }}
       >
         <a
           href="/"
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: 18,
-            fontWeight: 500,
-            color: "var(--text-primary)",
-            textDecoration: "none",
+            fontFamily: serif, fontSize: 17, fontWeight: 400,
+            color: "var(--text-primary)", textDecoration: "none", letterSpacing: "-0.01em",
           }}
         >
           Jinju Park
         </a>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
           {["Work", "Lab", "About", "Contact"].map((label) => (
             <a
               key={label}
               href={`#${label.toLowerCase()}`}
               style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                textDecoration: "none",
-                transition: "color 0.2s",
+                fontFamily: mono, fontSize: 11, letterSpacing: "0.07em",
+                textTransform: "uppercase", color: "var(--text-tertiary)",
+                textDecoration: "none", transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--text-primary)"; }}
-              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-secondary)"; }}
+              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
             >
               {label}
             </a>
           ))}
 
           <button
-            onClick={() => setDark(!dark)}
+            onClick={handleToggle}
             style={{
-              background: "var(--card-bg)",
-              border: "1px solid var(--border)",
-              borderRadius: 24,
-              padding: "5px 12px",
-              cursor: "pointer",
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--text-secondary)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 6,
-              minWidth: 76,
-              transition: "all 0.3s ease",
-              backdropFilter: "blur(8px)",
+              display: "flex", alignItems: "center", gap: 7,
+              background: "var(--card-bg)", border: "1px solid var(--border)",
+              borderRadius: 20, padding: "5px 13px", cursor: "pointer",
+              fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
+              textTransform: "uppercase", color: "var(--text-tertiary)",
+              transition: "border-color 0.2s",
             }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
           >
             <span
               style={{
-                width: 12, height: 12,
-                borderRadius: "50%",
+                width: 10, height: 10, borderRadius: "50%",
                 background: dark
                   ? "linear-gradient(135deg, #fbbf24, #f59e0b)"
-                  : "linear-gradient(135deg, #1e1b4b, #312e81)",
-                transition: "all 0.4s ease",
+                  : "linear-gradient(135deg, #1e1b4b, #4338ca)",
+                transition: "background 0.4s ease",
               }}
             />
             {dark ? "light" : "dark"}
@@ -159,209 +192,102 @@ export default function Portfolio() {
         </div>
       </nav>
 
-      {/* ── HERO — Physics Sandbox ── */}
-      {/* Full-viewport 3D canvas. Scroll past it to reach the work list. */}
-      <div style={{ position: "relative", zIndex: 2, marginTop: 64 }}>
-        <PhysicsSandbox dark={dark} />
-      </div>
+      {/* Sections — ordered for hiring narrative: Hook → Proof → Range → Know me → Method → CTA */}
+      <HeroSection    dark={dark} />
+      <WorkStage      dark={dark} />
 
-      {/* ── WORK ── */}
-      <section
-        id="work"
-        style={{
-          padding: "0 clamp(20px, 5vw, 64px) 80px",
-          maxWidth: 1060,
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 2,
-        }}
-      >
-        <ScrollReveal>
-          <div
-            style={{
-              paddingBottom: 12,
-              borderBottom: "1px solid var(--border)",
-              marginBottom: 0,
-            }}
-          >
-            <h2
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 14,
-                fontWeight: 400,
-                color: "var(--text-tertiary)",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-              }}
-            >
-              Selected Work
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        {projects.map((project, i) => (
-          <div
-            key={project.id}
-            onMouseEnter={() => setHoveredProject(project)}
-            onMouseLeave={() => setHoveredProject(null)}
-          >
-            <ProjectRow project={project} index={i} />
-          </div>
-        ))}
-      </section>
-
-      {/* ── LAB ── */}
+      {/* Lab */}
       <section
         id="lab"
         style={{
-          padding: "60px clamp(20px, 5vw, 64px)",
-          maxWidth: 1060,
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 2,
+          padding: "80px clamp(24px, 6vw, 96px)",
+          maxWidth: 1160, margin: "0 auto",
+          position: "relative", zIndex: 2,
         }}
       >
-        <ScrollReveal>
-          <h2
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 14,
-              fontWeight: 400,
-              color: "var(--text-tertiary)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              marginBottom: 28,
-            }}
-          >
-            Lab
-          </h2>
-        </ScrollReveal>
+        <p
+          style={{
+            fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+            textTransform: "uppercase", color: "var(--accent)", marginBottom: 16,
+          }}
+        >
+          Lab
+        </p>
+        <p
+          style={{
+            fontFamily: sans, fontSize: 15, color: "var(--text-secondary)",
+            marginBottom: 36, maxWidth: 400,
+          }}
+        >
+          Things I build to think out loud.
+        </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, alignItems: "stretch" }}>
-          {labItems.map((item, i) => (
-            <ScrollReveal key={item.title} delay={i * 0.1}>
-              <div
-                style={{
-                  border: "1px solid var(--border)",
-                  borderRadius: 12,
-                  padding: 20,
-                  background: "var(--card-bg)",
-                  backdropFilter: "blur(12px)",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  minHeight: 130,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)";
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "rgba(249,115,22,0.62)" }}>
-                  {item.tech}
-                </span>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: 17,
-                    fontWeight: 500,
-                    color: "var(--text-primary)",
-                    margin: "6px 0 4px",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: 13,
-                    color: "var(--text-secondary)",
-                    margin: 0,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            </ScrollReveal>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+          {LAB_ITEMS.map((item) => (
+            <a
+              key={item.title}
+              href={item.href}
+              style={{
+                textDecoration: "none", display: "block",
+                border: "1px solid var(--border)", borderRadius: 14,
+                padding: "22px 24px", background: "var(--card-bg)",
+                backdropFilter: "blur(12px)", transition: "border-color 0.25s, transform 0.25s",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = "var(--accent)"; el.style.transform = "translateY(-3px)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = "var(--border)"; el.style.transform = "translateY(0)";
+              }}
+            >
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", display: "block", marginBottom: 10 }}>
+                {item.tech}
+              </span>
+              <h3 style={{ fontFamily: serif, fontSize: 20, fontWeight: 400, color: "var(--text-primary)", marginBottom: 8, letterSpacing: "-0.01em" }}>
+                {item.title}
+              </h3>
+              <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.55, margin: 0 }}>
+                {item.desc}
+              </p>
+            </a>
           ))}
         </div>
       </section>
 
-      {/* ── CURSOR THUMBNAIL ── */}
-      <AnimatePresence>
-        {hoveredProject && (
-          <motion.div
-            key={hoveredProject.id}
-            initial={{ opacity: 0, scale: 0.84, rotate: -6 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            exit={{ opacity: 0, scale: 0.9, rotate: 4 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: "fixed",
-              left: springX,
-              top: springY,
-              x: "-50%",
-              y: "-50%",
-              pointerEvents: "none",
-              zIndex: 9999,
-              borderRadius: 18,
-              overflow: "hidden",
-              boxShadow: [
-                `0 0 0 2px ${hoveredProject.accent}99`,
-                `0 0 40px ${hoveredProject.accent}50`,
-                `0 32px 60px rgba(0,0,0,0.65)`,
-              ].join(", "),
-            }}
-          >
-            <ProjectThumbnail project={hoveredProject} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AboutSection   dark={dark} />
+      <ProcessSection dark={dark} />
+      <ContactSection dark={dark} />
 
-      {/* ── FOOTER ── */}
+      {/* Footer */}
       <footer
         style={{
-          padding: "36px clamp(32px, 6vw, 96px)",
+          padding: "28px clamp(24px, 6vw, 96px)",
           borderTop: "1px solid var(--border)",
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "relative",
-          zIndex: 2,
-          flexWrap: "wrap",
-          gap: 16,
-          boxSizing: "border-box",
+          display: "flex", justifyContent: "space-between",
+          alignItems: "center", flexWrap: "wrap", gap: 12,
+          position: "relative", zIndex: 2,
         }}
       >
         <div style={{ display: "flex", gap: 20 }}>
-          {footerLinks.map((link) => (
+          {FOOTER_LINKS.map((link) => (
             <a
               key={link.label}
               href={link.href}
               style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 12,
-                color: "var(--text-tertiary)",
-                textDecoration: "none",
-                transition: "color 0.2s",
+                fontFamily: mono, fontSize: 11, letterSpacing: "0.05em",
+                textTransform: "uppercase", color: "var(--text-tertiary)",
+                textDecoration: "none", transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--text-primary)"; }}
+              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
               onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
             >
               {link.label}
             </a>
           ))}
         </div>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--text-tertiary)" }}>
+        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)", letterSpacing: "0.04em" }}>
           Jinju Park © 2026
         </span>
       </footer>
