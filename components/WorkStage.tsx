@@ -7,14 +7,14 @@ import { ProjectThumbnail } from "./ProjectThumbnails";
 
 const METRICS: Record<string, { value: string; label: string }[]> = {
   "just-intelligence": [
-    { value: "7+",  label: "years shipped" },
+    { value: "7+",  label: "years in production" },
     { value: "3M+", label: "users reached" },
-    { value: "30+", label: "components" },
+    { value: "30+", label: "components shipped" },
   ],
   "just-wordpress": [
-    { value: "30+", label: "components" },
-    { value: "3",   label: "dev teams" },
-    { value: "PHP", label: "/ WordPress" },
+    { value: "30+",  label: "Figma components" },
+    { value: "800+", label: "hardcoded values replaced" },
+    { value: "3",    label: "dev teams onboarded" },
   ],
   "netflix-disney": [
     { value: "50+", label: "languages" },
@@ -22,14 +22,14 @@ const METRICS: Record<string, { value: string; label: string }[]> = {
     { value: "8+",  label: "years" },
   ],
   iata: [
-    { value: "WeChat", label: "mini-program" },
-    { value: "2023",   label: "shipped" },
-    { value: "IATA",   label: "global" },
+    { value: "WeChat", label: "native platform" },
+    { value: "2",      label: "languages in specs" },
+    { value: "2023",   label: "launched" },
   ],
   storycorps: [
-    { value: "iOS",  label: "+ Android" },
-    { value: "NPR",  label: "partnership" },
-    { value: "2021", label: "shipped" },
+    { value: "3",    label: "onboarding steps (from 7)" },
+    { value: "150+", label: "reviews analyzed" },
+    { value: "2",    label: "platforms shipped" },
   ],
 };
 
@@ -69,7 +69,7 @@ function Metric({ value, label, run }: { value: string; label: string; run: bool
         minWidth: 90,
       }}
     >
-      <div style={{ fontFamily: "'Instrument Serif', Georgia, serif", fontSize: 26, lineHeight: 1, color: "var(--accent)", marginBottom: 4 }}>
+      <div style={{ fontFamily: "'Gloock', Georgia, serif", fontSize: 26, lineHeight: 1, color: "var(--accent)", marginBottom: 4 }}>
         {display}
       </div>
       <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
@@ -90,11 +90,14 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
   const num     = String(index + 1).padStart(2, "0");
   const metrics = METRICS[project.id] ?? [];
   const mono    = "'JetBrains Mono', monospace";
-  const serif   = "'Instrument Serif', Georgia, serif";
-  const sans    = "'Inter', system-ui, sans-serif";
+  const serif   = "'Gloock', Georgia, serif";
+  const sans    = "'Red Hat Text', system-ui, sans-serif";
 
   const EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
   const DUR  = "480ms";
+
+  const [isHovered, setIsHovered] = useState(false);
+  const active = isOpen || isHovered;
 
   return (
     <div style={{ borderBottom: "1px solid var(--border)" }}>
@@ -102,6 +105,8 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
       {/* Header row — always visible */}
       <div
         onClick={onToggle}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{
           display: "flex",
           alignItems: "center",
@@ -110,13 +115,30 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
           cursor: "pointer",
           gap: 20,
           userSelect: "none",
+          position: "relative",
         }}
       >
+        {/* Accent left bar — slides in on hover/open */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: -24,
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: 2,
+            height: active ? "60%" : "0%",
+            background: "var(--accent)",
+            borderRadius: 1,
+            transition: `height 0.28s ${EASE}`,
+            pointerEvents: "none",
+          }}
+        />
         <div style={{ display: "flex", alignItems: "center", gap: 20, flex: 1, minWidth: 0 }}>
           <span
             style={{
               fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
-              color: isOpen ? "var(--accent)" : "var(--text-tertiary)",
+              color: active ? "var(--accent)" : "var(--text-tertiary)",
               transition: "color 0.3s",
               flexShrink: 0,
             }}
@@ -129,7 +151,7 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
               fontSize: "clamp(20px, 2.8vw, 32px)",
               fontWeight: 400,
               letterSpacing: "-0.015em",
-              color: isOpen ? "var(--text-primary)" : "var(--text-secondary)",
+              color: active ? "var(--text-primary)" : "var(--text-secondary)",
               transition: "color 0.3s",
               margin: 0,
               whiteSpace: "nowrap",

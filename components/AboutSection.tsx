@@ -59,8 +59,8 @@ export default function AboutSection({ dark }: Props) {
   }, []);
 
   const mono     = "'JetBrains Mono', monospace";
-  const serif    = "'Instrument Serif', Georgia, serif";
-  const sans     = "'Inter', system-ui, sans-serif";
+  const serif    = "'Gloock', Georgia, serif";
+  const sans     = "'Red Hat Text', system-ui, sans-serif";
 
   const CODE_TOKENS = [
     { kind: "comment", text: "// about.tsx" },
@@ -153,8 +153,13 @@ export default function AboutSection({ dark }: Props) {
                 color: "var(--text-secondary)", marginBottom: 20,
               }}
             >
-              7+ years at the intersection of design and engineering — at JUST Capital,
-              Echobind, and Wordbank/Unfold, working with Netflix, Disney+, and IATA.
+              Seven years building the thing most teams treat as a boundary: the gap
+              between what gets designed and what gets shipped. At JUST Capital I ran
+              both sides — writing the Figma components and the React that rendered
+              them, owning the design system and the pull request. At Wordbank/Unfold
+              I solved multilingual typography at scale across Netflix and Disney+ in
+              50+ languages. With Echobind I led mobile UX for StoryCorps&apos; iOS
+              and Android redesign alongside NPR.
             </p>
             <p
               style={{
@@ -162,9 +167,7 @@ export default function AboutSection({ dark }: Props) {
                 color: "var(--text-secondary)", marginBottom: 36,
               }}
             >
-              I obsess over the seam between a designer&apos;s intent and
-              what actually ships — bridging Figma and production with systems
-              thinking and real code.
+              The through-line: I do not hand work off. I follow it through.
             </p>
 
             {/* Skill tabs */}

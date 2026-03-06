@@ -17,6 +17,9 @@ export default function HeroSection({ dark }: Props) {
   const heroRef   = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mousePosRef = useRef({ x: -1000, y: -1000 });
+  // Keep dark in a ref so RAF never needs to restart on theme toggle
+  const darkRef = useRef(dark);
+  useEffect(() => { darkRef.current = dark; }, [dark]);
 
   // Spring-based amber glow follows cursor
   const rawX  = useMotionValue(-500);
@@ -24,15 +27,17 @@ export default function HeroSection({ dark }: Props) {
   const glowX = useSpring(rawX, { stiffness: 160, damping: 26, mass: 0.5 });
   const glowY = useSpring(rawY, { stiffness: 160, damping: 26, mass: 0.5 });
 
-  // Particle canvas
+  // Particle canvas — paused via IntersectionObserver when hero is off-screen
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const hero   = heroRef.current;
+    if (!canvas || !hero) return;
     const ctx = canvas.getContext("2d")!;
 
     type P = { x: number; y: number; vx: number; vy: number; r: number; a: number };
     let W = 0, H = 0, raf: number;
     let particles: P[] = [];
+    let visible = true;
 
     function init() {
       W = canvas!.offsetWidth;
@@ -50,8 +55,10 @@ export default function HeroSection({ dark }: Props) {
     }
 
     function draw() {
+      if (!visible) return;
       ctx.clearRect(0, 0, W, H);
-      const rgb = dark ? "245,166,35" : "160,100,0";
+      // Read dark from ref — no RAF restart on theme toggle
+      const rgb = darkRef.current ? "245,166,35" : "160,100,0";
       const { x: mx, y: my } = mousePosRef.current;
       const REPEL = 110;
 
@@ -79,11 +86,22 @@ export default function HeroSection({ dark }: Props) {
       raf = requestAnimationFrame(draw);
     }
 
+    // Pause particle loop when hero section scrolls off-screen
+    const obs = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) raf = requestAnimationFrame(draw);
+    }, { threshold: 0 });
+    obs.observe(hero);
+
     init();
     draw();
-    window.addEventListener("resize", init);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", init); };
-  }, [dark]);
+    window.addEventListener("resize", init, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      obs.disconnect();
+      window.removeEventListener("resize", init);
+    };
+  }, []); // dark removed from deps — read via darkRef instead
 
   // Mouse tracking
   useEffect(() => {
@@ -179,11 +197,11 @@ export default function HeroSection({ dark }: Props) {
 
           <h1
             style={{
-              fontFamily: "'Instrument Serif', Georgia, serif",
+              fontFamily: "'Gloock', Georgia, serif",
               fontSize: "clamp(72px, 11vw, 158px)",
               fontWeight: 400,
               lineHeight: 1.0,
-              letterSpacing: "-0.02em",
+              letterSpacing: "clamp(-0.015em, -0.02em, -0.025em)",
               color: "var(--text-primary)",
               margin: 0,
             }}
@@ -222,19 +240,20 @@ export default function HeroSection({ dark }: Props) {
 
           <p
             style={{
-              fontFamily: "'Inter', system-ui, sans-serif",
+              fontFamily: "'Red Hat Text', system-ui, sans-serif",
               fontSize: "clamp(17px, 2vw, 20px)",
-              fontWeight: 300,
+              fontWeight: 400,
               lineHeight: 1.55,
               color: "var(--text-secondary)",
             }}
           >
-            I design with code.
+            I close the gap between what gets designed
             <br />
-            I code with design.
+            and what gets shipped.
             <br />
             <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-tertiary)" }}>
-              7 years shipping at JUST Capital, Netflix, and IATA.
+              Seven years doing both — at JUST Capital, through Wordbank/Unfold
+              for Netflix and Disney+, and with Echobind for StoryCorps.
             </span>
           </p>
 
@@ -242,7 +261,7 @@ export default function HeroSection({ dark }: Props) {
             <a
               href="#work"
               style={{
-                fontFamily: "'Inter', system-ui, sans-serif",
+                fontFamily: "'Red Hat Text', system-ui, sans-serif",
                 fontSize: 14,
                 fontWeight: 500,
                 color: dark ? "#09090E" : "#F8F7F2",
@@ -261,7 +280,7 @@ export default function HeroSection({ dark }: Props) {
             <a
               href="#about"
               style={{
-                fontFamily: "'Inter', system-ui, sans-serif",
+                fontFamily: "'Red Hat Text', system-ui, sans-serif",
                 fontSize: 14,
                 fontWeight: 400,
                 color: "var(--text-secondary)",

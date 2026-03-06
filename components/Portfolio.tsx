@@ -17,6 +17,12 @@ const LAB_ITEMS = [
     href: "/",
   },
   {
+    title: "Micro-Interactions",
+    tech: "Framer Motion · Web APIs",
+    desc: "Four production-ready interactions. No extra libraries.",
+    href: "/micro",
+  },
+  {
     title: "Graph Demo",
     tech: "D3.js · Next.js",
     desc: "Force-directed data visualization, interactive.",
@@ -64,8 +70,8 @@ export default function Portfolio() {
         "--accent":         "#F5A623",
         "--accent-muted":   "rgba(245,166,35,0.12)",
         "--code-blue":      "#5B9FFF",
-        "--font-display":   "'Instrument Serif', Georgia, serif",
-        "--font-body":      "'Inter', system-ui, sans-serif",
+        "--font-display":   "'Gloock', Georgia, serif",
+        "--font-body":      "'Red Hat Text', system-ui, sans-serif",
         "--font-mono":      "'JetBrains Mono', monospace",
       }
     : {
@@ -79,14 +85,14 @@ export default function Portfolio() {
         "--accent-muted":   "rgba(37,99,235,0.1)",
         "--code-blue":      "#4F46E5",
         "--thumbnail-shadow": "0 0 0 0 transparent",
-        "--font-display":   "'Instrument Serif', Georgia, serif",
-        "--font-body":      "'Inter', system-ui, sans-serif",
+        "--font-display":   "'Gloock', Georgia, serif",
+        "--font-body":      "'Red Hat Text', system-ui, sans-serif",
         "--font-mono":      "'JetBrains Mono', monospace",
       };
 
   const mono  = "'JetBrains Mono', monospace";
-  const sans  = "'Inter', system-ui, sans-serif";
-  const serif = "'Instrument Serif', Georgia, serif";
+  const sans  = "'Red Hat Text', system-ui, sans-serif";
+  const serif = "'Gloock', Georgia, serif";
 
   return (
     <div
@@ -135,7 +141,7 @@ export default function Portfolio() {
             : "transparent",
           backdropFilter: scrolled ? "blur(20px) saturate(1.6)" : "none",
           borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
-          transition: "all 0.35s ease",
+          transition: "background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease",
         }}
       >
         <a

@@ -21,8 +21,8 @@ export default function ContactSection({ dark }: Props) {
   };
 
   const mono  = "'JetBrains Mono', monospace";
-  const serif = "'Instrument Serif', Georgia, serif";
-  const sans  = "'Inter', system-ui, sans-serif";
+  const serif = "'Gloock', Georgia, serif";
+  const sans  = "'Red Hat Text', system-ui, sans-serif";
 
   return (
     <section
@@ -65,9 +65,9 @@ export default function ContactSection({ dark }: Props) {
               maxWidth: 680,
             }}
           >
-            Let&apos;s build something
+            The right role is one where
             <br />
-            that works — beautifully.
+            design and engineering share a wall.
           </h2>
           <p
             style={{
@@ -79,8 +79,11 @@ export default function ContactSection({ dark }: Props) {
               maxWidth: 500,
             }}
           >
-            Open to staff / senior IC roles at product-focused companies.
-            Also available for design systems and front-end engineering consulting.
+            Looking for senior IC or staff roles where design systems, front-end
+            engineering, and product thinking are treated as one job — not three.
+            Ideal fit: product-led teams building tools, infrastructure, or consumer
+            products where the interface is the product. Also available for design
+            systems consulting and front-end engineering engagements.
           </p>
         </ScrollReveal>
 

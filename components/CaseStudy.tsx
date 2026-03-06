@@ -13,8 +13,8 @@ export default function CaseStudy({ project }: Props) {
   const data = caseStudies[project.id];
 
   const mono  = "'JetBrains Mono', monospace";
-  const serif = "'Instrument Serif', Georgia, serif";
-  const sans  = "'Inter', system-ui, sans-serif";
+  const serif = "'Gloock', Georgia, serif";
+  const sans  = "'Red Hat Text', system-ui, sans-serif";
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
   const prevProject  = projects[currentIndex - 1];
@@ -74,7 +74,7 @@ export default function CaseStudy({ project }: Props) {
         <a
           href="/"
           style={{
-            fontFamily: "'Instrument Serif', Georgia, serif",
+            fontFamily: "'Gloock', Georgia, serif",
             fontSize: 17, fontWeight: 400,
             color: "var(--text-primary)", textDecoration: "none",
           }}

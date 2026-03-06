@@ -91,8 +91,8 @@ export default function ProcessSection({ dark }: Props) {
   };
 
   const mono  = "'JetBrains Mono', monospace";
-  const serif = "'Instrument Serif', Georgia, serif";
-  const sans  = "'Inter', system-ui, sans-serif";
+  const serif = "'Gloock', Georgia, serif";
+  const sans  = "'Red Hat Text', system-ui, sans-serif";
   const EASE  = "cubic-bezier(0.4, 0, 0.2, 1)";
 
   return (

@@ -28,6 +28,9 @@ export default function AnimatedBackground({ dark }: Props) {
     let W = 0, H = 0, t = 0;
     let smx = -1, smy = -1;
     let raf: number;
+    let running = true;         // paused when tab is hidden
+    let lastActivity = Date.now();
+    let frame = 0;              // for idle throttle
 
     function resize() {
       W = window.innerWidth;
@@ -39,14 +42,36 @@ export default function AnimatedBackground({ dark }: Props) {
     resize();
 
     // Direct ref updates — zero setState, zero re-renders
-    const onScroll = () => { stateRef.current.scrollY = window.scrollY; };
-    const onMouse  = (e: MouseEvent) => { stateRef.current.mx = e.clientX; stateRef.current.my = e.clientY; };
+    const onScroll = () => { stateRef.current.scrollY = window.scrollY; lastActivity = Date.now(); };
+    const onMouse  = (e: MouseEvent) => { stateRef.current.mx = e.clientX; stateRef.current.my = e.clientY; lastActivity = Date.now(); };
+
+    // Pause RAF when tab is hidden — biggest CPU saving for background tabs
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
+      } else {
+        running = true;
+        raf = requestAnimationFrame(draw);
+      }
+    };
 
     window.addEventListener("resize",    resize,   { passive: true });
     window.addEventListener("scroll",    onScroll, { passive: true });
     window.addEventListener("mousemove", onMouse,  { passive: true });
+    document.addEventListener("visibilitychange", onVisibility);
 
     function draw() {
+      if (!running) return;
+
+      // Idle throttle: if no activity for 4s, run at ~20fps instead of 60fps
+      const idle = Date.now() - lastActivity > 4000;
+      frame++;
+      if (idle && frame % 3 !== 0) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+
       t++;
       const { scrollY: sy, mx, my, dark } = stateRef.current;
       const sf = sy * 0.0003;
@@ -145,10 +170,12 @@ export default function AnimatedBackground({ dark }: Props) {
     draw();
 
     return () => {
+      running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener("resize",    resize);
       window.removeEventListener("scroll",    onScroll);
       window.removeEventListener("mousemove", onMouse);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []); // single RAF loop, never restarts
 
