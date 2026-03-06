@@ -23,8 +23,8 @@ export const projects: Project[] = [
   {
     id: "just-wordpress",
     title: "Component System",
-    subtitle: "Scalable Design Engineering",
-    tags: ["Design Systems", "PHP/WordPress", "Front-End Dev"],
+    subtitle: "Design System · Figma to PHP",
+    tags: ["Design Systems", "Design Engineering", "Front-End Dev"],
     year: "2023–present",
     company: "JUST Capital",
     accent: "#145064",
@@ -53,8 +53,8 @@ export const projects: Project[] = [
   {
     id: "storycorps",
     title: "StoryCorps",
-    subtitle: "Mobile App Redesign",
-    tags: ["Mobile Design", "iOS & Android", "Shipped"],
+    subtitle: "iOS & Android Redesign · NPR Partnership",
+    tags: ["Mobile Design", "iOS & Android", "React Native"],
     year: "2021",
     company: "Echobind",
     accent: "#EF553F",

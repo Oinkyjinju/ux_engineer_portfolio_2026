@@ -26,7 +26,7 @@ export default function ScrollReveal({ children, delay = 0 }: Props) {
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(30px)",
-        transition: `all 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+        transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
       }}
     >
       {children}

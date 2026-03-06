@@ -138,7 +138,7 @@ export default function CaseStudyOverlay({ item, onClose }: Props) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ ...SPRING, delay: 0.07 }}
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "'Gloock', Georgia, serif",
                   fontSize: "clamp(26px, 4vw, 40px)",
                   fontWeight: 500,
                   letterSpacing: "-0.025em",
@@ -156,7 +156,7 @@ export default function CaseStudyOverlay({ item, onClose }: Props) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ ...EASE, delay: 0.12 }}
                 style={{
-                  fontFamily: "'Source Sans 3', system-ui, sans-serif",
+                  fontFamily: "'Red Hat Text', system-ui, sans-serif",
                   fontSize: 16,
                   fontWeight: 300,
                   color: "rgba(255,255,255,0.5)",
@@ -234,7 +234,7 @@ export default function CaseStudyOverlay({ item, onClose }: Props) {
                   border: `1px solid ${item.color}50`,
                   background: `linear-gradient(135deg, ${item.color}20, ${item.color}08)`,
                   color: item.color,
-                  fontFamily: "'Source Sans 3', system-ui, sans-serif",
+                  fontFamily: "'Red Hat Text', system-ui, sans-serif",
                   fontSize: 14,
                   fontWeight: 500,
                   cursor: "pointer",
