@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Project } from "@/data/projects";
 import { caseStudies } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
@@ -9,7 +9,8 @@ import { projects } from "@/data/projects";
 interface Props { project: Project; }
 
 export default function CaseStudy({ project }: Props) {
-  const [dark] = useState(true);
+  const [dark, setDark]     = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const data = caseStudies[project.id];
 
   const mono  = "'JetBrains Mono', monospace";
@@ -20,17 +21,47 @@ export default function CaseStudy({ project }: Props) {
   const prevProject  = projects[currentIndex - 1];
   const nextProject  = projects[currentIndex + 1];
 
-  const theme = {
-    "--bg":             "#09090E",
-    "--text-primary":   "#EDEAE3",
-    "--text-secondary": "#7D7A73",
-    "--text-tertiary":  "#4A4846",
-    "--border":         "rgba(255,255,255,0.07)",
-    "--card-bg":        "rgba(255,255,255,0.025)",
-    "--accent":         "#F5A623",
-    "--accent-muted":   "rgba(245,166,35,0.12)",
-    "--code-blue":      "#5B9FFF",
+  // Sync theme with localStorage — matches Portfolio.tsx
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved !== null) setDark(saved === "dark");
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleToggle = () => {
+    const newDark = !dark;
+    localStorage.setItem("theme", newDark ? "dark" : "light");
+    setDark(newDark);
   };
+
+  const theme = dark
+    ? {
+        "--bg":             "#09090E",
+        "--text-primary":   "#EDEAE3",
+        "--text-secondary": "#7D7A73",
+        "--text-tertiary":  "#4A4846",
+        "--border":         "rgba(255,255,255,0.07)",
+        "--card-bg":        "rgba(255,255,255,0.025)",
+        "--accent":         "#F5A623",
+        "--accent-muted":   "rgba(245,166,35,0.12)",
+        "--nav-bg-scrolled": "rgba(9,9,14,0.82)",
+      }
+    : {
+        "--bg":             "#F8F7F2",
+        "--text-primary":   "#0E0D0A",
+        "--text-secondary": "#5A5855",
+        "--text-tertiary":  "#8E8C89",
+        "--border":         "rgba(0,0,0,0.09)",
+        "--card-bg":        "rgba(0,0,0,0.03)",
+        "--accent":         "#2563EB",
+        "--accent-muted":   "rgba(37,99,235,0.1)",
+        "--nav-bg-scrolled": "rgba(248,247,242,0.82)",
+      };
 
   return (
     <div
@@ -39,9 +70,10 @@ export default function CaseStudy({ project }: Props) {
         backgroundColor: "var(--bg)",
         minHeight: "100vh",
         color: "var(--text-primary)",
+        transition: "background-color 0.4s ease",
       }}
     >
-      {/* Nav */}
+      {/* Nav — mirrors Portfolio.tsx exactly */}
       <nav
         style={{
           position: "fixed",
@@ -52,39 +84,66 @@ export default function CaseStudy({ project }: Props) {
           justifyContent: "space-between",
           padding: "0 clamp(24px, 5vw, 64px)",
           height: 60,
-          backgroundColor: "rgba(9,9,14,0.88)",
-          backdropFilter: "blur(20px) saturate(1.6)",
-          borderBottom: "1px solid var(--border)",
+          backgroundColor: scrolled ? "var(--nav-bg-scrolled)" : "transparent",
+          backdropFilter: scrolled ? "blur(20px) saturate(1.6)" : "none",
+          borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+          transition: "background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease",
         }}
       >
+        {/* Logo */}
         <a
           href="/"
           style={{
-            fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-            textTransform: "uppercase", color: "var(--text-tertiary)",
-            textDecoration: "none", display: "flex", alignItems: "center", gap: 8,
-            transition: "color 0.2s",
-          }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)"; }}
-        >
-          ← All work
-        </a>
-
-        <a
-          href="/"
-          style={{
-            fontFamily: "'Gloock', Georgia, serif",
-            fontSize: 17, fontWeight: 400,
-            color: "var(--text-primary)", textDecoration: "none",
+            fontFamily: serif, fontSize: 17, fontWeight: 400,
+            color: "var(--text-primary)", textDecoration: "none", letterSpacing: "-0.01em",
           }}
         >
           Jinju Park
         </a>
 
-        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)", letterSpacing: "0.04em" }}>
-          {project.company} · {project.year}
-        </span>
+        {/* Center links + toggle — matches Portfolio nav */}
+        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+          {(["Work", "Lab", "About", "Contact"] as const).map((label) => (
+            <a
+              key={label}
+              href={`/#${label.toLowerCase()}`}
+              style={{
+                fontFamily: mono, fontSize: 11, letterSpacing: "0.07em",
+                textTransform: "uppercase", color: "var(--text-tertiary)",
+                textDecoration: "none", transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
+            >
+              {label}
+            </a>
+          ))}
+
+          <button
+            onClick={handleToggle}
+            style={{
+              display: "flex", alignItems: "center", gap: 7,
+              background: "var(--card-bg)", border: "1px solid var(--border)",
+              borderRadius: 20, padding: "5px 13px", cursor: "pointer",
+              fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
+              textTransform: "uppercase", color: "var(--text-tertiary)",
+              transition: "border-color 0.2s",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
+          >
+            <span
+              style={{
+                width: 10, height: 10, borderRadius: "50%",
+                background: dark
+                  ? "linear-gradient(135deg, #fbbf24, #f59e0b)"
+                  : "linear-gradient(135deg, #1e1b4b, #4338ca)",
+                transition: "background 0.4s ease",
+              }}
+            />
+            {dark ? "light" : "dark"}
+          </button>
+        </div>
       </nav>
 
       {/* Hero */}
@@ -108,7 +167,7 @@ export default function CaseStudy({ project }: Props) {
           }}
         />
         {/* Bottom fade */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(transparent, #09090E)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: `linear-gradient(transparent, var(--bg))`, pointerEvents: "none" }} />
 
         <div
           style={{
@@ -117,6 +176,22 @@ export default function CaseStudy({ project }: Props) {
             padding: "80px clamp(24px, 6vw, 96px) 100px",
           }}
         >
+          {/* Back breadcrumb */}
+          <a
+            href="/#work"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+              textTransform: "uppercase", color: "rgba(237,234,227,0.5)",
+              textDecoration: "none", marginBottom: 24,
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)"; }}
+          >
+            ← All work
+          </a>
+
           {/* Tags */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 28 }}>
             {project.tags.map((tag) => (
