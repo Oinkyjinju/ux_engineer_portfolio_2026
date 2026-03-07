@@ -45,15 +45,13 @@ const FOOTER_LINKS = [
 interface RippleState { x: number; y: number; newDark: boolean }
 
 export default function Portfolio() {
-  const [dark, setDark]         = useState(false);
+  // Lazy initializer reads localStorage synchronously — avoids flash of wrong theme
+  const [dark, setDark]         = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("theme") === "dark";
+  });
   const [ripple, setRipple]     = useState<RippleState | null>(null);
   const [scrolled, setScrolled] = useState(false);
-
-  // Sync with localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved !== null) setDark(saved === "dark");
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);

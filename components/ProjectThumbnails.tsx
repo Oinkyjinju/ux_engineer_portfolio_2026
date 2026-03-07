@@ -107,7 +107,7 @@ function NetflixThumbnail({ project }: { project: Project }) {
 
       {/* Stat */}
       <div style={{ position: "absolute", bottom: 16, left: 16, zIndex: 6 }}>
-        <p style={{ margin: 0, color: project.accent, fontSize: 24, fontWeight: 900, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>40+</p>
+        <p style={{ margin: 0, color: project.accent, fontSize: 24, fontWeight: 900, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>50+</p>
         <p style={{ margin: 0, color: p.dim, fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase" }}>languages</p>
       </div>
 

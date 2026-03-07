@@ -9,7 +9,11 @@ import { projects } from "@/data/projects";
 interface Props { project: Project; }
 
 export default function CaseStudy({ project }: Props) {
-  const [dark, setDark]     = useState(false);
+  // Lazy initializer reads localStorage synchronously — avoids flash of wrong theme
+  const [dark, setDark]     = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("theme") === "dark";
+  });
   const [scrolled, setScrolled] = useState(false);
   const data = caseStudies[project.id];
 
@@ -21,11 +25,8 @@ export default function CaseStudy({ project }: Props) {
   const prevProject  = projects[currentIndex - 1];
   const nextProject  = projects[currentIndex + 1];
 
-  // Sync theme with localStorage — matches Portfolio.tsx
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved !== null) setDark(saved === "dark");
-  }, []);
+  // Note: theme is already read synchronously in useState initializer above
+  // This effect is not needed — lazy init handles it without flash
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -84,10 +85,11 @@ export default function CaseStudy({ project }: Props) {
           justifyContent: "space-between",
           padding: "0 clamp(24px, 5vw, 64px)",
           height: 60,
-          backgroundColor: scrolled ? "var(--nav-bg-scrolled)" : "transparent",
-          backdropFilter: scrolled ? "blur(20px) saturate(1.6)" : "none",
-          borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
-          transition: "background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease",
+          // Case study hero is always a colored gradient — nav needs a bg at all times
+          backgroundColor: scrolled ? "var(--nav-bg-scrolled)" : (dark ? "rgba(9,9,14,0.72)" : "rgba(248,247,242,0.72)"),
+          backdropFilter: "blur(20px) saturate(1.6)",
+          borderBottom: "1px solid var(--border)",
+          transition: "background-color 0.35s ease, border-color 0.35s ease",
         }}
       >
         {/* Logo */}
@@ -262,7 +264,7 @@ export default function CaseStudy({ project }: Props) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
             gap: "clamp(40px, 6vw, 96px)",
             alignItems: "center",
             marginBottom: 100,
@@ -297,7 +299,7 @@ export default function CaseStudy({ project }: Props) {
           <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 40 }}>
             How It Got Built
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "clamp(24px, 4vw, 56px)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(24px, 4vw, 56px)" }}>
             {(
               [
                 { num: "01", title: "Discover", icon: "◎", items: data?.process.discover ?? [] },
@@ -460,7 +462,7 @@ export default function CaseStudy({ project }: Props) {
             style={{
               display: "inline-block",
               fontFamily: sans, fontSize: 14, fontWeight: 500,
-              color: "#09090E",
+              color: dark ? "#09090E" : "#ffffff",
               background: "var(--accent)",
               padding: "12px 28px", borderRadius: 8,
               textDecoration: "none", transition: "opacity 0.2s",
