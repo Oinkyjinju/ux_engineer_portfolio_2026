@@ -119,7 +119,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     metrics: [
       { value: "50+", label: "languages" },
       { value: "2",   label: "global studios" },
-      { value: "8+",  label: "year partnership" },
+      { value: "8+",  label: "years partnership" },
     ],
     tech: ["Figma", "Design Ops", "Typography Systems", "RTL layouts", "CJK layouts", "Localization QA"],
   },
@@ -188,7 +188,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       ],
     },
     metrics: [
-      { value: "3",    label: "onboarding steps (down from 7)" },
+      { value: "3",    label: "onboarding steps (from 7)" },
       { value: "150+", label: "app store reviews analyzed" },
       { value: "2",    label: "platforms shipped (iOS + Android)" },
     ],
