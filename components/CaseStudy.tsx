@@ -409,36 +409,53 @@ export default function CaseStudy({ project }: Props) {
                         {block.label}
                       </p>
                     )}
-                    <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 12 }}>
-                      {(
-                        [
-                          { src: block.beforeSrc, label: "Before" },
-                          { src: block.afterSrc,  label: "After" },
-                        ] as const
-                      ).map(({ src, label }) => (
-                        <div key={label} style={{ flex: "1 1 240px", maxWidth: 320 }}>
-                          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: label === "After" ? "var(--accent)" : "var(--text-tertiary)", marginBottom: 8 }}>
-                            {label}
-                          </p>
-                          <div
-                            style={{
-                              width: "100%", aspectRatio: "9/16",
-                              background: "var(--card-bg)",
-                              border: `1px ${src ? "solid" : "dashed"} var(--border)`,
-                              borderRadius: 12, overflow: "hidden",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                            }}
-                          >
-                            {src ? (
-                              <img src={src} alt={`${block.label ?? ""} ${label}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                            ) : (
-                              <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                                {label} screenshot
-                              </span>
-                            )}
-                          </div>
+                    <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
+                      {/* Before — fixed portrait phone frame (9/16) */}
+                      <div style={{ flexShrink: 0 }}>
+                        <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 8 }}>
+                          Before
+                        </p>
+                        <div
+                          style={{
+                            width: 200, aspectRatio: "9/16",
+                            background: "var(--card-bg)",
+                            border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
+                            borderRadius: 12, overflow: "hidden",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                          }}
+                        >
+                          {block.beforeSrc ? (
+                            <img src={block.beforeSrc} alt={`${block.label ?? ""} Before`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          ) : (
+                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                              Before screenshot
+                            </span>
+                          )}
                         </div>
-                      ))}
+                      </div>
+
+                      {/* After — natural height so landscape strips aren't cropped */}
+                      <div style={{ flex: 1, minWidth: 280 }}>
+                        <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
+                          After
+                        </p>
+                        <div
+                          style={{
+                            background: "var(--card-bg)",
+                            border: `1px ${block.afterSrc ? "solid" : "dashed"} var(--border)`,
+                            borderRadius: 12, overflow: "hidden",
+                            ...(block.afterSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }),
+                          }}
+                        >
+                          {block.afterSrc ? (
+                            <img src={block.afterSrc} alt={`${block.label ?? ""} After`} style={{ width: "100%", height: "auto", display: "block" }} />
+                          ) : (
+                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                              After screenshot
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                     <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-tertiary)", fontStyle: "italic", borderLeft: "2px solid var(--border)", paddingLeft: 12 }}>
                       {block.caption}
