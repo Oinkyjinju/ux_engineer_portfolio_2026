@@ -162,36 +162,36 @@ export const caseStudies: Record<string, CaseStudyData> = {
   "storycorps": {
     id: "storycorps",
     role: "Lead Mobile Designer — iOS & Android",
-    team: "Echobind studio · NPR partnership",
+    team: "Solo designer · 1 director · 2 engineers · NPR partnership",
     challenge:
-      "StoryCorps' recording app needed a full redesign to serve its growing NPR partnership. The existing app felt dated, the recording experience was fragile, and iOS and Android had diverged into two different products.",
+      "StoryCorps preserves oral history — recordings go to the Library of Congress. But their app was failing the people doing the preserving. The recording experience dropped sessions without warning, iOS and Android had diverged into two entirely different products, and a growing NPR partnership was about to bring a surge of new users to an experience that wasn't ready for them.",
     approach:
-      "I led UX and visual design for both platforms simultaneously, designing a shared component system that maintained StoryCorps' warmth and humanity while modernizing the interaction patterns. Working directly with Echobind's engineering team meant I could spec for React Native constraints from the start.",
+      "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-early-adopters. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
     process: {
       discover: [
-        "User interviews with storytellers of varying technical backgrounds",
+        "User interviews with 8+ storytellers — retirees, teachers, first-gen immigrants — focused on what they feared losing",
         "Competitor recording app audit: Rev, Otter, Voice Memos",
-        "App store reviews analysis: 150+ reviews categorized",
-        "NPR brand alignment sessions",
+        "App store reviews analysis: 150+ reviews — dominant theme was lost recordings with no recovery path",
+        "NPR brand alignment sessions to understand new user segment and co-brand requirements",
       ],
       design: [
-        "Cross-platform component system designed for React Native",
-        "Recording interface redesign: simpler, more forgiving",
-        "Onboarding flow reduced from 7 steps to 3",
-        "NPR brand integration without losing StoryCorps identity",
+        "Cross-platform component system designed for React Native — one source of truth, both platforms",
+        "Recording interface redesign: persistent session state, visible time counter, one-tap pause — designed so a dropped call doesn't mean a lost story",
+        "Onboarding reduced from 7 steps to 3 by removing the forced account-creation gate — first recording possible without signing up",
+        "NPR brand integration without losing StoryCorps' warmth — two identities, one coherent experience",
       ],
       ship: [
         "iOS and Android design handoff with platform-specific specs",
-        "React Native component annotations for the dev team",
-        "Accessibility audit: contrast ratios, touch targets, screen reader labels",
+        "React Native component annotations with explicit platform-divergence notes — where iOS and Android behavior differs, the spec said why",
+        "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base",
         "Published to App Store and Google Play",
       ],
     },
     metrics: [
-      { value: "3",    label: "onboarding steps (from 7)" },
-      { value: "150+", label: "app store reviews analyzed" },
-      { value: "2",    label: "platforms shipped (iOS + Android)" },
+      { value: "3",  label: "onboarding steps (from 7)" },
+      { value: "2",  label: "platforms, 1 shared component system" },
+      { value: "2",  label: "brands unified — StoryCorps + NPR" },
     ],
-    tech: ["Figma", "iOS", "Android", "React Native specs", "Accessibility", "Design Systems"],
+    tech: ["Figma", "iOS", "Android", "React Native specs", "WCAG AA", "Design Systems"],
   },
 };
