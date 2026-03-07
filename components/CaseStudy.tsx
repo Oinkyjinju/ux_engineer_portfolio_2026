@@ -66,6 +66,7 @@ export default function CaseStudy({ project }: Props) {
 
   return (
     <div
+      suppressHydrationWarning
       style={{
         ...(theme as React.CSSProperties),
         backgroundColor: "var(--bg)",
@@ -202,8 +203,9 @@ export default function CaseStudy({ project }: Props) {
                 style={{
                   fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
                   textTransform: "uppercase", padding: "4px 12px",
-                  borderRadius: 20, border: `1px solid ${project.accent}55`,
-                  color: `${project.accent}cc`, background: `${project.accent}11`,
+                  borderRadius: 20, border: "1px solid rgba(237,234,227,0.3)",
+                  color: "rgba(237,234,227,0.85)", background: "rgba(0,0,0,0.22)",
+                  backdropFilter: "blur(6px)",
                 }}
               >
                 {tag}
@@ -270,7 +272,7 @@ export default function CaseStudy({ project }: Props) {
             marginBottom: 100,
           }}
         >
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", overflow: "hidden" }}>
             <ProjectThumbnail project={project} />
           </div>
 
@@ -302,9 +304,9 @@ export default function CaseStudy({ project }: Props) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(24px, 4vw, 56px)" }}>
             {(
               [
-                { num: "01", title: "Discover", icon: "◎", items: data?.process.discover ?? [] },
-                { num: "02", title: "Design",   icon: "◈", items: data?.process.design   ?? [] },
-                { num: "03", title: "Ship",     icon: "◆", items: data?.process.ship     ?? [] },
+                { num: "01", title: "Discover", icon: "◎", items: data?.process?.discover ?? [] },
+                { num: "02", title: "Design",   icon: "◈", items: data?.process?.design   ?? [] },
+                { num: "03", title: "Ship",     icon: "◆", items: data?.process?.ship     ?? [] },
               ] as const
             ).map((step) => (
               <div key={step.num}>

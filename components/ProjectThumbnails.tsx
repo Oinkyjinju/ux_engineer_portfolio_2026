@@ -123,7 +123,7 @@ function NetflixThumbnail({ project }: { project: Project }) {
 
       {/* Meta */}
       <div style={{ position: "absolute", top: 12, right: 30, zIndex: 6, textAlign: "right" }}>
-        <p style={{ margin: 0, color: p.dim, fontSize: 8.5, fontFamily: "monospace" }}>2018–present</p>
+        <p style={{ margin: 0, color: p.dim, fontSize: 8.5, fontFamily: "monospace" }}>{project.year}</p>
         <p style={{ margin: 0, color: p.mid, fontSize: 8, letterSpacing: "0.04em" }}>Multilingual Ops</p>
       </div>
     </div>

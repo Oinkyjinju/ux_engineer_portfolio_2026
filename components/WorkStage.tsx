@@ -226,7 +226,7 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
               style={{
                 position: "relative", zIndex: 1,
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                 gap: "clamp(32px, 5vw, 72px)",
                 alignItems: "start",
               }}
