@@ -27,8 +27,8 @@ export const projects: Project[] = [
     tags: ["Design Systems", "Design Engineering", "Front-End Dev"],
     year: "2023–present",
     company: "JUST Capital",
-    accent: "#145064",
-    gradient: "135deg, #0a2c35, #145064",
+    accent: "#1A6678",
+    gradient: "135deg, #0c3545, #1A6678",
   },
   {
     id: "netflix-disney",

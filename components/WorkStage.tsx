@@ -22,9 +22,8 @@ const METRICS: Record<string, { value: string; label: string }[]> = {
     { value: "8+",  label: "years" },
   ],
   iata: [
-    { value: "WeChat", label: "native platform" },
-    { value: "2",      label: "languages in specs" },
-    { value: "2023",   label: "launched" },
+    { value: "100%", label: "WeChat-native patterns" },
+    { value: "2",    label: "spec languages" },
   ],
   storycorps: [
     { value: "3",    label: "onboarding steps (from 7)" },
