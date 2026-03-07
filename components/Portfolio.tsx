@@ -45,9 +45,16 @@ const FOOTER_LINKS = [
 interface RippleState { x: number; y: number; newDark: boolean }
 
 export default function Portfolio() {
-  const [dark, setDark]         = useState(true);
+  const [dark, setDark]         = useState(false);
   const [ripple, setRipple]     = useState<RippleState | null>(null);
   const [scrolled, setScrolled] = useState(false);
+
+  // Sync with localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved !== null) setDark(saved === "dark");
+  }, []);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -56,7 +63,9 @@ export default function Portfolio() {
 
   const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    setRipple({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, newDark: !dark });
+    const newDark = !dark;
+    localStorage.setItem("theme", newDark ? "dark" : "light");
+    setRipple({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, newDark });
   };
 
   const theme = dark
