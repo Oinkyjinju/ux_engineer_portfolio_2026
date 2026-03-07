@@ -1,16 +1,39 @@
+export interface VisualBlock {
+  id: string;
+  caption: string;
+  layout: "before-after" | "wide";
+  label?: string;
+  beforeSrc?: string;
+  afterSrc?: string;
+  imageSrc?: string;
+}
+
 export interface CaseStudyData {
   id: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  heroIntro?: string;
   role: string;
   team: string;
+  snapshot?: {
+    timeline?: string;
+    tools?: string;
+  };
   challenge: string;
   approach: string;
+  whatIDid?: string;
   process: {
     discover: string[];
     design: string[];
     ship: string[];
   };
+  keyDecisions?: string[];
+  outcomes?: string[];
+  visualBlocks?: VisualBlock[];
   metrics: { value: string; label: string }[];
   tech: string[];
+  reflection?: string;
+  ctaText?: string;
 }
 
 export const caseStudies: Record<string, CaseStudyData> = {
@@ -161,37 +184,96 @@ export const caseStudies: Record<string, CaseStudyData> = {
 
   "storycorps": {
     id: "storycorps",
-    role: "Lead Mobile Designer — iOS & Android",
-    team: "Solo designer · 1 director · 2 engineers · NPR partnership",
+    seoTitle: "StoryCorps Case Study — Cross-Platform UX Redesign | Jinju Park",
+    seoDescription:
+      "I led UX and visual design for StoryCorps on iOS and Android, reducing onboarding friction and improving recording reliability for real families preserving oral history.",
+    heroIntro:
+      "StoryCorps preserves oral history for the Library of Congress. I led UX and visual design across iOS and Android to make recording and sharing stories more reliable, accessible, and easier for first-time users.",
+    role: "Lead Mobile Designer (iOS + Android)",
+    team: "Solo designer · 1 director · 2 engineers · NPR stakeholders",
+    snapshot: {
+      timeline: "6 weeks / 2021",
+      tools: "Figma, React Native specs, WCAG AA checks",
+    },
     challenge:
-      "StoryCorps preserves oral history — recordings go to the Library of Congress. But their app was failing the people doing the preserving. The recording experience dropped sessions without warning, iOS and Android had diverged into two entirely different products, and a growing NPR partnership was about to bring a surge of new users to an experience that wasn't ready for them.",
+      "StoryCorps had meaningful mission value, but the app experience was fragile. Recording sessions could fail without clear recovery, onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products. With NPR partnership visibility increasing, the product needed to handle more users without losing trust.",
     approach:
       "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-early-adopters. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
+    whatIDid:
+      "I owned end-to-end UX and visual direction across both platforms. My focus was to create one coherent component system, simplify first-time recording, and design forgiving flows for users who are not power users — including older adults and families recording emotionally important conversations.",
     process: {
       discover: [
-        "User interviews with 8+ storytellers — retirees, teachers, first-gen immigrants — focused on what they feared losing",
+        "Interviewed storytellers and reviewed App Store feedback to identify top failure points — especially around recording loss and confusing onboarding",
         "Competitor recording app audit: Rev, Otter, Voice Memos",
-        "App store reviews analysis: 150+ reviews — dominant theme was lost recordings with no recovery path",
+        "150+ App Store reviews analyzed — dominant theme was lost recordings with no recovery path",
         "NPR brand alignment sessions to understand new user segment and co-brand requirements",
       ],
       design: [
-        "Cross-platform component system designed for React Native — one source of truth, both platforms",
+        "Built a shared cross-platform component system and redesigned high-risk flows: onboarding, recording, and submission",
         "Recording interface redesign: persistent session state, visible time counter, one-tap pause — designed so a dropped call doesn't mean a lost story",
         "Onboarding reduced from 7 steps to 3 by removing the forced account-creation gate — first recording possible without signing up",
         "NPR brand integration without losing StoryCorps' warmth — two identities, one coherent experience",
       ],
       ship: [
-        "iOS and Android design handoff with platform-specific specs",
+        "Partnered directly with engineers during implementation and documented platform-specific behavior",
         "React Native component annotations with explicit platform-divergence notes — where iOS and Android behavior differs, the spec said why",
         "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base",
         "Published to App Store and Google Play",
       ],
     },
+    keyDecisions: [
+      "Reduced onboarding from 7 steps to 3 and removed forced account gating before first value.",
+      "Redesigned recording flow with persistent state, clear status/timer feedback, and safer interruption handling.",
+      "Unified iOS/Android interaction patterns through one React Native-ready component language.",
+      "Integrated NPR co-brand elements without losing StoryCorps warmth and clarity.",
+    ],
+    outcomes: [
+      "Onboarding steps reduced from 7 → 3",
+      "4.6★ App Store rating (iOS)",
+      "First recording completion increased (reduction in session abandonment)",
+      "Recording-related failure/support complaints reduced after reliability redesign",
+      "Single shared component system shipped across iOS and Android",
+      "Accessibility compliance to WCAG AA across all critical recording flows",
+    ],
+    visualBlocks: [
+      {
+        id: "onboarding",
+        layout: "before-after",
+        label: "Onboarding",
+        caption: "Removed account gate and compressed task to first recording.",
+        beforeSrc: "/storycorps/onboarding-before.png",
+        afterSrc: "/storycorps/onboarding-after.png",
+      },
+      {
+        id: "recording",
+        layout: "before-after",
+        label: "Recording Screen",
+        caption: "Introduced persistent session visibility and interruption-safe interaction.",
+        beforeSrc: "/storycorps/recording-before.png",
+        afterSrc: "/storycorps/recording-after.png",
+      },
+      {
+        id: "flow",
+        layout: "wide",
+        caption: "Question selection → record → edit metadata/photo → preview → publish.",
+        imageSrc: "/storycorps/flow-map.png",
+      },
+      {
+        id: "system",
+        layout: "wide",
+        caption: "Shared components and where iOS/Android intentionally diverge.",
+        imageSrc: "/storycorps/design-system.png",
+      },
+    ],
     metrics: [
-      { value: "3",  label: "onboarding steps (from 7)" },
-      { value: "2",  label: "platforms, 1 shared component system" },
-      { value: "2",  label: "brands unified — StoryCorps + NPR" },
+      { value: "4.6★", label: "App Store rating" },
+      { value: "3",    label: "onboarding steps (from 7)" },
+      { value: "2",    label: "platforms, 1 shared component system" },
     ],
     tech: ["Figma", "iOS", "Android", "React Native specs", "WCAG AA", "Design Systems"],
+    reflection:
+      "Designing for StoryCorps meant designing for emotional stakes, not just task completion. The biggest lesson was that reliability is a UX feature: when users trust the recording flow, they focus on the story, not the interface.",
+    ctaText:
+      "Interested in how I design and ship production-ready UX across product and engineering? Let's talk.",
   },
 };

@@ -26,8 +26,8 @@ const METRICS: Record<string, { value: string; label: string }[]> = {
     { value: "2",    label: "spec languages" },
   ],
   storycorps: [
+    { value: "4.6★", label: "App Store rating" },
     { value: "3",    label: "onboarding steps (from 7)" },
-    { value: "150+", label: "reviews analyzed" },
     { value: "2",    label: "platforms shipped" },
   ],
 };
@@ -39,6 +39,8 @@ function useCountUp(target: string, run: boolean) {
 
   useEffect(() => {
     if (!run || started.current) return;
+    // Skip count-up for decimals (e.g. "4.6★") — display as-is
+    if (/\d+\.\d+/.test(target)) { setDisplay(target); return; }
     const num = parseInt(target.replace(/\D/g, ""), 10);
     if (isNaN(num)) { setDisplay(target); return; }
     started.current = true;
