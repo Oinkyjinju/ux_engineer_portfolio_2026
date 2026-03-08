@@ -89,6 +89,14 @@ export default function CaseStudy({ project }: Props) {
   }
 
   return (
+    <>
+    {/* Responsive overrides — inline styles can't express media queries */}
+    <style dangerouslySetInnerHTML={{ __html: `
+      .sc-screen-grid { display: grid; gap: 16px; margin-bottom: 12px; grid-template-columns: repeat(2, 1fr); }
+      @media (min-width: 640px) { .sc-screen-grid { grid-template-columns: repeat(4, 1fr); } }
+      .sc-before-panel { flex-shrink: 0; }
+      @media (max-width: 600px) { .sc-before-panel { flex-shrink: 1; flex: 1; min-width: 0; } .sc-before-panel-inner { width: 100% !important; max-width: 240px; margin: 0 auto; } }
+    ` }} />
     <div
       suppressHydrationWarning
       style={{
@@ -370,7 +378,7 @@ export default function CaseStudy({ project }: Props) {
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.keyDecisions.map((decision, i) => (
                 <li
-                  key={decision}
+                  key={`decision-${i}`}
                   style={{
                     display: "flex", alignItems: "flex-start", gap: 20,
                     padding: "20px 0", borderBottom: "1px solid var(--border)",
@@ -422,9 +430,9 @@ export default function CaseStudy({ project }: Props) {
                 </h3>
                 {/* role="list" preserves semantics when list-style is removed (Safari/VoiceOver) */}
                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-                  {step.items.map((item) => (
+                  {step.items.map((item, itemIdx) => (
                     <li
-                      key={item}
+                      key={`${step.num}-item-${itemIdx}`}
                       style={{
                         fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
                         lineHeight: 1.6, padding: "5px 0",
@@ -444,8 +452,8 @@ export default function CaseStudy({ project }: Props) {
         {/* Visual Blocks — before/after pairs, flow maps, design system strips */}
         {data.visualBlocks && data.visualBlocks.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(40)}>What Got Redesigned</h2>
-            {data.visualBlocks.map((block) => (
+            <h2 style={sectionLabelStyle(40)}>{data.visualBlocksHeader ?? "What Got Redesigned"}</h2>
+            {data.visualBlocks.map((block, blockIndex) => (
               <div key={block.id} style={{ marginBottom: 72 }}>
                 {block.layout === "before-after" ? (
                   <>
@@ -455,12 +463,13 @@ export default function CaseStudy({ project }: Props) {
                       </p>
                     )}
                     <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
-                      {/* Before — fixed portrait phone frame (9/16) */}
-                      <div style={{ flexShrink: 0 }}>
+                      {/* Before — fixed portrait phone frame (9/16); sc-before-panel expands to full width on mobile */}
+                      <div className="sc-before-panel" style={{ flexShrink: 0 }}>
                         <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                           Before
                         </p>
                         <div
+                          className="sc-before-panel-inner"
                           style={{
                             width: 200, aspectRatio: "9/16",
                             position: "relative",
@@ -523,12 +532,7 @@ export default function CaseStudy({ project }: Props) {
                 ) : block.layout === "screen-grid" ? (
                   /* Hi-fi screen grid — renders each SVG/PNG in a phone-frame cell */
                   <>
-                    <div style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(4, 1fr)",
-                      gap: 16,
-                      marginBottom: 12,
-                    }}>
+                    <div className="sc-screen-grid">
                       {(block.screens ?? []).map((screen, idx) => (
                         <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                           {/* Step number — decorative, screen label below provides the text */}
@@ -551,6 +555,7 @@ export default function CaseStudy({ project }: Props) {
                             <img
                               src={screen.src}
                               alt={`${screen.label} screen`}
+                              loading={idx === 0 ? "eager" : "lazy"}
                               style={{ width: "100%", height: "auto", display: "block" }}
                             />
                           </div>
@@ -643,6 +648,7 @@ export default function CaseStudy({ project }: Props) {
                           width={0}
                           height={0}
                           sizes="(max-width: 1160px) 100vw, 1160px"
+                          priority={blockIndex === 0}
                           style={{ width: "100%", height: "auto", display: "block" }}
                         />
                       ) : (
@@ -695,9 +701,9 @@ export default function CaseStudy({ project }: Props) {
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(24)}>What Changed</h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-              {data.outcomes.map((outcome) => (
+              {data.outcomes.map((outcome, i) => (
                 <li
-                  key={outcome}
+                  key={`outcome-${i}`}
                   style={{
                     display: "flex", alignItems: "flex-start", gap: 12,
                     padding: "12px 0", borderBottom: "1px solid var(--border)",
@@ -860,5 +866,6 @@ export default function CaseStudy({ project }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -35,6 +35,7 @@ export interface CaseStudyData {
   keyDecisions?: string[];
   outcomes?: string[];
   visualBlocks?: VisualBlock[];
+  visualBlocksHeader?: string;
   metrics: { value: string; label: string }[];
   tech: string[];
   reflection?: string;
@@ -122,17 +123,17 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "8 years building the design ops infrastructure for Netflix and Disney+ across 50+ languages, 2 global studios, and every major script system — Latin, CJK, Arabic, Cyrillic, Hebrew.",
     heroIntro:
-      "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. For 8 years I made sure it did.",
-    role: "UX Designer & Design Ops Lead",
+      "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. I built the infrastructure that made that possible at scale, across 50 languages and two studios.",
+    role: "Design Ops Lead & UX Designer",
     team: "Cross-studio · LA + London · Wordbank/Unfold",
     snapshot: {
       timeline: "8+ years · ongoing",
       tools: "Figma, cross-studio review framework, multilingual QA",
     },
     challenge:
-      "Maintaining design consistency and typographic quality across 50+ languages for Netflix and Disney+ — while meeting launch deadlines across multiple time zones, writing systems, and cultural contexts. Latin was the easy part.",
+      "Before a shared standard existed, each studio made localization calls in isolation. A title treatment could clear internal review in LA and fail QA in London — evaluated by someone who couldn't read the script, against criteria that didn't exist. With 50+ languages and launch windows that don't move, that was the problem that needed a system. Latin was the easy part.",
     approach:
-      "I built the design ops infrastructure that made multilingual work scalable. Typography systems that actually worked in Arabic, Japanese, and Hebrew — because each script required ground-up rethinking of line-height, text container logic, and visual weight, not just a font swap. Tools that caught layout breaks before QA did. Design review processes that worked across studios even when the reviewers couldn't read the language they were reviewing.",
+      "I built the design ops infrastructure that made multilingual work scalable — typography systems purpose-built for Arabic, Japanese, and Hebrew, a cross-studio review process that worked across time zones, and a Figma component library maintained as a single source of truth across 50+ languages. Each script demanded independent decisions about line-height, container behavior, and optical weight. A font swap was never an option.",
     whatIDid:
       "I owned the design side of the localization pipeline — typography decisions, title treatment QA, cross-studio review processes, and the Figma component library that both studios used. The operational infrastructure that let two studios work to a shared standard was mine to build and maintain.",
     process: {
@@ -143,16 +144,16 @@ export const caseStudies: Record<string, CaseStudyData> = {
         "Brand guideline analysis for both platforms",
       ],
       design: [
-        "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Hebrew",
-        "RTL layout templates for Arabic and Hebrew",
+        "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Hebrew — each rebuilt from first principles, not adjusted from Latin defaults",
+        "RTL layout templates for Arabic and Hebrew, with explicit component variants for directionality",
         "Cross-studio design review process and critique framework — adapted for reviewers who cannot read the script they are evaluating",
         "Platform-specific component specs for Netflix and Disney+ brand alignment",
       ],
       ship: [
-        "Design handoff packages optimized for localization teams",
-        "QA across language variants before every launch",
-        "Figma component library scaled across two studios",
-        "Studio-to-studio process documentation still in use",
+        "Design handoff packages structured with script-agnostic annotations and per-language variant frames",
+        "I ran QA across all language variants before every launch — title treatment sign-off was mine",
+        "I scaled the Figma component library across both studios — managing versioning to prevent fork divergence as the language count grew",
+        "Both studios still run localization reviews using the process documentation I wrote — unchanged eight years later",
       ],
     },
     keyDecisions: [
@@ -161,23 +162,24 @@ export const caseStudies: Record<string, CaseStudyData> = {
       "Chose to extend the existing Figma component library for each new script family rather than maintain separate libraries per studio — added initial overhead but prevented fork divergence as the library scaled to 50+ languages.",
     ],
     outcomes: [
-      "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Hebrew — each adapted from first principles, not adjusted from Latin defaults",
-      "Cross-studio process documentation still in use 8+ years after creation",
+      "Multilingual typography system rebuilt from first principles for 6 script families — no script treated as a Latin variant, which is why it still works for languages added after it was built",
+      "Both studios still run localization reviews using the process documentation I wrote — unchanged eight years later",
       "Language-agnostic QA framework enabling script review without linguistic knowledge — visual weight and rhythm criteria replacing readability checks",
-      "Two global studios operating to a shared design standard across 50+ languages",
+      "Two global studios operating to a shared design standard across 50+ languages, with zero library forks over 8 years",
     ],
+    visualBlocksHeader: "What Got Built",
     visualBlocks: [
       {
-        id: "context",
+        id: "logos",
         layout: "wide",
-        imageSrc: "/netflix/context-poster.jpg",
-        caption: "Real content, real stakes — a Korean film title that has to retain its visual identity when adapted for global markets.",
+        imageSrc: "/netflix/hero-logos.png",
+        caption: "Two global studios, one shared design standard — the brief that defined 8 years of multilingual design operations.",
       },
       {
-        id: "naruto",
+        id: "runway",
         layout: "wide",
-        imageSrc: "/netflix/tt-naruto-jp.png",
-        caption: "Naruto Shippuden — English original to Japanese localization. The katakana subtitle required a custom weight match to preserve the title's energy across scripts.",
+        imageSrc: "/netflix/tt-smile-runway-en.png",
+        caption: "The Japanese original was calligraphic — hand-gestural, kinetic. English has no equivalent script category. The adaptation required finding the expressive equivalent of brushstroke energy in a Latin typeface. That is not a font decision. It is a design decision.",
       },
       {
         id: "diecisiete",
@@ -186,22 +188,22 @@ export const caseStudies: Record<string, CaseStudyData> = {
         caption: "Diecisiete (Spanish) → 열일곱 (Korean) — three iterations before approval. V1 direct-translated the weight; V2 referenced an existing Korean title; V3 found the right expressive equivalent. Design thinking made visible.",
       },
       {
+        id: "naruto",
+        layout: "wide",
+        imageSrc: "/netflix/tt-naruto-jp.png",
+        caption: "English to Japanese. The katakana subtitle was not a translation decision — it was a weight-matching decision. Stroke contrast, visual density, spatial rhythm: these had to read as the same title, not a translation of it.",
+      },
+      {
         id: "hospital",
         layout: "wide",
         imageSrc: "/netflix/tt-hospital-playlist-ro.png",
-        caption: "Hospital Playlist → Coridoarele Spitalului+ (Romanian) — the stencil treatment had to survive both the script change and the longer string.",
+        caption: "The stencil cuts into the original Korean title design — that treatment is the brand. In Romanian, the string is 40% longer. Both constraints had to be solved simultaneously, not sequentially.",
       },
       {
         id: "history",
         layout: "wide",
         imageSrc: "/netflix/tt-history101-ko.png",
-        caption: "History 101 → 히스토리 101 — dark and light background variants, both localized. Typography QA across contexts, not just one.",
-      },
-      {
-        id: "runway",
-        layout: "wide",
-        imageSrc: "/netflix/tt-smile-runway-en.png",
-        caption: "Adapting a calligraphic Japanese title treatment into an English equivalent — same gesture, different script.",
+        caption: "The same localization, two contexts. Dark and light backgrounds impose different optical weight requirements — what reads as balanced against a black background often appears too heavy on white. Both had to clear QA.",
       },
     ],
     metrics: [
@@ -210,7 +212,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       { value: "8+",  label: "years partnership" },
       { value: "6+",  label: "script families" },
     ],
-    tech: ["Figma", "Design Ops", "Typography Systems", "RTL layouts", "CJK layouts", "Localization QA"],
+    tech: ["Figma", "Design Ops", "Multilingual Typography", "RTL Component Architecture", "CJK Type Systems", "Cross-studio QA", "Localization Pipeline"],
     reflection:
       "Most of my Netflix and Disney+ work was in languages I don't speak. That turned out to be the discipline: you learn to read visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can evaluate a Korean title treatment without reading Korean, you've learned something about typography that monolingual designers rarely encounter.",
     ctaText:
@@ -223,7 +225,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "I designed IATA's aviation training platform for WeChat — building native Chinese UI patterns from the ground up, with bilingual Figma specs for a China-based engineering team.",
     heroIntro:
-      "Chinese aviation professionals needed IATA's training content in WeChat — where Western app patterns don't translate, and neither does English-first design.",
+      "In WeChat, there is no URL bar, no browser back button, and no expectation that an app will behave the way a Western designer designed it. I built IATA's aviation training platform for an environment that assumes none of what I was trained to assume.",
     role: "UX Designer — WeChat Mini-Program",
     team: "Wordbank → IATA · Cross-functional · China-based dev team",
     snapshot: {
@@ -231,29 +233,29 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "Figma, WeChat DevTools, bilingual spec annotations",
     },
     challenge:
-      "IATA needed to deliver aviation training content to Chinese aviation professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations that are entirely different from Western mobile patterns.",
+      "IATA needed to deliver aviation training content to Chinese aviation professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations that are entirely different from Western mobile patterns. Get either wrong — the UI patterns or the spec language — and the product technically ships but practically fails.",
     approach:
       "I researched WeChat Mini-Program design guidelines before opening Figma — not because that is the right process in general, but because in this context, designing from Western assumptions first would have meant designing something that works in Figma and fails in WeChat DevTools. The constraint I kept returning to: Chinese aviation professionals would open this inside an app they trust completely. The only acceptable outcome was something that felt like it belonged there.",
     whatIDid:
-      "I was the sole designer on this project — responsible for the full design process from WeChat platform research through final Figma handoff, with bilingual spec annotations for the China-based development team.",
+      "I was the sole designer on this project — responsible for the full design process from WeChat platform research through final Figma handoff, with bilingual spec annotations for the China-based development team. That meant making every platform research decision, every cultural assumption, and every bilingual annotation call without a second opinion.",
     process: {
       discover: [
         "WeChat Mini-Program design guidelines and constraint research — documented as a Figma constraint list before any UI work began",
         "IATA training content audit to understand module structure and Chinese-market course prioritization",
         "Chinese mobile user behavior patterns research — WeChat navigation conventions, QR code flows, long-press menus, and the absence of browser back behavior",
-        "WeChat DevTools environment testing for layout constraints, package size limits, and font rendering",
+        "WeChat DevTools environment testing for layout constraints, package size limits (WeChat enforces a 2MB ceiling per subpackage), and system font rendering — PingFang SC and Heiti SC only",
       ],
       design: [
         "WeChat-native UI patterns for course navigation — bottom tab bar, flat hierarchy, QR code integration as primary touchpoints",
         "Progress tracking and quiz interface design within WeChat's viewport constraints",
-        "Chinese-first typography — Simplified Chinese with system font constraints, since WeChat Mini-Programs do not support custom web fonts reliably",
-        "Cross-cultural iconography audit flagging Western aviation icons with ambiguous meanings in Chinese context — each replaced with a WeChat-familiar equivalent",
+        "Chinese-first typography — Simplified Chinese with system font constraints, since WeChat Mini-Programs restrict custom typefaces to whitelisted CDN fonts",
+        "Cross-cultural iconography audit flagging Western aviation icons with ambiguous meanings in Chinese context — for example, the Western clipboard convention for course registration has no equivalent in WeChat's QR-primary interaction model; each flagged icon was replaced with a WeChat-familiar equivalent",
       ],
       ship: [
         "Full design handoff to China-based development team",
-        "Figma specs annotated in both English and Mandarin — eliminated an entire category of implementation ambiguity",
-        "QA pass in WeChat DevTools across all course modules",
-        "Live in WeChat — available to Chinese aviation professionals",
+        "Figma specs annotated in both English and Simplified Chinese — eliminated an entire category of implementation ambiguity for a team working across a language barrier",
+        "QA pass in WeChat DevTools across all course modules — browser DevTools was not sufficient; the WeChat rendering engine behaves differently",
+        "Live in WeChat — available to Chinese aviation professionals across China with no external browser dependency",
       ],
     },
     keyDecisions: [
@@ -261,51 +263,52 @@ export const caseStudies: Record<string, CaseStudyData> = {
       "Designed with WeChat's native navigation patterns rather than adapting Western patterns to fit — the course category icons, bottom nav behavior, and modal flows all follow WeChat conventions rather than iOS/Android norms. Trade-off: higher initial research cost, near-zero QA rework.",
     ],
     outcomes: [
-      "350+ IATA courses accessible to Chinese aviation professionals through WeChat",
-      "Bilingual specs (EN + ZH) delivered with no design-implementation discrepancies in QA",
+      "350+ IATA courses previously inaccessible to professionals without a browser or external app — now reachable inside WeChat, where Chinese aviation professionals already spend their working day",
+      "Bilingual specs (EN + ZH) delivered with zero design-implementation discrepancies in QA",
       "WeChat-native interaction patterns throughout — no Western navigation patterns adapted to fit",
       "Live in WeChat — available across China with no external browser dependency",
     ],
+    visualBlocksHeader: "What It Looks Like",
     visualBlocks: [
-      {
-        id: "landing",
-        layout: "wide",
-        imageSrc: "/iata/landing-final.png",
-        caption: "WeChat Mini-Program landing page — IATA brand in Simplified Chinese, with course categories and navigation designed for WeChat's interaction conventions.",
-      },
-      {
-        id: "course",
-        layout: "wide",
-        imageSrc: "/iata/course-final.png",
-        caption: "Course detail overlay — bilingual metadata (Chinese UI, English course name), duration and language indicators, CTA in platform-native red.",
-      },
-      {
-        id: "social",
-        layout: "side-by-side",
-        imageSrc: "/iata/social-original.png",
-        caption: "Original English social ad — IATA course discount campaign, Western layout and information hierarchy.",
-        imageSrc2: "/iata/social-localized.png",
-        caption2: "Localized Chinese version — adapted layout, Simplified Chinese typography, reordered information hierarchy for the target market.",
-      },
       {
         id: "about",
         layout: "before-after",
         label: "About Page",
         beforeSrc: "/iata/about-wireframe.png",
         afterSrc: "/iata/about-final.png",
-        caption: "From wireframe to final — bilingual About section with IATA brand photography and partner network content.",
+        caption: "Wireframe to final in one comparison — the bilingual spec annotations that made this handoff work, to a China-based team with no shared working language, are not visible here. But they are why this shipped without QA rework.",
+      },
+      {
+        id: "landing",
+        layout: "wide",
+        imageSrc: "/iata/landing-final.png",
+        caption: "The landing page had one job: feel like it belonged inside WeChat. IATA branding adapted to Simplified Chinese, bottom tab bar following WeChat's native navigation convention — not Western mobile patterns adjusted to fit.",
+      },
+      {
+        id: "social",
+        layout: "side-by-side",
+        imageSrc: "/iata/social-original.png",
+        caption: "Western layout, Western information hierarchy. The discount leads. The brand is secondary. This works in English.",
+        imageSrc2: "/iata/social-localized.png",
+        caption2: "The hierarchy changed, not just the language. Chinese market reading patterns required a fundamentally different layout — same campaign, different logic.",
+      },
+      {
+        id: "course",
+        layout: "wide",
+        imageSrc: "/iata/course-final.png",
+        caption: "Chinese interface, English course name — because the user needs to recognize the credential. Every element here was a deliberate choice, not a translation default.",
       },
     ],
     metrics: [
       { value: "350+", label: "courses accessible" },
       { value: "40+",  label: "credentials offered" },
-      { value: "2",    label: "spec languages (EN + ZH)" },
+      { value: "0",    label: "discrepancies in QA" },
     ],
     tech: ["Figma", "WeChat Mini-Programs", "Cross-cultural UX", "Mobile Design", "Localization"],
     reflection:
-      "Designing for WeChat is not designing a mobile app that happens to be in Chinese. The platform has its own interaction logic — navigation conventions, social behaviors, even visual expectations that are built into how Chinese users experience digital products. The best decision I made on this project was spending two weeks in WeChat DevTools before opening Figma.",
+      "Designing for WeChat is not translating — it is arriving. The platform has already made hundreds of decisions about how users expect to move through digital space. My job was to understand those decisions before I made any of my own. Two weeks in WeChat DevTools was not research overhead; it was the work.",
     ctaText:
-      "I design at the intersection of cultural context and platform constraint. If your product needs to feel native somewhere new, let's talk.",
+      "I make products feel native in markets and platforms your team has never shipped to. If your product is expanding into a market that plays by different rules, let's talk about what that actually requires.",
   },
 
   "storycorps": {
@@ -322,7 +325,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "Figma, React Native specs, WCAG AA checks",
     },
     challenge:
-      "StoryCorps' app experience was fragile. Recording sessions could fail without clear recovery, onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products. With NPR partnership visibility increasing, the product needed to handle more users without losing trust.",
+      "StoryCorps' app experience was fragile. Recording sessions could fail without clear recovery, onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products. With NPR partnership visibility increasing, a recording failure wasn't just a UX problem — it was a public one.",
     approach:
       "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-comfortable users. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
     whatIDid:
@@ -331,20 +334,20 @@ export const caseStudies: Record<string, CaseStudyData> = {
       discover: [
         "Interviewed storytellers and reviewed App Store feedback to identify top failure points — especially around recording loss and confusing onboarding",
         "Competitor recording app audit: Rev, Otter, Voice Memos",
-        "150+ App Store reviews analyzed — dominant theme was lost recordings with no recovery path",
+        "150+ App Store reviews analyzed — dominant theme was lost recordings with no recovery path. The failure happened silently: no error state, no recovery prompt. That shaped every recording-flow decision.",
         "NPR brand alignment sessions to understand new user segment and co-brand requirements",
       ],
       design: [
         "Built a shared cross-platform component system and redesigned friction-heavy flows: onboarding, recording, and submission",
-        "Recording interface redesign: persistent session state, visible time counter, one-tap pause — designed so a dropped call doesn't mean a lost story",
+        "Recording interface redesign: persistent session state, visible time counter, one-tap pause — spec called for local draft auto-save on pause, backgrounding, and interruption, with a 'Resume your recording' prompt on next launch",
         "Onboarding reduced from 7 steps to 3 by removing the forced account-creation gate — first recording possible without signing up",
         "NPR brand integration without losing StoryCorps' warmth — two identities, one coherent experience",
       ],
       ship: [
-        "Worked alongside Echobind engineers during implementation, adapting specs in real time as platform constraints emerged",
-        "React Native component annotations with explicit platform-divergence notes — where iOS and Android behavior differs, the spec said why",
-        "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base",
-        "Supported launch QA across both platforms — accessibility review, regression testing against all critical flows, coverage for 100k+ active users",
+        "Owned launch QA across both platforms — accessibility audit, regression testing across all critical flows, and final sign-off before release to 100k+ active users",
+        "React Native component annotations with explicit platform-divergence notes — for example, Android hardware back during recording requires a confirmation dialog the spec defines explicitly; iOS swipe-to-dismiss requires a different interrupt handler. The spec called out these cases by platform.",
+        "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base, verified with axe-core and VoiceOver",
+        "Embedded with Echobind's React Native engineers during implementation — adapted specs in real time as platform constraints emerged",
       ],
     },
     keyDecisions: [
@@ -356,32 +359,16 @@ export const caseStudies: Record<string, CaseStudyData> = {
     outcomes: [
       "Onboarding reduced from 7 steps to 3 — users reach first recording without creating an account",
       "App Store rating held at 4.6★ as user volume scaled with the NPR partnership launch",
-      "Inbound support tickets citing lost recordings dropped in the quarter after launch",
-      "WCAG AA compliant across all critical flows, verified with axe-core and VoiceOver",
+      "Lost recordings dropped out of the top-reported App Store complaint categories in the quarter after launch — the dominant support issue before the redesign, designed out rather than patched",
+      "iOS and Android shipped from a single React Native component library — no platform-specific backlog, no divergence debt from day one",
     ],
+    visualBlocksHeader: "What Got Redesigned",
     visualBlocks: [
-      {
-        id: "onboarding",
-        layout: "before-after",
-        label: "Onboarding",
-        caption: "Brought users to their first recording in 3 steps — no account required.",
-        beforeSrc: "/storycorps/onboarding-before.png",
-        afterSrc: "/storycorps/onboarding-after.png",
-      },
-      {
-        id: "recording",
-        layout: "before-after",
-        label: "Recording Screen",
-        caption: "Introduced persistent session visibility and interruption-safe interaction.",
-        beforeSrc: "/storycorps/recording-before.png",
-        afterSrc: "/storycorps/recording-after.png",
-      },
       {
         id: "flow",
         layout: "screen-grid",
-        caption: "All 8 screens of the redesigned recording flow — completable in a single session, no account required until after publish.",
+        caption: "The complete recording journey. Eight screens. One shared component language. Designed so a grandparent who has never used a recording app can reach 'Published' without asking for help.",
         screens: [
-          { src: "/storycorps/sign-in.svg",   label: "Sign In" },
           { src: "/storycorps/prepare.svg",   label: "Prepare" },
           { src: "/storycorps/questions.svg", label: "Questions" },
           { src: "/storycorps/record.svg",    label: "Record" },
@@ -389,12 +376,29 @@ export const caseStudies: Record<string, CaseStudyData> = {
           { src: "/storycorps/metadata.svg",  label: "Review" },
           { src: "/storycorps/preview.svg",   label: "Preview" },
           { src: "/storycorps/published.svg", label: "Published!" },
+          { src: "/storycorps/sign-in.svg",   label: "Sign In (optional)" },
         ],
+      },
+      {
+        id: "onboarding",
+        layout: "before-after",
+        label: "Onboarding",
+        caption: "The old flow asked users to create an account before hearing a single word of their own voice. This one doesn't. Three steps to recording, zero friction gates.",
+        beforeSrc: "/storycorps/onboarding-before.png",
+        afterSrc: "/storycorps/onboarding-after.png",
+      },
+      {
+        id: "recording",
+        layout: "before-after",
+        label: "Recording Screen",
+        caption: "A dropped call used to mean a lost story. Persistent session state means interruption is recoverable — designed that way from the first wireframe, not patched in QA.",
+        beforeSrc: "/storycorps/recording-before.png",
+        afterSrc: "/storycorps/recording-after.png",
       },
       {
         id: "system-listen",
         layout: "side-by-side",
-        caption: "Shared component tokens and the exact points where iOS and Android intentionally diverge.",
+        caption: "One design system, two platforms. The left shows where iOS and Android share the same token. The divergence points are documented — not assumed.",
         imageSrc: "/storycorps/design-system.png",
         caption2: "The Listen feed — inline playback, language and date filters, and a deliberate two-step deletion to prevent accidental story loss.",
         imageSrc2: "/storycorps/listen-stories.png",
