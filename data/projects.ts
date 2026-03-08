@@ -38,7 +38,7 @@ export const projects: Project[] = [
     year: "2018–present",
     company: "Wordbank → Unfold",
     accent: "#E50914",
-    gradient: "135deg, #136878, #E50914",
+    gradient: "135deg, #2a0005, #E50914",
   },
   {
     id: "iata",
