@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { type Project } from "@/data/projects";
 import { caseStudies } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
@@ -8,25 +9,25 @@ import { projects } from "@/data/projects";
 
 interface Props { project: Project; }
 
+// Font constants — stable, no need to recreate per render
+const mono  = "'JetBrains Mono', monospace";
+const serif = "'Gloock', Georgia, serif";
+const sans  = "'Red Hat Text', system-ui, sans-serif";
+
 export default function CaseStudy({ project }: Props) {
-  // Lazy initializer reads localStorage synchronously — avoids flash of wrong theme
-  const [dark, setDark]     = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return localStorage.getItem("theme") === "dark";
-  });
+  // Initialize to false — read localStorage in useEffect to avoid SSR hydration mismatch
+  const [dark, setDark]       = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const data = caseStudies[project.id];
-
-  const mono  = "'JetBrains Mono', monospace";
-  const serif = "'Gloock', Georgia, serif";
-  const sans  = "'Red Hat Text', system-ui, sans-serif";
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
   const prevProject  = projects[currentIndex - 1];
   const nextProject  = projects[currentIndex + 1];
 
-  // Note: theme is already read synchronously in useState initializer above
-  // This effect is not needed — lazy init handles it without flash
+  // Read localStorage only on client — prevents SSR/client hydration mismatch
+  useEffect(() => {
+    setDark(localStorage.getItem("theme") === "dark");
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -42,27 +43,40 @@ export default function CaseStudy({ project }: Props) {
 
   const theme = dark
     ? {
-        "--bg":             "#09090E",
-        "--text-primary":   "#EDEAE3",
-        "--text-secondary": "#7D7A73",
-        "--text-tertiary":  "#4A4846",
-        "--border":         "rgba(255,255,255,0.07)",
-        "--card-bg":        "rgba(255,255,255,0.025)",
-        "--accent":         "#F5A623",
-        "--accent-muted":   "rgba(245,166,35,0.12)",
+        "--bg":              "#09090E",
+        "--text-primary":    "#EDEAE3",
+        "--text-secondary":  "#7D7A73",
+        "--text-tertiary":   "#4A4846",
+        "--border":          "rgba(255,255,255,0.07)",
+        "--card-bg":         "rgba(255,255,255,0.025)",
+        "--accent":          "#F5A623",
+        "--accent-muted":    "rgba(245,166,35,0.12)",
         "--nav-bg-scrolled": "rgba(9,9,14,0.82)",
       }
     : {
-        "--bg":             "#F8F7F2",
-        "--text-primary":   "#0E0D0A",
-        "--text-secondary": "#5A5855",
-        "--text-tertiary":  "#8E8C89",
-        "--border":         "rgba(0,0,0,0.09)",
-        "--card-bg":        "rgba(0,0,0,0.03)",
-        "--accent":         "#2563EB",
-        "--accent-muted":   "rgba(37,99,235,0.1)",
+        "--bg":              "#F8F7F2",
+        "--text-primary":    "#0E0D0A",
+        "--text-secondary":  "#5A5855",
+        "--text-tertiary":   "#8E8C89",
+        "--border":          "rgba(0,0,0,0.09)",
+        "--card-bg":         "rgba(0,0,0,0.03)",
+        "--accent":          "#2563EB",
+        "--accent-muted":    "rgba(37,99,235,0.1)",
         "--nav-bg-scrolled": "rgba(248,247,242,0.82)",
       };
+
+  // Guard — unknown slug: render a minimal not-found state after all hooks
+  if (!data) {
+    return (
+      <div style={{
+        fontFamily: mono, fontSize: 14, color: "#EDEAE3",
+        backgroundColor: "#09090E", minHeight: "100vh",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        Case study not found.
+      </div>
+    );
+  }
 
   return (
     <div
@@ -75,7 +89,7 @@ export default function CaseStudy({ project }: Props) {
         transition: "background-color 0.4s ease",
       }}
     >
-      {/* Nav — mirrors Portfolio.tsx exactly */}
+      {/* Nav — mirrors Portfolio.tsx */}
       <nav
         style={{
           position: "fixed",
@@ -86,14 +100,14 @@ export default function CaseStudy({ project }: Props) {
           justifyContent: "space-between",
           padding: "0 clamp(24px, 5vw, 64px)",
           height: 60,
-          // Case study hero is always a colored gradient — nav needs a bg at all times
-          backgroundColor: scrolled ? "var(--nav-bg-scrolled)" : (dark ? "rgba(9,9,14,0.72)" : "rgba(248,247,242,0.72)"),
+          backgroundColor: scrolled
+            ? "var(--nav-bg-scrolled)"
+            : (dark ? "rgba(9,9,14,0.72)" : "rgba(248,247,242,0.72)"),
           backdropFilter: "blur(20px) saturate(1.6)",
           borderBottom: "1px solid var(--border)",
           transition: "background-color 0.35s ease, border-color 0.35s ease",
         }}
       >
-        {/* Logo */}
         <a
           href="/"
           style={{
@@ -104,7 +118,6 @@ export default function CaseStudy({ project }: Props) {
           Jinju Park
         </a>
 
-        {/* Center links + toggle — matches Portfolio nav */}
         <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
           {(["Work", "Lab", "About", "Contact"] as const).map((label) => (
             <a
@@ -114,9 +127,18 @@ export default function CaseStudy({ project }: Props) {
                 fontFamily: mono, fontSize: 11, letterSpacing: "0.07em",
                 textTransform: "uppercase", color: "var(--text-tertiary)",
                 textDecoration: "none", transition: "color 0.2s",
+                outline: "none",
               }}
               onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
               onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
+              onFocus={(e) => {
+                (e.target as HTMLElement).style.color = "var(--accent)";
+                (e.target as HTMLElement).style.textDecoration = "underline";
+              }}
+              onBlur={(e) => {
+                (e.target as HTMLElement).style.color = "var(--text-tertiary)";
+                (e.target as HTMLElement).style.textDecoration = "none";
+              }}
             >
               {label}
             </a>
@@ -124,6 +146,7 @@ export default function CaseStudy({ project }: Props) {
 
           <button
             onClick={handleToggle}
+            aria-label={`Switch to ${dark ? "light" : "dark"} mode`}
             style={{
               display: "flex", alignItems: "center", gap: 7,
               background: "var(--card-bg)", border: "1px solid var(--border)",
@@ -170,7 +193,10 @@ export default function CaseStudy({ project }: Props) {
           }}
         />
         {/* Bottom fade */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: `linear-gradient(transparent, var(--bg))`, pointerEvents: "none" }} />
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, height: 120,
+          background: `linear-gradient(transparent, var(--bg))`, pointerEvents: "none",
+        }} />
 
         <div
           style={{
@@ -179,7 +205,6 @@ export default function CaseStudy({ project }: Props) {
             padding: "80px clamp(24px, 6vw, 96px) 100px",
           }}
         >
-          {/* Back breadcrumb */}
           <a
             href="/#work"
             style={{
@@ -195,7 +220,6 @@ export default function CaseStudy({ project }: Props) {
             ← All work
           </a>
 
-          {/* Tags */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 28 }}>
             {project.tags.map((tag) => (
               <span
@@ -226,10 +250,10 @@ export default function CaseStudy({ project }: Props) {
           >
             {project.title}
           </h1>
-          <p style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.6)", marginBottom: data?.heroIntro ? 20 : 0 }}>
+          <p style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.6)", marginBottom: data.heroIntro ? 20 : 0 }}>
             {project.subtitle}
           </p>
-          {data?.heroIntro && (
+          {data.heroIntro && (
             <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.48)", maxWidth: 600, marginBottom: 0, marginTop: 4 }}>
               {data.heroIntro}
             </p>
@@ -251,11 +275,11 @@ export default function CaseStudy({ project }: Props) {
           }}
         >
           {[
-            { label: "Role",     value: data?.role     ?? "" },
-            { label: "Team",     value: data?.team     ?? "" },
+            { label: "Role",     value: data.role     ?? "" },
+            { label: "Team",     value: data.team     ?? "" },
             { label: "Company",  value: project.company },
-            { label: "Timeline", value: data?.snapshot?.timeline ?? project.year },
-            ...(data?.snapshot?.tools ? [{ label: "Tools", value: data.snapshot.tools }] : []),
+            { label: "Timeline", value: data.snapshot?.timeline ?? project.year },
+            ...(data.snapshot?.tools ? [{ label: "Tools", value: data.snapshot.tools }] : []),
           ].map((item) => (
             <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
               <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
@@ -268,7 +292,7 @@ export default function CaseStudy({ project }: Props) {
           ))}
         </div>
 
-        {/* Thumbnail + Challenge two-col */}
+        {/* Thumbnail + Challenge */}
         <div
           style={{
             display: "grid",
@@ -287,7 +311,7 @@ export default function CaseStudy({ project }: Props) {
               The Challenge
             </p>
             <p style={{ fontFamily: serif, fontSize: "clamp(20px, 2.4vw, 26px)", lineHeight: 1.5, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
-              {data?.challenge ?? ""}
+              {data.challenge}
             </p>
           </div>
         </div>
@@ -298,12 +322,12 @@ export default function CaseStudy({ project }: Props) {
             My Approach
           </p>
           <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
-            {data?.approach ?? ""}
+            {data.approach}
           </p>
         </div>
 
         {/* What I Was Responsible For */}
-        {data?.whatIDid && (
+        {data.whatIDid && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
               What I Was Responsible For
@@ -322,9 +346,9 @@ export default function CaseStudy({ project }: Props) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(24px, 4vw, 56px)" }}>
             {(
               [
-                { num: "01", title: "Discover", icon: "◎", items: data?.process?.discover ?? [] },
-                { num: "02", title: "Design",   icon: "◈", items: data?.process?.design   ?? [] },
-                { num: "03", title: "Ship",     icon: "◆", items: data?.process?.ship     ?? [] },
+                { num: "01", title: "Discover", icon: "◎", items: data.process?.discover ?? [] },
+                { num: "02", title: "Design",   icon: "◈", items: data.process?.design   ?? [] },
+                { num: "03", title: "Ship",     icon: "◆", items: data.process?.ship     ?? [] },
               ] as const
             ).map((step) => (
               <div key={step.num}>
@@ -347,7 +371,8 @@ export default function CaseStudy({ project }: Props) {
                 <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16 }}>
                   {step.title}
                 </h3>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {/* role="list" preserves semantics when list-style is removed (Safari/VoiceOver) */}
+                <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
                   {step.items.map((item) => (
                     <li
                       key={item}
@@ -368,15 +393,15 @@ export default function CaseStudy({ project }: Props) {
         </div>
 
         {/* Key Design Decisions */}
-        {data?.keyDecisions && data.keyDecisions.length > 0 && (
+        {data.keyDecisions && data.keyDecisions.length > 0 && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 32 }}>
               Key Design Decisions
             </p>
-            <ol style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            <ol style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.keyDecisions.map((decision, i) => (
                 <li
-                  key={i}
+                  key={decision}
                   style={{
                     display: "flex", alignItems: "flex-start", gap: 20,
                     padding: "20px 0", borderBottom: "1px solid var(--border)",
@@ -395,10 +420,10 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Visual Blocks — before/after pairs, flow maps, design system strips */}
-        {data?.visualBlocks && data.visualBlocks.length > 0 && (
+        {data.visualBlocks && data.visualBlocks.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 40 }}>
-              Design Work
+              What Got Redesigned
             </p>
             {data.visualBlocks.map((block) => (
               <div key={block.id} style={{ marginBottom: 72 }}>
@@ -418,6 +443,7 @@ export default function CaseStudy({ project }: Props) {
                         <div
                           style={{
                             width: 200, aspectRatio: "9/16",
+                            position: "relative",
                             background: "var(--card-bg)",
                             border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
                             borderRadius: 12, overflow: "hidden",
@@ -425,7 +451,12 @@ export default function CaseStudy({ project }: Props) {
                           }}
                         >
                           {block.beforeSrc ? (
-                            <img src={block.beforeSrc} alt={`${block.label ?? ""} Before`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            <Image
+                              src={block.beforeSrc}
+                              alt={`${block.label ?? block.caption} — Before`}
+                              fill
+                              style={{ objectFit: "cover" }}
+                            />
                           ) : (
                             <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
                               Before screenshot
@@ -435,7 +466,7 @@ export default function CaseStudy({ project }: Props) {
                       </div>
 
                       {/* After — natural height so landscape strips aren't cropped */}
-                      <div style={{ flex: 1, minWidth: 280 }}>
+                      <div style={{ flex: 1, minWidth: 200 }}>
                         <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
                           After
                         </p>
@@ -448,7 +479,14 @@ export default function CaseStudy({ project }: Props) {
                           }}
                         >
                           {block.afterSrc ? (
-                            <img src={block.afterSrc} alt={`${block.label ?? ""} After`} style={{ width: "100%", height: "auto", display: "block" }} />
+                            <Image
+                              src={block.afterSrc}
+                              alt={`${block.label ?? block.caption} — After`}
+                              width={0}
+                              height={0}
+                              sizes="(max-width: 1160px) 100vw, 900px"
+                              style={{ width: "100%", height: "auto", display: "block" }}
+                            />
                           ) : (
                             <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
                               After screenshot
@@ -457,7 +495,8 @@ export default function CaseStudy({ project }: Props) {
                         </div>
                       </div>
                     </div>
-                    <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-tertiary)", fontStyle: "italic", borderLeft: "2px solid var(--border)", paddingLeft: 12 }}>
+                    {/* Caption — raised to text-secondary, 14px, no italic, accent left border */}
+                    <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
                       {block.caption}
                     </p>
                   </>
@@ -470,19 +509,26 @@ export default function CaseStudy({ project }: Props) {
                         border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
                         borderRadius: 12, overflow: "hidden",
                         marginBottom: 12,
-                        // No forced aspect ratio — let image render at natural dimensions
                         ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "16/9" }),
                       }}
                     >
                       {block.imageSrc ? (
-                        <img src={block.imageSrc} alt={block.caption} style={{ width: "100%", height: "auto", display: "block" }} />
+                        <Image
+                          src={block.imageSrc}
+                          alt={block.caption}
+                          width={0}
+                          height={0}
+                          sizes="(max-width: 1160px) 100vw, 1160px"
+                          style={{ width: "100%", height: "auto", display: "block" }}
+                        />
                       ) : (
                         <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
                           Image
                         </span>
                       )}
                     </div>
-                    <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-tertiary)", fontStyle: "italic", borderLeft: "2px solid var(--border)", paddingLeft: 12 }}>
+                    {/* Caption — raised to text-secondary, 14px, no italic, accent left border */}
+                    <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
                       {block.caption}
                     </p>
                   </>
@@ -492,11 +538,11 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Impact metrics */}
-        {data?.metrics && data.metrics.length > 0 && (
+        {/* Results (metrics) */}
+        {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 32 }}>
-              Impact
+              Results
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               {data.metrics.map((m) => (
@@ -523,16 +569,16 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Outcomes text list */}
-        {data?.outcomes && data.outcomes.length > 0 && (
+        {/* What Changed (outcomes) */}
+        {data.outcomes && data.outcomes.length > 0 && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 24 }}>
-              Outcomes
+              What Changed
             </p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {data.outcomes.map((outcome, i) => (
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
+              {data.outcomes.map((outcome) => (
                 <li
-                  key={i}
+                  key={outcome}
                   style={{
                     display: "flex", alignItems: "flex-start", gap: 12,
                     padding: "12px 0", borderBottom: "1px solid var(--border)",
@@ -548,7 +594,7 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Tech stack */}
-        {data?.tech && data.tech.length > 0 && (
+        {data.tech && data.tech.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
               Tech & Tools
@@ -572,7 +618,7 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Reflection */}
-        {data?.reflection && (
+        {data.reflection && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
             <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
               Reflection
@@ -608,7 +654,7 @@ export default function CaseStudy({ project }: Props) {
             <a
               href={`/work/${prevProject.id}`}
               style={{
-                fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
+                fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
                 textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
                 transition: "color 0.2s",
               }}
@@ -624,7 +670,7 @@ export default function CaseStudy({ project }: Props) {
             <a
               href={`/work/${nextProject.id}`}
               style={{
-                fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
+                fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
                 textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
                 textAlign: "right", transition: "color 0.2s",
               }}
@@ -646,7 +692,7 @@ export default function CaseStudy({ project }: Props) {
           }}
         >
           <p style={{ fontFamily: serif, fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 24, fontWeight: 400, letterSpacing: "-0.01em" }}>
-            {data?.ctaText ?? "Interested in working together?"}
+            {data.ctaText ?? "Interested in working together?"}
           </p>
           <a
             href="/#contact"
@@ -656,10 +702,18 @@ export default function CaseStudy({ project }: Props) {
               color: dark ? "#09090E" : "#ffffff",
               background: "var(--accent)",
               padding: "12px 28px", borderRadius: 8,
-              textDecoration: "none", transition: "opacity 0.2s",
+              textDecoration: "none",
+              transition: "opacity 0.2s, transform 0.2s",
+              transform: "translateY(0)",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.opacity = "0.85";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.opacity = "1";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+            }}
           >
             Get in touch →
           </a>
