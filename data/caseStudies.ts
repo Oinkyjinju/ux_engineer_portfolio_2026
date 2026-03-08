@@ -3,6 +3,8 @@ export interface VisualBlock {
   caption: string;
   layout: "before-after" | "wide" | "side-by-side" | "screen-grid";
   label?: string;
+  phoneScroll?: boolean;   // wrap image(s) in scrollable phone mockup frame
+  blendMode?: string;      // CSS mix-blend-mode (e.g. "multiply" for white-bg PNGs on dark backgrounds)
   beforeSrc?: string;
   afterSrc?: string;
   imageSrc?: string;
@@ -123,7 +125,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "8 years building the design ops infrastructure for Netflix and Disney+ across 50+ languages, 2 global studios, and every major script system — Latin, CJK, Arabic, Cyrillic, Hebrew.",
     heroIntro:
-      "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. I built the infrastructure that made that possible at scale, across 50 languages and two studios.",
+      "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. I designed the systems that made that possible at scale — the typography framework, the component library, and the cross-studio review process that both studios still use.",
     role: "Design Ops Lead & UX Designer",
     team: "Cross-studio · LA + London · Wordbank/Unfold",
     snapshot: {
@@ -153,7 +155,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         "Design handoff packages structured with script-agnostic annotations and per-language variant frames",
         "I ran QA across all language variants before every launch — title treatment sign-off was mine",
         "I scaled the Figma component library across both studios — managing versioning to prevent fork divergence as the language count grew",
-        "Both studios still run localization reviews using the process documentation I wrote — unchanged eight years later",
+        "Both studios adopted the review process and documentation I built — it became the cross-studio localization standard across LA and London, still in use eight years later",
       ],
     },
     keyDecisions: [
@@ -163,7 +165,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     ],
     outcomes: [
       "Multilingual typography system rebuilt from first principles for 6 script families — no script treated as a Latin variant, which is why it still works for languages added after it was built",
-      "Both studios still run localization reviews using the process documentation I wrote — unchanged eight years later",
+      "Cross-studio localization review process adopted across LA and London — still the operating standard eight years later, no successor process written",
       "Language-agnostic QA framework enabling script review without linguistic knowledge — visual weight and rhythm criteria replacing readability checks",
       "Two global studios operating to a shared design standard across 50+ languages, with zero library forks over 8 years",
     ],
@@ -173,6 +175,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         id: "logos",
         layout: "wide",
         imageSrc: "/netflix/hero-logos.png",
+        blendMode: "multiply",
         caption: "Two global studios, one shared design standard — the brief that defined 8 years of multilingual design operations.",
       },
       {
@@ -235,7 +238,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     challenge:
       "IATA needed to deliver aviation training content to Chinese aviation professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations that are entirely different from Western mobile patterns. Get either wrong — the UI patterns or the spec language — and the product technically ships but practically fails.",
     approach:
-      "I researched WeChat Mini-Program design guidelines before opening Figma — not because that is the right process in general, but because in this context, designing from Western assumptions first would have meant designing something that works in Figma and fails in WeChat DevTools. The constraint I kept returning to: Chinese aviation professionals would open this inside an app they trust completely. The only acceptable outcome was something that felt like it belonged there.",
+      "I researched WeChat Mini-Program design guidelines before opening Figma — designing from Western assumptions first would have meant designing something that works in Figma and fails in WeChat DevTools. The constraint I kept returning to: Chinese aviation professionals would open this inside an app they trust completely. The only acceptable outcome was something that felt like it belonged there.",
     whatIDid:
       "I was the sole designer on this project — responsible for the full design process from WeChat platform research through final Figma handoff, with bilingual spec annotations for the China-based development team. That meant making every platform research decision, every cultural assumption, and every bilingual annotation call without a second opinion.",
     process: {
@@ -273,6 +276,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       {
         id: "about",
         layout: "before-after",
+        phoneScroll: true,
         label: "About Page",
         beforeSrc: "/iata/about-wireframe.png",
         afterSrc: "/iata/about-final.png",
@@ -281,6 +285,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       {
         id: "landing",
         layout: "wide",
+        phoneScroll: true,
         imageSrc: "/iata/landing-final.png",
         caption: "The landing page had one job: feel like it belonged inside WeChat. IATA branding adapted to Simplified Chinese, bottom tab bar following WeChat's native navigation convention — not Western mobile patterns adjusted to fit.",
       },
@@ -295,6 +300,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       {
         id: "course",
         layout: "wide",
+        phoneScroll: true,
         imageSrc: "/iata/course-final.png",
         caption: "Chinese interface, English course name — because the user needs to recognize the credential. Every element here was a deliberate choice, not a translation default.",
       },
@@ -325,7 +331,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "Figma, React Native specs, WCAG AA checks",
     },
     challenge:
-      "StoryCorps' app experience was fragile. Recording sessions could fail without clear recovery, onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products. With NPR partnership visibility increasing, a recording failure wasn't just a UX problem — it was a public one.",
+      "StoryCorps was about to launch an NPR partnership that would triple their user base — and the recording flow failed silently, with no recovery path. A dropped call meant a lost story. At that scale, that was not a UX problem. It was a reputational one. Onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products.",
     approach:
       "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-comfortable users. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
     whatIDid:
@@ -405,7 +411,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       },
     ],
     metrics: [
-      { value: "4.6★", label: "App Store rating" },
+      { value: "4.6★", label: "App Store rating maintained at scale — NPR partnership tripled user volume" },
       { value: "3",    label: "onboarding steps (from 7)" },
       { value: "2",    label: "platforms, 1 shared component system" },
     ],
