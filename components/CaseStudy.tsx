@@ -500,6 +500,60 @@ export default function CaseStudy({ project }: Props) {
                       {block.caption}
                     </p>
                   </>
+                ) : block.layout === "side-by-side" ? (
+                  /* Two images side-by-side — each at 50% width, stacks on mobile */
+                  <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+                    {/* Left image */}
+                    <div style={{ flex: 1, minWidth: 240 }}>
+                      <div style={{
+                        background: "var(--card-bg)",
+                        border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
+                        borderRadius: 12, overflow: "hidden", marginBottom: 10,
+                        ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "4/3" }),
+                      }}>
+                        {block.imageSrc ? (
+                          <Image
+                            src={block.imageSrc}
+                            alt={block.caption}
+                            width={0}
+                            height={0}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            style={{ width: "100%", height: "auto", display: "block" }}
+                          />
+                        ) : (
+                          <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", opacity: 0.5 }}>Image</span>
+                        )}
+                      </div>
+                      <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                        {block.caption}
+                      </p>
+                    </div>
+
+                    {/* Right image */}
+                    {block.imageSrc2 && (
+                      <div style={{ flex: 1, minWidth: 240 }}>
+                        <div style={{
+                          background: "var(--card-bg)",
+                          border: "1px solid var(--border)",
+                          borderRadius: 12, overflow: "hidden", marginBottom: 10,
+                        }}>
+                          <Image
+                            src={block.imageSrc2}
+                            alt={block.caption2 ?? block.caption}
+                            width={0}
+                            height={0}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            style={{ width: "100%", height: "auto", display: "block" }}
+                          />
+                        </div>
+                        {block.caption2 && (
+                          <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                            {block.caption2}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <>
                     <div
