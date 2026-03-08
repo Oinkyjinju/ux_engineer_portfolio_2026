@@ -193,7 +193,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "I led UX and visual design for StoryCorps on iOS and Android, reducing onboarding friction and improving recording reliability for real families preserving oral history.",
     heroIntro:
-      "A family sits down to record a story they've carried for decades. The app crashes. That story is gone. I redesigned StoryCorps' iOS and Android experience so the technology disappears and the conversation stays.",
+      "A family sits down to record a story they've carried for decades. The app crashes. Without a recovery path, that story is gone. I redesigned StoryCorps' iOS and Android experience so the technology disappears and the conversation stays.",
     role: "Lead Mobile Designer (iOS + Android)",
     team: "Solo designer · 1 director · 2 engineers · NPR stakeholders",
     snapshot: {
@@ -223,7 +223,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         "Worked alongside Echobind engineers during implementation, adapting specs in real time as platform constraints emerged",
         "React Native component annotations with explicit platform-divergence notes — where iOS and Android behavior differs, the spec said why",
         "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base",
-        "Shipped to 100k+ users across iOS and Android after a full accessibility and regression review",
+        "Supported launch QA across both platforms — accessibility review, regression testing against all critical flows, coverage for 100k+ active users",
       ],
     },
     keyDecisions: [
@@ -234,8 +234,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
     ],
     outcomes: [
       "Onboarding reduced from 7 steps to 3 — users reach first recording without creating an account",
-      "4.6★ App Store rating (iOS) following the redesign",
-      "Recording session reliability improved: support complaints citing lost recordings dropped post-launch",
+      "App Store rating held at 4.6★ as user volume scaled with the NPR partnership launch",
+      "Inbound support tickets citing lost recordings dropped in the quarter after launch",
       "WCAG AA compliant across all critical flows, verified with axe-core and VoiceOver",
     ],
     visualBlocks: [
@@ -286,8 +286,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
     ],
     tech: ["Figma", "iOS", "Android", "React Native specs", "WCAG AA", "Design Systems"],
     reflection:
-      "Designing for StoryCorps meant designing for emotional stakes, not just task completion. The biggest lesson was that reliability is a UX feature: when users trust the recording flow, they focus on the story, not the interface.",
+      "StoryCorps forced a rethinking of what 'done' means. A recording feature is not reliable because it works 95% of the time — it is reliable because it recovers gracefully from the 5%, and that recovery has to be designed, not assumed. Every session-state decision I made was really a question about what happens when things go wrong.",
     ctaText:
-      "I design at the intersection of product thinking and implementation. If that's the kind of engineer you're looking for, let's talk.",
+      "I design and build — close enough to the code to catch the edge cases, close enough to the user to know which ones matter. Let's work together.",
   },
 };
