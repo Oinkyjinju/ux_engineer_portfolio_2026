@@ -14,9 +14,16 @@ const mono  = "'JetBrains Mono', monospace";
 const serif = "'Gloock', Georgia, serif";
 const sans  = "'Red Hat Text', system-ui, sans-serif";
 
+// Shared section-label style — applied to <h2> so heading hierarchy is preserved
+const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
+  fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+  textTransform: "uppercase", color: "var(--accent)",
+  marginTop: 0, marginBottom, fontWeight: 400,
+});
+
 export default function CaseStudy({ project }: Props) {
   // Initialize to false — read localStorage in useEffect to avoid SSR hydration mismatch
-  const [dark, setDark]       = useState<boolean>(false);
+  const [dark, setDark]         = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const data = caseStudies[project.id];
 
@@ -121,26 +128,28 @@ export default function CaseStudy({ project }: Props) {
           Jinju Park
         </a>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 28, height: "100%" }}>
           {(["Work", "Lab", "About", "Contact"] as const).map((label) => (
             <a
               key={label}
               href={`/#${label.toLowerCase()}`}
               style={{
                 fontFamily: mono, fontSize: 11, letterSpacing: "0.07em",
-                textTransform: "uppercase", color: "var(--text-tertiary)",
+                textTransform: "uppercase", color: "var(--text-secondary)",
                 textDecoration: "none", transition: "color 0.2s",
-                outline: "none",
+                display: "flex", alignItems: "center", height: "100%",
+                padding: "0 4px", borderRadius: 2,
               }}
-              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
-              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
               onFocus={(e) => {
-                (e.target as HTMLElement).style.color = "var(--accent)";
-                (e.target as HTMLElement).style.textDecoration = "underline";
+                (e.currentTarget as HTMLElement).style.color = "var(--accent)";
+                (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+                (e.currentTarget as HTMLElement).style.outlineOffset = "2px";
               }}
               onBlur={(e) => {
-                (e.target as HTMLElement).style.color = "var(--text-tertiary)";
-                (e.target as HTMLElement).style.textDecoration = "none";
+                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                (e.currentTarget as HTMLElement).style.outline = "none";
               }}
             >
               {label}
@@ -153,15 +162,23 @@ export default function CaseStudy({ project }: Props) {
             style={{
               display: "flex", alignItems: "center", gap: 7,
               background: "var(--card-bg)", border: "1px solid var(--border)",
-              borderRadius: 20, padding: "5px 13px", cursor: "pointer",
+              borderRadius: 20, padding: "8px 14px", cursor: "pointer",
               fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
-              textTransform: "uppercase", color: "var(--text-tertiary)",
-              transition: "border-color 0.2s",
+              textTransform: "uppercase", color: "var(--text-secondary)",
+              transition: "border-color 0.2s", minHeight: 36,
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
+            onFocus={(e) => {
+              (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+              (e.currentTarget as HTMLElement).style.outlineOffset = "2px";
+            }}
+            onBlur={(e) => {
+              (e.currentTarget as HTMLElement).style.outline = "none";
+            }}
           >
             <span
+              aria-hidden="true"
               style={{
                 width: 10, height: 10, borderRadius: "50%",
                 background: dark
@@ -186,6 +203,7 @@ export default function CaseStudy({ project }: Props) {
       >
         {/* Grid overlay */}
         <div
+          aria-hidden="true"
           style={{
             position: "absolute", inset: 0, pointerEvents: "none",
             backgroundImage: `
@@ -196,7 +214,7 @@ export default function CaseStudy({ project }: Props) {
           }}
         />
         {/* Bottom fade */}
-        <div style={{
+        <div aria-hidden="true" style={{
           position: "absolute", bottom: 0, left: 0, right: 0, height: 120,
           background: `linear-gradient(transparent, var(--bg))`, pointerEvents: "none",
         }} />
@@ -215,10 +233,19 @@ export default function CaseStudy({ project }: Props) {
               fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
               textTransform: "uppercase", color: "rgba(237,234,227,0.5)",
               textDecoration: "none", marginBottom: 24,
-              transition: "color 0.2s",
+              transition: "color 0.2s", borderRadius: 2,
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)"; }}
+            onFocus={(e) => {
+              (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)";
+              (e.currentTarget as HTMLElement).style.outline = "2px solid rgba(237,234,227,0.5)";
+              (e.currentTarget as HTMLElement).style.outlineOffset = "2px";
+            }}
+            onBlur={(e) => {
+              (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)";
+              (e.currentTarget as HTMLElement).style.outline = "none";
+            }}
           >
             ← All work
           </a>
@@ -257,7 +284,7 @@ export default function CaseStudy({ project }: Props) {
             {project.subtitle}
           </p>
           {data.heroIntro && (
-            <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.48)", maxWidth: 600, marginBottom: 0, marginTop: 4 }}>
+            <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.55)", maxWidth: 600, marginBottom: 0, marginTop: 4 }}>
               {data.heroIntro}
             </p>
           )}
@@ -310,9 +337,7 @@ export default function CaseStudy({ project }: Props) {
           </div>
 
           <div>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
-              The Challenge
-            </p>
+            <h2 style={sectionLabelStyle(20)}>The Challenge</h2>
             <p style={{ fontFamily: serif, fontSize: "clamp(20px, 2.4vw, 26px)", lineHeight: 1.5, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
               {data.challenge}
             </p>
@@ -321,9 +346,7 @@ export default function CaseStudy({ project }: Props) {
 
         {/* Approach */}
         <div style={{ maxWidth: 760, marginBottom: 100 }}>
-          <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
-            My Approach
-          </p>
+          <h2 style={sectionLabelStyle(20)}>My Approach</h2>
           <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
             {data.approach}
           </p>
@@ -332,20 +355,42 @@ export default function CaseStudy({ project }: Props) {
         {/* What I Was Responsible For */}
         {data.whatIDid && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
-              What I Was Responsible For
-            </p>
+            <h2 style={sectionLabelStyle(20)}>What I Was Responsible For</h2>
             <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
               {data.whatIDid}
             </p>
           </div>
         )}
 
+        {/* ── KEY DESIGN DECISIONS — moved above Process so judgment shows before evidence ── */}
+        {data.keyDecisions && data.keyDecisions.length > 0 && (
+          <div style={{ maxWidth: 760, marginBottom: 100 }}>
+            <h2 style={sectionLabelStyle(32)}>Key Design Decisions</h2>
+            {/* ul + role="list" — custom display numbers provide ordinal context visually */}
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
+              {data.keyDecisions.map((decision, i) => (
+                <li
+                  key={decision}
+                  style={{
+                    display: "flex", alignItems: "flex-start", gap: 20,
+                    padding: "20px 0", borderBottom: "1px solid var(--border)",
+                  }}
+                >
+                  <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", color: "var(--accent)", flexShrink: 0, marginTop: 2 }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
+                    {decision}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Process — 3 columns */}
         <div style={{ marginBottom: 100 }}>
-          <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 40 }}>
-            How It Got Built
-          </p>
+          <h2 style={sectionLabelStyle(40)}>How It Got Built</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(24px, 4vw, 56px)" }}>
             {(
               [
@@ -357,6 +402,7 @@ export default function CaseStudy({ project }: Props) {
               <div key={step.num}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
                   <div
+                    aria-hidden="true"
                     style={{
                       width: 36, height: 36, borderRadius: "50%",
                       border: "1px solid var(--accent)",
@@ -367,11 +413,11 @@ export default function CaseStudy({ project }: Props) {
                   >
                     {step.icon}
                   </div>
-                  <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                  <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
                     {step.num}
                   </span>
                 </div>
-                <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16 }}>
+                <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16, marginTop: 0 }}>
                   {step.title}
                 </h3>
                 {/* role="list" preserves semantics when list-style is removed (Safari/VoiceOver) */}
@@ -385,7 +431,7 @@ export default function CaseStudy({ project }: Props) {
                         display: "flex", alignItems: "flex-start", gap: 8,
                       }}
                     >
-                      <span style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
+                      <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
                       {item}
                     </li>
                   ))}
@@ -395,52 +441,23 @@ export default function CaseStudy({ project }: Props) {
           </div>
         </div>
 
-        {/* Key Design Decisions */}
-        {data.keyDecisions && data.keyDecisions.length > 0 && (
-          <div style={{ maxWidth: 760, marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 32 }}>
-              Key Design Decisions
-            </p>
-            <ol style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-              {data.keyDecisions.map((decision, i) => (
-                <li
-                  key={decision}
-                  style={{
-                    display: "flex", alignItems: "flex-start", gap: 20,
-                    padding: "20px 0", borderBottom: "1px solid var(--border)",
-                  }}
-                >
-                  <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", color: "var(--accent)", flexShrink: 0, marginTop: 2 }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
-                    {decision}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-
         {/* Visual Blocks — before/after pairs, flow maps, design system strips */}
         {data.visualBlocks && data.visualBlocks.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 40 }}>
-              What Got Redesigned
-            </p>
+            <h2 style={sectionLabelStyle(40)}>What Got Redesigned</h2>
             {data.visualBlocks.map((block) => (
               <div key={block.id} style={{ marginBottom: 72 }}>
                 {block.layout === "before-after" ? (
                   <>
                     {block.label && (
-                      <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 16 }}>
+                      <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
                         {block.label}
                       </p>
                     )}
                     <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
                       {/* Before — fixed portrait phone frame (9/16) */}
                       <div style={{ flexShrink: 0 }}>
-                        <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 8 }}>
+                        <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                           Before
                         </p>
                         <div
@@ -461,15 +478,15 @@ export default function CaseStudy({ project }: Props) {
                               style={{ objectFit: "cover" }}
                             />
                           ) : (
-                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
                               Before screenshot
                             </span>
                           )}
                         </div>
                       </div>
 
-                      {/* After — natural height so landscape strips aren't cropped */}
-                      <div style={{ flex: 1, minWidth: 200 }}>
+                      {/* After — capped width to keep comparison balanced */}
+                      <div style={{ flex: 1, minWidth: 200, maxWidth: 400 }}>
                         <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
                           After
                         </p>
@@ -487,18 +504,18 @@ export default function CaseStudy({ project }: Props) {
                               alt={`${block.label ?? block.caption} — After`}
                               width={0}
                               height={0}
-                              sizes="(max-width: 1160px) 100vw, 900px"
+                              sizes="(max-width: 768px) 100vw, 400px"
                               style={{ width: "100%", height: "auto", display: "block" }}
                             />
                           ) : (
-                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
                               After screenshot
                             </span>
                           )}
                         </div>
                       </div>
                     </div>
-                    {/* Caption — raised to text-secondary, 14px, no italic, accent left border */}
+                    {/* Caption */}
                     <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
                       {block.caption}
                     </p>
@@ -514,8 +531,8 @@ export default function CaseStudy({ project }: Props) {
                     }}>
                       {(block.screens ?? []).map((screen, idx) => (
                         <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                          {/* Step number */}
-                          <span style={{
+                          {/* Step number — decorative, screen label below provides the text */}
+                          <span aria-hidden="true" style={{
                             fontFamily: mono, fontSize: 9, letterSpacing: "0.08em",
                             textTransform: "uppercase", color: "var(--accent)",
                           }}>
@@ -573,7 +590,7 @@ export default function CaseStudy({ project }: Props) {
                             style={{ width: "100%", height: "auto", display: "block" }}
                           />
                         ) : (
-                          <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", opacity: 0.5 }}>Image</span>
+                          <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Image</span>
                         )}
                       </div>
                       <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
@@ -607,6 +624,7 @@ export default function CaseStudy({ project }: Props) {
                     )}
                   </div>
                 ) : (
+                  /* Wide / full-bleed image */
                   <>
                     <div
                       style={{
@@ -628,12 +646,11 @@ export default function CaseStudy({ project }: Props) {
                           style={{ width: "100%", height: "auto", display: "block" }}
                         />
                       ) : (
-                        <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
+                        <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
                           Image
                         </span>
                       )}
                     </div>
-                    {/* Caption — raised to text-secondary, 14px, no italic, accent left border */}
                     <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
                       {block.caption}
                     </p>
@@ -647,9 +664,7 @@ export default function CaseStudy({ project }: Props) {
         {/* Results (metrics) */}
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 32 }}>
-              Results
-            </p>
+            <h2 style={sectionLabelStyle(32)}>Results</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               {data.metrics.map((m) => (
                 <div
@@ -666,7 +681,7 @@ export default function CaseStudy({ project }: Props) {
                   <div style={{ fontFamily: serif, fontSize: 32, lineHeight: 1, color: "var(--accent)", marginBottom: 6 }}>
                     {m.value}
                   </div>
-                  <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>
+                  <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
                     {m.label}
                   </div>
                 </div>
@@ -678,9 +693,7 @@ export default function CaseStudy({ project }: Props) {
         {/* What Changed (outcomes) */}
         {data.outcomes && data.outcomes.length > 0 && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 24 }}>
-              What Changed
-            </p>
+            <h2 style={sectionLabelStyle(24)}>What Changed</h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.outcomes.map((outcome) => (
                 <li
@@ -691,7 +704,7 @@ export default function CaseStudy({ project }: Props) {
                     fontFamily: sans, fontSize: 15, color: "var(--text-secondary)", lineHeight: 1.6,
                   }}
                 >
-                  <span style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
+                  <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
                   {outcome}
                 </li>
               ))}
@@ -702,9 +715,7 @@ export default function CaseStudy({ project }: Props) {
         {/* Tech stack */}
         {data.tech && data.tech.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
-              Tech & Tools
-            </p>
+            <h2 style={sectionLabelStyle(20)}>Tech &amp; Tools</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {data.tech.map((t) => (
                 <span
@@ -726,9 +737,7 @@ export default function CaseStudy({ project }: Props) {
         {/* Reflection */}
         {data.reflection && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
-            <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 20 }}>
-              Reflection
-            </p>
+            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
             <p style={{
               fontFamily: serif,
               fontSize: "clamp(18px, 2.2vw, 22px)",
@@ -762,12 +771,21 @@ export default function CaseStudy({ project }: Props) {
               style={{
                 fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
                 textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
-                transition: "color 0.2s",
+                transition: "color 0.2s", borderRadius: 2,
               }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+              onFocus={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+                (e.currentTarget as HTMLElement).style.outlineOffset = "4px";
+              }}
+              onBlur={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                (e.currentTarget as HTMLElement).style.outline = "none";
+              }}
             >
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>← Previous</span>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>← Previous</span>
               {prevProject.title}
             </a>
           ) : <span />}
@@ -778,12 +796,21 @@ export default function CaseStudy({ project }: Props) {
               style={{
                 fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
                 textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
-                textAlign: "right", transition: "color 0.2s",
+                textAlign: "right", transition: "color 0.2s", borderRadius: 2,
               }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+              onFocus={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+                (e.currentTarget as HTMLElement).style.outlineOffset = "4px";
+              }}
+              onBlur={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                (e.currentTarget as HTMLElement).style.outline = "none";
+              }}
             >
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Next →</span>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>Next →</span>
               {nextProject.title}
             </a>
           ) : <span />}
@@ -819,6 +846,13 @@ export default function CaseStudy({ project }: Props) {
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.opacity = "1";
               (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+            }}
+            onFocus={(e) => {
+              (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+              (e.currentTarget as HTMLElement).style.outlineOffset = "3px";
+            }}
+            onBlur={(e) => {
+              (e.currentTarget as HTMLElement).style.outline = "none";
             }}
           >
             Get in touch →
