@@ -1,7 +1,7 @@
 export interface VisualBlock {
   id: string;
   caption: string;
-  layout: "before-after" | "wide" | "side-by-side";
+  layout: "before-after" | "wide" | "side-by-side" | "screen-grid";
   label?: string;
   beforeSrc?: string;
   afterSrc?: string;
@@ -9,6 +9,8 @@ export interface VisualBlock {
   // side-by-side: second image + its caption
   imageSrc2?: string;
   caption2?: string;
+  // screen-grid: ordered list of screen src + label pairs
+  screens?: { src: string; label: string }[];
 }
 
 export interface CaseStudyData {
@@ -255,10 +257,18 @@ export const caseStudies: Record<string, CaseStudyData> = {
       },
       {
         id: "flow",
-        layout: "wide",
-        caption: "The full recording journey — from question selection to publish — designed to be completable in a single session without an account.",
-        // TODO: replace flow-map.png with recording-flow-hifi.png once saved to public/storycorps/
-        imageSrc: "/storycorps/flow-map.png",
+        layout: "screen-grid",
+        caption: "All 8 screens of the redesigned recording flow — completable in a single session, no account required until after publish.",
+        screens: [
+          { src: "/storycorps/sign-in.svg",  label: "Sign In" },
+          { src: "/storycorps/prepare.svg",  label: "Prepare" },
+          { src: "/storycorps/questions.svg", label: "Questions" },
+          { src: "/storycorps/record.svg",   label: "Record" },
+          { src: "/storycorps/photos.svg",   label: "Upload Photo" },
+          { src: "/storycorps/metadata.svg", label: "Review" },
+          { src: "/storycorps/preview.svg",  label: "Preview" },
+          { src: "/storycorps/published.svg", label: "Published!" },
+        ],
       },
       {
         id: "system-listen",
