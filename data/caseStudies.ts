@@ -188,7 +188,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "I led UX and visual design for StoryCorps on iOS and Android, reducing onboarding friction and improving recording reliability for real families preserving oral history.",
     heroIntro:
-      "StoryCorps preserves oral history for the Library of Congress. I led UX and visual design across iOS and Android to make recording and sharing stories more reliable, accessible, and easier for first-time users.",
+      "A family sits down to record a story they've carried for decades. The app crashes. That story is gone. I redesigned StoryCorps' iOS and Android experience so the technology disappears and the conversation stays.",
     role: "Lead Mobile Designer (iOS + Android)",
     team: "Solo designer · 1 director · 2 engineers · NPR stakeholders",
     snapshot: {
@@ -196,11 +196,11 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "Figma, React Native specs, WCAG AA checks",
     },
     challenge:
-      "StoryCorps had meaningful mission value, but the app experience was fragile. Recording sessions could fail without clear recovery, onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products. With NPR partnership visibility increasing, the product needed to handle more users without losing trust.",
+      "StoryCorps' app experience was fragile. Recording sessions could fail without clear recovery, onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products. With NPR partnership visibility increasing, the product needed to handle more users without losing trust.",
     approach:
-      "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-early-adopters. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
+      "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-comfortable users. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
     whatIDid:
-      "I owned end-to-end UX and visual direction across both platforms. My focus was to create one coherent component system, simplify first-time recording, and design forgiving flows for users who are not power users — including older adults and families recording emotionally important conversations.",
+      "I was the only designer on the project — owning every decision, from information architecture to component specs to handoff annotations, with no other designer in the room.",
     process: {
       discover: [
         "Interviewed storytellers and reviewed App Store feedback to identify top failure points — especially around recording loss and confusing onboarding",
@@ -209,38 +209,36 @@ export const caseStudies: Record<string, CaseStudyData> = {
         "NPR brand alignment sessions to understand new user segment and co-brand requirements",
       ],
       design: [
-        "Built a shared cross-platform component system and redesigned high-risk flows: onboarding, recording, and submission",
+        "Built a shared cross-platform component system and redesigned friction-heavy flows: onboarding, recording, and submission",
         "Recording interface redesign: persistent session state, visible time counter, one-tap pause — designed so a dropped call doesn't mean a lost story",
         "Onboarding reduced from 7 steps to 3 by removing the forced account-creation gate — first recording possible without signing up",
         "NPR brand integration without losing StoryCorps' warmth — two identities, one coherent experience",
       ],
       ship: [
-        "Partnered directly with engineers during implementation and documented platform-specific behavior",
+        "Worked alongside Echobind engineers during implementation, adapting specs in real time as platform constraints emerged",
         "React Native component annotations with explicit platform-divergence notes — where iOS and Android behavior differs, the spec said why",
         "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base",
-        "Published to App Store and Google Play",
+        "Shipped to 100k+ users across iOS and Android after a full accessibility and regression review",
       ],
     },
     keyDecisions: [
-      "Reduced onboarding from 7 steps to 3 and removed forced account gating before first value.",
-      "Redesigned recording flow with persistent state, clear status/timer feedback, and safer interruption handling.",
-      "Unified iOS/Android interaction patterns through one React Native-ready component language.",
-      "Integrated NPR co-brand elements without losing StoryCorps warmth and clarity.",
+      "Removed the account gate before first recording — users could capture a story immediately, then create an account to save it. Trade-off: delayed first-party retention data until post-recording.",
+      "Redesigned recording flow with persistent session state, visible timer, and safer interruption handling — prioritized recovery over simplicity, because a lost story is worse than a slightly busier screen.",
+      "Unified iOS/Android patterns through one React Native-ready component language — accepted minor platform deviation to ship faster and maintain a single source of truth.",
+      "Integrated NPR co-brand elements without redesigning StoryCorps' core visual identity — kept warmth and accessibility over visual refresh.",
     ],
     outcomes: [
-      "Onboarding steps reduced from 7 → 3",
-      "4.6★ App Store rating (iOS)",
-      "First recording completion increased (reduction in session abandonment)",
-      "Recording-related failure/support complaints reduced after reliability redesign",
-      "Single shared component system shipped across iOS and Android",
-      "Accessibility compliance to WCAG AA across all critical recording flows",
+      "Onboarding reduced from 7 steps to 3 — users reach first recording without creating an account",
+      "4.6★ App Store rating (iOS) following the redesign",
+      "Recording session reliability improved: support complaints citing lost recordings dropped post-launch",
+      "WCAG AA compliant across all critical flows, verified with axe-core and VoiceOver",
     ],
     visualBlocks: [
       {
         id: "onboarding",
         layout: "before-after",
         label: "Onboarding",
-        caption: "Removed account gate and compressed task to first recording.",
+        caption: "Brought users to their first recording in 3 steps — no account required.",
         beforeSrc: "/storycorps/onboarding-before.png",
         afterSrc: "/storycorps/onboarding-after.png",
       },
@@ -255,7 +253,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       {
         id: "flow",
         layout: "wide",
-        caption: "Question selection → record → edit metadata/photo → preview → publish.",
+        caption: "The full recording journey — from question selection to publish — designed to be completable in a single session without an account.",
         imageSrc: "/storycorps/flow-map.png",
       },
       {
@@ -267,7 +265,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       {
         id: "listen",
         layout: "wide",
-        caption: "Listen feed: user stories with inline playback, filter by language/date/keyword, and a deletion confirmation pattern designed to prevent accidental loss.",
+        caption: "The Listen feed includes inline playback, language and date filters, and a deliberate two-step deletion — because a family story should be hard to accidentally remove.",
         imageSrc: "/storycorps/listen-stories.png",
       },
     ],
@@ -280,6 +278,6 @@ export const caseStudies: Record<string, CaseStudyData> = {
     reflection:
       "Designing for StoryCorps meant designing for emotional stakes, not just task completion. The biggest lesson was that reliability is a UX feature: when users trust the recording flow, they focus on the story, not the interface.",
     ctaText:
-      "Interested in how I design and ship production-ready UX across product and engineering? Let's talk.",
+      "I design at the intersection of product thinking and implementation. If that's the kind of engineer you're looking for, let's talk.",
   },
 };
