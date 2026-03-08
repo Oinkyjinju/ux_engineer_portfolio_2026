@@ -465,16 +465,17 @@ export default function CaseStudy({ project }: Props) {
                   <>
                     <div
                       style={{
-                        width: "100%", aspectRatio: "16/9",
+                        width: "100%",
                         background: "var(--card-bg)",
                         border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
                         borderRadius: 12, overflow: "hidden",
-                        display: "flex", alignItems: "center", justifyContent: "center",
                         marginBottom: 12,
+                        // No forced aspect ratio — let image render at natural dimensions
+                        ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "16/9" }),
                       }}
                     >
                       {block.imageSrc ? (
-                        <img src={block.imageSrc} alt={block.caption} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        <img src={block.imageSrc} alt={block.caption} style={{ width: "100%", height: "auto", display: "block" }} />
                       ) : (
                         <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-tertiary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
                           Image
