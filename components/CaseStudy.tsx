@@ -500,6 +500,55 @@ export default function CaseStudy({ project }: Props) {
                       {block.caption}
                     </p>
                   </>
+                ) : block.layout === "screen-grid" ? (
+                  /* Hi-fi screen grid — renders each SVG/PNG in a phone-frame cell */
+                  <>
+                    <div style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+                      gap: 16,
+                      marginBottom: 12,
+                    }}>
+                      {(block.screens ?? []).map((screen, idx) => (
+                        <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                          {/* Step number */}
+                          <span style={{
+                            fontFamily: mono, fontSize: 9, letterSpacing: "0.08em",
+                            textTransform: "uppercase", color: "var(--accent)",
+                          }}>
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                          {/* Phone frame */}
+                          <div style={{
+                            width: "100%",
+                            background: "var(--card-bg)",
+                            border: "1px solid var(--border)",
+                            borderRadius: 20,
+                            overflow: "hidden",
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                          }}>
+                            {/* SVGs: use plain img — no Next.js optimization needed for vectors */}
+                            <img
+                              src={screen.src}
+                              alt={`${screen.label} screen`}
+                              style={{ width: "100%", height: "auto", display: "block" }}
+                            />
+                          </div>
+                          {/* Screen label */}
+                          <span style={{
+                            fontFamily: mono, fontSize: 9, letterSpacing: "0.06em",
+                            textTransform: "uppercase", color: "var(--text-tertiary)",
+                            textAlign: "center",
+                          }}>
+                            {screen.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
+                      {block.caption}
+                    </p>
+                  </>
                 ) : block.layout === "side-by-side" ? (
                   /* Two images side-by-side — each at 50% width, stacks on mobile */
                   <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
