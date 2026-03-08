@@ -16,6 +16,15 @@ export interface VisualBlock {
   screens?: { src: string; label: string }[];
 }
 
+export interface CodeBlock {
+  id: string;
+  title: string;
+  description: string;
+  code: string;
+  language: "css" | "tsx" | "twig" | "php" | "html" | "js";
+  previewSrc?: string;   // optional image showing the rendered output
+}
+
 export interface CaseStudyData {
   id: string;
   seoTitle?: string;
@@ -40,6 +49,8 @@ export interface CaseStudyData {
   visualBlocks?: VisualBlock[];
   visualBlocksHeader?: string;
   visualBlocksColumns?: 2;  // render wide blocks in a 2-column grid
+  codeBlocks?: CodeBlock[];  // code + preview pairs shown in the case study
+  codeBlocksHeader?: string;
   metrics: { value: string; label: string }[];
   tech: string[];
   reflection?: string;
@@ -49,32 +60,85 @@ export interface CaseStudyData {
 export const caseStudies: Record<string, CaseStudyData> = {
   "just-intelligence": {
     id: "just-intelligence",
+    seoTitle: "JUST Intelligence — Corporate Accountability Data Platform | Jinju Park",
+    seoDescription:
+      "7 years designing and building JUST Capital's flagship data platform — from research sessions with financial analysts to 30+ production React components, serving 3M+ users across institutional investors and the general public.",
+    heroIntro:
+      "Corporate accountability data is only useful if the people who act on it can navigate it. JUST Intelligence is the platform I spent seven years building — from the first research sessions with financial analysts to the 30th production component. The constraint I kept returning to: the data was dense by necessity. The interface had to be precise without being cold, and data-rich without being overwhelming.",
     role: "Lead Product Designer & Front-End Engineer",
     team: "2 designers · 4 engineers · 1 PM",
+    snapshot: {
+      timeline: "2017–present",
+      tools: "React, TypeScript, D3.js, Figma, Design Tokens, axe-core",
+    },
     challenge:
-      "JUST Capital's flagship data platform needed to make complex ESG and corporate accountability metrics legible to institutional investors — without dumbing down the data or building a dashboard that felt like every other dashboard.",
+      "JUST Capital's flagship data platform needed to make complex ESG and corporate accountability metrics legible to institutional investors — without dumbing down the data or building a dashboard that felt like every other dashboard. The data set was 240+ weighted indicators across 1,000+ companies. The users were financial analysts who would instantly spot if something was oversimplified.",
     approach:
-      "I embedded with the engineering team from the start. That meant running user research with analysts, translating those sessions directly into Figma components, and then writing the React that shipped them. No handoff document. No translation layer. I owned the spec and the PR.",
+      "I embedded with the engineering team from the start — running user research with analysts, translating those sessions directly into Figma components, and then writing the React that shipped them. No handoff document, no translation layer. I owned the spec and the PR. When an analyst session revealed a new data pattern, I was in the codebase the same week.",
+    whatIDid:
+      "I was the only designer embedded full-time with the engineering team. I owned every visual decision — the design token system, the component library, the data visualization specifications, and the accessibility audit framework. When a component changed in Figma, I updated the CSS custom properties the same day. The design-to-code loop was deliberately tight because the product demanded it.",
     process: {
       discover: [
-        "Stakeholder workshops with research analysts and institutional investors",
-        "Session recordings with 12 power users across 3 firm types",
-        "Heuristic audit of v1 with 47 annotated issues",
-        "Data architecture review to understand query limits",
+        "Stakeholder workshops with research analysts and institutional investors across 3 firm types",
+        "12 recorded user sessions — dominant themes: search friction, ranking legibility, and comparisons across sectors",
+        "Heuristic audit of v1 with 47 annotated issues, prioritized by user impact vs. build cost",
+        "Data architecture review to understand query latency and progressive disclosure constraints",
       ],
       design: [
-        "Token-based design system: 150+ variables synced to CSS custom properties",
-        "Interactive data visualization system built on D3 specs",
-        "Component library in Figma and React — same names, same structure",
-        "Accessibility-first from the first wireframe, not the last QA pass",
+        "Token-based design system: 150+ CSS custom properties synced to Figma variables — one source of truth across design and engineering",
+        "Data visualization system built on D3 specs — ranking distributions, composite scores, and sector comparison charts designed from first principles",
+        "Component library in Figma and React with matching names, props, and variant structure",
+        "Accessibility-first from the first wireframe — axe-core integrated into every PR, not added at QA",
       ],
       ship: [
-        "React + TypeScript front-end, built alongside Figma components",
-        "D3.js data visualizations with progressive disclosure patterns",
-        "WCAG AA compliance verified with axe-core and VoiceOver",
-        "30+ production components shipped over 7 years of iteration",
+        "React + TypeScript front-end built alongside the Figma component library — no separate handoff phase",
+        "D3.js data visualizations with progressive disclosure: summary → sector → company → indicator",
+        "WCAG AA compliance verified with axe-core and VoiceOver across all dashboard features",
+        "30+ production components shipped over 7 years, with token-based architecture absorbing two full rebrands",
       ],
     },
+    keyDecisions: [
+      "Built a token-based design system before anything else — 150+ CSS custom properties synced to Figma variables. Every color, spacing, and type decision lived in a token, which meant two full rebrands shipped in days rather than months. The discipline was: nothing gets hardcoded.",
+      "Chose D3.js over pre-built chart libraries for all data visualizations. The data patterns at JUST — ranking distributions, composite scores, multi-weighted sector comparisons — were too specific for generic chart components. D3 gave us the precision the data required at the cost of build time that was worth it.",
+      "Embedded accessibility into every component spec from the first wireframe rather than treating it as a QA gate. axe-core ran in every PR review. WCAG AA compliance on a complex data platform is a design constraint, not a post-hoc fix — it has to be in the component API from the start.",
+    ],
+    outcomes: [
+      "30+ production components shipped and maintained over 7 years — component library that both design and engineering owned, with zero forks across teams",
+      "Token-based system absorbed two full visual rebrands without component rewrites — every brand decision was a token update, not a codebase sweep",
+      "3M+ users served across institutional investors, ESG researchers, and the general public",
+      "WCAG AA compliance across all dashboard features — accessible data visualization at institutional scale, built in from the first component spec",
+    ],
+    visualBlocksHeader: "What Got Built",
+    visualBlocks: [
+      {
+        id: "hero",
+        layout: "wide",
+        imageSrc: "/just/just-ji-hero.png",
+        caption: "The core dashboard — company scores, rankings, and composite metrics built from 240+ data points. Designed to be dense without being illegible.",
+      },
+      {
+        id: "explorer-results",
+        layout: "side-by-side",
+        imageSrc: "/just/just-ji-explorer.png",
+        caption: "Company Explorer — search and filter across 1,000+ companies with composite scoring and sector benchmarks.",
+        imageSrc2: "/just/just-ji-results.png",
+        caption2: "Search results ranked by JUST Score with inline metric previews. Designed for analysts running 20+ company comparisons per session.",
+      },
+      {
+        id: "ranking",
+        layout: "wide",
+        imageSrc: "/just/just-ji-ranking.png",
+        caption: "Ranking view — America's Most JUST Companies, sortable by sector and weighted metric. The challenge: make relative ranking readable at a glance across 1,000 companies.",
+      },
+      {
+        id: "scenario-tokens",
+        layout: "side-by-side",
+        imageSrc: "/just/just-ji-scenario.png",
+        caption: "Scenario analysis — adjust metric weights to model hypothetical scoring outcomes. Built for ESG analysts who need to test assumptions before publishing.",
+        imageSrc2: "/just/just-branding-guidelines.png",
+        caption2: "Design token documentation — 150+ CSS custom properties synced to Figma. One source of truth, two full rebrands absorbed without a component rewrite.",
+      },
+    ],
     metrics: [
       { value: "7+",  label: "years shipped" },
       { value: "3M+", label: "users reached" },
@@ -82,6 +146,9 @@ export const caseStudies: Record<string, CaseStudyData> = {
       { value: "0",   label: "handoff docs needed" },
     ],
     tech: ["React", "TypeScript", "D3.js", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
+    reflection:
+      "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right. That's the standard I've kept since.",
+    ctaText: "I design and build data products that hold up over years, not sprints. If you're working on something complex, let's talk.",
   },
 
   "just-wordpress": {
@@ -117,6 +184,83 @@ export const caseStudies: Record<string, CaseStudyData> = {
       { value: "3",   label: "dev teams" },
       { value: "200+", label: "patterns audited" },
       { value: "800+", label: "hardcoded values replaced" },
+    ],
+    codeBlocksHeader: "The System in Code",
+    codeBlocks: [
+      {
+        id: "tokens",
+        title: "Design Token Architecture",
+        description: "Semantic tokens layered over primitives — the two-layer system that let a full rebrand ship as a token swap, not a codebase sweep. 800+ hardcoded values replaced with a single source of truth.",
+        language: "css",
+        previewSrc: "/just/just-branding-guidelines.png",
+        code: `/* ─── Primitive layer ─── */
+:root {
+  --color-teal-900: #0c3545;
+  --color-teal-700: #145064;
+  --color-teal-500: #1a6678;
+  --color-neutral-100: #f8f7f2;
+  --color-neutral-900: #0f0f0f;
+
+  /* ─── Semantic layer ─── */
+  --color-brand:         var(--color-teal-700);
+  --color-brand-subtle:  var(--color-teal-900);
+  --color-text:          var(--color-neutral-900);
+  --color-surface:       var(--color-neutral-100);
+
+  /* ─── Component tokens ─── */
+  --button-bg:           var(--color-brand);
+  --button-text:         var(--color-surface);
+  --button-bg-hover:     var(--color-teal-900);
+}`,
+      },
+      {
+        id: "quote-block",
+        title: "Quote Block Component",
+        description: "One Twig template handles pull quotes, testimonials, and stat callouts — the variant prop does the visual work, the data structure stays consistent across all three.",
+        language: "twig",
+        previewSrc: "/just/just-modules-quote.png",
+        code: `{# ─── quote.twig ─── #}
+<blockquote
+  class="c-quote c-quote--{{ variant | default('standard') }}"
+  data-component="quote"
+>
+  <p class="c-quote__text">{{ text }}</p>
+
+  {% if author %}
+    <cite class="c-quote__cite">
+      {{ author }}
+      {% if role %}
+        <span class="c-quote__role">{{ role }}</span>
+      {% endif %}
+    </cite>
+  {% endif %}
+</blockquote>`,
+      },
+      {
+        id: "layout-module",
+        title: "Layout Module System",
+        description: "Composable page sections built from shared layout primitives. Three development teams, one layout vocabulary — the module API was the contract that kept them from building the same thing three ways.",
+        language: "php",
+        previewSrc: "/just/just-modules-layout.png",
+        code: `<?php
+/**
+ * Layout Module — flexible section builder
+ *
+ * @param string $variant  'full' | 'split' | 'inset'
+ * @param string $theme    'light' | 'dark' | 'brand'
+ * @param array  $slots    Content slot data
+ */
+function render_layout_module( array $args ): void {
+  $variant = $args['variant'] ?? 'full';
+  $theme   = $args['theme']   ?? 'light';
+
+  get_template_part(
+    'template-parts/modules/layout',
+    $variant,
+    [ 'theme' => $theme, ...$args ]
+  );
+}`,
+      },
     ],
     tech: ["PHP", "Twig", "WordPress", "CSS Custom Properties", "Sass", "Figma", "Design Tokens"],
   },

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { type Project } from "@/data/projects";
-import { caseStudies } from "@/data/caseStudies";
+import { caseStudies, type CodeBlock } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
 import { projects } from "@/data/projects";
 
@@ -40,6 +40,40 @@ function PhoneFrame({ src, alt, priority = false }: { src: string; alt: string; 
       }} />
     </div>
   );
+}
+
+// ── Syntax highlight helper ────────────────────────────────────────────────
+// Lightweight, zero-dependency token colorizer for CSS/PHP/Twig/TSX snippets.
+function CodeHighlight({ code, language }: { code: string; language: string }) {
+  const rules: { re: RegExp; color: string }[] = [
+    { re: /(\/\*[\s\S]*?\*\/)/g,                        color: "#6c7086" }, // block comments
+    { re: /(\/\/[^\n]*|(?<![{])#[^\n{][^\n]*)/g,        color: "#6c7086" }, // line comments
+    { re: /("[^"]*"|'[^']*'|`[^`]*`)/g,                 color: "#a6e3a1" }, // strings
+    { re: /\b(var|const|let|function|return|if|else|for|class|extends|import|export|default|from|async|await|new|this|true|false|null|undefined)\b/g, color: "#cba6f7" },
+    { re: /(--[\w-]+)/g,                                color: "#89dceb" }, // css vars
+    { re: /(@[\w-]+)/g,                                 color: "#f38ba8" }, // css at-rules
+    { re: /\b(string|array|void|int|bool|float)\b/g,    color: "#fab387" }, // php types
+    { re: /(\$[\w]+)/g,                                 color: "#fab387" }, // php/twig vars
+    { re: /(\{%[\s\S]*?%\}|\{\{[\s\S]*?\}\})/g,        color: "#f9e2af" }, // twig tags
+    { re: /\b(\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw|s|ms)?)\b/g, color: "#fab387" },
+    { re: /([:;,{}[\]()>])/g,                           color: "#9399b2" }, // punctuation
+    { re: /([\w-]+)(?=\s*[:(])/g,                       color: "#89b4fa" }, // property / fn names
+  ];
+  const tokens: { text: string; color?: string }[] = [];
+  let rem = code;
+  while (rem.length > 0) {
+    let best: { idx: number; len: number; color: string } | null = null;
+    for (const { re, color } of rules) {
+      re.lastIndex = 0;
+      const m = re.exec(rem);
+      if (m && (best === null || m.index < best.idx)) best = { idx: m.index, len: m[0].length, color };
+    }
+    if (!best) { tokens.push({ text: rem }); break; }
+    if (best.idx > 0) tokens.push({ text: rem.slice(0, best.idx) });
+    tokens.push({ text: rem.slice(best.idx, best.idx + best.len), color: best.color });
+    rem = rem.slice(best.idx + best.len);
+  }
+  return <>{tokens.map((t, i) => t.color ? <span key={i} style={{ color: t.color }}>{t.text}</span> : <span key={i}>{t.text}</span>)}</>;
 }
 
 // Shared section-label style
@@ -834,6 +868,77 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
+        {/* ── Code Blocks — code + preview pairs ── */}
+        {data.codeBlocks && data.codeBlocks.length > 0 && (
+          <div style={{ marginBottom: 80 }}>
+            <p style={sectionLabelStyle(32)}>{data.codeBlocksHeader ?? "In Code"}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
+              {data.codeBlocks.map((block) => (
+                <div key={block.id}>
+                  {/* Title + description */}
+                  <p style={{ fontFamily: mono, fontSize: 12, letterSpacing: "0.06em", color: "var(--text-primary)", marginBottom: 6, fontWeight: 500 }}>
+                    {block.title}
+                  </p>
+                  <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 20, maxWidth: 640 }}>
+                    {block.description}
+                  </p>
+                  {/* Code + preview side by side */}
+                  <div style={{ display: "grid", gridTemplateColumns: block.previewSrc ? "1fr 1fr" : "1fr", gap: 16 }}>
+                    {/* Code panel */}
+                    <div style={{
+                      background: dark ? "#0d1117" : "#1e1e2e",
+                      borderRadius: 12, overflow: "hidden",
+                      border: "1px solid rgba(255,255,255,0.07)",
+                    }}>
+                      {/* Language tag */}
+                      <div style={{
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "10px 16px",
+                        borderBottom: "1px solid rgba(255,255,255,0.07)",
+                        background: "rgba(255,255,255,0.03)",
+                      }}>
+                        <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
+                          {block.language}
+                        </span>
+                        <div style={{ display: "flex", gap: 6 }}>
+                          {["#ff5f57","#febc2e","#28c840"].map((c) => (
+                            <span key={c} aria-hidden="true" style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.7 }} />
+                          ))}
+                        </div>
+                      </div>
+                      {/* Code */}
+                      <pre style={{
+                        fontFamily: mono, fontSize: 12, lineHeight: 1.7,
+                        color: "#cdd6f4", padding: "20px 20px",
+                        margin: 0, overflowX: "auto", whiteSpace: "pre",
+                      }}>
+                        <CodeHighlight code={block.code} language={block.language} />
+                      </pre>
+                    </div>
+                    {/* Preview panel */}
+                    {block.previewSrc && (
+                      <div style={{
+                        borderRadius: 12, overflow: "hidden",
+                        border: "1px solid var(--border)",
+                        background: "var(--card-bg)",
+                        display: "flex", alignItems: "stretch",
+                      }}>
+                        <Image
+                          src={block.previewSrc}
+                          alt={`${block.title} preview`}
+                          width={0} height={0}
+                          sizes="(max-width: 1160px) 100vw, 560px"
+                          style={{ width: "100%", height: "auto", display: "block", objectFit: "cover" }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* ── All Projects — jump to any case study ── */}
         <div
           style={{
@@ -845,38 +950,43 @@ export default function CaseStudy({ project }: Props) {
           <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 16 }}>
             All Projects
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {projects.map((p) => (
-              <a
-                key={p.id}
-                href={`/work/${p.id}`}
-                aria-current={p.id === project.id ? "page" : undefined}
-                style={{
-                  fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  padding: "6px 16px",
-                  borderRadius: 20,
-                  border: `1px solid ${p.id === project.id ? "var(--accent)" : "var(--border)"}`,
-                  color: p.id === project.id ? "var(--accent)" : "var(--text-secondary)",
-                  background: p.id === project.id ? "var(--accent-muted)" : "transparent",
-                  textDecoration: "none",
-                  transition: "border-color 0.2s, color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  if (p.id !== project.id) {
-                    (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--text-tertiary)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (p.id !== project.id) {
-                    (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
-                  }
-                }}
-              >
-                {p.title}
-              </a>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 8 }}>
+            {projects.map((p, i) => (
+              <span key={p.id} style={{ display: "inline-flex", alignItems: "center" }}>
+                {i > 0 && (
+                  <span aria-hidden="true" style={{ color: "var(--border)", padding: "0 14px", userSelect: "none", fontSize: 11 }}>
+                    /
+                  </span>
+                )}
+                <a
+                  href={`/work/${p.id}`}
+                  aria-current={p.id === project.id ? "page" : undefined}
+                  style={{
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: p.id === project.id ? "var(--text-primary)" : "var(--text-tertiary)",
+                    fontWeight: p.id === project.id ? 500 : 400,
+                    textDecoration: "none",
+                    borderBottom: `1px solid ${p.id === project.id ? "var(--text-primary)" : "transparent"}`,
+                    paddingBottom: 2,
+                    transition: "color 0.2s, border-color 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (p.id !== project.id) {
+                      (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = "var(--text-tertiary)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (p.id !== project.id) {
+                      (e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)";
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent";
+                    }
+                  }}
+                >
+                  {p.title}
+                </a>
+              </span>
             ))}
           </div>
         </div>
@@ -974,11 +1084,10 @@ export default function CaseStudy({ project }: Props) {
               (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
             onFocus={(e) => {
-              (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
-              (e.currentTarget as HTMLElement).style.outlineOffset = "3px";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--text-primary)";
             }}
             onBlur={(e) => {
-              (e.currentTarget as HTMLElement).style.outline = "none";
+              (e.currentTarget as HTMLElement).style.boxShadow = "";
             }}
           >
             Get in touch →
