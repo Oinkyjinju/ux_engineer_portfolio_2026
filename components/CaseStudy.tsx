@@ -505,7 +505,7 @@ export default function CaseStudy({ project }: Props) {
                   <>
                     <div style={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+                      gridTemplateColumns: "repeat(4, 1fr)",
                       gap: 16,
                       marginBottom: 12,
                     }}>
