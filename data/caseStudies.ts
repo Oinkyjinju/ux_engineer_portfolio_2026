@@ -264,6 +264,12 @@ export const caseStudies: Record<string, CaseStudyData> = {
         caption: "Shared components and where iOS/Android intentionally diverge.",
         imageSrc: "/storycorps/design-system.png",
       },
+      {
+        id: "listen",
+        layout: "wide",
+        caption: "Listen feed: user stories with inline playback, filter by language/date/keyword, and a deletion confirmation pattern designed to prevent accidental loss.",
+        imageSrc: "/storycorps/listen-stories.png",
+      },
     ],
     metrics: [
       { value: "4.6★", label: "App Store rating" },
