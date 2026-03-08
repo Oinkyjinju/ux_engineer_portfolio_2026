@@ -5,6 +5,7 @@ export interface VisualBlock {
   label?: string;
   phoneScroll?: boolean;   // wrap image(s) in scrollable phone mockup frame
   blendMode?: string;      // CSS mix-blend-mode (e.g. "multiply" for white-bg PNGs on dark backgrounds)
+  noContainer?: boolean;   // render image with no card background/border (for logo/hero images)
   beforeSrc?: string;
   afterSrc?: string;
   imageSrc?: string;
@@ -38,6 +39,7 @@ export interface CaseStudyData {
   outcomes?: string[];
   visualBlocks?: VisualBlock[];
   visualBlocksHeader?: string;
+  visualBlocksColumns?: 2;  // render wide blocks in a 2-column grid
   metrics: { value: string; label: string }[];
   tech: string[];
   reflection?: string;
@@ -170,11 +172,13 @@ export const caseStudies: Record<string, CaseStudyData> = {
       "Two global studios operating to a shared design standard across 50+ languages, with zero library forks over 8 years",
     ],
     visualBlocksHeader: "What Got Built",
+    visualBlocksColumns: 2,
     visualBlocks: [
       {
         id: "logos",
         layout: "wide",
         imageSrc: "/netflix/hero-logos.png",
+        noContainer: true,
         caption: "Two global studios, one shared design standard — the brief that defined 8 years of multilingual design operations.",
       },
       {
