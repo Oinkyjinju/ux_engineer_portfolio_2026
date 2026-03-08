@@ -43,26 +43,29 @@ export default function CaseStudy({ project }: Props) {
 
   const theme = dark
     ? {
-        "--bg":              "#09090E",
-        "--text-primary":    "#EDEAE3",
-        "--text-secondary":  "#7D7A73",
-        "--text-tertiary":   "#4A4846",
-        "--border":          "rgba(255,255,255,0.07)",
-        "--card-bg":         "rgba(255,255,255,0.025)",
-        "--accent":          "#F5A623",
-        "--accent-muted":    "rgba(245,166,35,0.12)",
-        "--nav-bg-scrolled": "rgba(9,9,14,0.82)",
+        "--bg":               "#09090E",
+        "--text-primary":     "#EDEAE3",
+        "--text-secondary":   "#7D7A73",
+        "--text-tertiary":    "#4A4846",
+        "--border":           "rgba(255,255,255,0.07)",
+        "--card-bg":          "rgba(255,255,255,0.025)",
+        "--accent":           "#F5A623",
+        "--accent-muted":     "rgba(245,166,35,0.12)",
+        "--nav-bg-scrolled":  "rgba(9,9,14,0.82)",
+        // Thumbnails keep their full dramatic shadow in dark mode
       }
     : {
-        "--bg":              "#F8F7F2",
-        "--text-primary":    "#0E0D0A",
-        "--text-secondary":  "#5A5855",
-        "--text-tertiary":   "#8E8C89",
-        "--border":          "rgba(0,0,0,0.09)",
-        "--card-bg":         "rgba(0,0,0,0.03)",
-        "--accent":          "#2563EB",
-        "--accent-muted":    "rgba(37,99,235,0.1)",
-        "--nav-bg-scrolled": "rgba(248,247,242,0.82)",
+        "--bg":               "#F8F7F2",
+        "--text-primary":     "#0E0D0A",
+        "--text-secondary":   "#5A5855",
+        "--text-tertiary":    "#8E8C89",
+        "--border":           "rgba(0,0,0,0.09)",
+        "--card-bg":          "rgba(0,0,0,0.03)",
+        "--accent":           "#2563EB",
+        "--accent-muted":     "rgba(37,99,235,0.1)",
+        "--nav-bg-scrolled":  "rgba(248,247,242,0.82)",
+        // Remove the heavy dark shadow behind thumbnails in light mode
+        "--thumbnail-shadow": "0 2px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)",
       };
 
   // Guard — unknown slug: render a minimal not-found state after all hooks
@@ -534,10 +537,10 @@ export default function CaseStudy({ project }: Props) {
                               style={{ width: "100%", height: "auto", display: "block" }}
                             />
                           </div>
-                          {/* Screen label */}
+                          {/* Screen label — text-secondary for legibility in both light and dark */}
                           <span style={{
                             fontFamily: mono, fontSize: 9, letterSpacing: "0.06em",
-                            textTransform: "uppercase", color: "var(--text-tertiary)",
+                            textTransform: "uppercase", color: "var(--text-secondary)",
                             textAlign: "center",
                           }}>
                             {screen.label}
