@@ -1,11 +1,14 @@
 export interface VisualBlock {
   id: string;
   caption: string;
-  layout: "before-after" | "wide";
+  layout: "before-after" | "wide" | "side-by-side";
   label?: string;
   beforeSrc?: string;
   afterSrc?: string;
   imageSrc?: string;
+  // side-by-side: second image + its caption
+  imageSrc2?: string;
+  caption2?: string;
 }
 
 export interface CaseStudyData {
@@ -254,19 +257,16 @@ export const caseStudies: Record<string, CaseStudyData> = {
         id: "flow",
         layout: "wide",
         caption: "The full recording journey — from question selection to publish — designed to be completable in a single session without an account.",
+        // TODO: replace flow-map.png with recording-flow-hifi.png once saved to public/storycorps/
         imageSrc: "/storycorps/flow-map.png",
       },
       {
-        id: "system",
-        layout: "wide",
-        caption: "Shared components and where iOS/Android intentionally diverge.",
+        id: "system-listen",
+        layout: "side-by-side",
+        caption: "Shared component tokens and the exact points where iOS and Android intentionally diverge.",
         imageSrc: "/storycorps/design-system.png",
-      },
-      {
-        id: "listen",
-        layout: "wide",
-        caption: "The Listen feed includes inline playback, language and date filters, and a deliberate two-step deletion — because a family story should be hard to accidentally remove.",
-        imageSrc: "/storycorps/listen-stories.png",
+        caption2: "The Listen feed — inline playback, language and date filters, and a deliberate two-step deletion to prevent accidental story loss.",
+        imageSrc2: "/storycorps/listen-stories.png",
       },
     ],
     metrics: [
