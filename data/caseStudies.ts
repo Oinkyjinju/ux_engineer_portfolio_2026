@@ -175,7 +175,6 @@ export const caseStudies: Record<string, CaseStudyData> = {
         id: "logos",
         layout: "wide",
         imageSrc: "/netflix/hero-logos.png",
-        blendMode: "multiply",
         caption: "Two global studios, one shared design standard — the brief that defined 8 years of multilingual design operations.",
       },
       {
