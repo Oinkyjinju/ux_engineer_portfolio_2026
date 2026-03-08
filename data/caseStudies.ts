@@ -118,23 +118,34 @@ export const caseStudies: Record<string, CaseStudyData> = {
 
   "netflix-disney": {
     id: "netflix-disney",
+    seoTitle: "Netflix & Disney+ — Multilingual Design Operations | Jinju Park",
+    seoDescription:
+      "8 years building the design ops infrastructure for Netflix and Disney+ across 50+ languages, 2 global studios, and every major script system — Latin, CJK, Arabic, Cyrillic, Hebrew.",
+    heroIntro:
+      "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. For 8 years I made sure it did.",
     role: "UX Designer & Design Ops Lead",
     team: "Cross-studio · LA + London · Wordbank/Unfold",
+    snapshot: {
+      timeline: "8+ years · ongoing",
+      tools: "Figma, cross-studio review framework, multilingual QA",
+    },
     challenge:
       "Maintaining design consistency and typographic quality across 50+ languages for Netflix and Disney+ — while meeting launch deadlines across multiple time zones, writing systems, and cultural contexts. Latin was the easy part.",
     approach:
-      "I built the design ops infrastructure that made multilingual work scalable. Typography systems that actually worked in Arabic, Japanese, and Hebrew. Design review processes that worked across studios. Tools that caught layout breaks before QA did.",
+      "I built the design ops infrastructure that made multilingual work scalable. Typography systems that actually worked in Arabic, Japanese, and Hebrew — because each script required ground-up rethinking of line-height, text container logic, and visual weight, not just a font swap. Tools that caught layout breaks before QA did. Design review processes that worked across studios even when the reviewers couldn't read the language they were reviewing.",
+    whatIDid:
+      "I owned the design side of the localization pipeline — typography decisions, title treatment QA, cross-studio review processes, and the Figma component library that both studios used. The operational infrastructure that let two studios work to a shared standard was mine to build and maintain.",
     process: {
       discover: [
         "Typography audit across 50+ language families",
-        "Studio workflow interviews in LA and London",
-        "RTL, CJK, and Devanagari layout requirements research",
+        "Studio workflow interviews in LA and London — surfacing the gap where each studio made localization decisions in isolation with no shared framework",
+        "RTL, CJK, and Arabic layout requirements research — documented as Figma constraints, not just notes",
         "Brand guideline analysis for both platforms",
       ],
       design: [
-        "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Devanagari",
+        "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Hebrew",
         "RTL layout templates for Arabic and Hebrew",
-        "Cross-studio design review process and critique framework",
+        "Cross-studio design review process and critique framework — adapted for reviewers who cannot read the script they are evaluating",
         "Platform-specific component specs for Netflix and Disney+ brand alignment",
       ],
       ship: [
@@ -144,47 +155,157 @@ export const caseStudies: Record<string, CaseStudyData> = {
         "Studio-to-studio process documentation still in use",
       ],
     },
+    keyDecisions: [
+      "Built a language-agnostic QA framework for evaluating title treatments across scripts — criteria based on visual weight, stroke contrast, and spatial rhythm rather than linguistic meaning. This was necessary because no single reviewer could read all 50+ languages.",
+      "Established a cross-studio review cadence that worked across LA and London time zones — asynchronous annotation rounds followed by live critique only for unresolved decisions. Eliminated the 'everyone on a call at midnight' problem.",
+      "Chose to extend the existing Figma component library for each new script family rather than maintain separate libraries per studio — added initial overhead but prevented fork divergence as the library scaled to 50+ languages.",
+    ],
+    outcomes: [
+      "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Hebrew — each adapted from first principles, not adjusted from Latin defaults",
+      "Cross-studio process documentation still in use 8+ years after creation",
+      "Language-agnostic QA framework enabling script review without linguistic knowledge — visual weight and rhythm criteria replacing readability checks",
+      "Two global studios operating to a shared design standard across 50+ languages",
+    ],
+    visualBlocks: [
+      {
+        id: "context",
+        layout: "wide",
+        imageSrc: "/netflix/context-poster.jpg",
+        caption: "Real content, real stakes — a Korean film title that has to retain its visual identity when adapted for global markets.",
+      },
+      {
+        id: "naruto",
+        layout: "wide",
+        imageSrc: "/netflix/tt-naruto-jp.png",
+        caption: "Naruto Shippuden — English original to Japanese localization. The katakana subtitle required a custom weight match to preserve the title's energy across scripts.",
+      },
+      {
+        id: "diecisiete",
+        layout: "wide",
+        imageSrc: "/netflix/tt-diecisiete-ko.png",
+        caption: "Diecisiete (Spanish) → 열일곱 (Korean) — three iterations before approval. V1 direct-translated the weight; V2 referenced an existing Korean title; V3 found the right expressive equivalent. Design thinking made visible.",
+      },
+      {
+        id: "hospital",
+        layout: "wide",
+        imageSrc: "/netflix/tt-hospital-playlist-ro.png",
+        caption: "Hospital Playlist → Coridoarele Spitalului+ (Romanian) — the stencil treatment had to survive both the script change and the longer string.",
+      },
+      {
+        id: "history",
+        layout: "wide",
+        imageSrc: "/netflix/tt-history101-ko.png",
+        caption: "History 101 → 히스토리 101 — dark and light background variants, both localized. Typography QA across contexts, not just one.",
+      },
+      {
+        id: "runway",
+        layout: "wide",
+        imageSrc: "/netflix/tt-smile-runway-en.png",
+        caption: "Adapting a calligraphic Japanese title treatment into an English equivalent — same gesture, different script.",
+      },
+    ],
     metrics: [
       { value: "50+", label: "languages" },
       { value: "2",   label: "global studios" },
       { value: "8+",  label: "years partnership" },
+      { value: "6+",  label: "script families" },
     ],
     tech: ["Figma", "Design Ops", "Typography Systems", "RTL layouts", "CJK layouts", "Localization QA"],
+    reflection:
+      "Most of my Netflix and Disney+ work was in languages I don't speak. That turned out to be the discipline: you learn to read visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can evaluate a Korean title treatment without reading Korean, you've learned something about typography that monolingual designers rarely encounter.",
+    ctaText:
+      "I build design systems that other designers can use without the context I had when I built them. If your team is scaling across languages, markets, or studios, let's talk.",
   },
 
   "iata": {
     id: "iata",
+    seoTitle: "IATA WeChat Mini-Program — Cross-Cultural UX Design | Jinju Park",
+    seoDescription:
+      "I designed IATA's aviation training platform for WeChat — building native Chinese UI patterns from the ground up, with bilingual Figma specs for a China-based engineering team.",
+    heroIntro:
+      "Chinese aviation professionals needed IATA's training content in WeChat — where Western app patterns don't translate, and neither does English-first design.",
     role: "UX Designer — WeChat Mini-Program",
     team: "Wordbank → IATA · Cross-functional · China-based dev team",
+    snapshot: {
+      timeline: "2023",
+      tools: "Figma, WeChat DevTools, bilingual spec annotations",
+    },
     challenge:
       "IATA needed to deliver aviation training content to Chinese aviation professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations that are entirely different from Western mobile patterns.",
     approach:
-      "I researched WeChat Mini-Program design guidelines deeply before touching Figma. I designed the course delivery interface with Chinese workflows in mind — not a translation of a Western product, but something that felt native to the platform and the audience.",
+      "I researched WeChat Mini-Program design guidelines before opening Figma — not because that is the right process in general, but because in this context, designing from Western assumptions first would have meant designing something that works in Figma and fails in WeChat DevTools. The constraint I kept returning to: Chinese aviation professionals would open this inside an app they trust completely. The only acceptable outcome was something that felt like it belonged there.",
+    whatIDid:
+      "I was the sole designer on this project — responsible for the full design process from WeChat platform research through final Figma handoff, with bilingual spec annotations for the China-based development team.",
     process: {
       discover: [
-        "WeChat Mini-Program design guidelines and constraint research",
-        "IATA training content audit to understand module structure",
-        "Chinese mobile user behavior patterns research",
-        "WeChat DevTools environment testing for layout constraints",
+        "WeChat Mini-Program design guidelines and constraint research — documented as a Figma constraint list before any UI work began",
+        "IATA training content audit to understand module structure and Chinese-market course prioritization",
+        "Chinese mobile user behavior patterns research — WeChat navigation conventions, QR code flows, long-press menus, and the absence of browser back behavior",
+        "WeChat DevTools environment testing for layout constraints, package size limits, and font rendering",
       ],
       design: [
-        "WeChat-native UI patterns for course navigation",
-        "Progress tracking and quiz interface design",
-        "Chinese-first typography with simplified and traditional variants",
-        "Cross-cultural iconography review to avoid misinterpretation",
+        "WeChat-native UI patterns for course navigation — bottom tab bar, flat hierarchy, QR code integration as primary touchpoints",
+        "Progress tracking and quiz interface design within WeChat's viewport constraints",
+        "Chinese-first typography — Simplified Chinese with system font constraints, since WeChat Mini-Programs do not support custom web fonts reliably",
+        "Cross-cultural iconography audit flagging Western aviation icons with ambiguous meanings in Chinese context — each replaced with a WeChat-familiar equivalent",
       ],
       ship: [
         "Full design handoff to China-based development team",
-        "Figma specs annotated in English and Mandarin",
+        "Figma specs annotated in both English and Mandarin — eliminated an entire category of implementation ambiguity",
         "QA pass in WeChat DevTools across all course modules",
         "Live in WeChat — available to Chinese aviation professionals",
       ],
     },
+    keyDecisions: [
+      "Annotated all Figma handoff specs in both English and Mandarin — the development team was China-based and English-only specs would have created ambiguity at every interaction. This doubled annotation time but eliminated design-implementation discrepancies.",
+      "Designed with WeChat's native navigation patterns rather than adapting Western patterns to fit — the course category icons, bottom nav behavior, and modal flows all follow WeChat conventions rather than iOS/Android norms. Trade-off: higher initial research cost, near-zero QA rework.",
+    ],
+    outcomes: [
+      "350+ IATA courses accessible to Chinese aviation professionals through WeChat",
+      "Bilingual specs (EN + ZH) delivered with no design-implementation discrepancies in QA",
+      "WeChat-native interaction patterns throughout — no Western navigation patterns adapted to fit",
+      "Live in WeChat — available across China with no external browser dependency",
+    ],
+    visualBlocks: [
+      {
+        id: "landing",
+        layout: "wide",
+        imageSrc: "/iata/landing-final.png",
+        caption: "WeChat Mini-Program landing page — IATA brand in Simplified Chinese, with course categories and navigation designed for WeChat's interaction conventions.",
+      },
+      {
+        id: "course",
+        layout: "wide",
+        imageSrc: "/iata/course-final.png",
+        caption: "Course detail overlay — bilingual metadata (Chinese UI, English course name), duration and language indicators, CTA in platform-native red.",
+      },
+      {
+        id: "social",
+        layout: "side-by-side",
+        imageSrc: "/iata/social-original.png",
+        caption: "Original English social ad — IATA course discount campaign, Western layout and information hierarchy.",
+        imageSrc2: "/iata/social-localized.png",
+        caption2: "Localized Chinese version — adapted layout, Simplified Chinese typography, reordered information hierarchy for the target market.",
+      },
+      {
+        id: "about",
+        layout: "before-after",
+        label: "About Page",
+        beforeSrc: "/iata/about-wireframe.png",
+        afterSrc: "/iata/about-final.png",
+        caption: "From wireframe to final — bilingual About section with IATA brand photography and partner network content.",
+      },
+    ],
     metrics: [
-      { value: "100%", label: "WeChat-native UI patterns" },
+      { value: "350+", label: "courses accessible" },
+      { value: "40+",  label: "credentials offered" },
       { value: "2",    label: "spec languages (EN + ZH)" },
     ],
     tech: ["Figma", "WeChat Mini-Programs", "Cross-cultural UX", "Mobile Design", "Localization"],
+    reflection:
+      "Designing for WeChat is not designing a mobile app that happens to be in Chinese. The platform has its own interaction logic — navigation conventions, social behaviors, even visual expectations that are built into how Chinese users experience digital products. The best decision I made on this project was spending two weeks in WeChat DevTools before opening Figma.",
+    ctaText:
+      "I design at the intersection of cultural context and platform constraint. If your product needs to feel native somewhere new, let's talk.",
   },
 
   "storycorps": {
@@ -260,13 +381,13 @@ export const caseStudies: Record<string, CaseStudyData> = {
         layout: "screen-grid",
         caption: "All 8 screens of the redesigned recording flow — completable in a single session, no account required until after publish.",
         screens: [
-          { src: "/storycorps/sign-in.svg",  label: "Sign In" },
-          { src: "/storycorps/prepare.svg",  label: "Prepare" },
+          { src: "/storycorps/sign-in.svg",   label: "Sign In" },
+          { src: "/storycorps/prepare.svg",   label: "Prepare" },
           { src: "/storycorps/questions.svg", label: "Questions" },
-          { src: "/storycorps/record.svg",   label: "Record" },
-          { src: "/storycorps/photos.svg",   label: "Upload Photo" },
-          { src: "/storycorps/metadata.svg", label: "Review" },
-          { src: "/storycorps/preview.svg",  label: "Preview" },
+          { src: "/storycorps/record.svg",    label: "Record" },
+          { src: "/storycorps/photos.svg",    label: "Upload Photo" },
+          { src: "/storycorps/metadata.svg",  label: "Review" },
+          { src: "/storycorps/preview.svg",   label: "Preview" },
           { src: "/storycorps/published.svg", label: "Published!" },
         ],
       },
