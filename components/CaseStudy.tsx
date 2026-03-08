@@ -14,27 +14,21 @@ const mono  = "'JetBrains Mono', monospace";
 const serif = "'Gloock', Georgia, serif";
 const sans  = "'Red Hat Text', system-ui, sans-serif";
 
-// Phone‑frame mockup — scrollable portrait container with notch + home indicator
+// Phone‑frame mockup — scrollable portrait container with home indicator (no notch)
 function PhoneFrame({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
   return (
-    <div style={{ position: "relative", width: 215, flexShrink: 0 }}>
-      {/* Dynamic island */}
-      <div aria-hidden="true" style={{
-        position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)",
-        width: 72, height: 20, background: "rgba(0,0,0,0.82)",
-        borderRadius: "0 0 14px 14px", zIndex: 3, pointerEvents: "none",
-      }} />
+    <div style={{ position: "relative", width: 248, flexShrink: 0 }}>
       {/* Scrollable viewport */}
       <div className="sc-phone-scroll" style={{
-        width: 215, height: 370,
-        borderRadius: 32, overflow: "hidden", overflowY: "scroll",
+        width: 248, height: 480,
+        borderRadius: 22, overflow: "hidden", overflowY: "scroll",
         scrollbarWidth: "none",
         background: "var(--card-bg)",
         border: "1px solid var(--border)",
         boxShadow: "0 2px 8px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.15)",
       }}>
         <Image
-          src={src} alt={alt} width={0} height={0} sizes="215px" priority={priority}
+          src={src} alt={alt} width={0} height={0} sizes="248px" priority={priority}
           style={{ width: "100%", height: "auto", display: "block" }}
         />
       </div>
@@ -48,7 +42,7 @@ function PhoneFrame({ src, alt, priority = false }: { src: string; alt: string; 
   );
 }
 
-// Shared section-label style — applied to <h2> so heading hierarchy is preserved
+// Shared section-label style
 const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
   fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
   textTransform: "uppercase", color: "var(--accent)",
@@ -56,7 +50,6 @@ const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
 });
 
 export default function CaseStudy({ project }: Props) {
-  // Initialize to false — read localStorage in useEffect to avoid SSR hydration mismatch
   const [dark, setDark]         = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
   const data = caseStudies[project.id];
@@ -65,7 +58,6 @@ export default function CaseStudy({ project }: Props) {
   const prevProject  = projects[currentIndex - 1];
   const nextProject  = projects[currentIndex + 1];
 
-  // Read localStorage only on client — prevents SSR/client hydration mismatch
   useEffect(() => {
     setDark(localStorage.getItem("theme") === "dark");
   }, []);
@@ -93,7 +85,6 @@ export default function CaseStudy({ project }: Props) {
         "--accent":           "#F5A623",
         "--accent-muted":     "rgba(245,166,35,0.12)",
         "--nav-bg-scrolled":  "rgba(9,9,14,0.82)",
-        // Thumbnails keep their full dramatic shadow in dark mode
       }
     : {
         "--bg":               "#F8F7F2",
@@ -105,11 +96,9 @@ export default function CaseStudy({ project }: Props) {
         "--accent":           "#2563EB",
         "--accent-muted":     "rgba(37,99,235,0.1)",
         "--nav-bg-scrolled":  "rgba(248,247,242,0.82)",
-        // Remove the heavy dark shadow behind thumbnails in light mode
         "--thumbnail-shadow": "0 2px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)",
       };
 
-  // Guard — unknown slug: render a minimal not-found state after all hooks
   if (!data) {
     return (
       <div style={{
@@ -124,15 +113,18 @@ export default function CaseStudy({ project }: Props) {
 
   return (
     <>
-    {/* Responsive overrides — inline styles can't express media queries */}
+    {/* Responsive overrides */}
     <style dangerouslySetInnerHTML={{ __html: `
       .sc-screen-grid { display: grid; gap: 16px; margin-bottom: 12px; grid-template-columns: repeat(2, 1fr); }
       @media (min-width: 640px) { .sc-screen-grid { grid-template-columns: repeat(4, 1fr); } }
       .sc-before-panel { flex-shrink: 0; }
       @media (max-width: 600px) { .sc-before-panel { flex-shrink: 1; flex: 1; min-width: 0; } .sc-before-panel-inner { width: 100% !important; max-width: 240px; margin: 0 auto; } }
       .sc-phone-scroll::-webkit-scrollbar { display: none; }
-      .sc-phone-frames { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 12px; }
-      @media (max-width: 520px) { .sc-phone-frames { justify-content: center; } }
+      .sc-phone-frames { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 12px; }
+      @media (max-width: 580px) { .sc-phone-frames { justify-content: center; } }
+      .sc-vblocks-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      @media (max-width: 700px) { .sc-vblocks-2col { grid-template-columns: 1fr; } }
+      .sc-vblocks-2col .sc-full-span { grid-column: 1 / -1; }
     ` }} />
     <div
       suppressHydrationWarning
@@ -144,7 +136,7 @@ export default function CaseStudy({ project }: Props) {
         transition: "background-color 0.4s ease",
       }}
     >
-      {/* Nav — mirrors Portfolio.tsx */}
+      {/* ── Nav — matches Portfolio.tsx exactly ── */}
       <nav
         style={{
           position: "fixed",
@@ -207,10 +199,10 @@ export default function CaseStudy({ project }: Props) {
             style={{
               display: "flex", alignItems: "center", gap: 7,
               background: "var(--card-bg)", border: "1px solid var(--border)",
-              borderRadius: 20, padding: "8px 14px", cursor: "pointer",
+              borderRadius: 20, padding: "5px 13px", cursor: "pointer",
               fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
               textTransform: "uppercase", color: "var(--text-secondary)",
-              transition: "border-color 0.2s", minHeight: 36,
+              transition: "border-color 0.2s",
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
@@ -237,7 +229,7 @@ export default function CaseStudy({ project }: Props) {
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* ── Hero ── */}
       <div
         style={{
           paddingTop: 60,
@@ -336,7 +328,7 @@ export default function CaseStudy({ project }: Props) {
         </div>
       </div>
 
-      {/* Content */}
+      {/* ── Content ── */}
       <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(24px, 6vw, 96px)" }}>
 
         {/* Meta strip */}
@@ -390,7 +382,7 @@ export default function CaseStudy({ project }: Props) {
         </div>
 
         {/* Approach */}
-        <div style={{ maxWidth: 760, marginBottom: 100 }}>
+        <div style={{ maxWidth: 760, marginBottom: 80 }}>
           <h2 style={sectionLabelStyle(20)}>My Approach</h2>
           <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
             {data.approach}
@@ -399,7 +391,7 @@ export default function CaseStudy({ project }: Props) {
 
         {/* What I Was Responsible For */}
         {data.whatIDid && (
-          <div style={{ maxWidth: 760, marginBottom: 100 }}>
+          <div style={{ maxWidth: 760, marginBottom: 80 }}>
             <h2 style={sectionLabelStyle(20)}>What I Was Responsible For</h2>
             <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
               {data.whatIDid}
@@ -407,11 +399,52 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── KEY DESIGN DECISIONS — moved above Process so judgment shows before evidence ── */}
+        {/* ── Reflection — moved up so it frames the decisions before the reader dives in ── */}
+        {data.reflection && (
+          <div style={{ maxWidth: 760, marginBottom: 80 }}>
+            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
+            <p style={{
+              fontFamily: serif,
+              fontSize: "clamp(18px, 2.2vw, 22px)",
+              lineHeight: 1.65,
+              color: "var(--text-primary)",
+              fontWeight: 400,
+              letterSpacing: "-0.01em",
+              borderLeft: "3px solid var(--accent)",
+              paddingLeft: 24,
+              margin: 0,
+            }}>
+              {data.reflection}
+            </p>
+          </div>
+        )}
+
+        {/* ── Tech & Tools — moved up alongside reflection for project context ── */}
+        {data.tech && data.tech.length > 0 && (
+          <div style={{ marginBottom: 80 }}>
+            <h2 style={sectionLabelStyle(20)}>Tech &amp; Tools</h2>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {data.tech.map((t) => (
+                <span
+                  key={t}
+                  style={{
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.04em",
+                    padding: "6px 14px",
+                    border: "1px solid var(--border)", borderRadius: 20,
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Key Design Decisions */}
         {data.keyDecisions && data.keyDecisions.length > 0 && (
           <div style={{ maxWidth: 760, marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>Key Design Decisions</h2>
-            {/* ul + role="list" — custom display numbers provide ordinal context visually */}
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.keyDecisions.map((decision, i) => (
                 <li
@@ -465,7 +498,6 @@ export default function CaseStudy({ project }: Props) {
                 <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16, marginTop: 0 }}>
                   {step.title}
                 </h3>
-                {/* role="list" preserves semantics when list-style is removed (Safari/VoiceOver) */}
                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
                   {step.items.map((item, itemIdx) => (
                     <li
@@ -486,273 +518,285 @@ export default function CaseStudy({ project }: Props) {
           </div>
         </div>
 
-        {/* Visual Blocks — before/after pairs, flow maps, design system strips */}
+        {/* Visual Blocks */}
         {data.visualBlocks && data.visualBlocks.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(40)}>{data.visualBlocksHeader ?? "What Got Redesigned"}</h2>
-            {data.visualBlocks.map((block, blockIndex) => (
-              <div key={block.id} style={{ marginBottom: 72 }}>
-                {block.layout === "before-after" ? (
-                  <>
-                    {block.label && (
-                      <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
-                        {block.label}
-                      </p>
-                    )}
-                    {block.phoneScroll ? (
-                      /* Phone‑mockup side-by-side — for tall mobile screenshots */
-                      <div className="sc-phone-frames">
-                        <div>
-                          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
-                          {block.beforeSrc
-                            ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={blockIndex === 0} />
-                            : <div style={{ width: 215, height: 370, borderRadius: 32, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Before</span></div>
-                          }
-                        </div>
-                        <div>
-                          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
-                          {block.afterSrc
-                            ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
-                            : <div style={{ width: 215, height: 370, borderRadius: 32, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>After</span></div>
-                          }
-                        </div>
-                      </div>
-                    ) : (
-                      <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
-                        {/* Before — fixed portrait phone frame (9/16); sc-before-panel expands to full width on mobile */}
-                        <div className="sc-before-panel" style={{ flexShrink: 0 }}>
-                          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
-                            Before
-                          </p>
-                          <div
-                            className="sc-before-panel-inner"
-                            style={{
-                              width: 240, aspectRatio: "9/16",
-                              position: "relative",
-                              background: "var(--card-bg)",
-                              border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
-                              borderRadius: 12, overflow: "hidden",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                            }}
-                          >
-                            {block.beforeSrc ? (
-                              <Image
-                                src={block.beforeSrc}
-                                alt={`${block.label ?? block.caption} — Before`}
-                                fill
-                                sizes="(max-width: 600px) 240px, 240px"
-                                style={{ objectFit: "cover" }}
-                              />
-                            ) : (
-                              <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                                Before screenshot
-                              </span>
-                            )}
-                          </div>
-                        </div>
 
-                        {/* After — uncapped so composite images (multiple phones) can breathe */}
-                        <div style={{ flex: 1, minWidth: 280 }}>
-                          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
-                            After
-                          </p>
-                          <div
-                            style={{
-                              background: "var(--card-bg)",
-                              border: `1px ${block.afterSrc ? "solid" : "dashed"} var(--border)`,
-                              borderRadius: 12, overflow: "hidden",
-                              ...(block.afterSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }),
-                            }}
-                          >
-                            {block.afterSrc ? (
-                              <Image
-                                src={block.afterSrc}
-                                alt={`${block.label ?? block.caption} — After`}
-                                width={0}
-                                height={0}
-                                sizes="(max-width: 768px) calc(100vw - 48px), 700px"
-                                style={{ width: "100%", height: "auto", display: "block" }}
-                              />
-                            ) : (
-                              <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                                After screenshot
-                              </span>
-                            )}
+            {/* 2-column grid wrapper for Netflix-style layouts */}
+            <div className={data.visualBlocksColumns === 2 ? "sc-vblocks-2col" : undefined}>
+              {data.visualBlocks.map((block, blockIndex) => (
+                <div
+                  key={block.id}
+                  className={data.visualBlocksColumns === 2 && block.noContainer ? "sc-full-span" : undefined}
+                  style={{ marginBottom: data.visualBlocksColumns === 2 ? 0 : 72 }}
+                >
+
+                  {/* ── before-after ── */}
+                  {block.layout === "before-after" ? (
+                    <>
+                      {block.label && (
+                        <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
+                          {block.label}
+                        </p>
+                      )}
+                      {block.phoneScroll ? (
+                        /* Phone‑mockup side-by-side */
+                        <div className="sc-phone-frames">
+                          <div>
+                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
+                            {block.beforeSrc
+                              ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={blockIndex === 0} />
+                              : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Before</span></div>
+                            }
+                          </div>
+                          <div>
+                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
+                            {block.afterSrc
+                              ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
+                              : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>After</span></div>
+                            }
                           </div>
                         </div>
-                      </div>
-                    )}
-                    {/* Caption */}
-                    <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-                      {block.caption}
-                    </p>
-                  </>
-                ) : block.layout === "screen-grid" ? (
-                  /* Hi-fi screen grid — renders each SVG/PNG in a phone-frame cell */
-                  <>
-                    <div className="sc-screen-grid">
-                      {(block.screens ?? []).map((screen, idx) => (
-                        <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                          {/* Step number — decorative, screen label below provides the text */}
-                          <span aria-hidden="true" style={{
-                            fontFamily: mono, fontSize: 9, letterSpacing: "0.08em",
-                            textTransform: "uppercase", color: "var(--accent)",
-                          }}>
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-                          {/* Phone frame — enforced 9:16 so all cells align regardless of SVG intrinsics */}
-                          <div style={{
-                            width: "100%",
-                            aspectRatio: "9/16",
-                            background: "var(--card-bg)",
-                            border: "1px solid var(--border)",
-                            borderRadius: 20,
-                            overflow: "hidden",
-                            boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
-                            position: "relative",
-                          }}>
-                            {/* SVGs: use plain img — no Next.js optimization needed for vectors */}
-                            <img
-                              src={screen.src}
-                              alt={`${screen.label} screen`}
-                              loading={idx === 0 ? "eager" : "lazy"}
-                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                            />
+                      ) : (
+                        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
+                          {/* Before — fixed portrait frame */}
+                          <div className="sc-before-panel" style={{ flexShrink: 0 }}>
+                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
+                            <div
+                              className="sc-before-panel-inner"
+                              style={{
+                                width: 240, aspectRatio: "9/16",
+                                position: "relative",
+                                background: "var(--card-bg)",
+                                border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
+                                borderRadius: 12, overflow: "hidden",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                              }}
+                            >
+                              {block.beforeSrc ? (
+                                <Image
+                                  src={block.beforeSrc}
+                                  alt={`${block.label ?? block.caption} — Before`}
+                                  fill
+                                  sizes="(max-width: 600px) 240px, 240px"
+                                  priority={blockIndex === 0}
+                                  style={{ objectFit: "cover" }}
+                                />
+                              ) : (
+                                <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                                  Before screenshot
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          {/* Screen label — text-secondary for legibility in both light and dark */}
-                          <span style={{
-                            fontFamily: mono, fontSize: 9, letterSpacing: "0.06em",
-                            textTransform: "uppercase", color: "var(--text-secondary)",
-                            textAlign: "center",
-                          }}>
-                            {screen.label}
-                          </span>
+
+                          {/* After — uncapped so composite images breathe */}
+                          <div style={{ flex: 1, minWidth: 280 }}>
+                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
+                            <div
+                              style={{
+                                background: "var(--card-bg)",
+                                border: `1px ${block.afterSrc ? "solid" : "dashed"} var(--border)`,
+                                borderRadius: 12, overflow: "hidden",
+                                ...(block.afterSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }),
+                              }}
+                            >
+                              {block.afterSrc ? (
+                                <Image
+                                  src={block.afterSrc}
+                                  alt={`${block.label ?? block.caption} — After`}
+                                  width={0}
+                                  height={0}
+                                  sizes="(max-width: 768px) calc(100vw - 48px), 700px"
+                                  priority={blockIndex === 0}
+                                  style={{ width: "100%", height: "auto", display: "block" }}
+                                />
+                              ) : (
+                                <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                                  After screenshot
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                    <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-                      {block.caption}
-                    </p>
-                  </>
-                ) : block.layout === "side-by-side" ? (
-                  /* Two images side-by-side — each at 50% width, stacks on mobile */
-                  <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-                    {/* Left image */}
-                    <div style={{ flex: 1, minWidth: 240 }}>
-                      <div style={{
-                        background: "var(--card-bg)",
-                        border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
-                        borderRadius: 12, overflow: "hidden", marginBottom: 10,
-                        ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "4/3" }),
-                      }}>
-                        {block.imageSrc ? (
-                          <Image
-                            src={block.imageSrc}
-                            alt={block.caption}
-                            width={0}
-                            height={0}
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            style={{ width: "100%", height: "auto", display: "block" }}
-                          />
-                        ) : (
-                          <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Image</span>
-                        )}
-                      </div>
-                      <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                      )}
+                      <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
                         {block.caption}
                       </p>
-                    </div>
+                    </>
 
-                    {/* Right image */}
-                    {block.imageSrc2 && (
+                  ) : block.layout === "screen-grid" ? (
+                    /* Hi-fi screen grid — full height, no forced aspect ratio */
+                    <>
+                      <div className="sc-screen-grid">
+                        {(block.screens ?? []).map((screen, idx) => (
+                          <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                            <span aria-hidden="true" style={{
+                              fontFamily: mono, fontSize: 9, letterSpacing: "0.08em",
+                              textTransform: "uppercase", color: "var(--accent)",
+                            }}>
+                              {String(idx + 1).padStart(2, "0")}
+                            </span>
+                            {/* Phone frame — natural height, no forced crop */}
+                            <div style={{
+                              width: "100%",
+                              background: "var(--card-bg)",
+                              border: "1px solid var(--border)",
+                              borderRadius: 20,
+                              overflow: "hidden",
+                              boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                            }}>
+                              <img
+                                src={screen.src}
+                                alt={`${screen.label} screen`}
+                                loading={idx === 0 ? "eager" : "lazy"}
+                                style={{ width: "100%", height: "auto", display: "block" }}
+                              />
+                            </div>
+                            <span style={{
+                              fontFamily: mono, fontSize: 9, letterSpacing: "0.06em",
+                              textTransform: "uppercase", color: "var(--text-secondary)",
+                              textAlign: "center",
+                            }}>
+                              {screen.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
+                        {block.caption}
+                      </p>
+                    </>
+
+                  ) : block.layout === "side-by-side" ? (
+                    /* Two images side-by-side */
+                    <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
                       <div style={{ flex: 1, minWidth: 240 }}>
                         <div style={{
                           background: "var(--card-bg)",
-                          border: "1px solid var(--border)",
-                          borderRadius: 12, overflow: "hidden", marginBottom: 10,
-                        }}>
-                          <Image
-                            src={block.imageSrc2}
-                            alt={block.caption2 ?? block.caption}
-                            width={0}
-                            height={0}
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            style={{ width: "100%", height: "auto", display: "block" }}
-                          />
-                        </div>
-                        {block.caption2 && (
-                          <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
-                            {block.caption2}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  /* Wide / full-bleed image — or centered phone mockup when phoneScroll */
-                  <>
-                    {block.phoneScroll && block.imageSrc ? (
-                      <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
-                        <PhoneFrame src={block.imageSrc} alt={block.caption} priority={blockIndex === 0} />
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          width: "100%",
-                          background: "var(--card-bg)",
                           border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
-                          borderRadius: 12, overflow: "hidden",
-                          marginBottom: 12,
-                          display: "flex", justifyContent: "center", alignItems: "flex-start",
-                          ...(block.imageSrc ? {} : { aspectRatio: "16/9" }),
-                        }}
-                      >
-                        {block.imageSrc ? (
-                          <Image
-                            src={block.imageSrc}
-                            alt={block.caption}
-                            width={0}
-                            height={0}
-                            sizes="(max-width: 1160px) 100vw, 1160px"
-                            priority={blockIndex === 0}
-                            style={{
-                              width: "100%", height: "auto",
-                              maxHeight: "70vh", objectFit: "contain",
-                              display: "block",
-                              ...(block.blendMode ? { mixBlendMode: block.blendMode as React.CSSProperties["mixBlendMode"] } : {}),
-                            }}
-                          />
-                        ) : (
-                          <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
-                            Image
-                          </span>
-                        )}
+                          borderRadius: 12, overflow: "hidden", marginBottom: 10,
+                          ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "4/3" }),
+                        }}>
+                          {block.imageSrc ? (
+                            <Image
+                              src={block.imageSrc}
+                              alt={block.caption}
+                              width={0}
+                              height={0}
+                              sizes="(max-width: 768px) calc(100vw - 48px), 530px"
+                              style={{ width: "100%", height: "auto", display: "block" }}
+                            />
+                          ) : (
+                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Image</span>
+                          )}
+                        </div>
+                        <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                          {block.caption}
+                        </p>
                       </div>
-                    )}
-                    <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-                      {block.caption}
-                    </p>
-                  </>
-                )}
-              </div>
-            ))}
+
+                      {block.imageSrc2 && (
+                        <div style={{ flex: 1, minWidth: 240 }}>
+                          <div style={{
+                            background: "var(--card-bg)",
+                            border: "1px solid var(--border)",
+                            borderRadius: 12, overflow: "hidden", marginBottom: 10,
+                          }}>
+                            <Image
+                              src={block.imageSrc2}
+                              alt={block.caption2 ?? block.caption}
+                              width={0}
+                              height={0}
+                              sizes="(max-width: 768px) calc(100vw - 48px), 530px"
+                              style={{ width: "100%", height: "auto", display: "block" }}
+                            />
+                          </div>
+                          {block.caption2 && (
+                            <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                              {block.caption2}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                  ) : (
+                    /* Wide / full-bleed image — or centered phone mockup when phoneScroll */
+                    <>
+                      {block.phoneScroll && block.imageSrc ? (
+                        <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
+                          <PhoneFrame src={block.imageSrc} alt={block.caption} priority={blockIndex === 0} />
+                        </div>
+                      ) : (
+                        /* noContainer = no card chrome; otherwise standard card */
+                        <div
+                          style={{
+                            width: "100%",
+                            ...(block.noContainer ? {} : {
+                              background: "var(--card-bg)",
+                              border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
+                              borderRadius: 12, overflow: "hidden",
+                            }),
+                            marginBottom: 12,
+                            ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "16/9" }),
+                          }}
+                        >
+                          {block.imageSrc ? (
+                            <Image
+                              src={block.imageSrc}
+                              alt={block.caption}
+                              width={0}
+                              height={0}
+                              sizes={data.visualBlocksColumns === 2
+                                ? "(max-width: 700px) 100vw, (max-width: 1160px) 50vw, 560px"
+                                : "(max-width: 1160px) 100vw, 1160px"
+                              }
+                              priority={blockIndex === 0}
+                              style={{
+                                width: "100%", height: "auto",
+                                display: "block",
+                                borderRadius: block.noContainer ? 12 : 0,
+                                ...(block.blendMode ? { mixBlendMode: block.blendMode as React.CSSProperties["mixBlendMode"] } : {}),
+                              }}
+                            />
+                          ) : (
+                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
+                              Image
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      <p style={{
+                        fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
+                        borderLeft: "2px solid var(--accent)", paddingLeft: 12,
+                        ...(data.visualBlocksColumns === 2 ? { marginBottom: 20 } : {}),
+                      }}>
+                        {block.caption}
+                      </p>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Results (metrics) */}
+        {/* Results — single row, equal-height cards */}
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>Results</h2>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <div style={{ display: "flex", gap: 12 }}>
               {data.metrics.map((m) => (
                 <div
                   key={m.label}
                   style={{
+                    flex: 1,
                     padding: "20px 28px",
                     border: "1px solid var(--border)",
                     borderRadius: 12,
                     background: "var(--card-bg)",
-                    minWidth: 110,
                     textAlign: "center",
                   }}
                 >
@@ -790,55 +834,59 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Tech stack */}
-        {data.tech && data.tech.length > 0 && (
-          <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(20)}>Tech &amp; Tools</h2>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {data.tech.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    fontFamily: mono, fontSize: 11, letterSpacing: "0.04em",
-                    padding: "6px 14px",
-                    border: "1px solid var(--border)", borderRadius: 20,
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+        {/* ── All Projects — jump to any case study ── */}
+        <div
+          style={{
+            borderTop: "1px solid var(--border)",
+            paddingTop: 40,
+            marginBottom: 40,
+          }}
+        >
+          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 16 }}>
+            All Projects
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {projects.map((p) => (
+              <a
+                key={p.id}
+                href={`/work/${p.id}`}
+                aria-current={p.id === project.id ? "page" : undefined}
+                style={{
+                  fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  padding: "6px 16px",
+                  borderRadius: 20,
+                  border: `1px solid ${p.id === project.id ? "var(--accent)" : "var(--border)"}`,
+                  color: p.id === project.id ? "var(--accent)" : "var(--text-secondary)",
+                  background: p.id === project.id ? "var(--accent-muted)" : "transparent",
+                  textDecoration: "none",
+                  transition: "border-color 0.2s, color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  if (p.id !== project.id) {
+                    (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--text-tertiary)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (p.id !== project.id) {
+                    (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                  }
+                }}
+              >
+                {p.title}
+              </a>
+            ))}
           </div>
-        )}
+        </div>
 
-        {/* Reflection */}
-        {data.reflection && (
-          <div style={{ maxWidth: 760, marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
-            <p style={{
-              fontFamily: serif,
-              fontSize: "clamp(18px, 2.2vw, 22px)",
-              lineHeight: 1.65,
-              color: "var(--text-primary)",
-              fontWeight: 400,
-              letterSpacing: "-0.01em",
-              borderLeft: "3px solid var(--accent)",
-              paddingLeft: 24,
-              margin: 0,
-            }}>
-              {data.reflection}
-            </p>
-          </div>
-        )}
-
-        {/* Prev / Next nav */}
+        {/* Prev / Next */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            borderTop: "1px solid var(--border)",
-            paddingTop: 40,
+            paddingTop: 24,
             marginBottom: 80,
             gap: 16,
           }}
@@ -863,7 +911,7 @@ export default function CaseStudy({ project }: Props) {
                 (e.currentTarget as HTMLElement).style.outline = "none";
               }}
             >
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>← Previous</span>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>← Previous</span>
               {prevProject.title}
             </a>
           ) : <span />}
@@ -888,7 +936,7 @@ export default function CaseStudy({ project }: Props) {
                 (e.currentTarget as HTMLElement).style.outline = "none";
               }}
             >
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>Next →</span>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Next →</span>
               {nextProject.title}
             </a>
           ) : <span />}
