@@ -163,8 +163,10 @@ export default function AboutSection({ dark }: Props) {
             </p>
             <p
               style={{
-                fontFamily: sans, fontSize: 16, lineHeight: 1.7,
-                color: "var(--text-secondary)", marginBottom: 36,
+                fontFamily: sans, fontSize: 18, lineHeight: 1.6,
+                color: "var(--text-primary)", marginBottom: 36,
+                fontStyle: "italic", borderLeft: "2px solid var(--accent)",
+                paddingLeft: 16, marginLeft: 0,
               }}
             >
               The through-line: I do not hand work off. I follow it through.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 const mono  = "'JetBrains Mono', monospace";
 const serif = "'Gloock', Georgia, serif";
@@ -622,13 +623,12 @@ const FILES = [
 
 // ─────────────────────────────────────────────────────────────────────────────
 export default function BetjemanLab() {
-  const [dark, setDark]         = useState(false);
+  const [dark, setDark]         = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("theme") === "dark";
+  });
   const [scrolled, setScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
-
-  useEffect(() => {
-    setDark(localStorage.getItem("theme") === "dark");
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -653,15 +653,15 @@ export default function BetjemanLab() {
 
       {/* ── Nav ── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 clamp(24px,5vw,64px)", height: 60, backgroundColor: scrolled ? "var(--nav-bg-scrolled)" : (dark ? "rgba(9,9,14,0.72)" : "rgba(248,247,242,0.72)"), backdropFilter: "blur(20px) saturate(1.6)", borderBottom: "1px solid var(--border)", transition: "background-color 0.35s ease" }}>
-        <a href="/" style={{ fontFamily: serif, fontSize: 17, fontWeight: 400, color: "var(--text-primary)", textDecoration: "none", letterSpacing: "-0.01em" }}>
+        <Link href="/" style={{ fontFamily: serif, fontSize: 17, fontWeight: 400, color: "var(--text-primary)", textDecoration: "none", letterSpacing: "-0.01em" }}>
           Jinju Park
-        </a>
+        </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 28, height: "100%" }}>
           {(["Work", "Lab", "About", "Contact"] as const).map((label) => (
-            <a key={label} href={`/#${label.toLowerCase()}`} style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", transition: "color 0.2s" }}
+            <Link key={label} href={`/#${label.toLowerCase()}`} style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", transition: "color 0.2s" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
-            >{label}</a>
+            >{label}</Link>
           ))}
           <button onClick={handleToggle} style={{ display: "flex", alignItems: "center", gap: 7, background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "5px 13px", cursor: "pointer", fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", transition: "border-color 0.2s" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
@@ -677,10 +677,10 @@ export default function BetjemanLab() {
       <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(24px,6vw,96px)", paddingTop: 100 }}>
 
         {/* Back */}
-        <a href="/#lab" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", marginBottom: 40, transition: "color 0.2s" }}
+        <Link href="/#lab" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", marginBottom: 40, transition: "color 0.2s" }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
-        >← Lab</a>
+        >← Lab</Link>
 
         {/* Header */}
         <div style={{ marginBottom: 48 }}>
@@ -692,16 +692,29 @@ export default function BetjemanLab() {
           <h1 style={{ fontFamily: serif, fontSize: "clamp(32px,5vw,56px)", fontWeight: 400, letterSpacing: "-0.02em", color: "var(--text-primary)", marginBottom: 12, marginTop: 0 }}>
             Betjeman &amp; Barton
           </h1>
-          <p style={{ fontFamily: sans, fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.75, maxWidth: 620, marginBottom: 20 }}>
-            A luxury French tea house e-commerce concept. Hero with seasonal collection, cursor-follow image previews on category hover, product grids with hover name/price overlays, and a sticky nav with animated dropdowns — all in vanilla HTML, CSS, and JS.
+          <p style={{ fontFamily: sans, fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.75, maxWidth: 620, marginBottom: 12 }}>
+            Built without a framework — no React, no Tailwind, no build step. Pure HTML, CSS, and vanilla JS,
+            proving the fundamentals are solid underneath every abstraction in the rest of my work.
           </p>
-          <a href="https://github.com/Oinkyjinju/betjemanandbarton_tea" target="_blank" rel="noopener noreferrer"
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", textDecoration: "none", borderBottom: "1px solid var(--accent)", paddingBottom: 2, transition: "opacity 0.2s" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-          >
-            View on GitHub ↗
-          </a>
+          <p style={{ fontFamily: sans, fontSize: 15, color: "var(--text-tertiary)", lineHeight: 1.65, maxWidth: 620, marginBottom: 20 }}>
+            Hero with seasonal collection, cursor-follow image previews on category hover, product grids with hover name/price overlays, and a sticky nav with animated dropdowns.
+          </p>
+          <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+            <a href="https://github.com/Oinkyjinju/betjemanandbarton_tea" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", textDecoration: "none", borderBottom: "1px solid var(--accent)", paddingBottom: 2, transition: "opacity 0.2s" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+            >
+              View on GitHub ↗
+            </a>
+            <a href="https://oinkyjinju.github.io/betjemanandbarton_tea/" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", borderBottom: "1px solid var(--border)", paddingBottom: 2, transition: "opacity 0.2s" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+            >
+              Open full site ↗
+            </a>
+          </div>
         </div>
 
         {/* Code + Preview — stacked vertically */}
@@ -734,7 +747,7 @@ export default function BetjemanLab() {
           </div>
 
           {/* Preview — full width, tall for a proper site view */}
-          <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)", height: 800 }}>
+          <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)", height: 1000 }}>
             <iframe
               srcDoc={PREVIEW_HTML}
               title="Betjeman & Barton live preview"

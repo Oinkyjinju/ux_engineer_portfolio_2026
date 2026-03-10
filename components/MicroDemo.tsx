@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { motion, useSpring, useMotionValue } from "framer-motion";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SQUISHY CURSOR
@@ -220,13 +221,6 @@ function useXRay() {
 // ─────────────────────────────────────────────────────────────────────────────
 // DEMO PAGE
 // ─────────────────────────────────────────────────────────────────────────────
-const FEATURE_CARDS = [
-  { n: "01", title: "Squishy Cursor",         color: "#a78bfa", desc: "Move your mouse and hover the buttons below. The cursor morphs and inverts with mix-blend-mode: difference." },
-  { n: "02", title: "Scramble Text",          color: "#34d399", desc: "Scroll down to trigger the text scramble. Characters resolve left-to-right like a slow decrypt." },
-  { n: "03", title: "Needy Tab",              color: "#f87171", desc: "Switch to a different browser tab. Come back. You'll be missed." },
-  { n: "04", title: "Under the Hood",         color: "#fb923c", desc: "Toggle the X-Ray mode to reveal the component tree with outlines and labels." },
-];
-
 export default function MicroDemo() {
   const [xray, setXRay] = useXRay();
   useNeedyTab("micro-interactions — Jinju Park");
@@ -242,9 +236,9 @@ export default function MicroDemo() {
 
       {/* ── HEADER ── */}
       <header data-component="Header" className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 border-b border-white/[0.06] bg-[#06060A]/80 backdrop-blur-xl">
-        <a href="/" className="text-xs tracking-[0.2em] text-white/40 hover:text-white transition-colors">
+        <Link href="/" className="text-xs tracking-[0.2em] text-white/40 hover:text-white transition-colors">
           ← JINJU.PARK
-        </a>
+        </Link>
         <span className="text-[10px] tracking-[0.25em] text-white/20">MICRO-INTERACTIONS LAB</span>
 
         {/* X-Ray toggle */}
@@ -351,8 +345,8 @@ export default function MicroDemo() {
             <span className="text-red-400/40">↗</span>
           </div>
           <div className="font-mono text-xs text-white/20 space-y-1">
-            <p>Hidden: <code className="text-red-300">title = "Come back, I miss you 😢"</code></p>
-            <p>Visible: <code className="text-white/40">title = "micro-interactions — Jinju Park"</code></p>
+            <p>Hidden: <code className="text-red-300">title = &quot;Come back, I miss you 😢&quot;</code></p>
+            <p>Visible: <code className="text-white/40">title = &quot;micro-interactions — Jinju Park&quot;</code></p>
             <p>Favicon drawn with <code className="text-white/40">canvas.toDataURL()</code> — no file needed.</p>
           </div>
         </section>
@@ -404,7 +398,7 @@ export default function MicroDemo() {
       {/* ── FOOTER ── */}
       <footer data-component="Footer" className="border-t border-white/[0.06] px-8 py-6 flex justify-between items-center max-w-4xl mx-auto">
         <span className="text-[10px] text-white/20 tracking-widest">ALL FEATURES ARE MODULAR & COPY-PASTEABLE</span>
-        <a href="/" className="text-[10px] text-white/20 hover:text-white transition-colors tracking-widest">← BACK</a>
+        <Link href="/" className="text-[10px] text-white/20 hover:text-white transition-colors tracking-widest">← BACK</Link>
       </footer>
     </div>
   );
