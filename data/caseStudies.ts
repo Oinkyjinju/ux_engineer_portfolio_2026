@@ -16,14 +16,23 @@ export interface VisualBlock {
   screens?: { src: string; label: string }[];
 }
 
+export interface CodeFile {
+  label: string;
+  code: string;
+  language: "css" | "tsx" | "twig" | "php" | "html" | "js";
+}
+
 export interface CodeBlock {
   id: string;
   title: string;
   description: string;
-  code: string;
-  language: "css" | "tsx" | "twig" | "php" | "html" | "js";
-  previewSrc?: string;    // optional image showing the rendered output
-  previewHtml?: string;   // optional self-contained HTML rendered in an iframe
+  // Single-file (backward compat — used when `files` is absent)
+  code?: string;
+  language?: "css" | "tsx" | "twig" | "php" | "html" | "js";
+  // Multi-file tabs — takes precedence over `code`/`language`
+  files?: CodeFile[];
+  previewSrc?: string;
+  previewHtml?: string;
 }
 
 export interface CaseStudyData {
@@ -378,6 +387,58 @@ function render_layout_module( array $args ): void {
         id: "3col-overview",
         title: "Three-Column Overview Box",
         description: "Branded dark-blue section with a full-width intro column on the left and two image+text columns on the right, separated by a vertical rule. Fully responsive via media queries — stacks to single column on mobile.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.int-box-background {
+  display: flex; flex-direction: column;
+  background-color: #1D356C;
+  border-radius: 30px; padding: 8% 5%;
+}
+.threebox { display: flex; justify-content: space-between; }
+.overview-box { width: 40%; display: flex; flex-direction: column; }
+.line { width: 2px; height: 300px; margin: 0 7%; background: #d9d9d9; }
+.btn-solid {
+  background: #f47321; border: 3px solid #f47321;
+  color: #fff; padding: 10px 25px;
+}
+.btn-solid:hover { background: #fff; color: #f47321; }
+
+/* Mobile — stack to single column */
+@media (max-width: 768px) {
+  .threebox { flex-direction: column; }
+  .overview-box { width: 100%; }
+  .line { width: 300px; height: 2px; margin: 5% 0; }
+}` },
+          { label: "HTML", language: "html" as const, code: `<div class="int-box-background">
+  <h1 style="color:#fff; font-size:30pt; margin-bottom:4%;">
+    DISCOVER OUR INITIATIVES
+  </h1>
+  <div class="threebox">
+    <div class="intro-box">
+      <p style="color:#fff;">Since our founding, we've helped organizations
+        enhance their impact. Initiatives like the
+        <a style="color:#F47321;" href="#">Global Outreach Initiative</a>
+        create opportunities for businesses to thrive.
+      </p>
+      <div style="margin:50px 0 0;">
+        <a class="btn-solid" href="#">LEARN MORE</a>
+      </div>
+    </div>
+    <div style="display:flex;">
+      <div class="overview-box">
+        <img src="img/program-a.jpg" width="200" alt="Global Outreach">
+        <p style="color:#f47321;"><b>Global Outreach Program</b></p>
+        <p style="color:#fff;">Fostering global connections and business growth.</p>
+      </div>
+      <div class="line"></div>
+      <div class="overview-box">
+        <img src="img/program-b.jpg" width="200" alt="Sustainability">
+        <p style="color:#f47321;"><b>Sustainability Focus</b></p>
+        <p style="color:#fff;">Leading sustainable practices across industries.</p>
+      </div>
+    </div>
+  </div>
+</div>` },
+        ],
         language: "html",
         code: `<style>
 .int-box-background {
@@ -466,6 +527,55 @@ body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:16px;}
         id: "css-callout-tabs",
         title: "CSS Category Tabs",
         description: "Pure CSS tabbed interface using hidden radio inputs — zero JavaScript. Tabs activate on :checked state; selected tab gets branded background color. Five content categories displayed in separate tab panels.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.tabs2 {
+  padding: 1% 3% 3%;
+  background-color: #E5E5E5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3%;
+}
+.tabs2 label {
+  order: 1;
+  display: flex; justify-content: center; align-items: center;
+  padding: .6875rem 1.25rem .8125rem;
+  cursor: pointer;
+  margin: 2.5%;
+  font-size: 1.5rem;
+  background-color: #fff;
+  border: 3px solid #006298;
+  transition: background ease 0.3s;
+}
+.tabs2 .tab2 {
+  order: 9; flex-grow: 1; width: 85%;
+  display: none; background: #fff;
+}
+.tabs2 label:hover,
+.tabs2 input[type="radio"]:checked + label {
+  background: #006298; color: #fff;
+}
+.tabs2 input[type="radio"] { display: none; }
+.tabs2 input[type="radio"]:checked + label + .tab2 {
+  display: block; padding: 2%;
+}` },
+          { label: "HTML", language: "html" as const, code: `<div class="tabs2">
+  <input id="Art" checked name="tabs2" type="radio">
+  <label for="Art">Art &amp; Design</label>
+  <div class="tab2">
+    Lorem ipsum dolor sit amet...
+    <a style="color:#E6510F;" href="#">Read more</a>
+  </div>
+
+  <input id="Technology" name="tabs2" type="radio">
+  <label for="Technology">Technology Innovations</label>
+  <div class="tab2">Ut enim ad minim veniam...</div>
+
+  <input id="Travel" name="tabs2" type="radio">
+  <label for="Travel">Travel Destinations</label>
+  <div class="tab2">Duis aute irure dolor...</div>
+</div>` },
+        ],
         language: "html",
         code: `<style>
 .tabs2 {
@@ -547,6 +657,53 @@ a{color:#E6510F;}
         id: "az-tab-organizer",
         title: "A–Z Tab Organizer",
         description: "Pure CSS alphabetical tab navigator using radio inputs — no JavaScript. Each tab reveals a multi-column name list. Used for donor/member rosters where long lists need organized navigation without page reload.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.columns {
+  columns: 3 5px;
+  column-gap: 1em;
+}
+.tabs {
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.tabs label {
+  order: 1;
+  display: flex; justify-content: center; align-items: center;
+  padding: 1rem 2.3rem;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 3px solid #006298;
+  font-weight: bold;
+  transition: background ease 0.3s;
+}
+.tabs .tab {
+  order: 9; flex-grow: 1;
+  display: none; background: #fff;
+  padding: 2% 2% 2% 4%;
+}
+.tabs input[type="radio"] { display: none; }
+.tabs input[type="radio"]:checked + label {
+  background: #006298; color: #fff;
+}
+.tabs input[type="radio"]:checked + label + .tab { display: block; }` },
+          { label: "HTML", language: "html" as const, code: `<div class="tabs">
+  <input id="tabone" checked name="tabs" type="radio">
+  <label for="tabone">A–D</label>
+  <div class="tab columns">
+    <p>
+      Anonymous (9)<br>Elliot Abrams<br>Mira Adams<br>
+      <span style="color:#e6510f">*</span>Lila Carson<br>
+      Isaac Carter<br>Susan Chandler...
+    </p>
+  </div>
+
+  <input id="tabtwo" name="tabs" type="radio">
+  <label for="tabtwo">E–H</label>
+  <div class="tab columns">
+    <p>Amy Edwards<br>Noah Ellis<br>Hannah Emerson...</p>
+  </div>
+  <!-- Additional A–Z tabs... -->
+</div>` },
+        ],
         language: "html",
         code: `<style>
 .columns {
@@ -625,6 +782,46 @@ body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:12px;}
         id: "grid-icon-cards",
         title: "Grid Box with Icon Cards",
         description: "Responsive 3-column card grid with SVG icons. On hover, cards invert to dark navy (#01426A) and icons flip to white via CSS filter — no JavaScript, no additional assets. Collapses to 2-col on tablet and full-width on mobile.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.container-key {
+  width: 100%; background: #F0F0F1;
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.card {
+  float: left; position: relative;
+  text-align: left; padding: 2%;
+  transition: all 0.25s;
+}
+.card img { width: 70px; margin: 0 0 -8% 0; }
+.card:hover {
+  box-shadow: 0 12px 16px rgba(0,0,0,.2);
+  background: #01426A; color: #fff;
+}
+.card:hover img {
+  /* Inline SVG inverts to white on dark bg */
+  filter: brightness(0) invert(1);
+}
+
+@media (min-width: 991px) { .card { width: 29%; margin: 2%; } }
+@media (max-width: 767px) { .card { width: 40%; padding: 5%; } }` },
+          { label: "HTML", language: "html" as const, code: `<div class="container-key">
+  <div class="card">
+    <img src="icon-analytics.svg" alt="Analytics">
+    <h4>Explore real-time analytics and industry trends.</h4>
+    <p>Track performance metrics across all sectors.</p>
+  </div>
+  <div class="card">
+    <img src="icon-report.svg" alt="Report">
+    <h4>Download a comprehensive growth report.</h4>
+    <p>Exportable data in CSV and PDF formats.</p>
+  </div>
+  <div class="card">
+    <img src="icon-webinar.svg" alt="Webinar">
+    <h4>Join exclusive thought leadership webinars.</h4>
+    <p>Monthly sessions with industry leaders.</p>
+  </div>
+</div>` },
+        ],
         language: "html",
         code: `<style>
 .container-key {
@@ -693,6 +890,58 @@ p{font-size:11px;line-height:1.5;color:inherit;opacity:.7;}
         id: "grid-cta",
         title: "Feature Grid + CTA",
         description: "Dark-blue feature listing module with inline SVG icons and a paired CTA block. White card boxes sit inside the branded container; the CTA column has a JOIN NOW button and a text-link Log In — designed for membership conversion pages.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.box-background {
+  display: flex; flex-direction: column;
+  background-color: #1D356C;
+  border-radius: 30px; padding: 5% 5% 3%;
+}
+.listing-box {
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+}
+.box {
+  width: 47%; background: #fff;
+  border-radius: 15px; padding: 20px; margin: 10px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.box-btn {
+  width: 37%; display: flex;
+  flex-direction: row; align-items: center;
+  justify-content: space-around;
+}
+.btn-solid {
+  background: #f47321; border: 3px solid #f47321;
+  color: #fff; padding: 8px 20px; font-size: 1.25rem;
+}
+.btn-solid:hover { background: #fff; color: #f47321; }
+.btn-mute { color: #f47321; text-decoration: underline; }
+.btn-mute:hover { color: #fff; }` },
+          { label: "HTML", language: "html" as const, code: `<section>
+  <div class="box-background">
+    <h1 style="color:#fff; font-size:30pt; margin-bottom:3.5%;">
+      DISCOVER THE GLOBAL NETWORK HUB
+    </h1>
+    <section class="listing-box">
+      <div class="box">
+        <svg width="28" ...><!-- Analytics icon --></svg>
+        <p>Explore real-time analytics and industry trends.</p>
+      </div>
+      <div class="box">
+        <svg width="30" ...><!-- Report icon --></svg>
+        <p>Download a comprehensive report of network growth.</p>
+      </div>
+      <div class="box">
+        <svg width="35" ...><!-- Webinar icon --></svg>
+        <p>Participate in exclusive thought leadership webinars.</p>
+      </div>
+      <div class="box-btn">
+        <a class="btn-solid" href="/register">JOIN NOW</a>
+        <a class="btn-mute" href="/login">Log In</a>
+      </div>
+    </section>
+  </div>
+</section>` },
+        ],
         language: "html",
         code: `<style>
 .box-background {
@@ -777,6 +1026,49 @@ body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:14px;}
         id: "link-separator",
         title: "Link Separator Row",
         description: "Horizontal resource strip with vertical pipe dividers between orange links on a light gray pill background. Used for 'Additional Resources' sections — compact, scannable, zero visual hierarchy competition with surrounding content.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.resource-section {
+  padding: 0 7.5%;
+  display: flex; flex-direction: column; align-items: center;
+}
+.gray-background {
+  background-color: #F5F5F5;
+  width: 100%; display: flex;
+  justify-content: center; align-items: center;
+  flex-direction: column;
+  border-radius: 20px; padding: 3%;
+  box-shadow: 0px 4px 10px 0px rgba(0,0,0,.1);
+}
+.resource-column {
+  width: 100%; display: flex;
+  justify-content: center; align-items: center;
+}
+.resource-divider {
+  width: 2px; height: 40px;
+  background: #DFDFDF; margin: 0 35px;
+}
+.font-a { font-size: 16px; text-align: center; }` },
+          { label: "HTML", language: "html" as const, code: `<section class="resource-section">
+  <div class="gray-background">
+    <h1 style="font-size:25px;">
+      <b>ADDITIONAL RESOURCES FOR COMPANIES</b>
+    </h1>
+    <div class="resource-column">
+      <a class="font-a" style="color:#F47321;" href="#">
+        Lorem Ipsum Dolor Sit Amet
+      </a>
+      <div class="resource-divider"></div>
+      <a class="font-a" style="color:#F47321;" href="#">
+        Consectetur Adipiscing Elit
+      </a>
+      <div class="resource-divider"></div>
+      <a class="font-a" style="color:#F47321;" href="#">
+        Sed Do Eiusmod Tempor Incididunt
+      </a>
+    </div>
+  </div>
+</section>` },
+        ],
         language: "html",
         code: `<style>
 .resource-section {
@@ -849,6 +1141,79 @@ a:hover{text-decoration:underline;}
         id: "get-involved-form",
         title: "Get Involved + Mailchimp Toggle",
         description: "Two-panel membership section: an icon-list 'Get Involved' column on the left, and a 'Let's get connected' CTA panel on the right. A JOIN button triggers JS to reveal a hidden Mailchimp signup form — toggled with jQuery show/hide.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.container-getinvolved {
+  background: #01426A; padding: 4% 5%;
+  display: flex; flex-direction: column; align-items: center;
+}
+.container-get {
+  display: flex; gap: 5%; width: 100%;
+}
+.left { flex: 1.6; display: flex; flex-direction: column; gap: 20px; }
+.listing { display: flex; align-items: flex-start; gap: 14px; color: #fff; }
+.icon { width: 32px; height: 32px; flex-shrink: 0; }
+.right {
+  flex: 1; background: #F0F0F1;
+  border-radius: 8px; padding: 5%; text-align: center;
+}
+.joinbutton {
+  background: #f47321; border: 3px solid #f47321;
+  color: #fff; padding: 10px 24px;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+}
+.joinbutton:hover { background: #fff; color: #f47321; }
+.signup { padding: 4% 5%; background: #fff; margin-top: 2%; }` },
+          { label: "HTML", language: "html" as const, code: `<!-- Get Involved section — left: icon listing, right: CTA -->
+<div class="container-getinvolved">
+  <h2 style="color:#fff; font-size:40px; margin-bottom:7%;">Get Involved</h2>
+  <div class="container-get">
+
+    <!-- Icon bullet listing -->
+    <div class="left">
+      <div class="listing">
+        <svg class="icon" ...><!-- Calendar icon --></svg>
+        <p>Attend our quarterly events (approx 1 hour each).</p>
+      </div>
+      <div class="listing">
+        <svg class="icon" ...><!-- Network icon --></svg>
+        <p>Network with other members of the community.</p>
+      </div>
+      <div class="listing">
+        <svg class="icon" ...><!-- Ambassador icon --></svg>
+        <p>Act as an ambassador spreading awareness.</p>
+      </div>
+    </div>
+
+    <!-- Right CTA panel -->
+    <div class="right">
+      <h2 style="margin-bottom:4%;">Let's get connected</h2>
+      <button id="signup-show" class="joinbutton">JOIN NOW</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Mailchimp form — toggled by JS -->
+<div class="signup" id="signup-release" style="display:none;">
+  <div id="mc_embed_signup">
+    <form action="https://list-manage.com/subscribe/post?..." method="post">
+      <!-- Mailchimp fields: name, email, address, job title... -->
+    </form>
+  </div>
+  <div class="closeform">
+    <h2 id="signup-close">Close the form</h2>
+  </div>
+</div>` },
+          { label: "JS", language: "js" as const, code: `$(document).ready(function() {
+  // Show Mailchimp form on JOIN click
+  $("#signup-show").on("click", function() {
+    $("#signup-release").show();
+  });
+  // Hide on close
+  $("#signup-close").on("click", function() {
+    $("#signup-release").hide();
+  });
+});` },
+        ],
         language: "html",
         code: `<!-- Get Involved section — left: icon listing, right: CTA -->
 <div class="container-getinvolved">
@@ -942,6 +1307,65 @@ p{font-size:11px;line-height:1.5;color:#c5ddf0;margin:0;}
         id: "testimonial-carousel",
         title: "Testimonial Carousel",
         description: "Slick.js carousel for alternating dark/light testimonial slides — dark blue (#006298) and white cards with floated portrait images, a decorative overline-character dot-nav, and auto-advance at 13.5s. Loaded via CDN with jQuery.",
+        files: [
+          { label: "CSS", language: "css" as const, code: `.carousel { margin-top: 2%; }
+.slick-slide {
+  margin: 16px 26px;
+  background-color: #006298;
+  box-shadow: 0 0 13px #ccc;
+}
+/* Custom dot nav using overline characters */
+.slick-dots li button:before {
+  content: '▔▔';
+  font-size: 25px;
+  color: #006298;
+}
+.slick-dots li.slick-active button:before { opacity: 1; }
+.keytext-headD { font-size: 1.6rem; font-weight: bold; color: #fff; }
+.keytext-SubheadD { font-size: 1.2rem; color: #ececec; }
+.keytext-bodyD { font-size: 1.05rem; color: #fff; padding: 3%; }
+.keytext-line { width: 65%; margin: 2% 0; border-bottom: 3px solid #addeee; }` },
+          { label: "HTML", language: "html" as const, code: `<!-- External dependencies via CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+<div class="carousel">
+  <!-- Slide 1: Dark -->
+  <div class="BGD" style="background:#006298;">
+    <img style="float:right;" width="180" src="headshot.jpg" alt="John Doe">
+    <div class="keytext-bodyD">
+      <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+         <a style="color:#F1B49B;" href="#">Example Initiative</a>
+         has provided incredible insights."</p>
+    </div>
+    <div class="keytext-line"></div>
+    <div class="keytext-headD">Advancing Community Impact</div>
+    <div class="keytext-SubheadD">John Doe, CEO, Global Impact Corp</div>
+  </div>
+
+  <!-- Slide 2: Light -->
+  <div class="BGL" style="background:#fff;">
+    <img style="float:right;" width="200" src="headshot2.jpg" alt="Jane Smith">
+    <div style="font-size:1.05rem; padding:3%; color:#000;">
+      <p>"Thanks to the <a style="color:#e6510f;" href="#">Financial Wellness Program</a>
+         — a game-changer."</p>
+    </div>
+    <div class="keytext-line"></div>
+    <div style="font-size:1.6rem; font-weight:bold; color:#006298;">Employee Financial Wellness</div>
+    <div style="font-size:1.2rem; color:#01426A;">Jane Smith, Employee, Innovate Corp</div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>` },
+          { label: "JS", language: "js" as const, code: `$('.carousel').slick({
+  dots: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 13500,
+});` },
+        ],
         language: "html",
         code: `<!-- External dependencies via CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
@@ -1038,6 +1462,56 @@ body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:16px;}
         id: "data-badge",
         title: "Data Badge Grid",
         description: "PHP template that renders a configurable grid of dark-blue badge cards. Grid size (2–4 cols) is set via $grid_size — Bootstrap col widths are calculated dynamically. Optional border-radius variant and orange underline color for highlighted values.",
+        files: [
+          { label: "PHP", language: "php" as const, code: `<?php
+// Configurable grid — default 4 columns
+if (!isset($grid_size) || empty($grid_size)) {
+    $grid_size = 4;
+}
+$col_size = 12 / $grid_size; // Bootstrap column width
+
+if (isset($data) && !empty($data)):
+    include_css("data-badge", "/.../data-badge.css");
+?>
+<div class="data-badge-grid row">
+    <?php foreach ($data as $badge): ?>
+        <div class="col-lg-<?php echo $col_size; ?> col-md-6 col-7
+            <?php if (!empty($border_radius) && $border_radius !== 'no')
+                echo ' border_radius'; ?>">
+
+            <?php if (!empty($badge['title'])): ?>
+                <h3><?php echo esc_html($badge['title']); ?></h3>
+            <?php endif; ?>
+
+            <div class="description">
+                <?php echo $badge['description']; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>` },
+          { label: "CSS", language: "css" as const, code: `/* data-badge.css */
+.data-badge-grid [class*="col-"] {
+  background: #1D356C;
+  color: #fff;
+  padding: 24px 20px;
+  margin: 10px 0;
+  text-align: center;
+}
+.data-badge-grid h3 {
+  font-size: 2rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+.data-badge-grid .description {
+  font-size: 0.95rem; line-height: 1.5;
+}
+.data-badge-grid .border_radius { border-radius: 12px; }
+
+/* Orange underline for key values */
+.data-badge-grid u {
+  color: #F47321; text-decoration: none; font-weight: 700;
+}` },
+        ],
         language: "php",
         code: `<?php
 // Configurable grid — default 4 columns
@@ -1089,6 +1563,64 @@ body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:14px;}
         id: "image-header",
         title: "Image Header Module",
         description: "PHP template for a hero header with overlapping left/right background images and a frosted glass overlay effect via background-blend-mode. Title, left image, and right image are all configurable props — unused slots render clean markup.",
+        files: [
+          { label: "PHP", language: "php" as const, code: `<?php
+/**
+ * image-header module
+ *
+ * @param string $title        Header title text
+ * @param string $left_image   URL for left background image
+ * @param string $right_image  URL for right background image
+ */
+include_css("image-header", "/.../header.css");
+?>
+<article class="image-header">
+
+    <?php if (!empty($left_image)): ?>
+        <div class="left-image"
+             style="background-image: url(<?php echo esc_url($left_image); ?>)">
+            <div class="overlay"></div>
+        </div>
+    <?php endif; ?>
+
+    <h1><?php echo esc_html($title); ?></h1>
+
+    <?php if (!empty($right_image)): ?>
+        <div class="right-image"
+             style="background-image: url(<?php echo esc_url($right_image); ?>)">
+            <div class="overlay"></div>
+        </div>
+    <?php endif; ?>
+
+</article>` },
+          { label: "CSS", language: "css" as const, code: `/* header.css */
+.image-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 200px;
+  overflow: hidden;
+}
+.image-header h1 {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  text-align: center; z-index: 10;
+  font-size: 2rem; color: #111;
+  width: 50%;
+}
+.left-image, .right-image {
+  width: 35%; height: 250px;
+  background-size: cover; background-position: center;
+  position: relative;
+}
+.left-image { margin-left: -20px; }
+.right-image { margin-right: -20px; }
+.overlay {
+  position: absolute; inset: 0;
+  background-color: rgba(255,255,255,0.45);
+  background-blend-mode: overlay;
+}` },
+        ],
         language: "php",
         code: `<?php
 /**
@@ -1144,6 +1676,84 @@ body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:14px;}
         id: "simple-quote",
         title: "Simple Quote Block",
         description: "PHP testimonial template with headshot, company logo, decorative quote marks, and attribution. Three responsive breakpoints: desktop flex layout, tablet centered with left margin, mobile full-width stack. Accepts $bk_color for headshot background variants.",
+        files: [
+          { label: "PHP", language: "php" as const, code: `<?php if (isset($quote_text) && !empty($quote_text)): ?>
+    <?php include_css("simple-quote", "/.../simple-quote.css"); ?>
+
+    <blockquote class="simple-quote">
+
+        <!-- Headshot block -->
+        <div class="headshot-block
+            <?php echo !empty($bk_color) ? esc_attr($bk_color) : ''; ?>">
+
+            <?php if (!empty($headshot_img)): ?>
+                <img src="<?php echo esc_url($headshot_img); ?>"
+                     alt="<?php echo esc_attr($quote_name); ?>">
+            <?php endif; ?>
+
+            <?php if (!empty($company_logo)): ?>
+                <div class="logo-wrap">
+                    <img src="<?php echo esc_url($company_logo); ?>"
+                         alt="Company logo">
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Quote content -->
+        <div class="quote-block">
+            <img class="quote-mark open" src="##" alt="">
+            <p><?php echo $quote_text; ?></p>
+            <img class="quote-mark close" src="##" alt="">
+
+            <?php if (!empty($quote_name)): ?>
+                <cite><?php echo esc_html($quote_name); ?></cite>
+            <?php endif; ?>
+
+            <?php if (!empty($quote_affiliation)): ?>
+                <span class="affiliation">
+                    <?php echo esc_html($quote_affiliation); ?>
+                </span>
+            <?php endif; ?>
+        </div>
+
+    </blockquote>
+<?php endif; ?>` },
+          { label: "CSS", language: "css" as const, code: `/* simple-quote.css */
+.simple-quote {
+  display: flex; gap: 24px; align-items: flex-start;
+  padding: 3% 5%;
+}
+.headshot-block {
+  width: 20%; display: flex;
+  flex-direction: column; align-items: center; gap: 12px;
+}
+.headshot-block img { border-radius: 50%; max-width: 100px; }
+.logo-wrap img { max-width: 120px; object-fit: contain; }
+.quote-block {
+  flex: 1; padding-left: 24px;
+  border-left: 3px solid #1D356C;
+}
+.quote-mark { width: 30px; opacity: 0.5; }
+.quote-block p {
+  font-size: 1.05rem; line-height: 1.7; font-style: italic;
+}
+cite {
+  display: block; margin-top: 16px;
+  font-size: 1rem; font-weight: 700;
+  color: #1D356C; font-style: normal;
+}
+.affiliation { color: #76BD42; font-size: 0.9rem; }
+
+/* Responsive */
+@media (max-width: 991px) {
+  .simple-quote { justify-content: center; }
+  .headshot-block { margin-left: 3%; }
+}
+@media (max-width: 767px) {
+  .simple-quote { flex-direction: column; }
+  .headshot-block { width: 100%; flex-direction: row; }
+}` },
+        ],
         language: "php",
         code: `<?php if (isset($quote_text) && !empty($quote_text)): ?>
     <?php include_css("simple-quote", "/.../simple-quote.css"); ?>
@@ -1220,6 +1830,61 @@ cite{display:block;margin-top:12px;font-size:13px;font-weight:700;color:#1D356C;
         id: "multiple-quotes",
         title: "Multiple Quotes",
         description: "PHP loop that renders alternating left/right quote cards. Odd cards align left, even cards use flex-end to push content right. Each card accepts a background-image URL — the quote floats over the photo. Font Awesome icons for open/close quote marks.",
+        files: [
+          { label: "PHP", language: "php" as const, code: `<?php
+if (!isset($border_radius) || empty($border_radius)) {
+    $border_radius = 'yes';
+}
+
+if (isset($quotes) && !empty($quotes)):
+    include_css("multiple-quotes", "/.../multiple-quotes.css");
+?>
+<div class="multiple-quotes">
+    <?php foreach ($quotes as $key => $quote_obj): ?>
+        <div class="card
+            <?php if ($border_radius !== 'no') echo ' border_radius'; ?>"
+            style="<?php if (array_key_exists('image', $quote_obj)):
+                ?>background-image: url(<?php echo $quote_obj['image']; ?>);<?php
+            endif; ?>">
+
+            <div class="quote">
+                <i class="fa fa-quote-left" aria-hidden="true"></i>
+                <?php echo $quote_obj['text']; ?>
+                <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </div>
+
+            <?php if (array_key_exists('author', $quote_obj)): ?>
+                <div class="author"><?php echo $quote_obj['author']; ?></div>
+            <?php endif; ?>
+
+            <?php if (array_key_exists('affiliation', $quote_obj)): ?>
+                <div class="affiliation">
+                    <?php echo $quote_obj['affiliation']; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+</div>` },
+          { label: "CSS", language: "css" as const, code: `/* multiple-quotes.css */
+.multiple-quotes { display: flex; flex-direction: column; gap: 0; }
+.card {
+  background-size: cover; background-position: center;
+  padding: 4% 5%; color: #fff;
+}
+.card:nth-child(odd) {
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.card:nth-child(even) {
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+.quote {
+  width: 73%; font-size: 1.05rem;
+  line-height: 1.6; padding-bottom: 2%;
+}
+.author { font-size: 1.1rem; font-weight: 700; }
+.affiliation { font-size: 1rem; opacity: 0.8; }
+.border_radius { border-radius: 20px; margin: 10px; }` },
+        ],
         language: "php",
         code: `<?php
 if (!isset($border_radius) || empty($border_radius)) {
@@ -1276,6 +1941,69 @@ body{font-family:-apple-system,sans-serif;background:#0a1628;padding:14px;displa
         id: "listing-cards",
         title: "Listing Cards",
         description: "PHP template that renders staggered alternating-width cards — odd cards span 60% width, even cards are pushed 40% right, creating a cascade layout. Alignment (left/right cascade) and corner style are both configurable. Responsive collapses to full-width stacks.",
+        files: [
+          { label: "PHP", language: "php" as const, code: `<?php
+if (!isset($align) || empty($align)) { $align = "left"; }
+if (!isset($id) || empty($id)) { $id = 'glide' . rand(); }
+if (!isset($border_radius) || empty($border_radius)) {
+    $border_radius = 'no';
+}
+?>
+<?php if (isset($cards) && !empty($cards)): ?>
+<?php include_css("listing-cards", "/.../listing-cards.css"); ?>
+
+<!-- Dynamic layout: cascade direction set per instance via inline style -->
+<style>
+    @media (min-width: 769px) {
+        #<?php echo $id; ?> .card:nth-child(even) {
+            <?php echo $align === "left"
+                ? "margin-left: 40%;"
+                : "width: 60%;"; ?>
+        }
+        #<?php echo $id; ?> .card:nth-child(odd) {
+            <?php echo $align === "left"
+                ? "width: 60%;"
+                : "margin-left: 40%;"; ?>
+        }
+    }
+</style>
+
+<div class="listing-cards" id="<?php echo $id; ?>">
+    <?php foreach ($cards as $index => $card_obj): ?>
+        <div class="card
+            <?php if ($border_radius !== 'no') echo ' border_radius'; ?>">
+
+            <?php if (!empty($card_obj['copy'])): ?>
+                <div class="copy"><?php echo $card_obj['copy']; ?></div>
+            <?php endif; ?>
+
+            <?php if (!empty($card_obj['sub_copy'])): ?>
+                <div class="sub_copy">
+                    <?php echo $card_obj['sub_copy']; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>` },
+          { label: "CSS", language: "css" as const, code: `/* listing-cards.css */
+.listing-cards { display: flex; flex-direction: column; gap: 0; }
+.card {
+  background: #1D356C; color: #fff;
+  padding: 4% 5%; margin: 10px 0;
+}
+.card.border_radius { border-radius: 12px; }
+.copy {
+  font-size: 1.1rem; font-weight: 600;
+  line-height: 1.4; margin-bottom: 8px;
+}
+.sub_copy { font-size: 0.95rem; line-height: 1.5; color: #c5d0e8; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card { width: 100% !important; margin-left: 0 !important; }
+}` },
+        ],
         language: "php",
         code: `<?php
 if (!isset($align) || empty($align)) { $align = "left"; }
@@ -1340,6 +2068,50 @@ body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:14px;displa
         id: "partner-logos",
         title: "Partner Logos",
         description: "PHP template that loops through a $logos array and renders each as an img element inside a flex container. Label, image dimensions, and the logo source array are all configurable. Responsive via CSS: 15% width on desktop, scaling to 25–28% on mobile.",
+        files: [
+          { label: "PHP", language: "php" as const, code: `<?php if (isset($label) && !empty($label)): ?>
+    <?php include_css("partner-logos", "/.../partner-logos.css"); ?>
+
+    <div class="partner_logos">
+        <h3><?php echo esc_html($label); ?></h3>
+
+        <div class="logo_container">
+            <?php if (isset($logos) && !empty($logos)): ?>
+                <?php foreach ($logos as $index => $logo_src): ?>
+                    <img src="<?php echo esc_url($logo_src); ?>"
+                        <?php if (!empty($image_width)): ?>
+                            width="<?php echo esc_attr($image_width); ?>"
+                        <?php endif; ?>
+                        <?php if (!empty($image_height)): ?>
+                            height="<?php echo esc_attr($image_height); ?>"
+                        <?php endif; ?>
+                        alt="Partner logo"
+                    />
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>` },
+          { label: "CSS", language: "css" as const, code: `/* partner-logos.css */
+.partner_logos { padding: 3% 5%; }
+.partner_logos h3 {
+  font-size: 1.2rem; text-transform: uppercase;
+  letter-spacing: 0.06em; padding-bottom: 12px;
+  border-bottom: 2px solid #ddd; margin-bottom: 20px;
+}
+.logo_container {
+  display: flex; flex-wrap: wrap;
+  align-items: center; gap: 0;
+}
+.logo_container img {
+  width: 15%; margin-right: 40px; margin-bottom: 10px;
+  object-fit: contain; height: auto;
+}
+
+/* Responsive */
+@media (max-width: 991px) { .logo_container img { width: 25%; } }
+@media (max-width: 767px) { .logo_container img { width: 28%; } }` },
+        ],
         language: "php",
         code: `<?php if (isset($label) && !empty($label)): ?>
     <?php include_css("partner-logos", "/.../partner-logos.css"); ?>
