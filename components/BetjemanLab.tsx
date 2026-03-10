@@ -357,8 +357,7 @@ const PREVIEW_HTML = `<!DOCTYPE html>
     .nav-right .fa-solid { font-size:20px; }
     .hamburger-menu { display:none; cursor:pointer; }
     li { position:relative; }
-    .dropdown_menu { position:absolute; top:48px; min-width:180px; background:var(--color-pearl); border:1px solid rgba(0,0,0,.08); border-radius:12px; box-shadow:0 12px 24px rgba(0,0,0,.08); padding:12px; opacity:0; visibility:hidden; transform:translateY(4px); transition:opacity .15s ease,transform .15s ease,visibility 0s linear .15s; z-index:1100; pointer-events:none; }
-    .dropdown_menu#menu1{left:50px} .dropdown_menu#menu2{left:120px} .dropdown_menu#menu3{left:220px} .dropdown_menu#menu4{left:340px} .dropdown_menu#menu5{left:450px}
+    .dropdown_menu { position:absolute; top:48px; left:0; min-width:180px; background:var(--color-pearl); border:1px solid rgba(0,0,0,.08); border-radius:12px; box-shadow:0 12px 24px rgba(0,0,0,.08); padding:12px; opacity:0; visibility:hidden; transform:translateY(4px); transition:opacity .15s ease,transform .15s ease,visibility 0s linear .15s; z-index:1100; pointer-events:none; }
     .dropdown_menu.show { transform:translateY(0); opacity:1; visibility:visible; pointer-events:auto; transition:opacity .15s ease,transform .15s ease,visibility 0s; }
     .dropdown_list { list-style:none; display:grid; gap:6px; }
     .dropdown_list a { display:block; padding:8px 10px; border-radius:8px; font:400 14px/1.3 var(--font-body); color:var(--color-tea-charcoal); text-decoration:none; }
@@ -745,17 +744,35 @@ export default function BetjemanLab() {
             </pre>
           </div>
         </div>
+
+        {/* Preview — same width as code panel */}
+        <div style={{ height: 1000, overflow: "hidden", borderRadius: 12, border: "1px solid var(--border)", marginBottom: 80 }}>
+          <iframe
+            srcDoc={PREVIEW_HTML}
+            title="Betjeman & Barton live preview"
+            style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+            sandbox="allow-same-origin allow-scripts"
+          />
+        </div>
       </div>
 
-      {/* Preview — true full-bleed, outside the constrained container */}
-      <div style={{ height: 1000, overflow: "hidden", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", marginBottom: 80 }}>
-        <iframe
-          srcDoc={PREVIEW_HTML}
-          title="Betjeman & Barton live preview"
-          style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-          sandbox="allow-same-origin allow-scripts"
-        />
-      </div>
+      {/* Footer */}
+      <footer style={{ padding: "28px clamp(24px,6vw,96px)", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", gap: 20 }}>
+          {[
+            { label: "EMAIL",    href: "mailto:oinkyjinju@gmail.com" },
+            { label: "LINKEDIN", href: "https://www.linkedin.com/in/jinju-park/" },
+            { label: "GITHUB",   href: "https://github.com/Oinkyjinju" },
+          ].map((link) => (
+            <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
+              style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--text-secondary)", textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-secondary)"; }}
+            >{link.label}</a>
+          ))}
+        </div>
+        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>Jinju Park © 2026</span>
+      </footer>
     </div>
   );
 }
