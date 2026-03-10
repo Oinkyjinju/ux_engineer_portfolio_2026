@@ -34,6 +34,12 @@ const LAB_ITEMS = [
     desc: "Desktop-style UI with draggable windows.",
     href: "/os",
   },
+  {
+    title: "Betjeman & Barton",
+    tech: "HTML · CSS · JS",
+    desc: "Luxury tea house e-commerce concept — cursor-follow previews, dropdown nav, product hover overlays.",
+    href: "/betjeman",
+  },
 ];
 
 const FOOTER_LINKS = [
