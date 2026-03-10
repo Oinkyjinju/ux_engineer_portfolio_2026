@@ -900,6 +900,7 @@ export default function CaseStudy({ project }: Props) {
                           borderRadius: 12, overflow: "hidden",
                           border: "1px solid rgba(255,255,255,0.07)",
                           display: "flex", flexDirection: "column",
+                          height: 500,
                         }}>
                           {/* Tab bar */}
                           <div style={{
@@ -944,7 +945,7 @@ export default function CaseStudy({ project }: Props) {
                             fontFamily: mono, fontSize: 12, lineHeight: 1.7,
                             color: "#cdd6f4", padding: "20px",
                             margin: 0, overflowX: "auto", overflowY: "auto", whiteSpace: "pre",
-                            height: 500,
+                            flex: 1, minHeight: 0,
                           }}>
                             <CodeHighlight code={activeFile.code} language={activeFile.language} />
                           </pre>
