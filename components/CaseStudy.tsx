@@ -943,8 +943,8 @@ export default function CaseStudy({ project }: Props) {
                           <pre style={{
                             fontFamily: mono, fontSize: 12, lineHeight: 1.7,
                             color: "#cdd6f4", padding: "20px",
-                            margin: 0, overflowX: "auto", whiteSpace: "pre",
-                            flex: 1,
+                            margin: 0, overflowX: "auto", overflowY: "auto", whiteSpace: "pre",
+                            height: 500,
                           }}>
                             <CodeHighlight code={activeFile.code} language={activeFile.language} />
                           </pre>
@@ -958,13 +958,13 @@ export default function CaseStudy({ project }: Props) {
                         border: "1px solid var(--border)",
                         background: "var(--card-bg)",
                         display: "flex", alignItems: "stretch",
-                        minHeight: 320,
+                        height: 500,
                       }}>
                         {block.previewHtml ? (
                           <iframe
                             srcDoc={block.previewHtml}
                             title={`${block.title} preview`}
-                            style={{ width: "100%", border: "none", display: "block", minHeight: 320 }}
+                            style={{ width: "100%", border: "none", display: "block", height: "100%" }}
                             sandbox="allow-same-origin"
                           />
                         ) : block.previewSrc ? (
