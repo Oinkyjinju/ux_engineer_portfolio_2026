@@ -704,11 +704,11 @@ export default function BetjemanLab() {
           </a>
         </div>
 
-        {/* Code + Preview */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 120 }}>
+        {/* Code + Preview — stacked vertically */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 120 }}>
 
           {/* Code panel */}
-          <div style={{ background: dark ? "#0d1117" : "#1e1e2e", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", height: 500 }}>
+          <div style={{ background: dark ? "#0d1117" : "#1e1e2e", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", height: 420 }}>
             {/* Tab bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", flexShrink: 0 }}>
               <div style={{ display: "flex" }}>
@@ -733,8 +733,8 @@ export default function BetjemanLab() {
             </pre>
           </div>
 
-          {/* Preview */}
-          <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)", height: 500 }}>
+          {/* Preview — full width, tall for a proper site view */}
+          <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)", height: 800 }}>
             <iframe
               srcDoc={PREVIEW_HTML}
               title="Betjeman & Barton live preview"
