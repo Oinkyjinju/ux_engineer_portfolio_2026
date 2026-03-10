@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { type Project } from "@/data/projects";
-import { caseStudies, type CodeBlock } from "@/data/caseStudies";
+import { caseStudies, type CodeBlock, type CodeFile } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
 import { projects } from "@/data/projects";
 
@@ -84,8 +84,10 @@ const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
 });
 
 export default function CaseStudy({ project }: Props) {
-  const [dark, setDark]         = useState<boolean>(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [dark, setDark]             = useState<boolean>(false);
+  const [scrolled, setScrolled]     = useState(false);
+  // tracks which file tab is active per code block (keyed by block.id)
+  const [activeFileTabs, setActiveFileTabs] = useState<Record<string, number>>({});
   const data = caseStudies[project.id];
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
@@ -885,36 +887,70 @@ export default function CaseStudy({ project }: Props) {
                   {/* Code + preview side by side */}
                   <div style={{ display: "grid", gridTemplateColumns: (block.previewHtml || block.previewSrc) ? "1fr 1fr" : "1fr", gap: 16 }}>
                     {/* Code panel */}
-                    <div style={{
-                      background: dark ? "#0d1117" : "#1e1e2e",
-                      borderRadius: 12, overflow: "hidden",
-                      border: "1px solid rgba(255,255,255,0.07)",
-                    }}>
-                      {/* Language tag */}
-                      <div style={{
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "10px 16px",
-                        borderBottom: "1px solid rgba(255,255,255,0.07)",
-                        background: "rgba(255,255,255,0.03)",
-                      }}>
-                        <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
-                          {block.language}
-                        </span>
-                        <div style={{ display: "flex", gap: 6 }}>
-                          {["#ff5f57","#febc2e","#28c840"].map((c) => (
-                            <span key={c} aria-hidden="true" style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.7 }} />
-                          ))}
+                    {(() => {
+                      // Normalise to a files array — single-file blocks get one entry
+                      const files: CodeFile[] = block.files && block.files.length > 0
+                        ? block.files
+                        : [{ label: (block.language ?? "code").toUpperCase(), code: block.code ?? "", language: block.language ?? "html" }];
+                      const activeIdx  = activeFileTabs[block.id] ?? 0;
+                      const activeFile = files[Math.min(activeIdx, files.length - 1)];
+                      return (
+                        <div style={{
+                          background: dark ? "#0d1117" : "#1e1e2e",
+                          borderRadius: 12, overflow: "hidden",
+                          border: "1px solid rgba(255,255,255,0.07)",
+                          display: "flex", flexDirection: "column",
+                        }}>
+                          {/* Tab bar */}
+                          <div style={{
+                            display: "flex", alignItems: "center", justifyContent: "space-between",
+                            borderBottom: "1px solid rgba(255,255,255,0.07)",
+                            background: "rgba(255,255,255,0.03)",
+                            flexShrink: 0,
+                          }}>
+                            {/* File tabs */}
+                            <div style={{ display: "flex" }}>
+                              {files.map((f, i) => {
+                                const isActive = i === activeIdx;
+                                return (
+                                  <button
+                                    key={f.label}
+                                    onClick={() => setActiveFileTabs(prev => ({ ...prev, [block.id]: i }))}
+                                    style={{
+                                      fontFamily: mono, fontSize: 10, letterSpacing: "0.08em",
+                                      textTransform: "uppercase",
+                                      padding: "10px 16px",
+                                      background: "transparent", border: "none",
+                                      borderBottom: isActive ? "2px solid #F5A623" : "2px solid transparent",
+                                      color: isActive ? "#cdd6f4" : "rgba(255,255,255,0.3)",
+                                      cursor: "pointer",
+                                      transition: "color 0.15s",
+                                    }}
+                                  >
+                                    {f.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                            {/* Traffic lights */}
+                            <div style={{ display: "flex", gap: 6, padding: "0 16px" }}>
+                              {["#ff5f57","#febc2e","#28c840"].map((c) => (
+                                <span key={c} aria-hidden="true" style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.7 }} />
+                              ))}
+                            </div>
+                          </div>
+                          {/* Active file code */}
+                          <pre style={{
+                            fontFamily: mono, fontSize: 12, lineHeight: 1.7,
+                            color: "#cdd6f4", padding: "20px",
+                            margin: 0, overflowX: "auto", whiteSpace: "pre",
+                            flex: 1,
+                          }}>
+                            <CodeHighlight code={activeFile.code} language={activeFile.language} />
+                          </pre>
                         </div>
-                      </div>
-                      {/* Code */}
-                      <pre style={{
-                        fontFamily: mono, fontSize: 12, lineHeight: 1.7,
-                        color: "#cdd6f4", padding: "20px 20px",
-                        margin: 0, overflowX: "auto", whiteSpace: "pre",
-                      }}>
-                        <CodeHighlight code={block.code} language={block.language} />
-                      </pre>
-                    </div>
+                      );
+                    })()}
                     {/* Preview panel */}
                     {(block.previewHtml || block.previewSrc) && (
                       <div style={{
