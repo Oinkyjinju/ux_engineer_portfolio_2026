@@ -883,7 +883,7 @@ export default function CaseStudy({ project }: Props) {
                     {block.description}
                   </p>
                   {/* Code + preview side by side */}
-                  <div style={{ display: "grid", gridTemplateColumns: block.previewSrc ? "1fr 1fr" : "1fr", gap: 16 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: (block.previewHtml || block.previewSrc) ? "1fr 1fr" : "1fr", gap: 16 }}>
                     {/* Code panel */}
                     <div style={{
                       background: dark ? "#0d1117" : "#1e1e2e",
@@ -916,20 +916,30 @@ export default function CaseStudy({ project }: Props) {
                       </pre>
                     </div>
                     {/* Preview panel */}
-                    {block.previewSrc && (
+                    {(block.previewHtml || block.previewSrc) && (
                       <div style={{
                         borderRadius: 12, overflow: "hidden",
                         border: "1px solid var(--border)",
                         background: "var(--card-bg)",
                         display: "flex", alignItems: "stretch",
+                        minHeight: 320,
                       }}>
-                        <Image
-                          src={block.previewSrc}
-                          alt={`${block.title} preview`}
-                          width={0} height={0}
-                          sizes="(max-width: 1160px) 100vw, 560px"
-                          style={{ width: "100%", height: "auto", display: "block", objectFit: "cover" }}
-                        />
+                        {block.previewHtml ? (
+                          <iframe
+                            srcDoc={block.previewHtml}
+                            title={`${block.title} preview`}
+                            style={{ width: "100%", border: "none", display: "block", minHeight: 320 }}
+                            sandbox="allow-same-origin"
+                          />
+                        ) : block.previewSrc ? (
+                          <Image
+                            src={block.previewSrc}
+                            alt={`${block.title} preview`}
+                            width={0} height={0}
+                            sizes="(max-width: 1160px) 100vw, 560px"
+                            style={{ width: "100%", height: "auto", display: "block", objectFit: "cover" }}
+                          />
+                        ) : null}
                       </div>
                     )}
                   </div>

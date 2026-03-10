@@ -22,7 +22,8 @@ export interface CodeBlock {
   description: string;
   code: string;
   language: "css" | "tsx" | "twig" | "php" | "html" | "js";
-  previewSrc?: string;   // optional image showing the rendered output
+  previewSrc?: string;    // optional image showing the rendered output
+  previewHtml?: string;   // optional self-contained HTML rendered in an iframe
 }
 
 export interface CaseStudyData {
@@ -192,7 +193,36 @@ export const caseStudies: Record<string, CaseStudyData> = {
         title: "Design Token Architecture",
         description: "Semantic tokens layered over primitives — the two-layer system that let a full rebrand ship as a token swap, not a codebase sweep. 800+ hardcoded values replaced with a single source of truth.",
         language: "css",
-        previewSrc: "/just/just-branding-guidelines.png",
+        previewHtml: `<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'JetBrains Mono', 'Courier New', monospace; background: #f8f7f2; padding: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .swatch { border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); }
+  .color { height: 52px; }
+  .label { padding: 8px 10px; background: white; }
+  .name { font-size: 10px; color: #555; letter-spacing: 0.04em; text-transform: uppercase; }
+  .hex { font-size: 11px; color: #888; margin-top: 2px; }
+  .section { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin: 16px 0 8px; }
+</style>
+</head>
+<body>
+  <div class="section">Primitive</div>
+  <div class="grid">
+    <div class="swatch"><div class="color" style="background:#0c3545"></div><div class="label"><div class="name">teal-900</div><div class="hex">#0c3545</div></div></div>
+    <div class="swatch"><div class="color" style="background:#145064"></div><div class="label"><div class="name">teal-700</div><div class="hex">#145064</div></div></div>
+    <div class="swatch"><div class="color" style="background:#1a6678"></div><div class="label"><div class="name">teal-500</div><div class="hex">#1a6678</div></div></div>
+    <div class="swatch"><div class="color" style="background:#f8f7f2; border: 1px solid #e5e5e0;"></div><div class="label"><div class="name">neutral-100</div><div class="hex">#f8f7f2</div></div></div>
+  </div>
+  <div class="section">Semantic</div>
+  <div class="grid">
+    <div class="swatch"><div class="color" style="background:#145064"></div><div class="label"><div class="name">--color-brand</div><div class="hex">→ teal-700</div></div></div>
+    <div class="swatch"><div class="color" style="background:#0f0f0f"></div><div class="label"><div class="name">--color-text</div><div class="hex">→ neutral-900</div></div></div>
+  </div>
+</body>
+</html>`,
         code: `/* ─── Primitive layer ─── */
 :root {
   --color-teal-900: #0c3545;
@@ -218,7 +248,41 @@ export const caseStudies: Record<string, CaseStudyData> = {
         title: "Quote Block Component",
         description: "One Twig template handles pull quotes, testimonials, and stat callouts — the variant prop does the visual work, the data structure stays consistent across all three.",
         language: "twig",
-        previewSrc: "/just/just-modules-quote.png",
+        previewHtml: `<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: #f8f7f2; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px; }
+  .c-quote { padding: 20px 24px; border-radius: 8px; }
+  .c-quote--standard { background: white; border-left: 3px solid #145064; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .c-quote--stat { background: #145064; color: white; text-align: center; border-radius: 10px; padding: 24px; }
+  .c-quote__text { font-size: 15px; line-height: 1.65; color: #1a1a1a; font-style: italic; }
+  .c-quote--stat .c-quote__text { font-size: 32px; font-weight: bold; color: white; font-style: normal; }
+  .c-quote__cite { display: block; margin-top: 12px; font-size: 12px; font-family: 'Courier New', monospace; color: #888; font-style: normal; letter-spacing: 0.04em; }
+  .c-quote--stat .c-quote__cite { color: rgba(255,255,255,0.65); margin-top: 8px; }
+  .c-quote__role { display: block; font-size: 11px; color: #aaa; margin-top: 2px; }
+  .c-quote--stat .c-quote__role { color: rgba(255,255,255,0.45); }
+  .label { font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+  <div>
+    <div class="label">variant: standard</div>
+    <blockquote class="c-quote c-quote--standard">
+      <p class="c-quote__text">"The data doesn't lie — corporations that invest in their workers outperform those that don't."</p>
+      <cite class="c-quote__cite">Martin Whittaker<span class="c-quote__role">CEO, JUST Capital</span></cite>
+    </blockquote>
+  </div>
+  <div>
+    <div class="label">variant: stat</div>
+    <blockquote class="c-quote c-quote--stat">
+      <p class="c-quote__text">800+</p>
+      <cite class="c-quote__cite">hardcoded values replaced<span class="c-quote__role">across 3 dev teams, 1 design system</span></cite>
+    </blockquote>
+  </div>
+</body>
+</html>`,
         code: `{# ─── quote.twig ─── #}
 <blockquote
   class="c-quote c-quote--{{ variant | default('standard') }}"
@@ -241,7 +305,54 @@ export const caseStudies: Record<string, CaseStudyData> = {
         title: "Layout Module System",
         description: "Composable page sections built from shared layout primitives. Three development teams, one layout vocabulary — the module API was the contract that kept them from building the same thing three ways.",
         language: "php",
-        previewSrc: "/just/just-modules-layout.png",
+        previewHtml: `<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; background: #f8f7f2; padding: 20px; }
+  .page { border: 1.5px solid #c5c3be; border-radius: 8px; overflow: hidden; }
+  .zone { padding: 10px 14px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #888; border-bottom: 1px solid #e0ded9; }
+  .zone:last-child { border-bottom: none; }
+  .header { background: #145064; color: rgba(255,255,255,0.7); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; }
+  .split .zone { border-right: 1px solid #e0ded9; }
+  .split .zone:last-child { border-right: none; }
+  .footer { background: #f0ede8; color: #aaa; }
+  .prop { margin-top: 16px; }
+  .prop-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; margin-bottom: 6px; }
+  .prop-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { background: white; border: 1px solid #ddd; border-radius: 4px; padding: 3px 8px; font-size: 10px; color: #555; }
+  .tag.active { background: #145064; color: white; border-color: #145064; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="zone header">site-header</div>
+    <div class="split">
+      <div class="zone">content — primary</div>
+      <div class="zone">content — secondary</div>
+    </div>
+    <div class="zone footer">site-footer</div>
+  </div>
+  <div class="prop">
+    <div class="prop-label">$variant</div>
+    <div class="prop-row">
+      <span class="tag">full</span>
+      <span class="tag active">split</span>
+      <span class="tag">inset</span>
+    </div>
+  </div>
+  <div class="prop">
+    <div class="prop-label">$theme</div>
+    <div class="prop-row">
+      <span class="tag active">light</span>
+      <span class="tag">dark</span>
+      <span class="tag">brand</span>
+    </div>
+  </div>
+</body>
+</html>`,
         code: `<?php
 /**
  * Layout Module — flexible section builder
