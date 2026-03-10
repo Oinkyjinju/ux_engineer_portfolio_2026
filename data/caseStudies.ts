@@ -372,6 +372,1020 @@ function render_layout_module( array $args ): void {
   );
 }`,
       },
+
+      /* ── WordPress Snippets ───────────────────────────────────────────── */
+      {
+        id: "3col-overview",
+        title: "Three-Column Overview Box",
+        description: "Branded dark-blue section with a full-width intro column on the left and two image+text columns on the right, separated by a vertical rule. Fully responsive via media queries — stacks to single column on mobile.",
+        language: "html",
+        code: `<style>
+.int-box-background {
+  display: flex; flex-direction: column;
+  background-color: #1D356C;
+  border-radius: 30px; padding: 8% 5%;
+}
+.threebox { display: flex; justify-content: space-between; }
+.overview-box { width: 40%; display: flex; flex-direction: column; }
+.line { width: 2px; height: 300px; margin: 0 7%; background: #d9d9d9; }
+.btn-solid {
+  background: #f47321; border: 3px solid #f47321;
+  color: #fff; padding: 10px 25px;
+}
+.btn-solid:hover { background: #fff; color: #f47321; }
+
+/* Mobile — stack to column */
+@media (max-width: 768px) {
+  .threebox { flex-direction: column; }
+  .overview-box { width: 100%; }
+  .line { width: 300px; height: 2px; margin: 5% 0; }
+}
+</style>
+
+<div class="int-box-background">
+  <h1 style="color:#fff; font-size:30pt; margin-bottom:4%;">
+    DISCOVER OUR INITIATIVES
+  </h1>
+  <div class="threebox">
+    <div class="intro-box">
+      <p style="color:#fff;">Since our founding, we've helped organizations
+        enhance their impact through the
+        <a style="color:#F47321;" href="#">Global Outreach Initiative</a>.
+      </p>
+      <div style="margin:50px 0 0;">
+        <a class="btn-solid" href="#">LEARN MORE</a>
+      </div>
+    </div>
+    <div style="display:flex;">
+      <div class="overview-box">
+        <img src="img/program-a.jpg" width="200" alt="Global Outreach">
+        <p style="color:#f47321;"><b>Global Outreach Program</b></p>
+        <p style="color:#fff;">Fostering global connections and business growth.</p>
+      </div>
+      <div class="line"></div>
+      <div class="overview-box">
+        <img src="img/program-b.jpg" width="200" alt="Sustainability">
+        <p style="color:#f47321;"><b>Sustainability Focus</b></p>
+        <p style="color:#fff;">Leading sustainable practices across industries.</p>
+      </div>
+    </div>
+  </div>
+</div>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:16px;}
+.box{background:#1D356C;border-radius:16px;padding:24px 20px;display:flex;flex-direction:column;gap:16px;}
+.title{color:#fff;font-size:17px;font-weight:700;letter-spacing:.03em;}
+.row{display:flex;gap:12px;align-items:flex-start;}
+.intro{flex:1.4;color:#d8e0f0;font-size:12px;line-height:1.6;}
+.link{color:#f47321;}
+.btn{display:inline-block;margin-top:10px;background:#f47321;border:2px solid #f47321;color:#fff;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.06em;}
+.divider{width:2px;min-height:100px;background:#5a6e9c;flex-shrink:0;}
+.col{flex:1;display:flex;flex-direction:column;gap:5px;}
+.thumb{width:100%;height:52px;background:#2a4a8c;border-radius:4px;}
+.label{color:#f47321;font-size:10px;font-weight:700;}
+.desc{color:#b0c0d8;font-size:10px;line-height:1.4;}
+</style></head><body>
+<div class="box">
+  <div class="title">DISCOVER OUR INITIATIVES</div>
+  <div class="row">
+    <div class="intro">
+      Since our founding, we've helped organizations enhance their impact through the <span class="link">Global Outreach Initiative</span>.
+      <div><span class="btn">LEARN MORE</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="col"><div class="thumb"></div><div class="label">Global Outreach Program</div><div class="desc">Fostering global connections and business growth.</div></div>
+    <div class="divider"></div>
+    <div class="col"><div class="thumb"></div><div class="label">Sustainability Focus</div><div class="desc">Leading sustainable practices across industries.</div></div>
+  </div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "css-callout-tabs",
+        title: "CSS Category Tabs",
+        description: "Pure CSS tabbed interface using hidden radio inputs — zero JavaScript. Tabs activate on :checked state; selected tab gets branded background color. Five content categories displayed in separate tab panels.",
+        language: "html",
+        code: `<style>
+.tabs2 {
+  padding: 1% 3% 3%;
+  background-color: #E5E5E5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3%;
+}
+.tabs2 label {
+  order: 1;
+  display: flex; justify-content: center; align-items: center;
+  padding: .6875rem 1.25rem .8125rem;
+  cursor: pointer;
+  margin: 2.5%;
+  font-size: 1.5rem;
+  background-color: #fff;
+  border: 3px solid #006298;
+  transition: background ease 0.3s;
+}
+.tabs2 .tab2 {
+  order: 9; flex-grow: 1; width: 85%;
+  display: none; background: #fff;
+}
+.tabs2 label:hover,
+.tabs2 input[type="radio"]:checked + label {
+  background: #006298; color: #fff;
+}
+.tabs2 input[type="radio"] { display: none; }
+.tabs2 input[type="radio"]:checked + label + .tab2 {
+  display: block; padding: 2%;
+}
+</style>
+
+<div class="tabs2">
+  <input id="Art" checked name="tabs2" type="radio">
+  <label for="Art">Art & Design</label>
+  <div class="tab2">
+    Lorem ipsum dolor sit amet...
+    <a style="color:#E6510F;" href="#">Read more</a>
+  </div>
+
+  <input id="Technology" name="tabs2" type="radio">
+  <label for="Technology">Technology Innovations</label>
+  <div class="tab2">Ut enim ad minim veniam...</div>
+
+  <input id="Travel" name="tabs2" type="radio">
+  <label for="Travel">Travel Destinations</label>
+  <div class="tab2">Duis aute irure dolor...</div>
+</div>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:12px;}
+.tabs2{background:#E5E5E5;display:flex;flex-wrap:wrap;justify-content:center;padding:10px 10px 14px;gap:8px;}
+.tabs2 label{display:flex;justify-content:center;align-items:center;padding:8px 14px;cursor:pointer;font-size:13px;background:#fff;border:2px solid #006298;order:1;font-weight:500;}
+.tabs2 input[type="radio"]{display:none;}
+.tabs2 input[type="radio"]:checked+label{background:#006298;color:#fff;}
+.tabs2 .tab2{order:9;flex-grow:1;width:85%;display:none;background:#fff;font-size:12px;line-height:1.6;color:#333;}
+.tabs2 input[type="radio"]:checked+label+.tab2{display:block;padding:12px 14px;}
+a{color:#E6510F;}
+</style></head><body>
+<div class="tabs2">
+  <input id="p1" checked name="t" type="radio"><label for="p1">Art &amp; Design</label>
+  <div class="tab2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <a href="#">Lorem ipsum</a> dolor sit amet.</div>
+  <input id="p2" name="t" type="radio"><label for="p2">Technology</label>
+  <div class="tab2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip. <a href="#">Lorem ipsum</a> dolor sit amet.</div>
+  <input id="p3" name="t" type="radio"><label for="p3">Travel</label>
+  <div class="tab2">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</div>
+  <input id="p4" name="t" type="radio"><label for="p4">Culinary</label>
+  <div class="tab2">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</div>
+  <input id="p5" name="t" type="radio"><label for="p5">Literature</label>
+  <div class="tab2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "az-tab-organizer",
+        title: "A–Z Tab Organizer",
+        description: "Pure CSS alphabetical tab navigator using radio inputs — no JavaScript. Each tab reveals a multi-column name list. Used for donor/member rosters where long lists need organized navigation without page reload.",
+        language: "html",
+        code: `<style>
+.columns {
+  columns: 3 5px;
+  column-gap: 1em;
+}
+.tabs {
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.tabs label {
+  order: 1;
+  display: flex; justify-content: center; align-items: center;
+  padding: 1rem 2.3rem;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 3px solid #006298;
+  font-weight: bold;
+  transition: background ease 0.3s;
+}
+.tabs .tab {
+  order: 9; flex-grow: 1;
+  display: none; background: #fff;
+  padding: 2% 2% 2% 4%;
+}
+.tabs input[type="radio"] { display: none; }
+.tabs input[type="radio"]:checked + label {
+  background: #006298; color: #fff;
+}
+.tabs input[type="radio"]:checked + label + .tab { display: block; }
+</style>
+
+<div class="tabs">
+  <input id="tabone" checked name="tabs" type="radio">
+  <label for="tabone">A–D</label>
+  <div class="tab columns">
+    <p>
+      Anonymous (9)<br>Elliot Abrams<br>Mira Adams<br>
+      <span style="color:#e6510f">*</span>Lila Carson<br>
+      Isaac Carter<br>Susan Chandler...
+    </p>
+  </div>
+
+  <input id="tabtwo" name="tabs" type="radio">
+  <label for="tabtwo">E–H</label>
+  <div class="tab columns">
+    <p>Amy Edwards<br>Noah Ellis<br>Hannah Emerson...</p>
+  </div>
+  <!-- Additional A–Z tabs... -->
+</div>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:12px;}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;}
+.tabs label{order:1;display:flex;justify-content:center;align-items:center;padding:8px 14px;margin-top:2px;cursor:pointer;background:#fff;border-bottom:3px solid #006298;font-weight:bold;font-size:12px;transition:background .3s;}
+.tabs input[type="radio"]{display:none;}
+.tabs input[type="radio"]:checked+label{background:#006298;color:#fff;}
+.tabs .tab{order:9;flex-grow:1;display:none;background:#fff;padding:14px 14px 14px 20px;}
+.tabs input[type="radio"]:checked+label+.tab{display:block;}
+.cols{columns:3;column-gap:12px;font-size:11px;line-height:1.8;color:#333;}
+.star{color:#e6510f;}
+</style></head><body>
+<div class="tabs">
+  <input id="t1" checked name="t" type="radio"><label for="t1">A–D</label>
+  <div class="tab"><div class="cols">Anonymous (9)<br>Elliot Abrams<br>Mira Adams<br>Luis Alarcon<br>Jake Anderson<br>Nina Angelos<br><span class="star">*</span>Lila Carson<br>Isaac Carter<br>Susan Chandler<br>Ava Charles<br>Mia Chen<br>James Clayton<br>Omar Collins<br><span class="star">*</span>Fiona Connolly<br>Caleb Dixon<br>Emma Donovan<br>Hazel Dunn</div></div>
+  <input id="t2" name="t" type="radio"><label for="t2">E–H</label>
+  <div class="tab"><div class="cols">Amy Edwards<br>Noah Ellis<br>Hannah Emerson<br>Logan Fisher<br>Brooke Fox<br>Eli Freeman<br>Connor Garrison<br>Leo Gibson<br>Emma Gomez<br>Liam Gray<br>Henry Hale<br>Ava Harris<br>Alyssa Henderson<br>Brandon Hill<br>Isaac Hughes</div></div>
+  <input id="t3" name="t" type="radio"><label for="t3">I–L</label>
+  <div class="tab"><div class="cols">Henry Ivers<br>Emma Jacobs<br>Lily Jameson<br>Mason Johnson<br><span class="star">*</span>Olivia King<br>Sarah Lane<br>Daniel Larson<br>Ella Lawrence<br>Liam Lee<br>Ava Lewis<br>Owen Lincoln<br>Lucas Lloyd</div></div>
+  <input id="t4" name="t" type="radio"><label for="t4">M–P</label>
+  <div class="tab"><div class="cols">Maya Mitchell<br>Logan Morris<br>Ella Murray<br><span class="star">*</span>Luke Myers<br>Stella Nelson<br>Isabella Olson<br>Connor Parker<br>Henry Perez<br>Ava Peterson</div></div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "grid-icon-cards",
+        title: "Grid Box with Icon Cards",
+        description: "Responsive 3-column card grid with SVG icons. On hover, cards invert to dark navy (#01426A) and icons flip to white via CSS filter — no JavaScript, no additional assets. Collapses to 2-col on tablet and full-width on mobile.",
+        language: "html",
+        code: `<style>
+.container-key {
+  width: 100%; background: #F0F0F1;
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.card {
+  float: left; position: relative;
+  text-align: left; padding: 2%;
+  transition: all 0.25s;
+}
+.card img { width: 70px; margin: 0 0 -8% 0; }
+.card:hover {
+  box-shadow: 0 12px 16px rgba(0,0,0,.2);
+  background: #01426A; color: #fff;
+}
+.card:hover img {
+  /* Inline SVG inverts to white on dark bg */
+  filter: brightness(0) invert(1);
+}
+
+@media (min-width: 991px) { .card { width: 29%; margin: 2%; } }
+@media (max-width: 767px) { .card { width: 40%; padding: 5%; } }
+</style>
+
+<div class="container-key">
+  <div class="card">
+    <img src="icon-analytics.svg" alt="Analytics">
+    <h4>Explore real-time analytics and industry trends.</h4>
+    <p>Track performance metrics across all sectors.</p>
+  </div>
+  <div class="card">
+    <img src="icon-report.svg" alt="Report">
+    <h4>Download a comprehensive growth report.</h4>
+    <p>Exportable data in CSV and PDF formats.</p>
+  </div>
+  <div class="card">
+    <img src="icon-webinar.svg" alt="Webinar">
+    <h4>Join exclusive thought leadership webinars.</h4>
+    <p>Monthly sessions with industry leaders.</p>
+  </div>
+</div>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:12px;}
+.grid{background:#F0F0F1;display:flex;flex-wrap:wrap;justify-content:center;padding:8px;}
+.card{width:29%;margin:2%;padding:16px;transition:all .25s;cursor:pointer;position:relative;}
+.card:hover{box-shadow:0 8px 16px rgba(0,0,0,.18);background:#01426A;color:#fff;}
+.icon{width:40px;height:40px;margin-bottom:10px;background:#01426A;border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.card:hover .icon{background:#fff;}
+.dot{width:8px;height:8px;background:#fff;border-radius:50%;}
+.card:hover .dot{background:#01426A;}
+h4{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:6px;color:inherit;}
+p{font-size:11px;line-height:1.5;color:inherit;opacity:.7;}
+</style></head><body>
+<div class="grid">
+  <div class="card"><div class="icon"><div class="dot"></div></div><h4>Explore real-time analytics and industry trends.</h4><p>Track performance metrics across all sectors.</p></div>
+  <div class="card"><div class="icon"><div class="dot"></div></div><h4>Download a comprehensive growth report.</h4><p>Exportable data in CSV and PDF formats.</p></div>
+  <div class="card"><div class="icon"><div class="dot"></div></div><h4>Join exclusive thought leadership webinars.</h4><p>Monthly sessions with industry leaders.</p></div>
+  <div class="card"><div class="icon"><div class="dot"></div></div><h4>Access member-only research publications.</h4><p>Curated insights delivered quarterly.</p></div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "grid-cta",
+        title: "Feature Grid + CTA",
+        description: "Dark-blue feature listing module with inline SVG icons and a paired CTA block. White card boxes sit inside the branded container; the CTA column has a JOIN NOW button and a text-link Log In — designed for membership conversion pages.",
+        language: "html",
+        code: `<style>
+.box-background {
+  display: flex; flex-direction: column;
+  background-color: #1D356C;
+  border-radius: 30px; padding: 5% 5% 3%;
+}
+.listing-box {
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+}
+.box {
+  width: 47%; background: #fff;
+  border-radius: 15px; padding: 20px; margin: 10px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.box-btn {
+  width: 37%; display: flex;
+  flex-direction: row; align-items: center;
+  justify-content: space-around;
+}
+.btn-solid {
+  background: #f47321; border: 3px solid #f47321;
+  color: #fff; padding: 8px 20px; font-size: 1.25rem;
+}
+.btn-solid:hover { background: #fff; color: #f47321; }
+.btn-mute { color: #f47321; text-decoration: underline; }
+.btn-mute:hover { color: #fff; }
+</style>
+
+<section>
+  <div class="box-background">
+    <h1 style="color:#fff; font-size:30pt; margin-bottom:3.5%;">
+      DISCOVER THE GLOBAL NETWORK HUB
+    </h1>
+    <section class="listing-box">
+      <div class="box">
+        <svg width="28" ...><!-- Analytics icon --></svg>
+        <p>Explore real-time analytics and industry trends.</p>
+      </div>
+      <div class="box">
+        <svg width="30" ...><!-- Report icon --></svg>
+        <p>Download a comprehensive report of network growth.</p>
+      </div>
+      <div class="box">
+        <svg width="35" ...><!-- Webinar icon --></svg>
+        <p>Participate in exclusive thought leadership webinars.</p>
+      </div>
+      <div class="box-btn">
+        <a class="btn-solid" href="/register">JOIN NOW</a>
+        <a class="btn-mute" href="/login">Log In</a>
+      </div>
+    </section>
+  </div>
+</section>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:14px;}
+.outer{background:#1D356C;border-radius:18px;padding:22px 20px;}
+.title{color:#fff;font-size:16px;font-weight:700;letter-spacing:.03em;margin-bottom:14px;}
+.grid{display:flex;flex-wrap:wrap;gap:10px;}
+.box{width:calc(40% - 5px);background:#fff;border-radius:10px;padding:14px;display:flex;gap:10px;align-items:flex-start;}
+.ico{width:28px;height:28px;background:#1D356C;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dot{width:6px;height:6px;background:#fff;border-radius:50%;}
+.box p{font-size:11px;line-height:1.5;color:#111;font-weight:500;}
+.cta-col{width:calc(20% - 5px);display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;padding:8px;}
+.btn{background:#f47321;border:2px solid #f47321;color:#fff;padding:8px 14px;font-size:11px;font-weight:700;text-align:center;letter-spacing:.05em;white-space:nowrap;}
+.mute{color:#f47321;font-size:11px;text-decoration:underline;}
+</style></head><body>
+<div class="outer">
+  <div class="title">DISCOVER THE GLOBAL NETWORK HUB</div>
+  <div class="grid">
+    <div class="box"><div class="ico"><div class="dot"></div></div><p>Explore real-time analytics and industry trends.</p></div>
+    <div class="box"><div class="ico"><div class="dot"></div></div><p>Download a comprehensive report of your network's growth.</p></div>
+    <div class="box"><div class="ico"><div class="dot"></div></div><p>Participate in exclusive thought leadership webinars.</p></div>
+    <div class="cta-col"><span class="btn">JOIN NOW</span><span class="mute">Log In</span></div>
+  </div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "link-separator",
+        title: "Link Separator Row",
+        description: "Horizontal resource strip with vertical pipe dividers between orange links on a light gray pill background. Used for 'Additional Resources' sections — compact, scannable, zero visual hierarchy competition with surrounding content.",
+        language: "html",
+        code: `<style>
+.resource-section {
+  padding: 0 7.5%;
+  display: flex; flex-direction: column; align-items: center;
+}
+.gray-background {
+  background-color: #F5F5F5;
+  width: 100%; display: flex;
+  justify-content: center; align-items: center;
+  flex-direction: column;
+  border-radius: 20px; padding: 3%;
+  box-shadow: 0px 4px 10px 0px rgba(0,0,0,.1);
+}
+.resource-column {
+  width: 100%; display: flex;
+  justify-content: center; align-items: center;
+}
+.resource-divider {
+  width: 2px; height: 40px;
+  background: #DFDFDF; margin: 0 35px;
+}
+.font-a { font-size: 16px; text-align: center; }
+</style>
+
+<section class="resource-section">
+  <div class="gray-background">
+    <h1 style="font-size:25px;">
+      <b>ADDITIONAL RESOURCES FOR COMPANIES</b>
+    </h1>
+    <div class="resource-column">
+      <a class="font-a" style="color:#F47321;" href="#">
+        Lorem Ipsum Dolor Sit Amet
+      </a>
+      <div class="resource-divider"></div>
+      <a class="font-a" style="color:#F47321;" href="#">
+        Consectetur Adipiscing Elit
+      </a>
+      <div class="resource-divider"></div>
+      <a class="font-a" style="color:#F47321;" href="#">
+        Sed Do Eiusmod Tempor Incididunt
+      </a>
+    </div>
+  </div>
+</section>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:24px 16px;}
+.pill{background:#F5F5F5;border-radius:14px;padding:20px 24px;box-shadow:0 4px 10px rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;gap:14px;}
+.heading{font-size:13px;font-weight:700;text-align:center;color:#111;letter-spacing:.04em;}
+.row{display:flex;align-items:center;justify-content:center;}
+a{color:#F47321;font-size:13px;text-decoration:none;}
+a:hover{text-decoration:underline;}
+.divider{width:2px;height:36px;background:#DFDFDF;margin:0 24px;}
+</style></head><body>
+<div class="pill">
+  <div class="heading">ADDITIONAL RESOURCES FOR COMPANIES</div>
+  <div class="row">
+    <a href="#">Lorem Ipsum Dolor Sit Amet</a>
+    <div class="divider"></div>
+    <a href="#">Consectetur Adipiscing Elit</a>
+    <div class="divider"></div>
+    <a href="#">Sed Do Eiusmod Tempor Incididunt</a>
+  </div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "get-involved-form",
+        title: "Get Involved + Mailchimp Toggle",
+        description: "Two-panel membership section: an icon-list 'Get Involved' column on the left, and a 'Let's get connected' CTA panel on the right. A JOIN button triggers JS to reveal a hidden Mailchimp signup form — toggled with jQuery show/hide.",
+        language: "html",
+        code: `<!-- Get Involved section — left: icon listing, right: CTA -->
+<div class="container-getinvolved">
+  <h2 style="color:#fff; font-size:40px; margin-bottom:7%;">Get Involved</h2>
+  <div class="container-get">
+
+    <!-- Icon bullet listing -->
+    <div class="left">
+      <div class="listing">
+        <svg class="icon" ...><!-- Calendar icon --></svg>
+        <p>Attend our quarterly events (approx 1 hour each).</p>
+      </div>
+      <div class="listing">
+        <svg class="icon" ...><!-- Network icon --></svg>
+        <p>Network with other members of the community.</p>
+      </div>
+      <div class="listing">
+        <svg class="icon" ...><!-- Ambassador icon --></svg>
+        <p>Act as an ambassador spreading awareness.</p>
+      </div>
+    </div>
+
+    <!-- Right CTA panel -->
+    <div class="right">
+      <h2 style="margin-bottom:4%;">Let's get connected</h2>
+      <button id="signup-show" class="joinbutton">JOIN NOW</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Mailchimp form — toggled by JS -->
+<div class="signup" id="signup-release" style="display:none;">
+  <div id="mc_embed_signup">
+    <form action="https://list-manage.com/subscribe/post?..." method="post">
+      <!-- Mailchimp fields: name, email, address, job title... -->
+    </form>
+  </div>
+  <div class="closeform">
+    <h2 id="signup-close">Close the form</h2>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  // Show Mailchimp form on JOIN click
+  $("#signup-show").on("click", function() {
+    $("#signup-release").show();
+  });
+  // Hide on close
+  $("#signup-close").on("click", function() {
+    $("#signup-release").hide();
+  });
+});
+</script>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:0;}
+.outer{background:#01426A;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.title{color:#fff;font-size:18px;font-weight:700;}
+.row{display:flex;gap:16px;width:100%;align-items:flex-start;}
+.left{flex:1.6;display:flex;flex-direction:column;gap:12px;}
+.listing{display:flex;align-items:flex-start;gap:10px;color:#fff;}
+.ico{width:28px;height:28px;background:rgba(255,255,255,.18);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dot{width:6px;height:6px;background:#fff;border-radius:50%;}
+p{font-size:11px;line-height:1.5;color:#c5ddf0;margin:0;}
+.right{flex:1;background:#F0F0F1;border-radius:8px;padding:16px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;}
+.right h3{font-size:13px;font-weight:700;color:#111;}
+.btn{background:#f47321;border:2px solid #f47321;color:#fff;padding:8px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;cursor:pointer;}
+.link{color:#f47321;font-size:11px;}
+</style></head><body>
+<div class="outer">
+  <div class="title">Get Involved</div>
+  <div class="row">
+    <div class="left">
+      <div class="listing"><div class="ico"><div class="dot"></div></div><p>Attend our quarterly events (approx 1 hour each).</p></div>
+      <div class="listing"><div class="ico"><div class="dot"></div></div><p>Network with other members of the community.</p></div>
+      <div class="listing"><div class="ico"><div class="dot"></div></div><p>Act as an ambassador spreading awareness and engagement.</p></div>
+      <div class="listing"><div class="ico"><div class="dot"></div></div><p><span style="color:#F1B49B">Support us</span> philanthropically and share why the economy should work for all.</p></div>
+    </div>
+    <div class="right">
+      <h3>Let's get connected</h3>
+      <button class="btn">JOIN NOW</button>
+      <span class="link">Already a member? Log In</span>
+    </div>
+  </div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "testimonial-carousel",
+        title: "Testimonial Carousel",
+        description: "Slick.js carousel for alternating dark/light testimonial slides — dark blue (#006298) and white cards with floated portrait images, a decorative overline-character dot-nav, and auto-advance at 13.5s. Loaded via CDN with jQuery.",
+        language: "html",
+        code: `<!-- External dependencies via CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+<style>
+.carousel { margin-top: 2%; }
+.slick-slide {
+  margin: 16px 26px;
+  background-color: #006298;
+  box-shadow: 0 0 13px #ccc;
+}
+/* Custom dot nav using overline characters */
+.slick-dots li button:before {
+  content: '▔▔';
+  font-size: 25px;
+  color: #006298;
+}
+.slick-dots li.slick-active button:before { opacity: 1; }
+.keytext-headD { font-size: 1.6rem; font-weight: bold; color: #fff; }
+.keytext-SubheadD { font-size: 1.2rem; color: #ececec; }
+.keytext-bodyD { font-size: 1.05rem; color: #fff; padding: 3%; }
+.keytext-line { width: 65%; margin: 2% 0; border-bottom: 3px solid #addeee; }
+</style>
+
+<div class="carousel">
+  <!-- Slide 1: Dark -->
+  <div class="BGD" style="background:#006298;">
+    <img style="float:right;" width="180" src="headshot.jpg" alt="John Doe">
+    <div class="keytext-bodyD">
+      <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+         <a style="color:#F1B49B;" href="#">Example Initiative</a>
+         has provided incredible insights."</p>
+    </div>
+    <div class="keytext-line"></div>
+    <div class="keytext-headD">Advancing Community Impact</div>
+    <div class="keytext-SubheadD">John Doe, CEO, Global Impact Corp</div>
+  </div>
+
+  <!-- Slide 2: Light -->
+  <div class="BGL" style="background:#fff;">
+    <img style="float:right;" width="200" src="headshot2.jpg" alt="Jane Smith">
+    <div style="font-size:1.05rem; padding:3%; color:#000;">
+      <p>"Thanks to the <a style="color:#e6510f;" href="#">Financial Wellness Program</a>
+         — a game-changer."</p>
+    </div>
+    <div class="keytext-line"></div>
+    <div style="font-size:1.6rem; font-weight:bold; color:#006298;">Employee Financial Wellness</div>
+    <div style="font-size:1.2rem; color:#01426A;">Jane Smith, Employee, Innovate Corp</div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script>
+$('.carousel').slick({
+  dots: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 13500,
+});
+</script>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f0ede8;padding:16px;}
+.slide{background:#006298;padding:20px;box-shadow:0 4px 13px rgba(0,0,0,.15);display:flex;flex-direction:column;gap:10px;}
+.portrait{float:right;width:64px;height:64px;border-radius:4px;background:#004f7a;margin-left:12px;}
+.body-text{font-size:12px;color:#fff;line-height:1.6;}
+.link{color:#F1B49B;}
+.divider{width:60%;height:2px;background:#addeee;}
+.head{font-size:14px;font-weight:700;color:#fff;}
+.sub{font-size:12px;color:#ececec;}
+.dots{display:flex;gap:8px;margin-top:12px;justify-content:center;}
+.dot{font-size:18px;color:#006298;opacity:.4;}
+.dot.active{opacity:1;}
+</style></head><body>
+<div class="slide">
+  <div><div class="portrait" style="float:right;"></div>
+  <div class="body-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. <span class="link">Example Initiative</span> has provided incredible insights for driving change in our community efforts."</div></div>
+  <div class="divider"></div>
+  <div class="head">Advancing Community Impact</div>
+  <div class="sub">John Doe, CEO, Global Impact Corp</div>
+</div>
+<div class="dots">
+  <span class="dot active">▔▔</span>
+  <span class="dot">▔▔</span>
+</div>
+</body></html>`,
+      },
+
+      /* ── Mission & Impact PHP Modules ────────────────────────────────── */
+      {
+        id: "data-badge",
+        title: "Data Badge Grid",
+        description: "PHP template that renders a configurable grid of dark-blue badge cards. Grid size (2–4 cols) is set via $grid_size — Bootstrap col widths are calculated dynamically. Optional border-radius variant and orange underline color for highlighted values.",
+        language: "php",
+        code: `<?php
+// Configurable grid — default 4 columns
+if (!isset($grid_size) || empty($grid_size)) {
+    $grid_size = 4;
+}
+$col_size = 12 / $grid_size; // Bootstrap column width
+
+if (isset($data) && !empty($data)):
+    include_css("data-badge", "/.../data-badge.css");
+?>
+<div class="data-badge-grid row">
+    <?php foreach ($data as $badge): ?>
+        <div class="col-lg-<?php echo $col_size; ?> col-md-6 col-7
+            <?php if (!empty($border_radius) && $border_radius !== 'no')
+                echo ' border_radius'; ?>">
+
+            <?php if (!empty($badge['title'])): ?>
+                <h3><?php echo esc_html($badge['title']); ?></h3>
+            <?php endif; ?>
+
+            <div class="description">
+                <?php echo $badge['description']; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:14px;}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.badge{background:#1D356C;color:#fff;padding:16px 14px;border-radius:8px;}
+.badge h3{font-size:22px;font-weight:700;margin-bottom:6px;}
+.badge p{font-size:11px;line-height:1.5;color:#c5d0e8;}
+.badge u{color:#F47321;font-weight:bold;}
+.badge:hover{box-shadow:0 5px 15px rgba(0,0,0,.25);background:#142a5a;}
+</style></head><body>
+<div class="grid">
+  <div class="badge"><h3>1,000+</h3><p>Companies measured across <u>240+ indicators</u> annually.</p></div>
+  <div class="badge"><h3>3M+</h3><p>Users served across institutional and public audiences.</p></div>
+  <div class="badge"><h3>$9T</h3><p>Market cap represented by JUST-ranked companies.</p></div>
+  <div class="badge"><h3>7 yrs</h3><p>Continuous platform development and <u>two rebrands</u> absorbed.</p></div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "image-header",
+        title: "Image Header Module",
+        description: "PHP template for a hero header with overlapping left/right background images and a frosted glass overlay effect via background-blend-mode. Title, left image, and right image are all configurable props — unused slots render clean markup.",
+        language: "php",
+        code: `<?php
+/**
+ * image-header module
+ *
+ * @param string $title        Header title text
+ * @param string $left_image   URL for left background image
+ * @param string $right_image  URL for right background image
+ */
+include_css("image-header", "/.../header.css");
+?>
+<article class="image-header">
+
+    <?php if (!empty($left_image)): ?>
+        <div class="left-image"
+             style="background-image: url(<?php echo esc_url($left_image); ?>)">
+            <div class="overlay"></div>
+        </div>
+    <?php endif; ?>
+
+    <h1><?php echo esc_html($title); ?></h1>
+
+    <?php if (!empty($right_image)): ?>
+        <div class="right-image"
+             style="background-image: url(<?php echo esc_url($right_image); ?>)">
+            <div class="overlay"></div>
+        </div>
+    <?php endif; ?>
+
+</article>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:14px;}
+.header{position:relative;display:flex;align-items:center;justify-content:space-between;height:140px;overflow:hidden;border-radius:10px;}
+.left-img{width:200px;height:200px;background:#0F7CBB;position:absolute;left:-20px;top:-30px;z-index:0;border-radius:8px;opacity:.8;}
+.left-overlay{position:absolute;left:-10px;top:-20px;width:200px;height:200px;background:rgba(255,255,255,.45);border-radius:8px;z-index:1;}
+.right-img{width:300px;height:160px;background:#1D356C;position:absolute;right:-20px;top:-10px;z-index:0;border-radius:8px;opacity:.75;}
+.right-overlay{position:absolute;right:-10px;top:0px;width:300px;height:160px;background:rgba(255,255,255,.45);border-radius:8px;z-index:1;}
+.title{position:absolute;left:50%;transform:translateX(-50%);text-align:center;z-index:10;font-size:16px;font-weight:700;color:#111;line-height:1.3;width:50%;}
+.blue{color:#0F7CBB;}
+</style></head><body>
+<div class="header">
+  <div class="left-img"></div>
+  <div class="left-overlay"></div>
+  <div class="title">Empower Your Community:<br><span class="blue">Join the Movement</span> for Change</div>
+  <div class="right-img"></div>
+  <div class="right-overlay"></div>
+</div>
+</body></html>`,
+      },
+
+      {
+        id: "simple-quote",
+        title: "Simple Quote Block",
+        description: "PHP testimonial template with headshot, company logo, decorative quote marks, and attribution. Three responsive breakpoints: desktop flex layout, tablet centered with left margin, mobile full-width stack. Accepts $bk_color for headshot background variants.",
+        language: "php",
+        code: `<?php if (isset($quote_text) && !empty($quote_text)): ?>
+    <?php include_css("simple-quote", "/.../simple-quote.css"); ?>
+
+    <blockquote class="simple-quote">
+
+        <!-- Headshot block -->
+        <div class="headshot-block
+            <?php echo !empty($bk_color) ? esc_attr($bk_color) : ''; ?>">
+
+            <?php if (!empty($headshot_img)): ?>
+                <img src="<?php echo esc_url($headshot_img); ?>"
+                     alt="<?php echo esc_attr($quote_name); ?>">
+            <?php endif; ?>
+
+            <?php if (!empty($company_logo)): ?>
+                <div class="logo-wrap">
+                    <img src="<?php echo esc_url($company_logo); ?>"
+                         alt="Company logo">
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Quote content -->
+        <div class="quote-block">
+            <img class="quote-mark open" src="##" alt="">
+            <p><?php echo $quote_text; ?></p>
+            <img class="quote-mark close" src="##" alt="">
+
+            <?php if (!empty($quote_name)): ?>
+                <cite><?php echo esc_html($quote_name); ?></cite>
+            <?php endif; ?>
+
+            <?php if (!empty($quote_affiliation)): ?>
+                <span class="affiliation">
+                    <?php echo esc_html($quote_affiliation); ?>
+                </span>
+            <?php endif; ?>
+        </div>
+
+    </blockquote>
+<?php endif; ?>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:16px;}
+.quote{display:flex;gap:20px;align-items:flex-start;}
+.headshot-block{width:22%;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.headshot{width:70px;height:70px;border-radius:50%;background:#0F7CB8;display:flex;align-items:center;justify-content:center;}
+.initials{color:#fff;font-size:18px;font-weight:700;}
+.logo{width:80px;height:28px;background:#1D356C;border-radius:3px;display:flex;align-items:center;justify-content:center;}
+.logo-text{color:#fff;font-size:8px;font-weight:700;letter-spacing:.06em;}
+.quote-block{flex:1;border-left:3px solid #1D356C;padding-left:16px;}
+.open-mark{font-size:32px;color:#1D356C;line-height:1;margin-bottom:4px;}
+p{font-size:13px;line-height:1.7;color:#222;font-style:italic;}
+cite{display:block;margin-top:12px;font-size:13px;font-weight:700;color:#1D356C;font-style:normal;}
+.affiliation{font-size:11px;color:#76BD42;}
+</style></head><body>
+<blockquote class="quote">
+  <div class="headshot-block">
+    <div class="headshot"><div class="initials">MW</div></div>
+    <div class="logo"><div class="logo-text">JUST CAPITAL</div></div>
+  </div>
+  <div class="quote-block">
+    <div class="open-mark">"</div>
+    <p>The data doesn't lie — corporations that invest in their workers outperform those that don't, and the evidence only grows stronger every year.</p>
+    <cite>Martin Whittaker</cite>
+    <span class="affiliation">CEO, JUST Capital</span>
+  </div>
+</blockquote>
+</body></html>`,
+      },
+
+      {
+        id: "multiple-quotes",
+        title: "Multiple Quotes",
+        description: "PHP loop that renders alternating left/right quote cards. Odd cards align left, even cards use flex-end to push content right. Each card accepts a background-image URL — the quote floats over the photo. Font Awesome icons for open/close quote marks.",
+        language: "php",
+        code: `<?php
+if (!isset($border_radius) || empty($border_radius)) {
+    $border_radius = 'yes';
+}
+
+if (isset($quotes) && !empty($quotes)):
+    include_css("multiple-quotes", "/.../multiple-quotes.css");
+?>
+<div class="multiple-quotes">
+    <?php foreach ($quotes as $key => $quote_obj): ?>
+        <div class="card
+            <?php if ($border_radius !== 'no') echo ' border_radius'; ?>"
+            style="<?php if (array_key_exists('image', $quote_obj)):
+                ?>background-image: url(<?php echo $quote_obj['image']; ?>);<?php
+            endif; ?>">
+
+            <div class="quote">
+                <i class="fa fa-quote-left" aria-hidden="true"></i>
+                <?php echo $quote_obj['text']; ?>
+                <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </div>
+
+            <?php if (array_key_exists('author', $quote_obj)): ?>
+                <div class="author"><?php echo $quote_obj['author']; ?></div>
+            <?php endif; ?>
+
+            <?php if (array_key_exists('affiliation', $quote_obj)): ?>
+                <div class="affiliation">
+                    <?php echo $quote_obj['affiliation']; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+</div>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#0a1628;padding:14px;display:flex;flex-direction:column;gap:8px;}
+.card{background-size:cover;background-position:center;padding:22px;border-radius:16px;color:#fff;}
+.card:nth-child(odd){text-align:left;background:linear-gradient(135deg,#1D356C 0%,#0f2040 100%);}
+.card:nth-child(even){text-align:right;display:flex;align-items:flex-end;flex-direction:column;background:linear-gradient(135deg,#0F7CB8 0%,#0a5a8a 100%);}
+.quote-text{width:73%;font-size:13px;line-height:1.6;padding-bottom:14px;font-style:italic;}
+.card:nth-child(even) .quote-text{margin-left:auto;}
+.author{font-size:14px;font-weight:700;font-family:sans-serif;}
+.affil{font-size:13px;opacity:.75;margin-top:-2px;}
+.mark{opacity:.5;font-size:16px;}
+</style></head><body>
+<div class="card"><div class="quote-text"><span class="mark">" </span>The most important business decision you can make is how you treat the people who make your business run.<span class="mark"> "</span></div><div class="author">Sarah Chen</div><div class="affil">CFO, Meridian Group</div></div>
+<div class="card"><div class="quote-text"><span class="mark">" </span>JUST Capital gave us the framework to turn our values into measurable commitments — and hold ourselves accountable.<span class="mark"> "</span></div><div class="author">Marcus Williams</div><div class="affil">Head of ESG, Atlas Capital</div></div>
+</body></html>`,
+      },
+
+      {
+        id: "listing-cards",
+        title: "Listing Cards",
+        description: "PHP template that renders staggered alternating-width cards — odd cards span 60% width, even cards are pushed 40% right, creating a cascade layout. Alignment (left/right cascade) and corner style are both configurable. Responsive collapses to full-width stacks.",
+        language: "php",
+        code: `<?php
+if (!isset($align) || empty($align)) { $align = "left"; }
+if (!isset($id) || empty($id)) { $id = 'glide' . rand(); }
+if (!isset($border_radius) || empty($border_radius)) {
+    $border_radius = 'no';
+}
+?>
+<?php if (isset($cards) && !empty($cards)): ?>
+<?php include_css("listing-cards", "/.../listing-cards.css"); ?>
+
+<!-- Dynamic layout: cascade direction set per instance via inline style -->
+<style>
+    @media (min-width: 769px) {
+        #<?php echo $id; ?> .card:nth-child(even) {
+            <?php echo $align === "left"
+                ? "margin-left: 40%;"
+                : "width: 60%;"; ?>
+        }
+        #<?php echo $id; ?> .card:nth-child(odd) {
+            <?php echo $align === "left"
+                ? "width: 60%;"
+                : "margin-left: 40%;"; ?>
+        }
+    }
+</style>
+
+<div class="listing-cards" id="<?php echo $id; ?>">
+    <?php foreach ($cards as $index => $card_obj): ?>
+        <div class="card
+            <?php if ($border_radius !== 'no') echo ' border_radius'; ?>">
+
+            <?php if (!empty($card_obj['copy'])): ?>
+                <div class="copy"><?php echo $card_obj['copy']; ?></div>
+            <?php endif; ?>
+
+            <?php if (!empty($card_obj['sub_copy'])): ?>
+                <div class="sub_copy">
+                    <?php echo $card_obj['sub_copy']; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:14px;display:flex;flex-direction:column;gap:0;}
+.card{background:#1D356C;color:#fff;padding:18px 20px;margin:10px 0;}
+.card:nth-child(odd){width:60%;}
+.card:nth-child(even){width:60%;margin-left:40%;}
+.copy{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:6px;}
+.sub{font-size:12px;line-height:1.5;color:#c5d0e8;}
+</style></head><body>
+<div class="card"><div class="copy">Corporations that pay fair wages see 3× lower turnover.</div><div class="sub">Workforce investment data across 1,000+ companies, 2023.</div></div>
+<div class="card"><div class="copy">WCAG AA compliance is a design constraint, not a QA gate.</div><div class="sub">Built into every component spec from the first wireframe.</div></div>
+<div class="card"><div class="copy">One token system. Two full rebrands. Zero component rewrites.</div><div class="sub">150+ CSS custom properties synced to Figma variables.</div></div>
+</body></html>`,
+      },
+
+      {
+        id: "partner-logos",
+        title: "Partner Logos",
+        description: "PHP template that loops through a $logos array and renders each as an img element inside a flex container. Label, image dimensions, and the logo source array are all configurable. Responsive via CSS: 15% width on desktop, scaling to 25–28% on mobile.",
+        language: "php",
+        code: `<?php if (isset($label) && !empty($label)): ?>
+    <?php include_css("partner-logos", "/.../partner-logos.css"); ?>
+
+    <div class="partner_logos">
+        <h3><?php echo esc_html($label); ?></h3>
+
+        <div class="logo_container">
+            <?php if (isset($logos) && !empty($logos)): ?>
+                <?php foreach ($logos as $index => $logo_src): ?>
+                    <img src="<?php echo esc_url($logo_src); ?>"
+                        <?php if (!empty($image_width)): ?>
+                            width="<?php echo esc_attr($image_width); ?>"
+                        <?php endif; ?>
+                        <?php if (!empty($image_height)): ?>
+                            height="<?php echo esc_attr($image_height); ?>"
+                        <?php endif; ?>
+                        alt="Partner logo"
+                    />
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>`,
+        previewHtml: `<!DOCTYPE html><html><head><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,sans-serif;background:#f8f7f2;padding:20px;}
+.partner_logos{display:flex;flex-direction:column;gap:14px;}
+h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;padding-bottom:10px;border-bottom:2px solid #ddd;}
+.logo_container{display:flex;flex-wrap:wrap;align-items:center;gap:0;}
+.logo{width:15%;margin-right:40px;margin-bottom:10px;height:40px;background:#e8e5e0;border-radius:4px;display:flex;align-items:center;justify-content:center;object-fit:contain;}
+.logo-text{font-size:9px;color:#888;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;}
+</style></head><body>
+<div class="partner_logos">
+  <h3>Our Partners</h3>
+  <div class="logo_container">
+    <div class="logo"><div class="logo-text">FORD FOUND.</div></div>
+    <div class="logo"><div class="logo-text">BLOOMBERG</div></div>
+    <div class="logo"><div class="logo-text">JPMorgan</div></div>
+    <div class="logo"><div class="logo-text">WALMART</div></div>
+    <div class="logo"><div class="logo-text">APPLE</div></div>
+    <div class="logo"><div class="logo-text">AMAZON</div></div>
+  </div>
+</div>
+</body></html>`,
+      },
     ],
     tech: ["PHP", "Twig", "WordPress", "CSS Custom Properties", "Sass", "Figma", "Design Tokens"],
   },
