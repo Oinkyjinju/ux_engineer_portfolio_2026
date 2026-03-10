@@ -337,6 +337,7 @@ const PREVIEW_HTML = `<!DOCTYPE html>
   <style>
     /* ── reset ── */
     * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { background-color: var(--color-pearl); }
     :root {
       --color-pearl:#FCFAF7; --color-tealeaf:#5F7D6B;
       --color-tea-charcoal:#1F2522; --color-sage-mist:#C9D1CB;
@@ -356,9 +357,9 @@ const PREVIEW_HTML = `<!DOCTYPE html>
     .nav-right .fa-solid { font-size:20px; }
     .hamburger-menu { display:none; cursor:pointer; }
     li { position:relative; }
-    .dropdown_menu { position:absolute; top:48px; min-width:180px; background:var(--color-pearl); border:1px solid rgba(0,0,0,.08); border-radius:12px; box-shadow:0 12px 24px rgba(0,0,0,.08); padding:12px; opacity:0; transform:translateY(4px); transition:opacity .15s ease,transform .15s ease,visibility 0s linear .15s; z-index:1100; pointer-events:none; }
+    .dropdown_menu { position:absolute; top:48px; min-width:180px; background:var(--color-pearl); border:1px solid rgba(0,0,0,.08); border-radius:12px; box-shadow:0 12px 24px rgba(0,0,0,.08); padding:12px; opacity:0; visibility:hidden; transform:translateY(4px); transition:opacity .15s ease,transform .15s ease,visibility 0s linear .15s; z-index:1100; pointer-events:none; }
     .dropdown_menu#menu1{left:50px} .dropdown_menu#menu2{left:120px} .dropdown_menu#menu3{left:220px} .dropdown_menu#menu4{left:340px} .dropdown_menu#menu5{left:450px}
-    .dropdown_menu.show { transform:translateY(0); opacity:1; pointer-events:auto; }
+    .dropdown_menu.show { transform:translateY(0); opacity:1; visibility:visible; pointer-events:auto; transition:opacity .15s ease,transform .15s ease,visibility 0s; }
     .dropdown_list { list-style:none; display:grid; gap:6px; }
     .dropdown_list a { display:block; padding:8px 10px; border-radius:8px; font:400 14px/1.3 var(--font-body); color:var(--color-tea-charcoal); text-decoration:none; }
     .dropdown_list a:hover { background:var(--color-sage-mist); }
@@ -717,10 +718,8 @@ export default function BetjemanLab() {
           </div>
         </div>
 
-        {/* Code + Preview — stacked vertically */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 120 }}>
-
-          {/* Code panel */}
+        {/* Code panel — inside constrained container */}
+        <div style={{ marginBottom: 16 }}>
           <div style={{ background: dark ? "#0d1117" : "#1e1e2e", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", height: 420 }}>
             {/* Tab bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", flexShrink: 0 }}>
@@ -745,18 +744,17 @@ export default function BetjemanLab() {
               <CodeHighlight code={activeFile.code} language={activeFile.language} />
             </pre>
           </div>
-
-          {/* Preview — full width, tall for a proper site view */}
-          <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)", height: 1000 }}>
-            <iframe
-              srcDoc={PREVIEW_HTML}
-              title="Betjeman & Barton live preview"
-              style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-              sandbox="allow-same-origin allow-scripts"
-            />
-          </div>
-
         </div>
+      </div>
+
+      {/* Preview — true full-bleed, outside the constrained container */}
+      <div style={{ height: 1000, overflow: "hidden", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", marginBottom: 80 }}>
+        <iframe
+          srcDoc={PREVIEW_HTML}
+          title="Betjeman & Barton live preview"
+          style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+          sandbox="allow-same-origin allow-scripts"
+        />
       </div>
     </div>
   );

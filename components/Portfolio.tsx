@@ -300,17 +300,17 @@ export default function Portfolio() {
               href={link.href}
               style={{
                 fontFamily: mono, fontSize: 11, letterSpacing: "0.05em",
-                textTransform: "uppercase", color: "var(--text-tertiary)",
+                textTransform: "uppercase", color: "var(--text-secondary)",
                 textDecoration: "none", transition: "color 0.2s",
               }}
               onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
-              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
+              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-secondary)"; }}
             >
               {link.label}
             </a>
           ))}
         </div>
-        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)", letterSpacing: "0.04em" }}>
+        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
           Jinju Park © 2026
         </span>
       </footer>
