@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { type Project } from "@/data/projects";
-import { caseStudies, type CodeBlock, type CodeFile } from "@/data/caseStudies";
+import { caseStudies, type CodeFile } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
 import { projects } from "@/data/projects";
 
@@ -44,7 +45,9 @@ function PhoneFrame({ src, alt, priority = false }: { src: string; alt: string; 
 
 // ── Syntax highlight helper ────────────────────────────────────────────────
 // Lightweight, zero-dependency token colorizer for CSS/PHP/Twig/TSX snippets.
-function CodeHighlight({ code, language }: { code: string; language: string }) {
+// language is part of the API surface but this tokenizer applies the same
+// rules to all languages (CSS/PHP/HTML/TSX/JS) — no per-language branching.
+function CodeHighlight({ code }: { code: string; language: string }) {
   const rules: { re: RegExp; color: string }[] = [
     { re: /(\/\*[\s\S]*?\*\/)/g,                        color: "#6c7086" }, // block comments
     { re: /(\/\/[^\n]*|(?<![{])#[^\n{][^\n]*)/g,        color: "#6c7086" }, // line comments
@@ -84,7 +87,10 @@ const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
 });
 
 export default function CaseStudy({ project }: Props) {
-  const [dark, setDark]             = useState<boolean>(false);
+  const [dark, setDark]             = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("theme") === "dark";
+  });
   const [scrolled, setScrolled]     = useState(false);
   // tracks which file tab is active per code block (keyed by block.id)
   const [activeFileTabs, setActiveFileTabs] = useState<Record<string, number>>({});
@@ -93,10 +99,6 @@ export default function CaseStudy({ project }: Props) {
   const currentIndex = projects.findIndex((p) => p.id === project.id);
   const prevProject  = projects[currentIndex - 1];
   const nextProject  = projects[currentIndex + 1];
-
-  useEffect(() => {
-    setDark(localStorage.getItem("theme") === "dark");
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -191,7 +193,7 @@ export default function CaseStudy({ project }: Props) {
           transition: "background-color 0.35s ease, border-color 0.35s ease",
         }}
       >
-        <a
+        <Link
           href="/"
           style={{
             fontFamily: serif, fontSize: 17, fontWeight: 400,
@@ -199,7 +201,7 @@ export default function CaseStudy({ project }: Props) {
           }}
         >
           Jinju Park
-        </a>
+        </Link>
 
         <div style={{ display: "flex", alignItems: "center", gap: 28, height: "100%" }}>
           {(["Work", "Lab", "About", "Contact"] as const).map((label) => (
@@ -299,7 +301,7 @@ export default function CaseStudy({ project }: Props) {
             padding: "80px clamp(24px, 6vw, 96px) 100px",
           }}
         >
-          <a
+          <Link
             href="/#work"
             style={{
               display: "inline-flex", alignItems: "center", gap: 6,
@@ -321,7 +323,7 @@ export default function CaseStudy({ project }: Props) {
             }}
           >
             ← All work
-          </a>
+          </Link>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 28 }}>
             {project.tags.map((tag) => (
@@ -683,10 +685,13 @@ export default function CaseStudy({ project }: Props) {
                               overflow: "hidden",
                               boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
                             }}>
-                              <img
+                              <Image
                                 src={screen.src}
                                 alt={`${screen.label} screen`}
-                                loading={idx === 0 ? "eager" : "lazy"}
+                                width={0}
+                                height={0}
+                                sizes="(max-width: 768px) 100vw, 300px"
+                                priority={idx === 0}
                                 style={{ width: "100%", height: "auto", display: "block" }}
                               />
                             </div>
@@ -1110,7 +1115,7 @@ export default function CaseStudy({ project }: Props) {
           <p style={{ fontFamily: serif, fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 24, fontWeight: 400, letterSpacing: "-0.01em" }}>
             {data.ctaText ?? "Interested in working together?"}
           </p>
-          <a
+          <Link
             href="/#contact"
             style={{
               display: "inline-block",
@@ -1138,7 +1143,7 @@ export default function CaseStudy({ project }: Props) {
             }}
           >
             Get in touch →
-          </a>
+          </Link>
         </div>
       </div>
     </div>

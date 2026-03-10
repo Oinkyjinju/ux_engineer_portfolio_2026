@@ -251,9 +251,14 @@ export default function HeroSection({ dark }: Props) {
             <br />
             and what gets shipped.
             <br />
-            <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-tertiary)" }}>
-              Seven years doing both — at JUST Capital, through Wordbank/Unfold
-              for Netflix and Disney+, and with Echobind for StoryCorps.
+            <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-secondary)" }}>
+              Seven years doing both — at{" "}
+              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>JUST Capital</span>,
+              {" "}through Wordbank/Unfold for{" "}
+              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Netflix</span> and{" "}
+              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Disney+</span>,
+              {" "}and with Echobind for{" "}
+              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>StoryCorps</span>.
             </span>
           </p>
 

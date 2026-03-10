@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { Text, Billboard } from "@react-three/drei";
 import {
@@ -250,7 +250,8 @@ export default function PhysicsObject({ item, onHoverChange, onSelect, dark }: P
 
   // ── Floating behavior ───────────────────────────────────────────────────────
   // Stagger initial nudge so all 5 objects don't kick simultaneously
-  const nudgeTimer = useRef(0.5 + Math.random() * 2.5);
+  const nudgeTimer = useRef(0);
+  useEffect(() => { nudgeTimer.current = 0.5 + Math.random() * 2.5; }, []);
 
   const { camera, gl, raycaster } = useThree();
 

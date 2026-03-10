@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedBackground from "./AnimatedBackground";
 import HeroSection        from "./HeroSection";
@@ -117,6 +118,9 @@ export default function Portfolio() {
         position: "relative",
       }}
     >
+      {/* Skip navigation — WCAG 2.4.1 */}
+      <a href="#work" className="skip-nav">Skip to content</a>
+
       <AnimatedBackground dark={dark} />
 
       {/* Ripple mode-switch overlay */}
@@ -157,7 +161,7 @@ export default function Portfolio() {
           transition: "background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease",
         }}
       >
-        <a
+        <Link
           href="/"
           style={{
             fontFamily: serif, fontSize: 17, fontWeight: 400,
@@ -165,7 +169,7 @@ export default function Portfolio() {
           }}
         >
           Jinju Park
-        </a>
+        </Link>
 
         <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
           {["Work", "Lab", "About", "Contact"].map((label) => (
