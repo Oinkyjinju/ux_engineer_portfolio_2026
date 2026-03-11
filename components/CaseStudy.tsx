@@ -401,7 +401,7 @@ export default function CaseStudy({ project }: Props) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gridTemplateColumns: "1fr 1fr",
             gap: "clamp(40px, 6vw, 96px)",
             alignItems: "center",
             marginBottom: 100,
@@ -413,7 +413,7 @@ export default function CaseStudy({ project }: Props) {
 
           <div>
             <h2 style={sectionLabelStyle(20)}>The Challenge</h2>
-            <p style={{ fontFamily: serif, fontSize: "clamp(20px, 2.4vw, 26px)", lineHeight: 1.5, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
+            <p style={{ fontFamily: serif, fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.65, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
               {data.challenge}
             </p>
           </div>
@@ -443,8 +443,8 @@ export default function CaseStudy({ project }: Props) {
             <h2 style={sectionLabelStyle(20)}>Reflection</h2>
             <p style={{
               fontFamily: serif,
-              fontSize: "clamp(18px, 2.2vw, 22px)",
-              lineHeight: 1.65,
+              fontSize: "clamp(15px, 1.3vw, 18px)",
+              lineHeight: 1.7,
               color: "var(--text-primary)",
               fontWeight: 400,
               letterSpacing: "-0.01em",
