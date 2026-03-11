@@ -79,10 +79,16 @@ function CodeHighlight({ code }: { code: string; language: string }) {
   return <>{tokens.map((t, i) => t.color ? <span key={i} style={{ color: t.color }}>{t.text}</span> : <span key={i}>{t.text}</span>)}</>;
 }
 
-// Shared section-label style
+// Primary section label — design-thinking sections (Challenge, Approach, Decisions, Reflection, Results)
 const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
   fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
   textTransform: "uppercase", color: "var(--accent)",
+  marginTop: 0, marginBottom, fontWeight: 400,
+});
+// Secondary section label — logistical/process sections (Tech & Tools, How It Got Built)
+const sectionLabelSecondaryStyle = (marginBottom: number): React.CSSProperties => ({
+  fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+  textTransform: "uppercase", color: "var(--text-tertiary)",
   marginTop: 0, marginBottom, fontWeight: 400,
 });
 
@@ -437,30 +443,10 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── Reflection — moved up so it frames the decisions before the reader dives in ── */}
-        {data.reflection && (
-          <div style={{ maxWidth: 960, margin: "0 auto 80px" }}>
-            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
-            <p style={{
-              fontFamily: serif,
-              fontSize: "clamp(15px, 1.3vw, 18px)",
-              lineHeight: 1.7,
-              color: "var(--text-primary)",
-              fontWeight: 400,
-              letterSpacing: "-0.01em",
-              borderLeft: "3px solid var(--accent)",
-              paddingLeft: 24,
-              margin: 0,
-            }}>
-              {data.reflection}
-            </p>
-          </div>
-        )}
-
-        {/* ── Tech & Tools — moved up alongside reflection for project context ── */}
+        {/* ── Tech & Tools ── */}
         {data.tech && data.tech.length > 0 && (
           <div style={{ marginBottom: 80 }}>
-            <h2 style={sectionLabelStyle(20)}>Tech &amp; Tools</h2>
+            <h2 style={sectionLabelSecondaryStyle(20)}>Tech &amp; Tools</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {data.tech.map((t) => (
                 <span
@@ -479,52 +465,9 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Key Design Decisions */}
-        {data.keyDecisions && data.keyDecisions.length > 0 && (
-          <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(32)}>Key Design Decisions</h2>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                gap: "1px",
-                border: "1px solid var(--border)",
-                borderRadius: 12,
-                overflow: "hidden",
-              }}
-              role="list"
-            >
-              {data.keyDecisions.map((decision, i) => (
-                <div
-                  key={`decision-${i}`}
-                  role="listitem"
-                  style={{
-                    padding: "32px 28px",
-                    background: "var(--card-bg)",
-                  }}
-                >
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      display: "block",
-                      fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
-                      color: "var(--accent)", marginBottom: 12,
-                    }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
-                    {decision}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Process — 3 columns */}
         <div style={{ marginBottom: 100 }}>
-          <h2 style={sectionLabelStyle(40)}>How It Got Built</h2>
+          <h2 style={sectionLabelSecondaryStyle(40)}>How It Got Built</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(24px, 4vw, 56px)" }}>
             {(
               [
@@ -573,6 +516,51 @@ export default function CaseStudy({ project }: Props) {
             ))}
           </div>
         </div>
+
+        {/* Key Design Decisions */}
+        {data.keyDecisions && data.keyDecisions.length > 0 && (
+          <div style={{ marginBottom: 100 }}>
+            <h2 style={sectionLabelStyle(32)}>Key Design Decisions</h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: 0,
+                border: "1px solid var(--border)",
+                borderRadius: 12,
+                overflow: "hidden",
+              }}
+              role="list"
+            >
+              {data.keyDecisions.map((decision, i) => (
+                <div
+                  key={`decision-${i}`}
+                  role="listitem"
+                  style={{
+                    padding: "32px 28px",
+                    background: "var(--card-bg)",
+                    borderRight: "1px solid var(--border)",
+                    borderBottom: "1px solid var(--border)",
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: "block",
+                      fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
+                      color: "var(--accent)", marginBottom: 12,
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
+                    {decision}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Visual Blocks */}
         {data.visualBlocks && data.visualBlocks.length > 0 && (
@@ -846,12 +834,11 @@ export default function CaseStudy({ project }: Props) {
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>Results</h2>
-            <div style={{ display: "flex", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
               {data.metrics.map((m) => (
                 <div
                   key={m.label}
                   style={{
-                    flex: 1,
                     padding: "20px 28px",
                     border: "1px solid var(--border)",
                     borderRadius: 12,
@@ -890,6 +877,28 @@ export default function CaseStudy({ project }: Props) {
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* ── Reflection — positioned after evidence so it reads as earned wisdom ── */}
+        {data.reflection && (
+          <div style={{ maxWidth: 960, margin: "0 auto 100px" }}>
+            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
+            <blockquote style={{
+              fontFamily: serif,
+              fontSize: "clamp(18px, 1.7vw, 24px)",
+              lineHeight: 1.6,
+              color: "var(--text-primary)",
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
+              borderLeft: "4px solid var(--accent)",
+              padding: "32px 36px",
+              background: "var(--accent-muted)",
+              borderRadius: 8,
+              margin: 0,
+            }}>
+              {data.reflection}
+            </blockquote>
           </div>
         )}
 
@@ -1009,18 +1018,83 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── All Projects — jump to any case study ── */}
+        {/* Phase 2 teaser */}
+        {data.phase2Teaser && (
+          <div style={{ marginBottom: 80 }}>
+            {/* Divider with Phase 1 label */}
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 48 }}>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", whiteSpace: "nowrap" }}>
+                Phase 1 — Complete
+              </span>
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            </div>
+            {/* Phase 2 card */}
+            <div style={{
+              border: "1px solid var(--border)",
+              borderRadius: 12,
+              padding: "32px 36px",
+              background: "var(--card-bg)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+            }}>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)" }}>
+                Phase 2 — In Preparation
+              </span>
+              <p style={{ fontFamily: serif, fontSize: "clamp(17px, 2vw, 20px)", color: "var(--text-secondary)", lineHeight: 1.65, fontWeight: 400, margin: 0, maxWidth: 640 }}>
+                {data.phase2Teaser}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* CTA — peak-end: the emotional high point before the reader navigates away */}
         <div
           style={{
-            borderTop: "1px solid var(--border)",
-            paddingTop: 40,
-            marginBottom: 40,
+            textAlign: "center",
+            padding: "64px 0 80px",
           }}
         >
+          <p style={{ fontFamily: serif, fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 24, fontWeight: 400, letterSpacing: "-0.01em" }}>
+            {data.ctaText ?? "Interested in working together?"}
+          </p>
+          <Link
+            href="/#contact"
+            style={{
+              display: "inline-block",
+              fontFamily: sans, fontSize: 14, fontWeight: 500,
+              color: dark ? "#09090E" : "#ffffff",
+              background: "var(--accent)",
+              padding: "12px 28px", borderRadius: 8,
+              textDecoration: "none",
+              transition: "opacity 0.2s, transform 0.2s",
+              transform: "translateY(0)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.opacity = "0.85";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.opacity = "1";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+            }}
+            onFocus={(e) => {
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--text-primary)";
+            }}
+            onBlur={(e) => {
+              (e.currentTarget as HTMLElement).style.boxShadow = "";
+            }}
+          >
+            Get in touch →
+          </Link>
+        </div>
+
+        {/* ── Footer nav — after the CTA so navigation doesn't compete with the peak moment ── */}
+        <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, marginBottom: 64 }}>
           <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 16 }}>
             All Projects
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 8 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 8, marginBottom: 32 }}>
             {projects.map((p, i) => (
               <span key={p.id} style={{ display: "inline-flex", alignItems: "center" }}>
                 {i > 0 && (
@@ -1059,140 +1133,58 @@ export default function CaseStudy({ project }: Props) {
               </span>
             ))}
           </div>
-        </div>
-
-        {/* Prev / Next */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingTop: 24,
-            marginBottom: 80,
-            gap: 16,
-          }}
-        >
-          {prevProject ? (
-            <a
-              href={`/work/${prevProject.id}`}
-              style={{
-                fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
-                textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
-                transition: "color 0.2s", borderRadius: 2,
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
-              onFocus={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
-                (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
-                (e.currentTarget as HTMLElement).style.outlineOffset = "4px";
-              }}
-              onBlur={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
-                (e.currentTarget as HTMLElement).style.outline = "none";
-              }}
-            >
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>← Previous</span>
-              {prevProject.title}
-            </a>
-          ) : <span />}
-
-          {nextProject ? (
-            <a
-              href={`/work/${nextProject.id}`}
-              style={{
-                fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
-                textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
-                textAlign: "right", transition: "color 0.2s", borderRadius: 2,
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
-              onFocus={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
-                (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
-                (e.currentTarget as HTMLElement).style.outlineOffset = "4px";
-              }}
-              onBlur={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
-                (e.currentTarget as HTMLElement).style.outline = "none";
-              }}
-            >
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Next →</span>
-              {nextProject.title}
-            </a>
-          ) : <span />}
-        </div>
-
-        {/* Phase 2 teaser */}
-        {data.phase2Teaser && (
-          <div style={{ marginBottom: 80 }}>
-            {/* Divider with Phase 1 label */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 48 }}>
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", whiteSpace: "nowrap" }}>
-                Phase 1 — Complete
-              </span>
-              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
-            </div>
-            {/* Phase 2 card */}
-            <div style={{
-              border: "1px solid var(--border)",
-              borderRadius: 12,
-              padding: "32px 36px",
-              background: "var(--card-bg)",
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}>
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)" }}>
-                Phase 2 — In Preparation
-              </span>
-              <p style={{ fontFamily: serif, fontSize: "clamp(17px, 2vw, 20px)", color: "var(--text-secondary)", lineHeight: 1.65, fontWeight: 400, margin: 0, maxWidth: 640 }}>
-                {data.phase2Teaser}
-              </p>
-            </div>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+            {prevProject ? (
+              <a
+                href={`/work/${prevProject.id}`}
+                style={{
+                  fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
+                  textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
+                  transition: "color 0.2s", borderRadius: 2,
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+                onFocus={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                  (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+                  (e.currentTarget as HTMLElement).style.outlineOffset = "4px";
+                }}
+                onBlur={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                  (e.currentTarget as HTMLElement).style.outline = "none";
+                }}
+              >
+                <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>← Previous</span>
+                {prevProject.title}
+              </a>
+            ) : <span />}
+            {nextProject ? (
+              <a
+                href={`/work/${nextProject.id}`}
+                style={{
+                  fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
+                  textDecoration: "none", display: "flex", flexDirection: "column", gap: 4,
+                  textAlign: "right", transition: "color 0.2s", borderRadius: 2,
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
+                onFocus={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-primary)";
+                  (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+                  (e.currentTarget as HTMLElement).style.outlineOffset = "4px";
+                }}
+                onBlur={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                  (e.currentTarget as HTMLElement).style.outline = "none";
+                }}
+              >
+                <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Next →</span>
+                {nextProject.title}
+              </a>
+            ) : <span />}
           </div>
-        )}
-
-        {/* CTA */}
-        <div
-          style={{
-            textAlign: "center",
-            padding: "64px 0 96px",
-            borderTop: "1px solid var(--border)",
-          }}
-        >
-          <p style={{ fontFamily: serif, fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 24, fontWeight: 400, letterSpacing: "-0.01em" }}>
-            {data.ctaText ?? "Interested in working together?"}
-          </p>
-          <Link
-            href="/#contact"
-            style={{
-              display: "inline-block",
-              fontFamily: sans, fontSize: 14, fontWeight: 500,
-              color: dark ? "#09090E" : "#ffffff",
-              background: "var(--accent)",
-              padding: "12px 28px", borderRadius: 8,
-              textDecoration: "none",
-              transition: "opacity 0.2s, transform 0.2s",
-              transform: "translateY(0)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.opacity = "0.85";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.opacity = "1";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            }}
-            onFocus={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--text-primary)";
-            }}
-            onBlur={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = "";
-            }}
-          >
-            Get in touch →
-          </Link>
         </div>
+
       </div>
     </div>
     </>
