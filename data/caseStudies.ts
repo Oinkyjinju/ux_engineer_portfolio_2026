@@ -65,6 +65,7 @@ export interface CaseStudyData {
   tech: string[];
   reflection?: string;
   ctaText?: string;
+  phase2Teaser?: string;
 }
 
 export const caseStudies: Record<string, CaseStudyData> = {
@@ -74,7 +75,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "7 years designing and building JUST Capital's flagship data platform — from research sessions with financial analysts to 30+ production React components, serving 3M+ users across institutional investors and the general public.",
     heroIntro:
-      "Corporate accountability data is only useful if the people who act on it can navigate it. JUST Intelligence is the platform I spent seven years building — from the first research sessions with financial analysts to the 30th production component. The constraint I kept returning to: the data was dense by necessity. The interface had to be precise without being cold, and data-rich without being overwhelming.",
+      "Seven years. One product. Thirty production components — the first and the thirtieth built by the same person, from the same research sessions, with the same abstraction model underneath.\n\nJUST Intelligence is a corporate accountability data platform for institutional investors and financial analysts. The data it surfaces is dense by design — that density is the product. My constraint was not to simplify it. My constraint was to make navigating 240+ weighted indicators feel like the analyst had always known where everything was.",
     role: "Lead Product Designer & Front-End Engineer",
     team: "2 designers · 4 engineers · 1 PM",
     snapshot: {
@@ -82,7 +83,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "React, TypeScript, D3.js, Figma, Design Tokens, axe-core",
     },
     challenge:
-      "JUST Capital's flagship data platform needed to make complex ESG and corporate accountability metrics legible to institutional investors — without dumbing down the data or building a dashboard that felt like every other dashboard. The data set was 240+ weighted indicators across 1,000+ companies. The users were financial analysts who would instantly spot if something was oversimplified.",
+      "JUST Capital's flagship data platform needed to make complex ESG and corporate accountability metrics actionable for institutional investors — without triggering the skepticism financial analysts apply to any metric they didn't model themselves. The data set was 240+ weighted indicators across 1,000+ companies. The users operated in Bloomberg terminals and Excel, with zero tolerance for ambiguity about what a number means or where it came from. The risk wasn't building something generic. The risk was building something technically correct but cognitively unreliable.",
     approach:
       "I embedded with the engineering team from the start — running user research with analysts, translating those sessions directly into Figma components, and then writing the React that shipped them. No handoff document, no translation layer. I owned the spec and the PR. When an analyst session revealed a new data pattern, I was in the codebase the same week.",
     whatIDid:
@@ -108,8 +109,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
       ],
     },
     keyDecisions: [
-      "Built a token-based design system before anything else — 150+ CSS custom properties synced to Figma variables. Every color, spacing, and type decision lived in a token, which meant two full rebrands shipped in days rather than months. The discipline was: nothing gets hardcoded.",
-      "Chose D3.js over pre-built chart libraries for all data visualizations. The data patterns at JUST — ranking distributions, composite scores, multi-weighted sector comparisons — were too specific for generic chart components. D3 gave us the precision the data required at the cost of build time that was worth it.",
+      "Built a token-based design system before anything else — 150+ CSS custom properties organized in three layers: global values, semantic aliases, and component-specific tokens. Every color, spacing, and type decision lived in a token. When two full rebrands came, they touched only the alias layer — not a single component needed rewriting. Nothing gets hardcoded.",
+      "The data patterns at JUST — ranking distributions, composite scores, multi-weighted sector comparisons — didn't map to any pre-built chart library. A sorted bar chart of 1,000 companies makes a rank of #3 and #8 look equivalent when the score gap between them is 0.4 points. Chose D3.js to build visualizations from first principles, where proximity and relative distance could be made as legible as the absolute score.",
       "Embedded accessibility into every component spec from the first wireframe rather than treating it as a QA gate. axe-core ran in every PR review. WCAG AA compliance on a complex data platform is a design constraint, not a post-hoc fix — it has to be in the component API from the start.",
     ],
     outcomes: [
@@ -124,41 +125,42 @@ export const caseStudies: Record<string, CaseStudyData> = {
         id: "hero",
         layout: "wide",
         imageSrc: "/just/just-ji-hero.png",
-        caption: "The core dashboard — company scores, rankings, and composite metrics built from 240+ data points. Designed to be dense without being illegible.",
+        caption: "The hierarchy problem: 240+ weighted indicators needed to collapse into a single company score without destroying analyst trust in the number. Every visual layer is a decision about what to surface immediately and what to earn with a click.",
       },
       {
         id: "explorer-results",
         layout: "side-by-side",
         imageSrc: "/just/just-ji-explorer.png",
-        caption: "Company Explorer — search and filter across 1,000+ companies with composite scoring and sector benchmarks.",
+        caption: "Company Explorer — the entry point for analysts who know what they're looking for. Filter logic built to match how analysts actually query: sector first, then metric weight, then score band.",
         imageSrc2: "/just/just-ji-results.png",
-        caption2: "Search results ranked by JUST Score with inline metric previews. Designed for analysts running 20+ company comparisons per session.",
+        caption2: "Search results ranked by JUST Score with inline metric previews. The scan pattern was designed for analysts running 20+ company comparisons per session — the critical data visible without opening a single company.",
       },
       {
         id: "ranking",
         layout: "wide",
         imageSrc: "/just/just-ji-ranking.png",
-        caption: "Ranking view — America's Most JUST Companies, sortable by sector and weighted metric. The challenge: make relative ranking readable at a glance across 1,000 companies.",
+        caption: "A sorted list of 1,000 companies makes rank #3 and rank #8 look equivalent. What matters is the score gap between them. The distribution model shows where a company sits relative to its peers — not just its ordinal position.",
       },
       {
         id: "scenario-tokens",
         layout: "side-by-side",
         imageSrc: "/just/just-ji-scenario.png",
-        caption: "Scenario analysis — adjust metric weights to model hypothetical scoring outcomes. Built for ESG analysts who need to test assumptions before publishing.",
+        caption: "Scenario analysis: adjust metric weights to model hypothetical scoring outcomes. Built for ESG analysts who need to stress-test weighting assumptions before publishing a portfolio thesis.",
         imageSrc2: "/just/just-branding-guidelines.png",
-        caption2: "Design token documentation — 150+ CSS custom properties synced to Figma. One source of truth, two full rebrands absorbed without a component rewrite.",
+        caption2: "Token architecture: three layers — global values → semantic aliases → component tokens. Two full rebrands changed only the alias layer. The documentation exists because the system had to be legible to engineers who weren't there when it was built.",
       },
     ],
     metrics: [
-      { value: "7+",  label: "years shipped" },
-      { value: "3M+", label: "users reached" },
-      { value: "30+", label: "components" },
-      { value: "0",   label: "handoff docs needed" },
+      { value: "7+",  label: "years in production" },
+      { value: "30+", label: "components shipped" },
+      { value: "2",   label: "full rebrands, zero component rewrites" },
+      { value: "AA",  label: "WCAG compliance, built in from day one" },
     ],
     tech: ["React", "TypeScript", "D3.js", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
     reflection:
-      "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right. That's the standard I've kept since.",
-    ctaText: "I design and build data products that hold up over years, not sprints. If you're working on something complex, let's talk.",
+      "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right.\n\nIt also taught me to treat the design system not as a deliverable but as a decision log — every token is a choice that will either pay for itself or cost you. That's the standard I've kept since.",
+    ctaText: "I build products meant to outlast the team that shipped them. If you're working on something where the abstractions need to be right the first time, I want to hear about it.",
+    phase2Teaser: "Phase 2 — currently in preparation — documents what seven years of foundation made possible. The work is being documented with the same care that went into building it.",
   },
 
   "just-wordpress": {

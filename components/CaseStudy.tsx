@@ -1104,6 +1104,36 @@ export default function CaseStudy({ project }: Props) {
           ) : <span />}
         </div>
 
+        {/* Phase 2 teaser */}
+        {data.phase2Teaser && (
+          <div style={{ marginBottom: 80 }}>
+            {/* Divider with Phase 1 label */}
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 48 }}>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", whiteSpace: "nowrap" }}>
+                Phase 1 — Complete
+              </span>
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            </div>
+            {/* Phase 2 card */}
+            <div style={{
+              border: "1px solid var(--border)",
+              borderRadius: 12,
+              padding: "32px 36px",
+              background: "var(--card-bg)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+            }}>
+              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)" }}>
+                Phase 2 — In Preparation
+              </span>
+              <p style={{ fontFamily: serif, fontSize: "clamp(17px, 2vw, 20px)", color: "var(--text-secondary)", lineHeight: 1.65, fontWeight: 400, margin: 0, maxWidth: 640 }}>
+                {data.phase2Teaser}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* CTA */}
         <div
           style={{
