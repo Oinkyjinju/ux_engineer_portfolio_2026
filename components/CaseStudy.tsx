@@ -420,7 +420,7 @@ export default function CaseStudy({ project }: Props) {
         </div>
 
         {/* Approach */}
-        <div style={{ maxWidth: 760, marginBottom: 80 }}>
+        <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
           <h2 style={sectionLabelStyle(20)}>My Approach</h2>
           <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
             {data.approach}
@@ -429,7 +429,7 @@ export default function CaseStudy({ project }: Props) {
 
         {/* What I Was Responsible For */}
         {data.whatIDid && (
-          <div style={{ maxWidth: 760, marginBottom: 80 }}>
+          <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
             <h2 style={sectionLabelStyle(20)}>What I Was Responsible For</h2>
             <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
               {data.whatIDid}
@@ -439,7 +439,7 @@ export default function CaseStudy({ project }: Props) {
 
         {/* ── Reflection — moved up so it frames the decisions before the reader dives in ── */}
         {data.reflection && (
-          <div style={{ maxWidth: 760, marginBottom: 80 }}>
+          <div style={{ maxWidth: 960, margin: "0 auto 80px" }}>
             <h2 style={sectionLabelStyle(20)}>Reflection</h2>
             <p style={{
               fontFamily: serif,
@@ -481,26 +481,44 @@ export default function CaseStudy({ project }: Props) {
 
         {/* Key Design Decisions */}
         {data.keyDecisions && data.keyDecisions.length > 0 && (
-          <div style={{ maxWidth: 760, marginBottom: 100 }}>
+          <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>Key Design Decisions</h2>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: "1px",
+                border: "1px solid var(--border)",
+                borderRadius: 12,
+                overflow: "hidden",
+              }}
+              role="list"
+            >
               {data.keyDecisions.map((decision, i) => (
-                <li
+                <div
                   key={`decision-${i}`}
+                  role="listitem"
                   style={{
-                    display: "flex", alignItems: "flex-start", gap: 20,
-                    padding: "20px 0", borderBottom: "1px solid var(--border)",
+                    padding: "32px 28px",
+                    background: "var(--card-bg)",
                   }}
                 >
-                  <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", color: "var(--accent)", flexShrink: 0, marginTop: 2 }}>
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: "block",
+                      fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
+                      color: "var(--accent)", marginBottom: 12,
+                    }}
+                  >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
+                  <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
                     {decision}
                   </p>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
 
@@ -855,7 +873,7 @@ export default function CaseStudy({ project }: Props) {
 
         {/* What Changed (outcomes) */}
         {data.outcomes && data.outcomes.length > 0 && (
-          <div style={{ maxWidth: 760, marginBottom: 100 }}>
+          <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
             <h2 style={sectionLabelStyle(24)}>What Changed</h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.outcomes.map((outcome, i) => (
