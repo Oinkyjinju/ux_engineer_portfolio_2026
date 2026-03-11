@@ -2252,6 +2252,18 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         imageSrc: "/netflix/tt-history101-ko.png",
         caption: "The same localization, two contexts. Dark and light backgrounds impose different optical weight requirements — what reads as balanced against a black background often appears too heavy on white. Both had to clear QA.",
       },
+      {
+        id: "moscraciun",
+        layout: "wide",
+        imageSrc: "/netflix/tt-mos-craciun-en.png",
+        caption: "Localization in reverse — Romanian original, English adaptation. The dimensional embossing and circular lock-up of the original could not be re-lettered; they had to be re-engineered at the new string length. The English version is shorter. That asymmetry is harder to solve than it appears.",
+      },
+      {
+        id: "captainunderpants",
+        layout: "wide",
+        imageSrc: "/netflix/tt-captain-underpants-ro.png",
+        caption: "Animated content, illustrated letterforms — the rules are different. When the type is drawn, not set, a font swap is not an option. The Romanian string is significantly longer. Both constraints had to be solved while keeping the cartoonish structural weight that defines the brand: the oversized caps, the stacked hierarchy, the chaos-as-system.",
+      },
     ],
     metrics: [
       { value: "50+", label: "languages" },
