@@ -86,9 +86,11 @@ const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
   marginTop: 0, marginBottom, fontWeight: 400,
 });
 // Secondary section label — logistical/process sections (Tech & Tools, How It Got Built)
+// Uses text-secondary (not text-tertiary) to remain readable at ~4.7:1 contrast on dark bg
+// Distinguishable from primary accent labels by color (gray vs. amber) not by opacity
 const sectionLabelSecondaryStyle = (marginBottom: number): React.CSSProperties => ({
   fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
-  textTransform: "uppercase", color: "var(--text-tertiary)",
+  textTransform: "uppercase", color: "var(--text-secondary)",
   marginTop: 0, marginBottom, fontWeight: 400,
 });
 
@@ -365,7 +367,7 @@ export default function CaseStudy({ project }: Props) {
             {project.subtitle}
           </p>
           {data.heroIntro && (
-            <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.55)", maxWidth: 600, marginBottom: 0, marginTop: 4 }}>
+            <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.7)", maxWidth: 600, marginBottom: 0, marginTop: 4 }}>
               {data.heroIntro}
             </p>
           )}
@@ -553,7 +555,7 @@ export default function CaseStudy({ project }: Props) {
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.65, color: "var(--text-secondary)", margin: 0 }}>
+                  <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.65, color: "var(--text-primary)", margin: 0 }}>
                     {decision}
                   </p>
                 </div>
@@ -677,7 +679,7 @@ export default function CaseStudy({ project }: Props) {
                         {(block.screens ?? []).map((screen, idx) => (
                           <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                             <span aria-hidden="true" style={{
-                              fontFamily: mono, fontSize: 9, letterSpacing: "0.08em",
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
                               textTransform: "uppercase", color: "var(--accent)",
                             }}>
                               {String(idx + 1).padStart(2, "0")}
@@ -702,7 +704,7 @@ export default function CaseStudy({ project }: Props) {
                               />
                             </div>
                             <span style={{
-                              fontFamily: mono, fontSize: 9, letterSpacing: "0.06em",
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
                               textTransform: "uppercase", color: "var(--text-secondary)",
                               textAlign: "center",
                             }}>
@@ -846,7 +848,7 @@ export default function CaseStudy({ project }: Props) {
                     textAlign: "center",
                   }}
                 >
-                  <div style={{ fontFamily: serif, fontSize: 32, lineHeight: 1, color: "var(--accent)", marginBottom: 6 }}>
+                  <div style={{ fontFamily: serif, fontSize: "clamp(32px, 3vw, 44px)", lineHeight: 1, color: "var(--accent)", marginBottom: 6 }}>
                     {m.value}
                   </div>
                   <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
