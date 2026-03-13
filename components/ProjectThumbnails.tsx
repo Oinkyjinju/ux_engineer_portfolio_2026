@@ -384,7 +384,7 @@ function StoryCorpsThumbnail({ project }: { project: Project }) {
 
 // ── JUST Capital Website Rebrand ──────────────────────────────────────────────
 function JustWebsiteThumbnail({ project }: { project: Project }) {
-  const p = ap(project.accent);
+  const p = ap("#1D4E5C"); // JUST Capital brand teal — not the card accent (amber)
 
   return (
     <div style={{
