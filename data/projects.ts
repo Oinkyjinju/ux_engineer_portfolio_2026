@@ -33,9 +33,9 @@ export const projects: Project[] = [
   {
     id: "just-rebrand",
     title: "JUST Capital Website",
-    subtitle: "Brand Rebrand · Agency Design → WordPress",
+    subtitle: "Front-End Engineering · WordPress CMS · 35 Custom Modules",
     tags: ["Front-End Dev", "WordPress CMS", "Design Systems"],
-    year: "2023",
+    year: "2025",
     company: "JUST Capital",
     accent: "#E07820",
     gradient: "135deg, #131f2b, #1a3550",

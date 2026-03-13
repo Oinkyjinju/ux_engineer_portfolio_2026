@@ -55,6 +55,7 @@ export interface CaseStudyData {
     ship: string[];
   };
   keyDecisions?: string[];
+  keyDecisionsLabel?: string;
   outcomes?: string[];
   visualBlocks?: VisualBlock[];
   visualBlocksHeader?: string;
@@ -2166,53 +2167,53 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
 
   "just-rebrand": {
     id: "just-rebrand",
-    seoTitle: "JUST Capital Website Rebrand — Front-End Engineering | Jinju Park",
+    seoTitle: "JUST Capital Website — WordPress Front-End Engineering | Jinju Park",
     seoDescription:
-      "Building the production WordPress front-end for JUST Capital's brand rebrand — translating agency Figma designs into a CMS the marketing team could own, while simultaneously leading JUST Intelligence Phase 2.",
+      "Built 35 custom WordPress blocks from an agency rebrand — full front-end engineering in PHP, HTML, CSS, and JavaScript, shipped in 8 weeks while simultaneously leading JUST Intelligence Phase 2.",
     heroIntro:
-      "I didn't design this one. That's the honest framing.\n\nJUST Capital rebranded with an external agency while I was deep in JUST Intelligence Phase 2. My job was to take their Figma handoff and ship a production WordPress site the marketing team could operate without ever Slacking me. The constraint wasn't visual — the agency had solved that. The constraint was architectural: build something with enough guardrails that non-engineers could author pages freely, and enough flexibility that the design could evolve without a codebase sweep.\n\nRunning this in parallel with JUST Intelligence Phase 2 made me build more carefully than I might have otherwise. Limited capacity became architectural discipline.",
+      "JUST Capital needed a full site rebuild around a new brand identity — and they needed it in 8 weeks, while I was simultaneously leading JUST Intelligence Phase 2.\n\nThe visual design came from an external agency. My job was to turn those delivered assets into a production WordPress site: 35 custom modules, a CSS token system built directly from the brand guidelines, and a CMS architecture sturdy enough that the marketing team could own the site completely after handoff.\n\nThe engineering problem wasn't complexity — it was durability. I had to build something that wouldn't need me the moment it launched. Limited capacity during the crunch became a design constraint: if I couldn't build it cleanly and hand it off confidently, I built something simpler instead.",
     role: "Front-End Engineer",
-    team: "1 engineer (me) · 1 marketing lead · 1 external agency (design)",
+    team: "1 front-end developer (me) · 1 back-end developer (CTO) · Marketing team (CMO) · 1 external agency (design)",
     snapshot: {
-      timeline: "2023",
-      tools: "PHP, Twig, WordPress, ACF Pro, CSS Custom Properties, Figma",
+      timeline: "2025 (8 weeks crunch)",
+      tools: "PHP, Twig, WordPress, ACF Pro, HTML, CSS, JavaScript (ES6), CSS Custom Properties",
     },
     challenge:
-      "JUST Capital's marketing site needed a full rebrand implementation — a new visual identity from an external agency, translated into a live production WordPress site. The design was done. My job was to build it.\n\nThe real challenge was CMS autonomy: the marketing team needed to manage content independently after handoff. No developer in the loop for every page update, no fragile templates they couldn't touch. The site also needed to ship while I was simultaneously running JUST Intelligence Phase 2 — which meant building conservatively, documenting everything, and having zero tolerance for architectural decisions I'd need to revisit.",
+      "JUST Capital's marketing site needed a complete rebuild around a fresh visual identity — delivered by an external agency — while I was simultaneously running JUST Intelligence Phase 2. The engineering constraint was twofold: ship on schedule under real capacity pressure, and build a CMS architecture that the marketing team could own independently from day one.\n\nNo dev-dependency for content updates. No fragile templates requiring engineering support. 35 distinct modules, fully responsive across mobile, tablet, and desktop — all built in 8 weeks.",
     approach:
-      "I mapped the agency's Figma component set to a WordPress block architecture before writing a single line of code. The question wasn't 'how do I code this' — it was 'how do I structure this so the handoff is permanent.'\n\nCustom ACF blocks with thoughtful field schemas gave the marketing team page-builder authoring flexibility without sacrificing output quality. A CSS custom property system that matched the agency's token naming meant any future design update could be a token swap, not a codebase sweep. The constraint of running two projects simultaneously pushed me toward simpler decisions — and the constraint made the codebase better.",
+      "Before writing a line of code, I mapped the agency's delivered designs to a WordPress block architecture. The question wasn't 'how do I build this' — it was 'how do I structure this so marketing never needs to Slack me after launch.'\n\nACF custom blocks gave the marketing team full authoring freedom while keeping markup and output quality under my control. A CSS token system derived directly from the agency's brand guidelines meant any future design update would be a token swap — not a codebase audit. Working in parallel with JUST Intelligence kept my decisions conservative and the output cleaner for it.",
     whatIDid:
-      "I owned all front-end engineering: HTML, CSS, PHP/Twig templates, and vanilla JavaScript for interactions. Registered ~20 custom WordPress blocks using ACF Pro. Defined the full CSS token architecture from the agency's design specs. Wrote a content author guide so the marketing team could self-serve from day one of handoff. Responsive implementation across mobile, tablet, and desktop.",
+      "I owned all front-end engineering: HTML structure, CSS styling with a token-based custom property system, PHP/Twig templates, and vanilla JavaScript for interactions. Registered 35 custom WordPress blocks via ACF Pro. Built the full CSS token architecture from the agency's delivered brand guidelines. Coordinated with the CTO on back-end data and config integration. Migrated previous site content into the new module structure. Shipped fully responsive across mobile, tablet, and desktop — to approximately 99% visual fidelity against the agency deliverables.",
     process: {
       discover: [
-        "Audited the agency Figma file: 40+ screens, identified 18 reusable block patterns",
-        "Mapped each block to CMS field requirements — what needs to be editable vs. what stays fixed",
-        "Interviewed the marketing lead about their authoring workflow and pain points with the old site",
-        "Defined block naming conventions and field labels to match how marketing thinks, not how devs think",
+        "Reviewed the agency's delivered brand guidelines and design assets alongside marketing leadership — surfacing where the new identity needed to flex for real content, not just ideal mockup content",
+        "Finalized design direction with Marketing (CMO) and the agency: resolved edge cases, confirmed content priorities, and aligned on module hierarchy before building started",
+        "Mapped every screen in the delivered designs to a WordPress content model — deciding what editors could control vs. what stayed fixed, and naming CMS fields to match how marketing thinks",
       ],
       design: [
-        "CSS custom property architecture derived directly from agency token naming — primitives → semantic aliases → component tokens",
-        "ACF block field schema for each pattern — with validation, defaults, and conditional display rules",
-        "Responsive breakpoint mapping from agency specs: desktop-first design → mobile-first CSS implementation",
-        "Content author documentation: one page per block type, showing the CMS fields and what they produce",
+        "Architected the WordPress CMS structure: ACF custom block types for each module, field schemas per block, post type configuration — all reviewed with the CTO before the first template was written",
+        "Built all 35 modules in HTML and CSS first — flat, no CMS dependency — to verify visual fidelity against the delivered designs before connecting any back-end logic",
+        "CSS token architecture derived directly from the agency's brand guidelines: primitive values → semantic aliases → component tokens, named to match the agency's delivered token conventions",
       ],
       ship: [
-        "20 custom ACF blocks registered in WordPress — hero, card grids, quote blocks, stat callouts, newsletter, navigation, and footer",
-        "CSS custom property system replacing all hardcoded values — one token file drives the full site",
-        "Zero inline styles — every element is tokenized and themeable for future brand iterations",
-        "Full CMS handoff to marketing team: block guide, 30-minute walkthrough recording, and ongoing autonomy from day one",
+        "Coordinated with the CTO to connect each module to live WordPress data and configuration — back-end and front-end integration across all 35 blocks",
+        "Migrated previous site content into the new module structure: matched copy, images, and metadata to the corresponding ACF fields, block by block",
+        "Final assembly pass to reconcile the built site against the agency deliverables — resolving spacing, type, and layout edge cases to reach approximately 99% visual fidelity",
+        "Handed off to the marketing team with block-level author documentation — the site launched into full CMS autonomy from day one",
       ],
     },
+    keyDecisionsLabel: "Key Front-End Decisions",
     keyDecisions: [
-      "Chose ACF custom blocks over a page builder (Elementor, Divi). Page builders give authoring freedom but hand the marketing team a CSS hammer — every field override lives inline, outside any token system. ACF blocks gave the same flexibility while I retained complete control over markup, specificity, and output quality. Marketing got what they needed to work independently; the codebase stayed clean.",
-      "Matched the agency's token naming in the CSS custom property system — not a new naming convention, not a translation layer. If the agency's Figma file called a color 'brand-primary', the CSS variable was --color-brand-primary. This wasn't about elegance — it was about making future design updates mechanical. Change a token value, not a line count.",
-      "Documented for my own absence. Running JUST Intelligence Phase 2 in parallel meant I couldn't be the institutional memory for the marketing site. Every block got a plain-English author guide. Every optional field got a sensible fallback. The site had to work without me from day one of handoff — because there was no slack in my capacity to be the support system.",
+      "Chose ACF custom blocks over a page builder (Elementor, Divi). Page builders hand the marketing team a CSS hammer — every field override lives inline, outside any token system, accumulating specificity debt with every page edit. ACF blocks gave the same authoring freedom while I retained complete control over markup and output quality. Marketing got the autonomy they needed; the codebase stayed clean.",
+      "Built the CSS token system to match the agency's delivered brand guidelines exactly — then extended it. If the agency's guide called a color 'brand-primary', the CSS variable was --color-brand-primary. No translation layer, no re-naming. Then I added a second tier of component-level tokens beyond what the agency specified — so Twig templates could reach for --btn-bg-primary instead of tracing back through the primitive chain. Simpler callouts in templates, easier future maintenance.",
+      "Designed the handoff as the success criterion, not an afterthought. Running JUST Intelligence Phase 2 in parallel meant I had zero capacity to be the marketing team's support system after launch. So the system had to not need me: every block with a plain-English author guide, every optional field with a sensible fallback, every CMS configuration intuitive enough that marketing could author freely from the first day. The handoff wasn't an event — it was the requirement the architecture was built against.",
     ],
     outcomes: [
-      "20 custom WordPress blocks shipped and in production — marketing team manages all content independently post-launch",
-      "Zero developer hours required for content updates in the 6+ months since handoff",
-      "Site launched on schedule while JUST Intelligence Phase 2 design and engineering ran in parallel",
-      "CSS token system positioned to absorb future agency design updates without codebase rewrites",
+      "35 custom WordPress modules shipped and in production — marketing team manages all content independently post-launch",
+      "Site launched on schedule — 8 weeks, in parallel with JUST Intelligence Phase 2",
+      "Approximately 99% visual fidelity to the agency's delivered designs",
+      "CSS token system positioned to absorb future brand updates without codebase rewrites",
+      "Fully responsive across mobile, tablet, and desktop — all 35 modules",
     ],
     codeBlocksHeader: "The System in Code",
     codeBlocks: [
@@ -2466,15 +2467,15 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       },
     ],
     metrics: [
-      { value: "20",   label: "custom WordPress blocks registered" },
-      { value: "0",    label: "developer hours post-handoff (6+ months)" },
-      { value: "2×",   label: "projects in parallel — shipped on schedule" },
-      { value: "100%", label: "CMS autonomy achieved at handoff" },
+      { value: "35",   label: "custom WordPress modules registered" },
+      { value: "3×",   label: "projects in parallel — shipped on schedule" },
+      { value: "8 wks", label: "delivery crunch from kickoff to launch" },
+      { value: "~99%", label: "visual fidelity to agency deliverables" },
     ],
-    tech: ["PHP", "Twig", "WordPress", "ACF Pro", "CSS Custom Properties", "JavaScript (vanilla)", "Figma"],
+    tech: ["PHP", "Twig", "WordPress", "ACF Pro", "HTML", "CSS", "JavaScript (ES6)", "CSS Custom Properties"],
     reflection:
-      "Building someone else's design is its own discipline, and I hadn't named it clearly before this project. My job was fidelity and durability — not invention. The work of translating an agency's polished Figma into production code taught me something: implementation is interpretation. Every spacing decision I made, every edge case I resolved, every interaction I filled in where the spec was silent — those were all choices about the designer's intent. Getting those right is craft.\n\nThe parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves. The limited time available became a filter: if I couldn't build it simply and document it clearly in the time I had, I built something simpler. That filter made the codebase better than it would have been with unlimited time.",
-    ctaText: "If you need someone who can translate polished design into production code — or build the CMS infrastructure that lets a non-technical team own their own content — I've done both.",
+      "Building to someone else's design is its own discipline — and this project made me name it clearly. My job wasn't invention; it was fidelity and durability. Implementation is interpretation: every spacing edge case I resolved, every interaction I filled in where the spec was silent, every CMS field I named so a non-engineer would understand it — those were all decisions about the design intent. Getting those right is craft.\n\nThe 8-week crunch and parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves — simple enough to hand off, tight enough to hold up. That constraint made the codebase better than it would have been with unlimited time. It always does.",
+    ctaText: "If you need someone who can take a polished design handoff and build the front-end architecture that lets a non-technical team own it — I've done exactly that.",
   },
 
   "netflix-disney": {

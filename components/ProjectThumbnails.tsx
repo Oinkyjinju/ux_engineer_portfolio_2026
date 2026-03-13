@@ -382,6 +382,78 @@ function StoryCorpsThumbnail({ project }: { project: Project }) {
   );
 }
 
+// ── JUST Capital Website Rebrand ──────────────────────────────────────────────
+function JustWebsiteThumbnail({ project }: { project: Project }) {
+  const p = ap(project.accent);
+
+  return (
+    <div style={{
+      width: 340, height: 218,
+      background: p.bg,
+      borderRadius: 16, position: "relative", overflow: "hidden",
+      border: `1px solid ${p.borderHi}`,
+      boxShadow: `var(--thumbnail-shadow, ${p.shadow})`,
+      fontFamily: "system-ui, sans-serif",
+    }}>
+      <div style={{ position: "absolute", width: 280, height: 280, borderRadius: "50%", background: p.glow, top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+
+      {/* Header row */}
+      <div style={{ padding: "14px 16px 8px", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+        <div>
+          <span style={{ fontSize: 9, color: p.bright, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "monospace" }}>WordPress CMS</span>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.85)", marginTop: 2 }}>
+            35 Modules <span style={{ color: p.mid, fontSize: 10 }}>/ production</span>
+          </div>
+        </div>
+        {/* Fidelity callout */}
+        <div style={{ background: p.itemBg, border: `1px solid ${p.itemBorder}`, borderRadius: 8, padding: "5px 10px", textAlign: "center" }}>
+          <div style={{ fontSize: 17, fontWeight: 700, color: project.accent, lineHeight: 1 }}>~99%</div>
+          <div style={{ fontSize: 7, color: p.dim, marginTop: 2 }}>fidelity</div>
+        </div>
+      </div>
+
+      {/* Mini site preview */}
+      <div style={{ margin: "0 14px", borderRadius: 6, overflow: "hidden", border: `1px solid ${p.border}` }}>
+        {/* JUST Capital nav bar */}
+        <div style={{ background: "#1D4E5C", padding: "5px 10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.9)", letterSpacing: "0.08em" }}>JUST</span>
+          <div style={{ display: "flex", gap: 8 }}>
+            {["Rankings", "Data", "Research"].map((l) => (
+              <span key={l} style={{ fontSize: 6, color: "rgba(255,255,255,0.50)" }}>{l}</span>
+            ))}
+          </div>
+          <div style={{ background: "#E07820", borderRadius: 8, padding: "2px 7px", fontSize: 6, color: "white", fontWeight: 600 }}>Sign In</div>
+        </div>
+        {/* Module block strip */}
+        <div style={{ background: "#0d2430", padding: "6px 8px", display: "flex", gap: 4 }}>
+          {["hero", "card-grid", "stat", "quote", "CTA", "+30 more"].map((b, i) => (
+            <div key={b} style={{
+              flex: b === "+30 more" ? 1.4 : 1,
+              background: i === 0 ? "rgba(29,78,92,0.55)" : "rgba(255,255,255,0.04)",
+              border: `1px solid ${i === 0 ? "rgba(29,78,92,0.75)" : "rgba(255,255,255,0.08)"}`,
+              borderRadius: 3, padding: "4px 2px", textAlign: "center",
+            }}>
+              <span style={{ fontSize: 5.5, color: i === 0 ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.28)" }}>{b}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tech badges + date */}
+      <div style={{ position: "absolute", bottom: 12, left: 14, right: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 4 }}>
+          {["PHP", "HTML/CSS", "JS (ES6)", "ACF Pro"].map((t) => (
+            <span key={t} style={{ padding: "2px 6px", borderRadius: 10, background: p.itemBg, border: `1px solid ${p.itemBorder}`, fontSize: 7, color: p.bright, fontFamily: "monospace" }}>{t}</span>
+          ))}
+        </div>
+        <span style={{ fontSize: 7, color: p.dim }}>8 wks · 2025</span>
+      </div>
+
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1.5, background: p.topLine }} />
+    </div>
+  );
+}
+
 // ── Thumbnail router ──────────────────────────────────────────────────────────
 export function ProjectThumbnail({ project }: { project: Project }) {
   switch (project.id) {
@@ -390,6 +462,7 @@ export function ProjectThumbnail({ project }: { project: Project }) {
     case "just-wordpress":    return <ComponentSystemThumbnail project={project} />;
     case "iata":              return <IATAThumbnail project={project} />;
     case "storycorps":        return <StoryCorpsThumbnail project={project} />;
+    case "just-rebrand":      return <JustWebsiteThumbnail project={project} />;
     default:                  return null;
   }
 }

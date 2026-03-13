@@ -522,7 +522,7 @@ export default function CaseStudy({ project }: Props) {
         {/* Key Design Decisions */}
         {data.keyDecisions && data.keyDecisions.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(32)}>Key Design Decisions</h2>
+            <h2 style={sectionLabelStyle(32)}>{data.keyDecisionsLabel ?? "Key Design Decisions"}</h2>
             <div
               style={{
                 display: "grid",
