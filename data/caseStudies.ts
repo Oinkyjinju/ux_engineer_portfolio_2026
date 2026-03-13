@@ -2164,6 +2164,319 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     tech: ["PHP", "Twig", "WordPress", "CSS Custom Properties", "Sass", "Figma", "Design Tokens"],
   },
 
+  "just-rebrand": {
+    id: "just-rebrand",
+    seoTitle: "JUST Capital Website Rebrand — Front-End Engineering | Jinju Park",
+    seoDescription:
+      "Building the production WordPress front-end for JUST Capital's brand rebrand — translating agency Figma designs into a CMS the marketing team could own, while simultaneously leading JUST Intelligence Phase 2.",
+    heroIntro:
+      "I didn't design this one. That's the honest framing.\n\nJUST Capital rebranded with an external agency while I was deep in JUST Intelligence Phase 2. My job was to take their Figma handoff and ship a production WordPress site the marketing team could operate without ever Slacking me. The constraint wasn't visual — the agency had solved that. The constraint was architectural: build something with enough guardrails that non-engineers could author pages freely, and enough flexibility that the design could evolve without a codebase sweep.\n\nRunning this in parallel with JUST Intelligence Phase 2 made me build more carefully than I might have otherwise. Limited capacity became architectural discipline.",
+    role: "Front-End Engineer",
+    team: "1 engineer (me) · 1 marketing lead · 1 external agency (design)",
+    snapshot: {
+      timeline: "2023",
+      tools: "PHP, Twig, WordPress, ACF Pro, CSS Custom Properties, Figma",
+    },
+    challenge:
+      "JUST Capital's marketing site needed a full rebrand implementation — a new visual identity from an external agency, translated into a live production WordPress site. The design was done. My job was to build it.\n\nThe real challenge was CMS autonomy: the marketing team needed to manage content independently after handoff. No developer in the loop for every page update, no fragile templates they couldn't touch. The site also needed to ship while I was simultaneously running JUST Intelligence Phase 2 — which meant building conservatively, documenting everything, and having zero tolerance for architectural decisions I'd need to revisit.",
+    approach:
+      "I mapped the agency's Figma component set to a WordPress block architecture before writing a single line of code. The question wasn't 'how do I code this' — it was 'how do I structure this so the handoff is permanent.'\n\nCustom ACF blocks with thoughtful field schemas gave the marketing team page-builder authoring flexibility without sacrificing output quality. A CSS custom property system that matched the agency's token naming meant any future design update could be a token swap, not a codebase sweep. The constraint of running two projects simultaneously pushed me toward simpler decisions — and the constraint made the codebase better.",
+    whatIDid:
+      "I owned all front-end engineering: HTML, CSS, PHP/Twig templates, and vanilla JavaScript for interactions. Registered ~20 custom WordPress blocks using ACF Pro. Defined the full CSS token architecture from the agency's design specs. Wrote a content author guide so the marketing team could self-serve from day one of handoff. Responsive implementation across mobile, tablet, and desktop.",
+    process: {
+      discover: [
+        "Audited the agency Figma file: 40+ screens, identified 18 reusable block patterns",
+        "Mapped each block to CMS field requirements — what needs to be editable vs. what stays fixed",
+        "Interviewed the marketing lead about their authoring workflow and pain points with the old site",
+        "Defined block naming conventions and field labels to match how marketing thinks, not how devs think",
+      ],
+      design: [
+        "CSS custom property architecture derived directly from agency token naming — primitives → semantic aliases → component tokens",
+        "ACF block field schema for each pattern — with validation, defaults, and conditional display rules",
+        "Responsive breakpoint mapping from agency specs: desktop-first design → mobile-first CSS implementation",
+        "Content author documentation: one page per block type, showing the CMS fields and what they produce",
+      ],
+      ship: [
+        "20 custom ACF blocks registered in WordPress — hero, card grids, quote blocks, stat callouts, newsletter, navigation, and footer",
+        "CSS custom property system replacing all hardcoded values — one token file drives the full site",
+        "Zero inline styles — every element is tokenized and themeable for future brand iterations",
+        "Full CMS handoff to marketing team: block guide, 30-minute walkthrough recording, and ongoing autonomy from day one",
+      ],
+    },
+    keyDecisions: [
+      "Chose ACF custom blocks over a page builder (Elementor, Divi). Page builders give authoring freedom but hand the marketing team a CSS hammer — every field override lives inline, outside any token system. ACF blocks gave the same flexibility while I retained complete control over markup, specificity, and output quality. Marketing got what they needed to work independently; the codebase stayed clean.",
+      "Matched the agency's token naming in the CSS custom property system — not a new naming convention, not a translation layer. If the agency's Figma file called a color 'brand-primary', the CSS variable was --color-brand-primary. This wasn't about elegance — it was about making future design updates mechanical. Change a token value, not a line count.",
+      "Documented for my own absence. Running JUST Intelligence Phase 2 in parallel meant I couldn't be the institutional memory for the marketing site. Every block got a plain-English author guide. Every optional field got a sensible fallback. The site had to work without me from day one of handoff — because there was no slack in my capacity to be the support system.",
+    ],
+    outcomes: [
+      "20 custom WordPress blocks shipped and in production — marketing team manages all content independently post-launch",
+      "Zero developer hours required for content updates in the 6+ months since handoff",
+      "Site launched on schedule while JUST Intelligence Phase 2 design and engineering ran in parallel",
+      "CSS token system positioned to absorb future agency design updates without codebase rewrites",
+    ],
+    codeBlocksHeader: "The System in Code",
+    codeBlocks: [
+      {
+        id: "hero-section",
+        title: "Hero Section",
+        description: "Two-column hero: full-bleed dark teal background with large display type and dual CTAs on the left; floating white news panel with live WordPress content on the right. Responsive — stacks vertically at tablet breakpoint.",
+        language: "css",
+        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;}
+.hero{display:grid;grid-template-columns:1fr 460px;min-height:380px;background:#1D4E5C;padding:52px 64px;gap:40px;align-items:center;}
+.hero-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:18px;font-family:'Courier New',monospace;}
+.hero-title{font-size:44px;line-height:1.06;font-weight:700;color:#fff;margin-bottom:18px;letter-spacing:-.01em;}
+.hero-title u{text-decoration:underline;text-decoration-color:#E07820;text-underline-offset:5px;text-decoration-thickness:2px;}
+.hero-body{font-size:14px;line-height:1.65;color:rgba(255,255,255,.75);max-width:460px;margin-bottom:28px;}
+.ctas{display:flex;gap:12px;}
+.btn-p{background:#E07820;color:#fff;border:2px solid #E07820;padding:10px 24px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-o{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.45);padding:10px 24px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;}
+.panel{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.22);}
+.news-item{padding:14px 18px;border-bottom:1px solid #f0ede8;}
+.news-item:last-child{border-bottom:none;}
+.tags{display:flex;gap:5px;margin-bottom:7px;flex-wrap:wrap;}
+.tf{background:#1D4E5C;color:#fff;font-size:9px;padding:3px 8px;border-radius:100px;font-weight:600;letter-spacing:.04em;}
+.to{border:1.5px solid #1D4E5C;color:#1D4E5C;font-size:9px;padding:2px 7px;border-radius:100px;font-weight:500;}
+.hl{font-size:13px;line-height:1.4;font-weight:600;color:#111;margin-bottom:0;}
+.arr{color:#E07820;float:right;margin-top:-16px;}
+.see-all{display:flex;justify-content:flex-end;padding:11px 18px;font-size:12px;color:#1D4E5C;font-weight:600;}
+</style></head><body><section class="hero">
+<div>
+  <div class="hero-eyebrow">JUST Capital</div>
+  <h1 class="hero-title">Unlock The Power<br>Of <u>Just</u><br>Intelligence</h1>
+  <p class="hero-body">We translate insights from a decade of public polling, performance data, and financial analysis into actionable intelligence leaders can use to drive long-term business success.</p>
+  <div class="ctas"><button class="btn-p">Sign In Now</button><button class="btn-o">Learn More</button></div>
+</div>
+<div class="panel">
+  <div class="news-item"><div class="tags"><span class="tf">Just Capital News</span></div><div class="hl">Just Capital Welcomes New Board Member</div><span class="arr">→</span></div>
+  <div class="news-item"><div class="tags"><span class="tf">Ethical Leadership</span><span class="to">Responsible AI</span></div><div class="hl">FORTUNE: The Next 3 Years Will Define Capitalism for a Generation</div><span class="arr">→</span></div>
+  <div class="news-item"><div class="tags"><span class="tf">Just Announcements</span><span class="to">Just Intelligence</span></div><div class="hl">Just Capital Completes Transformation to Stakeholder Intelligence Platform</div><span class="arr">→</span></div>
+  <div class="see-all"><span style="border-bottom:1.5px solid #1D4E5C">See All News →</span></div>
+</div>
+</section></body></html>`,
+        code: `.hero {
+  display: grid;
+  grid-template-columns: 1fr 460px;
+  background: var(--color-brand-dark);
+  padding: var(--space-section) var(--space-container);
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.hero__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.06;
+  color: var(--color-text-inverse);
+  letter-spacing: -0.01em;
+}
+
+.hero__title--accent {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
+/* Floating news panel */
+.news-panel {
+  background: var(--color-surface);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-elevated);
+  overflow: hidden;
+}
+
+.news-item {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--color-neutral-100);
+}
+
+/* Responsive — stack at tablet */
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; }
+  .news-panel { display: none; }
+}`,
+      },
+      {
+        id: "acf-block",
+        title: "WordPress Block Registration",
+        description: "Custom ACF blocks give the marketing team authoring freedom while keeping markup and CSS under engineering control. Each block registers its own Twig template, field group, and allowed post types — no inline styles, no page builder overhead.",
+        language: "php",
+        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-size:12px;color:#333;}
+.editor{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.editor-header{background:#1D4E5C;padding:11px 16px;display:flex;align-items:center;gap:8px;}
+.editor-title{color:rgba(255,255,255,.75);font-size:9px;letter-spacing:.1em;text-transform:uppercase;}
+.editor-badge{background:rgba(255,255,255,.15);color:#fff;font-size:8px;padding:2px 7px;border-radius:4px;margin-left:auto;letter-spacing:.05em;}
+.block-wrap{padding:14px;}
+.block-item{border:1.5px dashed #c5c3be;border-radius:8px;overflow:hidden;}
+.block-label{background:#f8f7f4;padding:6px 12px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888;border-bottom:1px solid #e5e3de;}
+.fields{padding:10px 12px;display:flex;flex-direction:column;gap:5px;}
+.fr{display:flex;gap:8px;align-items:center;}
+.fn{font-size:9px;color:#666;width:88px;flex-shrink:0;}
+.fi{flex:1;background:#f8f7f4;border:1px solid #ddd;border-radius:4px;padding:3px 7px;font-size:9px;color:#333;font-family:inherit;}
+.fi.on{border-color:#1D4E5C;color:#1D4E5C;}
+.preview-bar{background:#1D4E5C;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
+.pval{font-size:24px;font-weight:700;color:#E07820;}
+.psub{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px;}
+.pfn{font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.06em;}
+</style></head><body><div class="editor">
+  <div class="editor-header">
+    <div class="editor-title">WordPress Block Editor</div>
+    <div class="editor-badge">ACF Pro</div>
+  </div>
+  <div class="block-wrap">
+    <div class="block-item">
+      <div class="block-label">stat-callout — CMS fields</div>
+      <div class="fields">
+        <div class="fr"><span class="fn">stat_value</span><input class="fi on" value="800+" readonly></div>
+        <div class="fr"><span class="fn">stat_label</span><input class="fi on" value="hardcoded values replaced" readonly></div>
+        <div class="fr"><span class="fn">stat_context</span><input class="fi" value="across 3 dev teams, 1 design system" readonly></div>
+        <div class="fr"><span class="fn">theme</span><input class="fi on" value="brand-dark" readonly></div>
+      </div>
+      <div class="preview-bar">
+        <div><div class="pval">800+</div><div class="psub">hardcoded values replaced</div></div>
+        <div class="pfn">stat-callout.php</div>
+      </div>
+    </div>
+  </div>
+</div></body></html>`,
+        code: `<?php
+/**
+ * Register custom ACF blocks — JUST Capital marketing site
+ *
+ * Each block maps to a PHP template in /template-parts/blocks/.
+ * Field groups are defined in ACF local JSON and version-controlled.
+ *
+ * @package JustCapital
+ */
+add_action( 'acf/init', 'jc_register_blocks' );
+
+function jc_register_blocks(): void {
+  if ( ! function_exists( 'acf_register_block_type' ) ) return;
+
+  $blocks = [
+    'hero'         => [ 'icon' => 'cover-image',  'desc' => 'Full-bleed hero with news panel' ],
+    'stat-callout' => [ 'icon' => 'chart-bar',    'desc' => 'Large stat with label and context' ],
+    'card-grid'    => [ 'icon' => 'grid-view',    'desc' => '1–4 column card layout' ],
+    'quote-block'  => [ 'icon' => 'format-quote', 'desc' => 'Pull quote or testimonial' ],
+    'newsletter'   => [ 'icon' => 'email',        'desc' => 'Newsletter signup (Mailchimp)' ],
+  ];
+
+  foreach ( $blocks as $name => $meta ) {
+    acf_register_block_type([
+      'name'            => $name,
+      'title'           => ucwords( str_replace( '-', ' ', $name ) ),
+      'description'     => $meta['desc'],
+      'icon'            => $meta['icon'],
+      'category'        => 'just-capital',
+      'post_types'      => [ 'page', 'post' ],
+      'render_template' => "template-parts/blocks/{$name}.php",
+      'enqueue_style'   => get_template_directory_uri() . "/assets/css/blocks/{$name}.css",
+      'supports'        => [ 'align' => false, 'anchor' => true ],
+    ]);
+  }
+}`,
+      },
+      {
+        id: "design-tokens",
+        title: "CSS Token Architecture",
+        description: "Token naming matched the agency's Figma variables exactly — no translation layer between design and code. Primitive values at the root, semantic aliases map meaning to primitives, component tokens consume semantic aliases. A brand update touches only the primitive layer.",
+        language: "css",
+        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-size:11px;}
+.section-label{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:8px;}
+.group{margin-bottom:16px;}
+.swatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:4px;}
+.swatch-row{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e5e3de;display:flex;}
+.sw{width:34px;flex-shrink:0;}
+.si{padding:5px 9px;flex:1;}
+.sn{font-size:8px;color:#444;letter-spacing:.03em;}
+.sv{font-size:8px;color:#888;margin-top:1px;}
+.alias-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.tok{background:#fff;border:1.5px solid #1D4E5C;color:#1D4E5C;border-radius:4px;padding:3px 7px;font-size:8px;letter-spacing:.03em;}
+.tok.gray{border-color:#bbb;color:#888;}
+.arr{color:#bbb;font-size:10px;}
+</style></head><body>
+<div class="group">
+  <div class="section-label">1 · Primitives</div>
+  <div class="swatch-grid">
+    <div class="swatch-row"><div class="sw" style="background:#1D4E5C"></div><div class="si"><div class="sn">--color-teal-800</div><div class="sv">#1D4E5C</div></div></div>
+    <div class="swatch-row"><div class="sw" style="background:#E07820"></div><div class="si"><div class="sn">--color-amber-600</div><div class="sv">#E07820</div></div></div>
+    <div class="swatch-row"><div class="sw" style="background:#f8f7f2;border-right:1px solid #e5e3de"></div><div class="si"><div class="sn">--color-neutral-50</div><div class="sv">#f8f7f2</div></div></div>
+    <div class="swatch-row"><div class="sw" style="background:#111"></div><div class="si"><div class="sn">--color-neutral-950</div><div class="sv">#111111</div></div></div>
+  </div>
+</div>
+<div class="group">
+  <div class="section-label">2 · Semantic aliases</div>
+  <div class="alias-row"><span class="tok">--color-brand</span><span class="arr">→</span><span class="tok gray">--color-teal-800</span></div>
+  <div class="alias-row"><span class="tok">--color-accent</span><span class="arr">→</span><span class="tok gray">--color-amber-600</span></div>
+  <div class="alias-row"><span class="tok">--color-surface</span><span class="arr">→</span><span class="tok gray">--color-neutral-50</span></div>
+</div>
+<div class="group">
+  <div class="section-label">3 · Component tokens</div>
+  <div class="alias-row"><span class="tok" style="font-size:7px">--btn-bg-primary</span><span class="arr">→</span><span class="tok gray" style="font-size:7px">--color-accent</span></div>
+  <div class="alias-row"><span class="tok" style="font-size:7px">--card-bg</span><span class="arr">→</span><span class="tok gray" style="font-size:7px">--color-surface</span></div>
+  <div class="alias-row"><span class="tok" style="font-size:7px">--nav-bg</span><span class="arr">→</span><span class="tok gray" style="font-size:7px">--color-surface</span></div>
+</div>
+</body></html>`,
+        code: `/* ─── 1. Primitives ─────────────────────────────────────────── */
+:root {
+  --color-teal-900: #0e3340;
+  --color-teal-800: #1D4E5C;
+  --color-teal-600: #2a7a8c;
+
+  --color-amber-600: #E07820;
+  --color-amber-400: #F4A340;
+
+  --color-neutral-50:  #f8f7f2;
+  --color-neutral-100: #ede9e2;
+  --color-neutral-950: #111111;
+
+  /* ─── 2. Semantic aliases (names match agency Figma tokens) ─── */
+  --color-brand:        var(--color-teal-800);
+  --color-brand-dark:   var(--color-teal-900);
+  --color-accent:       var(--color-amber-600);
+  --color-surface:      var(--color-neutral-50);
+  --color-text:         var(--color-neutral-950);
+  --color-text-inverse: #ffffff;
+
+  /* ─── 3. Component tokens ──────────────────────────────────── */
+  --btn-bg-primary:       var(--color-accent);
+  --btn-bg-primary-hover: var(--color-amber-400);
+  --btn-text-primary:     var(--color-text-inverse);
+  --card-bg:              var(--color-surface);
+  --card-radius:          16px;
+  --nav-bg:               var(--color-surface);
+
+  /* ─── Spacing scale ─────────────────────────────────────────── */
+  --space-xs:        8px;
+  --space-sm:        12px;
+  --space-md:        20px;
+  --space-lg:        32px;
+  --space-xl:        48px;
+  --space-section:   64px;
+  --space-container: 80px;
+
+  --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.18);
+}`,
+      },
+    ],
+    metrics: [
+      { value: "20",   label: "custom WordPress blocks registered" },
+      { value: "0",    label: "developer hours post-handoff (6+ months)" },
+      { value: "2×",   label: "projects in parallel — shipped on schedule" },
+      { value: "100%", label: "CMS autonomy achieved at handoff" },
+    ],
+    tech: ["PHP", "Twig", "WordPress", "ACF Pro", "CSS Custom Properties", "JavaScript (vanilla)", "Figma"],
+    reflection:
+      "Building someone else's design is its own discipline, and I hadn't named it clearly before this project. My job was fidelity and durability — not invention. The work of translating an agency's polished Figma into production code taught me something: implementation is interpretation. Every spacing decision I made, every edge case I resolved, every interaction I filled in where the spec was silent — those were all choices about the designer's intent. Getting those right is craft.\n\nThe parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves. The limited time available became a filter: if I couldn't build it simply and document it clearly in the time I had, I built something simpler. That filter made the codebase better than it would have been with unlimited time.",
+    ctaText: "If you need someone who can translate polished design into production code — or build the CMS infrastructure that lets a non-technical team own their own content — I've done both.",
+  },
+
   "netflix-disney": {
     id: "netflix-disney",
     seoTitle: "Netflix & Disney+ — Multilingual Design Operations | Jinju Park",

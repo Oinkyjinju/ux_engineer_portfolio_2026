@@ -882,28 +882,6 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── Reflection — positioned after evidence so it reads as earned wisdom ── */}
-        {data.reflection && (
-          <div style={{ maxWidth: 960, margin: "0 auto 100px" }}>
-            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
-            <blockquote style={{
-              fontFamily: serif,
-              fontSize: "clamp(18px, 1.7vw, 24px)",
-              lineHeight: 1.6,
-              color: "var(--text-primary)",
-              fontWeight: 400,
-              letterSpacing: "-0.02em",
-              borderLeft: "4px solid var(--accent)",
-              padding: "32px 36px",
-              background: "var(--accent-muted)",
-              borderRadius: 8,
-              margin: 0,
-            }}>
-              {data.reflection}
-            </blockquote>
-          </div>
-        )}
-
         {/* ── Code Blocks — code + preview pairs ── */}
         {data.codeBlocks && data.codeBlocks.length > 0 && (
           <div style={{ marginBottom: 80 }}>
@@ -1017,6 +995,28 @@ export default function CaseStudy({ project }: Props) {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* ── Reflection — after code evidence so it reads as earned wisdom ── */}
+        {data.reflection && (
+          <div style={{ maxWidth: 960, margin: "0 auto 100px" }}>
+            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
+            <blockquote style={{
+              fontFamily: serif,
+              fontSize: "clamp(18px, 1.7vw, 24px)",
+              lineHeight: 1.6,
+              color: "var(--text-primary)",
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
+              borderLeft: "4px solid var(--accent)",
+              padding: "32px 36px",
+              background: "var(--accent-muted)",
+              borderRadius: 8,
+              margin: 0,
+            }}>
+              {data.reflection}
+            </blockquote>
           </div>
         )}
 

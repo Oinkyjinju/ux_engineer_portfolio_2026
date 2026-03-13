@@ -31,6 +31,16 @@ export const projects: Project[] = [
     gradient: "135deg, #0c3545, #1A6678",
   },
   {
+    id: "just-rebrand",
+    title: "JUST Capital Website",
+    subtitle: "Brand Rebrand · Agency Design → WordPress",
+    tags: ["Front-End Dev", "WordPress CMS", "Design Systems"],
+    year: "2023",
+    company: "JUST Capital",
+    accent: "#E07820",
+    gradient: "135deg, #131f2b, #1a3550",
+  },
+  {
     id: "netflix-disney",
     title: "Netflix & Disney+",
     subtitle: "Multilingual Design Operations",
