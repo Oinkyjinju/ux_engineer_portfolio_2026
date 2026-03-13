@@ -2171,7 +2171,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     seoDescription:
       "Built 35 custom WordPress blocks from an agency rebrand — full front-end engineering in PHP, HTML, CSS, and JavaScript, shipped in 8 weeks while simultaneously leading JUST Intelligence Phase 2.",
     heroIntro:
-      "JUST Capital needed a full site rebuild around a new brand identity — and they needed it in 8 weeks, while I was simultaneously leading JUST Intelligence Phase 2.\n\nThe visual design came from an external agency. My job was to turn those delivered assets into a production WordPress site: 35 custom modules, a CSS token system built directly from the brand guidelines, and a CMS architecture sturdy enough that the marketing team could own the site completely after handoff.\n\nThe engineering problem wasn't complexity — it was durability. I had to build something that wouldn't need me the moment it launched. Limited capacity during the crunch became a design constraint: if I couldn't build it cleanly and hand it off confidently, I built something simpler instead.",
+      "The engineering problem wasn't complexity — it was durability.\n\nJUST Capital needed a full marketing site rebuild in 8 weeks, while I was simultaneously running JUST Intelligence Phase 2. The visual design came from an external agency. My job was to turn those delivered assets into a production WordPress site — 35 custom modules, a CSS token system built directly from the brand guidelines, and a CMS architecture sturdy enough that the marketing team could own it permanently. The site serves institutional investors, ESG analysts, and press — the quality standard was non-negotiable.\n\nI had to build something that wouldn't need me the moment it launched. Limited capacity during the crunch became a design constraint: if I couldn't build it cleanly and hand it off confidently, I built something simpler instead.",
     role: "Front-End Engineer",
     team: "1 front-end developer (me) · 1 back-end developer (CTO) · Marketing team (CMO) · 1 external agency (design)",
     snapshot: {
@@ -2181,9 +2181,9 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     challenge:
       "JUST Capital's marketing site needed a complete rebuild around a fresh visual identity — delivered by an external agency — while I was simultaneously running JUST Intelligence Phase 2. The engineering constraint was twofold: ship on schedule under real capacity pressure, and build a CMS architecture that the marketing team could own independently from day one.\n\nNo dev-dependency for content updates. No fragile templates requiring engineering support. 35 distinct modules, fully responsive across mobile, tablet, and desktop — all built in 8 weeks.",
     approach:
-      "Before writing a line of code, I mapped the agency's delivered designs to a WordPress block architecture. The question wasn't 'how do I build this' — it was 'how do I structure this so marketing never needs to Slack me after launch.'\n\nACF custom blocks gave the marketing team full authoring freedom while keeping markup and output quality under my control. A CSS token system derived directly from the agency's brand guidelines meant any future design update would be a token swap — not a codebase audit. Working in parallel with JUST Intelligence kept my decisions conservative and the output cleaner for it.",
+      "Before writing a line of code, I mapped the agency's delivered designs to a WordPress block architecture. The question wasn't 'how do I build this' — it was 'how do I structure this so marketing never needs to Slack me after launch.'\n\nACF custom blocks gave the marketing team full authoring freedom while keeping markup and output quality under my control. A CSS token system derived directly from the agency's brand guidelines meant any future design update would be a token swap — not a codebase audit. Working in parallel with JUST Intelligence kept my decisions conservative — fewer custom patterns, shorter dependency chains, and zero tolerance for clever abstractions. The stack (PHP/Twig/WordPress) was dictated by JUST Capital's existing infrastructure; the architectural decisions — token systems, component modularity, handoff design — are stack-agnostic.",
     whatIDid:
-      "I owned all front-end engineering: HTML structure, CSS styling with a token-based custom property system, PHP/Twig templates, and vanilla JavaScript for interactions. Registered 35 custom WordPress blocks via ACF Pro. Built the full CSS token architecture from the agency's delivered brand guidelines. Coordinated with the CTO on back-end data and config integration. Migrated previous site content into the new module structure. Shipped fully responsive across mobile, tablet, and desktop — to approximately 99% visual fidelity against the agency deliverables.",
+      "I owned all front-end engineering: HTML structure, CSS styling with a token-based custom property system, PHP/Twig templates, and vanilla JavaScript for interactions. Registered 35 custom WordPress blocks via ACF Pro. Built the full CSS token architecture from the agency's delivered brand guidelines. Coordinated with the CTO on back-end data and config integration. Migrated previous site content into the new module structure. Shipped fully responsive across mobile, tablet, and desktop — reconciled screen by screen against the agency deliverables.",
     process: {
       discover: [
         "Reviewed the agency's delivered brand guidelines and design assets alongside marketing leadership — surfacing where the new identity needed to flex for real content, not just ideal mockup content",
@@ -2198,7 +2198,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       ship: [
         "Coordinated with the CTO to connect each module to live WordPress data and configuration — back-end and front-end integration across all 35 blocks",
         "Migrated previous site content into the new module structure: matched copy, images, and metadata to the corresponding ACF fields, block by block",
-        "Final assembly pass to reconcile the built site against the agency deliverables — resolving spacing, type, and layout edge cases to reach approximately 99% visual fidelity",
+        "Final assembly pass to reconcile every module against the agency deliverables — resolving spacing, type, and layout edge cases screen by screen",
         "Handed off to the marketing team with block-level author documentation — the site launched into full CMS autonomy from day one",
       ],
     },
@@ -2211,7 +2211,6 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     outcomes: [
       "35 custom WordPress modules shipped and in production — marketing team manages all content independently post-launch",
       "Site launched on schedule — 8 weeks, in parallel with JUST Intelligence Phase 2",
-      "Approximately 99% visual fidelity to the agency's delivered designs",
       "CSS token system positioned to absorb future brand updates without codebase rewrites",
       "Fully responsive across mobile, tablet, and desktop — all 35 modules",
     ],
@@ -2470,12 +2469,12 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       { value: "35",   label: "custom WordPress modules registered" },
       { value: "3×",   label: "projects in parallel — shipped on schedule" },
       { value: "8 wks", label: "delivery crunch from kickoff to launch" },
-      { value: "~99%", label: "visual fidelity to agency deliverables" },
+      { value: "0",    label: "open visual QA tickets at launch" },
     ],
     tech: ["PHP", "Twig", "WordPress", "ACF Pro", "HTML", "CSS", "JavaScript (ES6)", "CSS Custom Properties"],
     reflection:
-      "Building to someone else's design is its own discipline — and this project made me name it clearly. My job wasn't invention; it was fidelity and durability. Implementation is interpretation: every spacing edge case I resolved, every interaction I filled in where the spec was silent, every CMS field I named so a non-engineer would understand it — those were all decisions about the design intent. Getting those right is craft.\n\nThe 8-week crunch and parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves — simple enough to hand off, tight enough to hold up. That constraint made the codebase better than it would have been with unlimited time. It always does.",
-    ctaText: "If you need someone who can take a polished design handoff and build the front-end architecture that lets a non-technical team own it — I've done exactly that.",
+      "Building to someone else's design is its own discipline — and this project made me name it clearly. My job wasn't invention; it was fidelity and durability. Implementation is interpretation: every spacing edge case I resolved, every interaction I filled in where the spec was silent, every CMS field I named so a non-engineer would understand it — those were all decisions about the design intent.\n\nThe 8-week crunch and parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves — simple enough to hand off, tight enough to hold up. That constraint made the codebase better than it would have been with unlimited time.",
+    ctaText: "If your team is about to receive a design handoff and needs someone who can build the architecture behind it — not just the UI on top of it — let's talk.",
   },
 
   "netflix-disney": {
