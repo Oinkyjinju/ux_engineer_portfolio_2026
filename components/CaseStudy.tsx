@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { type Project } from "@/data/projects";
-import { caseStudies, type CodeFile } from "@/data/caseStudies";
+import { caseStudies, type CodeFile, type VisualBlock } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
 import { projects } from "@/data/projects";
 
@@ -157,6 +157,286 @@ export default function CaseStudy({ project }: Props) {
     );
   }
 
+  const layout = data.layout ?? "standard";
+  const isNarrative = layout === "narrative";
+  const processLayout = data.processLayout ?? (isNarrative ? "stacked" : "columns");
+  const keyDecisionsLayout = data.keyDecisionsLayout ?? (isNarrative ? "stacked" : "grid");
+  const visualBlocks = data.visualBlocks ?? [];
+  const leadVisual = data.leadVisualId ? visualBlocks.find((block) => block.id === data.leadVisualId) : undefined;
+  const visualBlocksMain = isNarrative && leadVisual
+    ? visualBlocks.filter((block) => block.id !== leadVisual.id)
+    : visualBlocks;
+
+  const renderVisualBlock = (
+    block: VisualBlock,
+    options?: { twoCol?: boolean; priority?: boolean },
+  ) => {
+    const isTwoCol = options?.twoCol ?? data.visualBlocksColumns === 2;
+    const priority = options?.priority ?? false;
+    return (
+      <div
+        key={block.id}
+        className={isTwoCol && block.noContainer ? "sc-full-span" : undefined}
+        style={{ marginBottom: isTwoCol ? 0 : 72 }}
+      >
+        {/* ── before-after ── */}
+        {block.layout === "before-after" ? (
+          <>
+            {block.label && (
+              <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
+                {block.label}
+              </p>
+            )}
+            {block.phoneScroll ? (
+              /* Phone‑mockup side-by-side */
+              <div className="sc-phone-frames">
+                <div>
+                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
+                  {block.beforeSrc
+                    ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={priority} />
+                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Before</span></div>
+                  }
+                </div>
+                <div>
+                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
+                  {block.afterSrc
+                    ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
+                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>After</span></div>
+                  }
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
+                {/* Before — fixed portrait frame */}
+                <div className="sc-before-panel" style={{ flexShrink: 0 }}>
+                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
+                  <div
+                    className="sc-before-panel-inner"
+                    style={{
+                      width: 240, aspectRatio: "9/16",
+                      position: "relative",
+                      background: "var(--card-bg)",
+                      border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
+                      borderRadius: 12, overflow: "hidden",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                  >
+                    {block.beforeSrc ? (
+                      <Image
+                        src={block.beforeSrc}
+                        alt={`${block.label ?? block.caption} — Before`}
+                        fill
+                        sizes="(max-width: 600px) 240px, 240px"
+                        priority={priority}
+                        style={{ objectFit: "cover" }}
+                      />
+                    ) : (
+                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                        Before screenshot
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* After — uncapped so composite images breathe */}
+                <div style={{ flex: 1, minWidth: 280 }}>
+                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
+                  <div
+                    style={{
+                      background: "var(--card-bg)",
+                      border: `1px ${block.afterSrc ? "solid" : "dashed"} var(--border)`,
+                      borderRadius: 12, overflow: "hidden",
+                      ...(block.afterSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }),
+                    }}
+                  >
+                    {block.afterSrc ? (
+                      <Image
+                        src={block.afterSrc}
+                        alt={`${block.label ?? block.caption} — After`}
+                        width={0}
+                        height={0}
+                        sizes="(max-width: 768px) calc(100vw - 48px), 700px"
+                        priority={priority}
+                        style={{ width: "100%", height: "auto", display: "block" }}
+                      />
+                    ) : (
+                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
+                        After screenshot
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
+              {block.caption}
+            </p>
+          </>
+        ) : block.layout === "screen-grid" ? (
+          /* Hi-fi screen grid — full height, no forced aspect ratio */
+          <>
+            <div className="sc-screen-grid">
+              {(block.screens ?? []).map((screen, idx) => (
+                <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                  <span aria-hidden="true" style={{
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
+                    textTransform: "uppercase", color: "var(--accent)",
+                  }}>
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  {/* Phone frame — natural height, no forced crop */}
+                  <div style={{
+                    width: "100%",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 20,
+                    overflow: "hidden",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                  }}>
+                    <Image
+                      src={screen.src}
+                      alt={`${screen.label} screen`}
+                      width={0}
+                      height={0}
+                      sizes="(max-width: 768px) 100vw, 300px"
+                      priority={priority && idx === 0}
+                      style={{ width: "100%", height: "auto", display: "block" }}
+                    />
+                  </div>
+                  <span style={{
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                    textTransform: "uppercase", color: "var(--text-secondary)",
+                    textAlign: "center",
+                  }}>
+                    {screen.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
+              {block.caption}
+            </p>
+          </>
+        ) : block.layout === "side-by-side" ? (
+          /* Two images side-by-side */
+          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 240 }}>
+              <div style={{
+                background: "var(--card-bg)",
+                border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
+                borderRadius: 12, overflow: "hidden", marginBottom: 10,
+                ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "4/3" }),
+              }}>
+                {block.imageSrc ? (
+                  <Image
+                    src={block.imageSrc}
+                    alt={block.caption}
+                    width={0}
+                    height={0}
+                    sizes="(max-width: 768px) calc(100vw - 48px), 530px"
+                    priority={priority}
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                ) : (
+                  <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Image</span>
+                )}
+              </div>
+              <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                {block.caption}
+              </p>
+            </div>
+
+            {block.imageSrc2 && (
+              <div style={{ flex: 1, minWidth: 240 }}>
+                <div style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12, overflow: "hidden", marginBottom: 10,
+                }}>
+                  <Image
+                    src={block.imageSrc2}
+                    alt={block.caption2 ?? block.caption}
+                    width={0}
+                    height={0}
+                    sizes="(max-width: 768px) calc(100vw - 48px), 530px"
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                </div>
+                {block.caption2 && (
+                  <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
+                    {block.caption2}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Wide / full-bleed image — or centered phone mockup when phoneScroll */
+          <>
+            {block.phoneScroll && block.imageSrc ? (
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
+                <PhoneFrame src={block.imageSrc} alt={block.caption} priority={priority} />
+              </div>
+            ) : (
+              /* noContainer = no card chrome; otherwise standard card */
+              <div
+                style={{
+                  width: "100%",
+                  ...(block.noContainer ? {} : {
+                    background: "var(--card-bg)",
+                    border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
+                    borderRadius: 12, overflow: "hidden",
+                  }),
+                  marginBottom: 12,
+                  ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "16/9" }),
+                }}
+              >
+                {block.imageSrc ? (
+                  <Image
+                    src={block.imageSrc}
+                    alt={block.caption}
+                    width={0}
+                    height={0}
+                    sizes={isTwoCol
+                      ? "(max-width: 700px) 100vw, (max-width: 1160px) 50vw, 560px"
+                      : "(max-width: 1160px) 100vw, 1160px"
+                    }
+                    priority={priority}
+                    style={{
+                      width: "100%", height: "auto",
+                      display: "block",
+                      borderRadius: block.noContainer ? 12 : 0,
+                      ...(block.blendMode ? { mixBlendMode: block.blendMode as React.CSSProperties["mixBlendMode"] } : {}),
+                    }}
+                  />
+                ) : (
+                  <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
+                    Image
+                  </span>
+                )}
+              </div>
+            )}
+            <p style={{
+              fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
+              borderLeft: "2px solid var(--accent)", paddingLeft: 12,
+              ...(isTwoCol ? { marginBottom: 20 } : {}),
+            }}>
+              {block.caption}
+            </p>
+          </>
+        )}
+      </div>
+    );
+  };
+
+  const metaItems = [
+    { label: "Role",     value: data.role ?? "" },
+    { label: "Team",     value: data.team ?? "" },
+    { label: "Company",  value: project.company },
+    { label: "Timeline", value: data.snapshot?.timeline ?? project.year },
+    ...(data.snapshot?.tools ? [{ label: "Tools", value: data.snapshot.tools }] : []),
+  ];
+
   return (
     <>
     {/* Responsive overrides */}
@@ -171,6 +451,10 @@ export default function CaseStudy({ project }: Props) {
       .sc-vblocks-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
       @media (max-width: 700px) { .sc-vblocks-2col { grid-template-columns: 1fr; } }
       .sc-vblocks-2col .sc-full-span { grid-column: 1 / -1; }
+      .sc-meta-row { display: flex; justify-content: space-between; gap: 16px; }
+      @media (max-width: 640px) { .sc-meta-row { flex-direction: column; align-items: flex-start; } }
+      .sc-metric-row { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+      @media (max-width: 640px) { .sc-metric-row { flex-direction: column; align-items: flex-start; } }
     ` }} />
     <div
       suppressHydrationWarning
@@ -378,54 +662,91 @@ export default function CaseStudy({ project }: Props) {
       <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(24px, 6vw, 96px)" }}>
 
         {/* Meta strip */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: 1,
-            borderBottom: "1px solid var(--border)",
-            marginBottom: 80,
-          }}
-        >
-          {[
-            { label: "Role",     value: data.role     ?? "" },
-            { label: "Team",     value: data.team     ?? "" },
-            { label: "Company",  value: project.company },
-            { label: "Timeline", value: data.snapshot?.timeline ?? project.year },
-            ...(data.snapshot?.tools ? [{ label: "Tools", value: data.snapshot.tools }] : []),
-          ].map((item) => (
-            <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
-              <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
-                {item.label}
-              </p>
-              <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>
-                {item.value}
-              </p>
+        {isNarrative ? (
+          <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
+            <div style={{ border: "1px solid var(--border)", borderRadius: 16, background: "var(--card-bg)", overflow: "hidden" }}>
+              <div style={{ padding: "16px 22px", borderBottom: "1px solid var(--border)" }}>
+                <p style={sectionLabelSecondaryStyle(4)}>Project Snapshot</p>
+              </div>
+              {metaItems.map((item, idx) => (
+                <div
+                  key={item.label}
+                  className="sc-meta-row"
+                  style={{
+                    padding: "14px 22px",
+                    borderTop: idx === 0 ? "none" : "1px solid var(--border)",
+                  }}
+                >
+                  <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)" }}>
+                    {item.label}
+                  </span>
+                  <span style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: 520 }}>
+                    {item.value}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+              gap: 1,
+              borderBottom: "1px solid var(--border)",
+              marginBottom: 80,
+            }}
+          >
+            {metaItems.map((item) => (
+              <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
+                <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
+                  {item.label}
+                </p>
+                <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                  {item.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isNarrative && leadVisual && (
+          <div style={{ marginBottom: 100 }}>
+            <h2 style={sectionLabelStyle(20)}>{data.leadVisualHeader ?? "Shipped Output"}</h2>
+            {renderVisualBlock(leadVisual, { twoCol: false, priority: true })}
+          </div>
+        )}
 
         {/* Thumbnail + Challenge */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(40px, 6vw, 96px)",
-            alignItems: "center",
-            marginBottom: 100,
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "center", overflow: "hidden" }}>
-            <ProjectThumbnail project={project} />
-          </div>
-
-          <div>
+        {isNarrative ? (
+          <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
             <h2 style={sectionLabelStyle(20)}>The Challenge</h2>
-            <p style={{ fontFamily: serif, fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.65, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
+            <p style={{ fontFamily: serif, fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.7, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
               {data.challenge}
             </p>
           </div>
-        </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "clamp(40px, 6vw, 96px)",
+              alignItems: "center",
+              marginBottom: 100,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "center", overflow: "hidden" }}>
+              <ProjectThumbnail project={project} />
+            </div>
+
+            <div>
+              <h2 style={sectionLabelStyle(20)}>The Challenge</h2>
+              <p style={{ fontFamily: serif, fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.65, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
+                {data.challenge}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Approach */}
         <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
@@ -467,56 +788,142 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Process — 3 columns */}
+        {/* Process — staged system narrative */}
         <div style={{ marginBottom: 100 }}>
           <h2 style={sectionLabelSecondaryStyle(40)}>How It Got Built</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(24px, 4vw, 56px)" }}>
-            {(
-              [
-                { num: "01", title: "Discover", icon: "◎", items: data.process?.discover ?? [] },
-                { num: "02", title: "Design",   icon: "◈", items: data.process?.design   ?? [] },
-                { num: "03", title: "Ship",     icon: "◆", items: data.process?.ship     ?? [] },
-              ] as const
-            ).map((step) => (
-              <div key={step.num}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                  <div
-                    aria-hidden="true"
-                    style={{
-                      width: 36, height: 36, borderRadius: "50%",
-                      border: "1px solid var(--accent)",
-                      background: "var(--accent-muted)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontFamily: serif, fontSize: 16, color: "var(--accent)",
-                    }}
-                  >
-                    {step.icon}
+          {(() => {
+            const titles = data.processTitles ?? {};
+            const steps = [
+              { key: "discover", title: titles.discover ?? "Discover", icon: "◎", items: data.process?.discover ?? [] },
+              { key: "design",   title: titles.design   ?? "Design",   icon: "◈", items: data.process?.design   ?? [] },
+              { key: "ship",     title: titles.ship     ?? "Ship",     icon: "◆", items: data.process?.ship     ?? [] },
+              ...(data.process?.govern && data.process.govern.length > 0
+                ? [{ key: "govern", title: titles.govern ?? "Govern", icon: "◐", items: data.process.govern }]
+                : []),
+            ];
+            const useStacked = processLayout === "stacked";
+
+            return (
+              <>
+                {!useStacked && steps.length > 3 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+                    {steps.map((step, idx) => (
+                      <div
+                        key={`process-chip-${step.key}`}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          padding: "6px 14px",
+                          border: "1px solid var(--border)",
+                          borderRadius: 999,
+                          background: "var(--card-bg)",
+                        }}
+                      >
+                        <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.08em", color: "var(--accent)" }}>
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                          {step.title}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                  <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                    {step.num}
-                  </span>
-                </div>
-                <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16, marginTop: 0 }}>
-                  {step.title}
-                </h3>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-                  {step.items.map((item, itemIdx) => (
-                    <li
-                      key={`${step.num}-item-${itemIdx}`}
-                      style={{
-                        fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
-                        lineHeight: 1.6, padding: "5px 0",
-                        display: "flex", alignItems: "flex-start", gap: 8,
-                      }}
-                    >
-                      <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+                )}
+                {useStacked ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 760, margin: "0 auto" }}>
+                    {steps.map((step, idx) => (
+                      <div
+                        key={step.key}
+                        style={{
+                          border: "1px solid var(--border)",
+                          borderRadius: 16,
+                          padding: "20px 22px",
+                          background: "var(--card-bg)",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
+                          <div
+                            aria-hidden="true"
+                            style={{
+                              width: 32, height: 32, borderRadius: "50%",
+                              border: "1px solid var(--accent)",
+                              background: "var(--accent-muted)",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              fontFamily: serif, fontSize: 14, color: "var(--accent)",
+                            }}
+                          >
+                            {step.icon}
+                          </div>
+                          <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                          <h3 style={{ fontFamily: serif, fontSize: 22, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", margin: 0 }}>
+                            {step.title}
+                          </h3>
+                        </div>
+                        <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
+                          {step.items.map((item, itemIdx) => (
+                            <li
+                              key={`${step.key}-item-${itemIdx}`}
+                              style={{
+                                fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
+                                lineHeight: 1.7, padding: "6px 0",
+                                display: "flex", alignItems: "flex-start", gap: 8,
+                              }}
+                            >
+                              <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 5, flexShrink: 0 }}>▸</span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "clamp(20px, 3vw, 48px)" }}>
+                    {steps.map((step, idx) => (
+                      <div key={step.key}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                          <div
+                            aria-hidden="true"
+                            style={{
+                              width: 36, height: 36, borderRadius: "50%",
+                              border: "1px solid var(--accent)",
+                              background: "var(--accent-muted)",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              fontFamily: serif, fontSize: 16, color: "var(--accent)",
+                            }}
+                          >
+                            {step.icon}
+                          </div>
+                          <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+                        <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16, marginTop: 0 }}>
+                          {step.title}
+                        </h3>
+                        <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
+                          {step.items.map((item, itemIdx) => (
+                            <li
+                              key={`${step.key}-item-${itemIdx}`}
+                              style={{
+                                fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
+                                lineHeight: 1.6, padding: "5px 0",
+                                display: "flex", alignItems: "flex-start", gap: 8,
+                              }}
+                            >
+                              <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </div>
 
         {/* Key Design Decisions */}
@@ -525,12 +932,16 @@ export default function CaseStudy({ project }: Props) {
             <h2 style={sectionLabelStyle(32)}>{data.keyDecisionsLabel ?? "Key Design Decisions"}</h2>
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                gap: 0,
-                border: "1px solid var(--border)",
-                borderRadius: 12,
-                overflow: "hidden",
+                ...(keyDecisionsLayout === "stacked"
+                  ? { display: "flex", flexDirection: "column", gap: 16, maxWidth: 760, margin: "0 auto" }
+                  : {
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                      gap: 0,
+                      border: "1px solid var(--border)",
+                      borderRadius: 12,
+                      overflow: "hidden",
+                    }),
               }}
               role="list"
             >
@@ -539,10 +950,12 @@ export default function CaseStudy({ project }: Props) {
                   key={`decision-${i}`}
                   role="listitem"
                   style={{
-                    padding: "32px 28px",
+                    padding: keyDecisionsLayout === "stacked" ? "22px 24px" : "32px 28px",
                     background: "var(--card-bg)",
-                    borderRight: "1px solid var(--border)",
-                    borderBottom: "1px solid var(--border)",
+                    border: keyDecisionsLayout === "stacked" ? "1px solid var(--border)" : undefined,
+                    borderRadius: keyDecisionsLayout === "stacked" ? 12 : 0,
+                    borderRight: keyDecisionsLayout === "stacked" ? undefined : "1px solid var(--border)",
+                    borderBottom: keyDecisionsLayout === "stacked" ? undefined : "1px solid var(--border)",
                   }}
                 >
                   <span
@@ -565,269 +978,15 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Visual Blocks */}
-        {data.visualBlocks && data.visualBlocks.length > 0 && (
+        {visualBlocksMain.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(40)}>{data.visualBlocksHeader ?? "What Got Redesigned"}</h2>
 
             {/* 2-column grid wrapper for Netflix-style layouts */}
             <div className={data.visualBlocksColumns === 2 ? "sc-vblocks-2col" : undefined}>
-              {data.visualBlocks.map((block, blockIndex) => (
-                <div
-                  key={block.id}
-                  className={data.visualBlocksColumns === 2 && block.noContainer ? "sc-full-span" : undefined}
-                  style={{ marginBottom: data.visualBlocksColumns === 2 ? 0 : 72 }}
-                >
-
-                  {/* ── before-after ── */}
-                  {block.layout === "before-after" ? (
-                    <>
-                      {block.label && (
-                        <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
-                          {block.label}
-                        </p>
-                      )}
-                      {block.phoneScroll ? (
-                        /* Phone‑mockup side-by-side */
-                        <div className="sc-phone-frames">
-                          <div>
-                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
-                            {block.beforeSrc
-                              ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={blockIndex === 0} />
-                              : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Before</span></div>
-                            }
-                          </div>
-                          <div>
-                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
-                            {block.afterSrc
-                              ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
-                              : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>After</span></div>
-                            }
-                          </div>
-                        </div>
-                      ) : (
-                        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
-                          {/* Before — fixed portrait frame */}
-                          <div className="sc-before-panel" style={{ flexShrink: 0 }}>
-                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
-                            <div
-                              className="sc-before-panel-inner"
-                              style={{
-                                width: 240, aspectRatio: "9/16",
-                                position: "relative",
-                                background: "var(--card-bg)",
-                                border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
-                                borderRadius: 12, overflow: "hidden",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                              }}
-                            >
-                              {block.beforeSrc ? (
-                                <Image
-                                  src={block.beforeSrc}
-                                  alt={`${block.label ?? block.caption} — Before`}
-                                  fill
-                                  sizes="(max-width: 600px) 240px, 240px"
-                                  priority={blockIndex === 0}
-                                  style={{ objectFit: "cover" }}
-                                />
-                              ) : (
-                                <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                                  Before screenshot
-                                </span>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* After — uncapped so composite images breathe */}
-                          <div style={{ flex: 1, minWidth: 280 }}>
-                            <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
-                            <div
-                              style={{
-                                background: "var(--card-bg)",
-                                border: `1px ${block.afterSrc ? "solid" : "dashed"} var(--border)`,
-                                borderRadius: 12, overflow: "hidden",
-                                ...(block.afterSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }),
-                              }}
-                            >
-                              {block.afterSrc ? (
-                                <Image
-                                  src={block.afterSrc}
-                                  alt={`${block.label ?? block.caption} — After`}
-                                  width={0}
-                                  height={0}
-                                  sizes="(max-width: 768px) calc(100vw - 48px), 700px"
-                                  priority={blockIndex === 0}
-                                  style={{ width: "100%", height: "auto", display: "block" }}
-                                />
-                              ) : (
-                                <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                                  After screenshot
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-                        {block.caption}
-                      </p>
-                    </>
-
-                  ) : block.layout === "screen-grid" ? (
-                    /* Hi-fi screen grid — full height, no forced aspect ratio */
-                    <>
-                      <div className="sc-screen-grid">
-                        {(block.screens ?? []).map((screen, idx) => (
-                          <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                            <span aria-hidden="true" style={{
-                              fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
-                              textTransform: "uppercase", color: "var(--accent)",
-                            }}>
-                              {String(idx + 1).padStart(2, "0")}
-                            </span>
-                            {/* Phone frame — natural height, no forced crop */}
-                            <div style={{
-                              width: "100%",
-                              background: "var(--card-bg)",
-                              border: "1px solid var(--border)",
-                              borderRadius: 20,
-                              overflow: "hidden",
-                              boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
-                            }}>
-                              <Image
-                                src={screen.src}
-                                alt={`${screen.label} screen`}
-                                width={0}
-                                height={0}
-                                sizes="(max-width: 768px) 100vw, 300px"
-                                priority={idx === 0}
-                                style={{ width: "100%", height: "auto", display: "block" }}
-                              />
-                            </div>
-                            <span style={{
-                              fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-                              textTransform: "uppercase", color: "var(--text-secondary)",
-                              textAlign: "center",
-                            }}>
-                              {screen.label}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                      <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-                        {block.caption}
-                      </p>
-                    </>
-
-                  ) : block.layout === "side-by-side" ? (
-                    /* Two images side-by-side */
-                    <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-                      <div style={{ flex: 1, minWidth: 240 }}>
-                        <div style={{
-                          background: "var(--card-bg)",
-                          border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
-                          borderRadius: 12, overflow: "hidden", marginBottom: 10,
-                          ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "4/3" }),
-                        }}>
-                          {block.imageSrc ? (
-                            <Image
-                              src={block.imageSrc}
-                              alt={block.caption}
-                              width={0}
-                              height={0}
-                              sizes="(max-width: 768px) calc(100vw - 48px), 530px"
-                              style={{ width: "100%", height: "auto", display: "block" }}
-                            />
-                          ) : (
-                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Image</span>
-                          )}
-                        </div>
-                        <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
-                          {block.caption}
-                        </p>
-                      </div>
-
-                      {block.imageSrc2 && (
-                        <div style={{ flex: 1, minWidth: 240 }}>
-                          <div style={{
-                            background: "var(--card-bg)",
-                            border: "1px solid var(--border)",
-                            borderRadius: 12, overflow: "hidden", marginBottom: 10,
-                          }}>
-                            <Image
-                              src={block.imageSrc2}
-                              alt={block.caption2 ?? block.caption}
-                              width={0}
-                              height={0}
-                              sizes="(max-width: 768px) calc(100vw - 48px), 530px"
-                              style={{ width: "100%", height: "auto", display: "block" }}
-                            />
-                          </div>
-                          {block.caption2 && (
-                            <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
-                              {block.caption2}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                  ) : (
-                    /* Wide / full-bleed image — or centered phone mockup when phoneScroll */
-                    <>
-                      {block.phoneScroll && block.imageSrc ? (
-                        <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
-                          <PhoneFrame src={block.imageSrc} alt={block.caption} priority={blockIndex === 0} />
-                        </div>
-                      ) : (
-                        /* noContainer = no card chrome; otherwise standard card */
-                        <div
-                          style={{
-                            width: "100%",
-                            ...(block.noContainer ? {} : {
-                              background: "var(--card-bg)",
-                              border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
-                              borderRadius: 12, overflow: "hidden",
-                            }),
-                            marginBottom: 12,
-                            ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "16/9" }),
-                          }}
-                        >
-                          {block.imageSrc ? (
-                            <Image
-                              src={block.imageSrc}
-                              alt={block.caption}
-                              width={0}
-                              height={0}
-                              sizes={data.visualBlocksColumns === 2
-                                ? "(max-width: 700px) 100vw, (max-width: 1160px) 50vw, 560px"
-                                : "(max-width: 1160px) 100vw, 1160px"
-                              }
-                              priority={blockIndex === 0}
-                              style={{
-                                width: "100%", height: "auto",
-                                display: "block",
-                                borderRadius: block.noContainer ? 12 : 0,
-                                ...(block.blendMode ? { mixBlendMode: block.blendMode as React.CSSProperties["mixBlendMode"] } : {}),
-                              }}
-                            />
-                          ) : (
-                            <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
-                              Image
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      <p style={{
-                        fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
-                        borderLeft: "2px solid var(--accent)", paddingLeft: 12,
-                        ...(data.visualBlocksColumns === 2 ? { marginBottom: 20 } : {}),
-                      }}>
-                        {block.caption}
-                      </p>
-                    </>
-                  )}
-                </div>
-              ))}
+              {visualBlocksMain.map((block, blockIndex) =>
+                renderVisualBlock(block, { priority: !leadVisual && blockIndex === 0 })
+              )}
             </div>
           </div>
         )}
@@ -836,27 +995,52 @@ export default function CaseStudy({ project }: Props) {
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>Results</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
-              {data.metrics.map((m) => (
-                <div
-                  key={m.label}
-                  style={{
-                    padding: "20px 28px",
-                    border: "1px solid var(--border)",
-                    borderRadius: 12,
-                    background: "var(--card-bg)",
-                    textAlign: "center",
-                  }}
-                >
-                  <div style={{ fontFamily: serif, fontSize: "clamp(32px, 3vw, 44px)", lineHeight: 1, color: "var(--accent)", marginBottom: 6 }}>
-                    {m.value}
+            {isNarrative ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 760, margin: "0 auto" }}>
+                {data.metrics.map((m) => (
+                  <div
+                    key={m.label}
+                    style={{
+                      padding: "16px 20px",
+                      border: "1px solid var(--border)",
+                      borderRadius: 12,
+                      background: "var(--card-bg)",
+                    }}
+                  >
+                    <div className="sc-metric-row">
+                      <div style={{ fontFamily: serif, fontSize: "clamp(28px, 3vw, 36px)", lineHeight: 1.1, color: "var(--accent)" }}>
+                        {m.value}
+                      </div>
+                      <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                        {m.label}
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                    {m.label}
+                ))}
+              </div>
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
+                {data.metrics.map((m) => (
+                  <div
+                    key={m.label}
+                    style={{
+                      padding: "20px 28px",
+                      border: "1px solid var(--border)",
+                      borderRadius: 12,
+                      background: "var(--card-bg)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <div style={{ fontFamily: serif, fontSize: "clamp(32px, 3vw, 44px)", lineHeight: 1, color: "var(--accent)", marginBottom: 6 }}>
+                      {m.value}
+                    </div>
+                    <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                      {m.label}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -896,10 +1080,11 @@ export default function CaseStudy({ project }: Props) {
                   <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 20, maxWidth: 640 }}>
                     {block.description}
                   </p>
-                  {/* Code + preview side by side */}
-                  <div style={{ display: "grid", gridTemplateColumns: (block.previewHtml || block.previewSrc) ? "1fr 1fr" : "1fr", gap: 16 }}>
-                    {/* Code panel */}
-                    {(() => {
+                  {/* Code + preview layout */}
+                  {(() => {
+                    const hasPreview = Boolean(block.previewHtml || block.previewSrc);
+                    const stackPanels = isNarrative && hasPreview;
+                    const codePanel = (() => {
                       // Normalise to a files array — single-file blocks get one entry
                       const files: CodeFile[] = block.files && block.files.length > 0
                         ? block.files
@@ -963,9 +1148,9 @@ export default function CaseStudy({ project }: Props) {
                           </pre>
                         </div>
                       );
-                    })()}
-                    {/* Preview panel */}
-                    {(block.previewHtml || block.previewSrc) && (
+                    })();
+
+                    const previewPanel = hasPreview ? (
                       <div style={{
                         borderRadius: 12, overflow: "hidden",
                         border: "1px solid var(--border)",
@@ -990,8 +1175,21 @@ export default function CaseStudy({ project }: Props) {
                           />
                         ) : null}
                       </div>
-                    )}
-                  </div>
+                    ) : null;
+
+                    return (
+                      <div
+                        style={{
+                          ...(stackPanels
+                            ? { display: "flex", flexDirection: "column", gap: 16 }
+                            : { display: "grid", gridTemplateColumns: hasPreview ? "1fr 1fr" : "1fr", gap: 16 }),
+                        }}
+                      >
+                        {stackPanels ? previewPanel : codePanel}
+                        {stackPanels ? codePanel : previewPanel}
+                      </div>
+                    );
+                  })()}
                 </div>
               ))}
             </div>

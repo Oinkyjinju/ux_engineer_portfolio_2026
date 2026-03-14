@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520">
+  <rect width="1400" height="520" fill="#f8f7f2" />
+  <text x="80" y="70" font-family="Red Hat Text, system-ui, sans-serif" font-size="22" fill="#1d4e5c" font-weight="600">Performance Budget (Targets)</text>
+  <text x="80" y="100" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#6b7b85" letter-spacing="0.12em">DOCUMENTED TARGETS — VERIFY WITH REAL MEASUREMENTS</text>
+
+  <rect x="80" y="140" width="1240" height="300" rx="16" fill="#ffffff" stroke="#d6dde2"/>
+
+  <g font-family="Red Hat Text, system-ui, sans-serif" fill="#102531">
+    <text x="120" y="200" font-size="13" font-weight="600">Metric</text>
+    <text x="520" y="200" font-size="13" font-weight="600">Target</text>
+    <text x="840" y="200" font-size="13" font-weight="600">Why It Matters</text>
+
+    <text x="120" y="250" font-size="13">LCP</text>
+    <text x="520" y="250" font-size="13">&lt; 2.5s [unverified]</text>
+    <text x="840" y="250" font-size="12" fill="#5a6b76">Above-the-fold content appears fast for investors</text>
+
+    <text x="120" y="300" font-size="13">CLS</text>
+    <text x="520" y="300" font-size="13">&lt; 0.1 [unverified]</text>
+    <text x="840" y="300" font-size="12" fill="#5a6b76">Stable layout protects credibility</text>
+
+    <text x="120" y="350" font-size="13">TTFB</text>
+    <text x="520" y="350" font-size="13">&lt; 600ms [unverified]</text>
+    <text x="840" y="350" font-size="12" fill="#5a6b76">CMS delivery stays responsive</text>
+
+    <text x="120" y="400" font-size="13">Image Weight</text>
+    <text x="520" y="400" font-size="13">&lt; 1.0 MB [unverified]</text>
+    <text x="840" y="400" font-size="12" fill="#5a6b76">Large photography remains performant</text>
+  </g>
+</svg>

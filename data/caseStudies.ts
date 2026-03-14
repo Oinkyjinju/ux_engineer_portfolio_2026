@@ -40,6 +40,11 @@ export interface CaseStudyData {
   seoTitle?: string;
   seoDescription?: string;
   heroIntro?: string;
+  layout?: "standard" | "narrative";
+  processLayout?: "columns" | "stacked";
+  keyDecisionsLayout?: "grid" | "stacked";
+  leadVisualId?: string;
+  leadVisualHeader?: string;
   role: string;
   team: string;
   snapshot?: {
@@ -53,6 +58,13 @@ export interface CaseStudyData {
     discover: string[];
     design: string[];
     ship: string[];
+    govern?: string[];
+  };
+  processTitles?: {
+    discover?: string;
+    design?: string;
+    ship?: string;
+    govern?: string;
   };
   keyDecisions?: string[];
   keyDecisionsLabel?: string;
@@ -2172,6 +2184,11 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       "Built 35 custom WordPress blocks from an agency rebrand — full front-end engineering in PHP, HTML, CSS, and JavaScript, shipped in 8 weeks while simultaneously leading JUST Intelligence Phase 2.",
     heroIntro:
       "The engineering problem wasn't complexity — it was durability.\n\nJUST Capital needed a full marketing site rebuild in 8 weeks, while I was simultaneously running JUST Intelligence Phase 2. The visual design came from an external agency. My job was to turn those delivered assets into a production WordPress site — 35 custom modules, a CSS token system built directly from the brand guidelines, and a CMS architecture sturdy enough that the marketing team could own it permanently. The site serves institutional investors, ESG analysts, and press — the quality standard was non-negotiable.\n\nI had to build something that wouldn't need me the moment it launched. Limited capacity during the crunch became a design constraint: if I couldn't build it cleanly and hand it off confidently, I built something simpler instead.",
+    layout: "narrative",
+    processLayout: "stacked",
+    keyDecisionsLayout: "stacked",
+    leadVisualId: "just-rebrand-home",
+    leadVisualHeader: "Shipped Output",
     role: "Front-End Engineer",
     team: "1 front-end developer (me) · 1 back-end developer (CTO) · Marketing team (CMO) · 1 external agency (design)",
     snapshot: {
@@ -2186,21 +2203,37 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       "I owned all front-end engineering: HTML structure, CSS styling with a token-based custom property system, PHP/Twig templates, and vanilla JavaScript for interactions. Registered 35 custom WordPress blocks via ACF Pro. Built the full CSS token architecture from the agency's delivered brand guidelines. Coordinated with the CTO on back-end data and config integration. Migrated previous site content into the new module structure. Shipped fully responsive across mobile, tablet, and desktop — reconciled screen by screen against the agency deliverables.",
     process: {
       discover: [
-        "Reviewed the agency's delivered brand guidelines and design assets alongside marketing leadership — surfacing where the new identity needed to flex for real content, not just ideal mockup content",
-        "Finalized design direction with Marketing (CMO) and the agency: resolved edge cases, confirmed content priorities, and aligned on module hierarchy before building started",
-        "Mapped every screen in the delivered designs to a WordPress content model — deciding what editors could control vs. what stayed fixed, and naming CMS fields to match how marketing thinks",
+        "Deconstructed the agency Figma file into a system inventory: component families, token families, and content patterns that must survive real CMS usage",
+        "Set the engineering constraints with Marketing + CTO: editor autonomy, performance targets, accessibility baseline, and zero post-launch dev dependency",
+        "Mapped every layout to a WordPress content model — what editors control vs. what stays fixed, and field names aligned to marketing language",
+        "Audited legacy content and migration risk: content gaps, image ratios, and edge cases that would break modules",
+        "Defined release QA scope upfront (breakpoints, CMS safety, accessibility checks) so build decisions could be validated early",
       ],
       design: [
-        "Architected the WordPress CMS structure: ACF custom block types for each module, field schemas per block, post type configuration — all reviewed with the CTO before the first template was written",
-        "Built all 35 modules in HTML and CSS first — flat, no CMS dependency — to verify visual fidelity against the delivered designs before connecting any back-end logic",
-        "CSS token architecture derived directly from the agency's brand guidelines: primitive values → semantic aliases → component tokens, named to match the agency's delivered token conventions",
+        "Built the token architecture: primitives → semantic aliases → component tokens, matching agency naming to remove translation layers",
+        "Designed ACF schemas per module: field types, defaults, validation, and CMS safety constraints to prevent layout breakage",
+        "Authored module API contracts (props, variants, responsive behavior) before templating to preserve design-to-code parity",
+        "Established performance and accessibility guardrails that each module had to satisfy at build time",
+        "Created handoff artifacts for marketing: authoring rules, fallback behavior, and content constraints per module",
       ],
       ship: [
-        "Coordinated with the CTO to connect each module to live WordPress data and configuration — back-end and front-end integration across all 35 blocks",
-        "Migrated previous site content into the new module structure: matched copy, images, and metadata to the corresponding ACF fields, block by block",
-        "Final assembly pass to reconcile every module against the agency deliverables — resolving spacing, type, and layout edge cases screen by screen",
-        "Handed off to the marketing team with block-level author documentation — the site launched into full CMS autonomy from day one",
+        "Built and integrated 35 Twig/PHP modules with ACF fields, wiring front-end output to live CMS data",
+        "Migrated legacy content into the new schemas, validating each page against module constraints and token usage",
+        "Executed release QA: responsive fidelity, accessibility checks, CMS safety, and cross-browser verification",
+        "Published authoring docs and completed marketing handoff — full CMS autonomy on day one",
       ],
+      govern: [
+        "Established a post-launch maintenance path: token updates, module versioning, and CMS schema change rules",
+        "Defined performance budget targets and monitoring ownership [unverified]",
+        "Created an ongoing QA checklist for new pages and module variants",
+        "Documented escalation paths so marketing can resolve edge cases without engineering intervention",
+      ],
+    },
+    processTitles: {
+      discover: "Scope",
+      design: "Architect",
+      ship: "Build",
+      govern: "Govern",
     },
     keyDecisionsLabel: "Key Front-End Decisions",
     keyDecisions: [
@@ -2213,6 +2246,33 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       "Site launched on schedule — 8 weeks, in parallel with JUST Intelligence Phase 2",
       "CSS token system positioned to absorb future brand updates without codebase rewrites",
       "Fully responsive across mobile, tablet, and desktop — all 35 modules",
+    ],
+    visualBlocksHeader: "System Architecture & QA Proof",
+    visualBlocks: [
+      {
+        id: "just-rebrand-home",
+        layout: "wide",
+        imageSrc: "/just-rebrand/justcapital-home.png",
+        caption: "Live site output (justcapital.com) built from the 35-module WordPress system.",
+      },
+      {
+        id: "just-rebrand-architecture",
+        layout: "wide",
+        imageSrc: "/just-rebrand/system-architecture.svg",
+        caption: "Architecture summary: agency Figma → token map → Twig/PHP modules → ACF schema → WordPress CMS → live site.",
+      },
+      {
+        id: "just-rebrand-qa",
+        layout: "wide",
+        imageSrc: "/just-rebrand/release-qa-checklist.svg",
+        caption: "Release QA checklist template covering accessibility, responsive fidelity, CMS safety, and cross-browser checks.",
+      },
+      {
+        id: "just-rebrand-performance",
+        layout: "wide",
+        imageSrc: "/just-rebrand/performance-budget.svg",
+        caption: "Performance budget targets for launch readiness [unverified].",
+      },
     ],
     codeBlocksHeader: "The System in Code",
     codeBlocks: [
@@ -2470,10 +2530,12 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       { value: "3×",   label: "projects in parallel — shipped on schedule" },
       { value: "8 wks", label: "delivery crunch from kickoff to launch" },
       { value: "0",    label: "open visual QA tickets at launch" },
+      { value: "<2.5s", label: "LCP target [unverified]" },
+      { value: "AA",    label: "accessibility baseline [unverified]" },
     ],
     tech: ["PHP", "Twig", "WordPress", "ACF Pro", "HTML", "CSS", "JavaScript (ES6)", "CSS Custom Properties"],
     reflection:
-      "Building to someone else's design is its own discipline — and this project made me name it clearly. My job wasn't invention; it was fidelity and durability. Implementation is interpretation: every spacing edge case I resolved, every interaction I filled in where the spec was silent, every CMS field I named so a non-engineer would understand it — those were all decisions about the design intent.\n\nThe 8-week crunch and parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves — simple enough to hand off, tight enough to hold up. That constraint made the codebase better than it would have been with unlimited time.",
+      "My job wasn't invention; it was fidelity and durability. Implementation is interpretation: every spacing edge case I resolved, every interaction I filled in where the spec was silent, every CMS field I named so a non-engineer would understand it — those were all decisions about the design intent.\n\nThe 8-week crunch and parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves — simple enough to hand off, tight enough to hold up. That constraint made the codebase better than it would have been with unlimited time.",
     ctaText: "If your team is about to receive a design handoff and needs someone who can build the architecture behind it — not just the UI on top of it — let's talk.",
   },
 

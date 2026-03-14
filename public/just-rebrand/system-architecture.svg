@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="520" viewBox="0 0 1400 520">
+  <rect width="1400" height="520" fill="#f8f7f2" />
+  <text x="80" y="70" font-family="Red Hat Text, system-ui, sans-serif" font-size="22" fill="#1d4e5c" font-weight="600">System Architecture — JUST Capital Website Rebuild</text>
+  <text x="80" y="100" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#6b7b85" letter-spacing="0.12em">FIGMA → TOKENS → TEMPLATES → CMS → LIVE SITE</text>
+
+  <g font-family="Red Hat Text, system-ui, sans-serif" font-size="14" fill="#102531">
+    <rect x="80" y="150" width="210" height="88" rx="12" fill="#ffffff" stroke="#d6dde2"/>
+    <text x="100" y="185" font-weight="600">Agency Figma v2.0</text>
+    <text x="100" y="208" fill="#5a6b76" font-size="12">High-fidelity layout + tokens</text>
+
+    <rect x="330" y="150" width="210" height="88" rx="12" fill="#ffffff" stroke="#d6dde2"/>
+    <text x="350" y="185" font-weight="600">CSS Token Map</text>
+    <text x="350" y="208" fill="#5a6b76" font-size="12">Primitives → semantic aliases</text>
+
+    <rect x="580" y="150" width="210" height="88" rx="12" fill="#ffffff" stroke="#d6dde2"/>
+    <text x="600" y="185" font-weight="600">Twig + PHP Modules</text>
+    <text x="600" y="208" fill="#5a6b76" font-size="12">35 reusable blocks</text>
+
+    <rect x="830" y="150" width="210" height="88" rx="12" fill="#ffffff" stroke="#d6dde2"/>
+    <text x="850" y="185" font-weight="600">ACF Field Schema</text>
+    <text x="850" y="208" fill="#5a6b76" font-size="12">Editor-safe content API</text>
+
+    <rect x="1080" y="150" width="210" height="88" rx="12" fill="#ffffff" stroke="#d6dde2"/>
+    <text x="1100" y="185" font-weight="600">WordPress CMS</text>
+    <text x="1100" y="208" fill="#5a6b76" font-size="12">Marketing-owned publishing</text>
+  </g>
+
+  <g stroke="#1d4e5c" stroke-width="2" fill="none">
+    <path d="M290 194 H330" />
+    <path d="M540 194 H580" />
+    <path d="M790 194 H830" />
+    <path d="M1040 194 H1080" />
+    <path d="M1190 238 V330" />
+  </g>
+
+  <rect x="980" y="330" width="310" height="100" rx="14" fill="#ffffff" stroke="#d6dde2"/>
+  <text x="1002" y="365" font-family="Red Hat Text, system-ui, sans-serif" font-size="14" fill="#102531" font-weight="600">Live Site Output</text>
+  <text x="1002" y="388" font-family="Red Hat Text, system-ui, sans-serif" font-size="12" fill="#5a6b76">justcapital.com — fully responsive</text>
+  <text x="1002" y="410" font-family="Red Hat Text, system-ui, sans-serif" font-size="12" fill="#5a6b76">Module output guarded by tokens + QA</text>
+
+  <rect x="80" y="320" width="840" height="110" rx="14" fill="#ffffff" stroke="#d6dde2"/>
+  <text x="102" y="355" font-family="Red Hat Text, system-ui, sans-serif" font-size="14" fill="#102531" font-weight="600">Engineering Guardrails</text>
+  <text x="102" y="380" font-family="Red Hat Text, system-ui, sans-serif" font-size="12" fill="#5a6b76">Token parity, ACF field validation, responsive breakpoints, CMS-safe defaults</text>
+  <text x="102" y="405" font-family="Red Hat Text, system-ui, sans-serif" font-size="12" fill="#5a6b76">Release QA checklist + performance budget (targets) [unverified]</text>
+</svg>
