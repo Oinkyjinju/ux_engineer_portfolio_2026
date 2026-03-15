@@ -1178,22 +1178,51 @@ export default function CaseStudy({ project }: Props) {
                       </div>
                     ) : null;
 
+                    const liveLink = block.liveUrl ? (
+                      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+                        <a
+                          href={block.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 5,
+                            fontFamily: mono,
+                            fontSize: 10,
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            color: "var(--text-tertiary)",
+                            textDecoration: "none",
+                            padding: "5px 12px",
+                            border: "1px solid var(--border)",
+                            borderRadius: 6,
+                          }}
+                        >
+                          View Live ↗
+                        </a>
+                      </div>
+                    ) : null;
+
                     // Preview-only block (no code) → full-width preview panel
                     if (!hasCode) {
-                      return <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>{previewPanel}</div>;
+                      return <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>{previewPanel}{liveLink}</div>;
                     }
 
                     return (
-                      <div
-                        style={{
-                          ...(stackPanels
-                            ? { display: "flex", flexDirection: "column", gap: 16 }
-                            : { display: "grid", gridTemplateColumns: hasPreview ? "1fr 1fr" : "1fr", gap: 16 }),
-                        }}
-                      >
-                        {stackPanels ? previewPanel : codePanel}
-                        {stackPanels ? codePanel : previewPanel}
-                      </div>
+                      <>
+                        <div
+                          style={{
+                            ...(stackPanels
+                              ? { display: "flex", flexDirection: "column", gap: 16 }
+                              : { display: "grid", gridTemplateColumns: hasPreview ? "1fr 1fr" : "1fr", gap: 16 }),
+                          }}
+                        >
+                          {stackPanels ? previewPanel : codePanel}
+                          {stackPanels ? codePanel : previewPanel}
+                        </div>
+                        {liveLink}
+                      </>
                     );
                   })()}
                 </div>

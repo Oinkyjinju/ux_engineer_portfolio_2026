@@ -33,6 +33,7 @@ export interface CodeBlock {
   files?: CodeFile[];
   previewSrc?: string;
   previewHtml?: string;
+  liveUrl?: string;
 }
 
 export interface CaseStudyData {
@@ -2410,6 +2411,7 @@ $news_query = new WP_Query($wp_query_args);`,
         id: "rankings-module",
         title: "Rankings Module — URL State & Multi-Instance Safety",
         description: "Filter state lives in the URL — every selection is shareable and survives a page reload. JSON data is cache-busted by a git revision token injected at deploy time, so the CDN always serves fresh rankings without a manual cache purge. uniqid() scopes every DOM selector and event listener to its instance, making the module safe to embed multiple times on one page. On mobile (≤768px), the entire ranking row becomes a tap target; on desktop, only the arrow link is.",
+        liveUrl: "https://justcapital.com/rankings/",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#fff;padding:20px 22px;}
@@ -2417,22 +2419,23 @@ h1{font-size:22px;font-weight:800;margin-bottom:18px;letter-spacing:-.02em;color
 .rows{display:flex;flex-direction:column;gap:6px;}
 .row{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 5px;background:#f4f4f4;border-radius:50px;}
 .rk{background:#1D4E5C;color:#fff;font-size:10px;font-weight:700;padding:5px 10px;border-radius:50px;white-space:nowrap;flex-shrink:0;text-align:center;}
-.lg{width:44px;height:22px;display:flex;align-items:center;flex-shrink:0;}
+.ph{width:32px;height:32px;border-radius:50%;background:#e2ecef;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#1D4E5C;flex-shrink:0;letter-spacing:0;}
 .nm{flex:1;font-size:11px;font-weight:700;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.in{font-size:9.5px;color:#111;white-space:nowrap;padding:0 4px;flex-shrink:0;}
+.in{font-size:9.5px;color:#777;white-space:nowrap;padding:0 4px;flex-shrink:0;}
 .seals{display:flex;gap:3px;flex-shrink:0;}
-.ar{width:26px;height:26px;background:#E07820;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:13px;font-weight:700;line-height:1;}
+.ar{width:28px;height:28px;background:#E07820;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 </style></head><body>
-<svg style="display:none"><symbol id="s" viewBox="0 0 25 25"><circle cx="12.5" cy="12.5" r="12.5" fill="#1a3a6b"/><circle cx="12.5" cy="12.5" r="9" fill="#fff"/><text x="12.5" y="9.5" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">AMERICA'S MOST</text><text x="12.5" y="15" font-size="5.5" text-anchor="middle" fill="#1a3a6b" font-weight="900" font-family="sans-serif">JUST</text><text x="12.5" y="19" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">COMPANIES</text></symbol></svg>
+<svg style="display:none"><symbol id="s" viewBox="0 0 25 25"><circle cx="12.5" cy="12.5" r="12.5" fill="#1a3a6b"/><circle cx="12.5" cy="12.5" r="9" fill="#fff"/><text x="12.5" y="9.5" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">AMERICA'S MOST</text><text x="12.5" y="15" font-size="5.5" text-anchor="middle" fill="#1a3a6b" font-weight="900" font-family="sans-serif">JUST</text><text x="12.5" y="19" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">COMPANIES</text></symbol>
+<symbol id="arr" viewBox="0 0 12 12"><line x1="1.5" y1="6" x2="10" y2="6" stroke="white" stroke-width="1.6" stroke-linecap="round"/><polyline points="6.5,2.5 10,6 6.5,9.5" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
 <h1>2025 Rankings</h1>
 <div class="rows">
-  <div class="row"><span class="rk">1st</span><div class="lg"><svg width="40" height="20" viewBox="0 0 40 20"><text y="14" font-size="9" fill="#01a982" font-weight="700" font-family="sans-serif">HPE</text></svg></div><span class="nm">Hewlett Packard Enterprise Company</span><span class="in">Computer Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
-  <div class="row"><span class="rk">2nd</span><div class="lg"><svg width="22" height="20" viewBox="0 0 22 20"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#0096d6" stroke-width="1.8"/><text x="10" y="13.5" font-size="7.5" text-anchor="middle" fill="#0096d6" font-weight="700" font-family="sans-serif">hp</text></svg></div><span class="nm">HP Inc</span><span class="in">Technology Hardware</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
-  <div class="row"><span class="rk">3rd</span><div class="lg"><svg width="42" height="16" viewBox="0 0 42 16"><text y="12" font-size="5.5" fill="#e31837" font-weight="600" font-family="sans-serif">Bank of America</text></svg></div><span class="nm">Bank of America Corporation</span><span class="in">Banks</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
-  <div class="row"><span class="rk">4th</span><div class="lg"><svg width="22" height="22" viewBox="0 0 22 22"><polygon points="11,2 20,7 20,17 11,21 2,17 2,7" fill="none" stroke="#c00" stroke-width="1.5"/><text x="11" y="14" font-size="6.5" text-anchor="middle" fill="#003087" font-weight="700" font-family="sans-serif">UP</text></svg></div><span class="nm">Union Pacific Corp</span><span class="in">Transportation</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
-  <div class="row"><span class="rk">5th</span><div class="lg"><svg width="16" height="22" viewBox="0 0 16 22"><text y="16" font-size="18" fill="#a100ff" font-weight="700" font-family="sans-serif">&#8250;</text></svg></div><span class="nm">Accenture plc</span><span class="in">Commercial Support Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
-  <div class="row"><span class="rk">6th</span><div class="lg"><svg width="42" height="16" viewBox="0 0 42 16"><text y="11" font-size="6.5" fill="#333" font-weight="600" font-family="sans-serif" letter-spacing="1">TRANE</text></svg></div><span class="nm">Trane Technologies</span><span class="in">Building Materials &amp; Construction</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
-  <div class="row"><span class="rk">7th</span><div class="lg"><svg width="42" height="16" viewBox="0 0 42 16"><text y="11" font-size="5.5" fill="#006937" font-weight="700" font-family="sans-serif">EVERSOURCE</text></svg></div><span class="nm">Eversource Energy</span><span class="in">Utilities</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">1st</span><div class="ph">HE</div><span class="nm">Hewlett Packard Enterprise Company</span><span class="in">Computer Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
+  <div class="row"><span class="rk">2nd</span><div class="ph">HP</div><span class="nm">HP Inc</span><span class="in">Technology Hardware</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
+  <div class="row"><span class="rk">3rd</span><div class="ph">BA</div><span class="nm">Bank of America Corporation</span><span class="in">Banks</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
+  <div class="row"><span class="rk">4th</span><div class="ph">UP</div><span class="nm">Union Pacific Corp</span><span class="in">Transportation</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
+  <div class="row"><span class="rk">5th</span><div class="ph">AC</div><span class="nm">Accenture plc</span><span class="in">Commercial Support Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
+  <div class="row"><span class="rk">6th</span><div class="ph">TR</div><span class="nm">Trane Technologies</span><span class="in">Building Materials &amp; Construction</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
+  <div class="row"><span class="rk">7th</span><div class="ph">EV</div><span class="nm">Eversource Energy</span><span class="in">Utilities</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
 </div>
 </body></html>`,
       },
@@ -2441,6 +2444,7 @@ h1{font-size:22px;font-weight:800;margin-bottom:18px;letter-spacing:-.02em;color
         title: "Filter Listing — Compound Query Architecture",
         description: "Content filter state is composed from two sources — a URL tag parameter (for shareable links) and checkbox selections — merged into a single WP_Query tax_query with a duplicate guard so the same term is never applied twice. Tags are accumulated across the full result set and sorted by frequency, surfacing the most-referenced topics first in the filter UI without any manual ordering. External links are auto-detected by hostname comparison — no per-post flag needed. Offset pagination carries all current filter params forward via add_query_arg().",
         language: "php",
+        liveUrl: "https://justcapital.com/news/",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#fff;padding:16px;color:#111;}
@@ -2550,6 +2554,7 @@ if (strpos($post_data['permalink'], $home_host) === false) {
         id: "d3-performance-chart",
         title: "Investment Performance Chart — D3 Focus + Context",
         description: "Built in collaboration with the CTO (back-end data pipeline) and an ex-D3 engineering manager (chart architecture). Jinju's contributions: the PHP/ACF layer that server-renders all chart data into data-* attributes — zero client-side XHR on page load — the CSS responsive viewBox wrapper, and WordPress integration. The chart is a D3 v4 focus + context pattern: the top panel shows a zoomable detail view, the bottom shows the full time range with a draggable brush. Brush and zoom are bidirectionally synced with loop-prevention guards, and a binary bisect tooltip snaps to the nearest data point in O(log n) time.",
+        liveUrl: "https://justcapital.com/just-capital-index-series/",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#cce8e4;padding:14px;color:#111;}
