@@ -2412,39 +2412,28 @@ $news_query = new WP_Query($wp_query_args);`,
         description: "Filter state lives in the URL — every selection is shareable and survives a page reload. JSON data is cache-busted by a git revision token injected at deploy time, so the CDN always serves fresh rankings without a manual cache purge. uniqid() scopes every DOM selector and event listener to its instance, making the module safe to embed multiple times on one page. On mobile (≤768px), the entire ranking row becomes a tap target; on desktop, only the arrow link is.",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;font-size:12px;color:#333;}
-.url-bar{background:#fff;border-radius:5px;padding:5px 10px;font-family:monospace;font-size:8.5px;color:#888;margin-bottom:10px;border:1px solid #e0ddd7;}
-.url-bar span{color:#1D4E5C;font-weight:600;}
-.tabs{display:flex;gap:5px;margin-bottom:10px;}
-.tab{padding:4px 11px;border-radius:100px;font-size:8.5px;font-weight:600;cursor:default;border:1.5px solid #ccc;color:#888;}
-.tab.active{background:#1D4E5C;color:#fff;border-color:#1D4E5C;}
-.mid{font-family:monospace;font-size:7px;color:#aaa;margin-bottom:6px;}
-.row{background:#fff;border-radius:7px;padding:9px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
-.rn{font-size:18px;font-weight:700;color:#1D4E5C;width:28px;text-align:center;}
-.ri{flex:1;}
-.rc{font-size:11px;font-weight:600;color:#111;margin-bottom:1px;}
-.rs{font-size:8px;color:#888;}
-.seal{width:32px;height:32px;background:#1D4E5C;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;flex-shrink:0;}
-.st{font-size:5px;color:#fff;text-align:center;line-height:1.35;font-weight:700;letter-spacing:.03em;}
-.arr{color:#E07820;font-size:13px;}
-.cache{margin-top:9px;background:#fff;border-radius:5px;padding:6px 10px;font-family:monospace;font-size:7.5px;color:#888;}
-.cache span{color:#1D4E5C;}
+body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#fff;padding:20px 22px;}
+h1{font-size:22px;font-weight:800;margin-bottom:18px;letter-spacing:-.02em;color:#111;}
+.rows{display:flex;flex-direction:column;gap:6px;}
+.row{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 5px;background:#f4f4f4;border-radius:50px;}
+.rk{background:#1D4E5C;color:#fff;font-size:10px;font-weight:700;padding:5px 10px;border-radius:50px;white-space:nowrap;flex-shrink:0;text-align:center;}
+.lg{width:44px;height:22px;display:flex;align-items:center;flex-shrink:0;}
+.nm{flex:1;font-size:11px;font-weight:700;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.in{font-size:9.5px;color:#111;white-space:nowrap;padding:0 4px;flex-shrink:0;}
+.seals{display:flex;gap:3px;flex-shrink:0;}
+.ar{width:26px;height:26px;background:#E07820;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:13px;font-weight:700;line-height:1;}
 </style></head><body>
-<div class="url-bar">justcapital.com/rankings?<span>filter=tech</span>&year=2025</div>
-<div class="tabs">
-  <div class="tab">All Industries</div>
-  <div class="tab active">Tech</div>
-  <div class="tab">Finance</div>
-  <div class="tab">Retail</div>
+<svg style="display:none"><symbol id="s" viewBox="0 0 25 25"><circle cx="12.5" cy="12.5" r="12.5" fill="#1a3a6b"/><circle cx="12.5" cy="12.5" r="9" fill="#fff"/><text x="12.5" y="9.5" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">AMERICA'S MOST</text><text x="12.5" y="15" font-size="5.5" text-anchor="middle" fill="#1a3a6b" font-weight="900" font-family="sans-serif">JUST</text><text x="12.5" y="19" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">COMPANIES</text></symbol></svg>
+<h1>2025 Rankings</h1>
+<div class="rows">
+  <div class="row"><span class="rk">1st</span><div class="lg"><svg width="40" height="20" viewBox="0 0 40 20"><text y="14" font-size="9" fill="#01a982" font-weight="700" font-family="sans-serif">HPE</text></svg></div><span class="nm">Hewlett Packard Enterprise Company</span><span class="in">Computer Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">2nd</span><div class="lg"><svg width="22" height="20" viewBox="0 0 22 20"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#0096d6" stroke-width="1.8"/><text x="10" y="13.5" font-size="7.5" text-anchor="middle" fill="#0096d6" font-weight="700" font-family="sans-serif">hp</text></svg></div><span class="nm">HP Inc</span><span class="in">Technology Hardware</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">3rd</span><div class="lg"><svg width="42" height="16" viewBox="0 0 42 16"><text y="12" font-size="5.5" fill="#e31837" font-weight="600" font-family="sans-serif">Bank of America</text></svg></div><span class="nm">Bank of America Corporation</span><span class="in">Banks</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">4th</span><div class="lg"><svg width="22" height="22" viewBox="0 0 22 22"><polygon points="11,2 20,7 20,17 11,21 2,17 2,7" fill="none" stroke="#c00" stroke-width="1.5"/><text x="11" y="14" font-size="6.5" text-anchor="middle" fill="#003087" font-weight="700" font-family="sans-serif">UP</text></svg></div><span class="nm">Union Pacific Corp</span><span class="in">Transportation</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">5th</span><div class="lg"><svg width="16" height="22" viewBox="0 0 16 22"><text y="16" font-size="18" fill="#a100ff" font-weight="700" font-family="sans-serif">&#8250;</text></svg></div><span class="nm">Accenture plc</span><span class="in">Commercial Support Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">6th</span><div class="lg"><svg width="42" height="16" viewBox="0 0 42 16"><text y="11" font-size="6.5" fill="#333" font-weight="600" font-family="sans-serif" letter-spacing="1">TRANE</text></svg></div><span class="nm">Trane Technologies</span><span class="in">Building Materials &amp; Construction</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
+  <div class="row"><span class="rk">7th</span><div class="lg"><svg width="42" height="16" viewBox="0 0 42 16"><text y="11" font-size="5.5" fill="#006937" font-weight="700" font-family="sans-serif">EVERSOURCE</text></svg></div><span class="nm">Eversource Energy</span><span class="in">Utilities</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar">→</div></div>
 </div>
-<div class="mid">module scope: #rankings_a3f7c2 &nbsp;(uniqid)</div>
-<div class="row">
-  <div class="rn">1</div>
-  <div class="ri"><div class="rc">Microsoft Corporation</div><div class="rs">Technology — Overall Rank #3</div></div>
-  <div class="seal"><div class="st">INDUSTRY<br>LEADER</div></div>
-  <div class="arr">→</div>
-</div>
-<div class="cache">data: companies-2025.json?v=<span>__GIT_REV__</span></div>
 </body></html>`,
       },
       {
@@ -2454,54 +2443,38 @@ body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:
         language: "php",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;font-size:12px;color:#333;}
-.block{background:#fff;border-radius:7px;padding:9px 11px;margin-bottom:9px;}
-.bl{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:7px;}
-.qrow{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
-.qs{background:#e8f0f2;color:#1D4E5C;border:1.5px solid #1D4E5C;font-size:8px;padding:2px 7px;border-radius:3px;font-family:monospace;}
-.qs.cb{background:#fff8f0;color:#E07820;border-color:#E07820;}
-.qs.gd{background:#f5f5f5;color:#bbb;border-color:#ccc;text-decoration:line-through;}
-.pl{color:#999;font-size:10px;}
-.am{color:#888;font-size:10px;margin:0 3px;}
-.tq{background:#1D4E5C;color:#fff;font-size:8px;padding:2px 8px;border-radius:3px;font-family:monospace;}
-.tags{display:flex;flex-wrap:wrap;gap:5px;}
-.tag{border-radius:100px;padding:3px 9px;font-size:8px;font-weight:600;cursor:default;display:flex;align-items:center;gap:4px;}
-.t1{background:#1D4E5C;color:#fff;}.t2{background:#2a7a8c;color:#fff;}.t3{background:#e8f0f2;color:#1D4E5C;}.t4{background:#f0ede8;color:#aaa;}
-.tc{font-size:7px;opacity:.7;}
-.pag{display:flex;justify-content:space-between;align-items:center;}
-.rc{font-size:10px;font-weight:700;color:#1D4E5C;}
-.nb{background:#1D4E5C;color:#fff;border:none;padding:5px 12px;border-radius:4px;font-size:8.5px;cursor:default;}
-.ext{font-family:monospace;font-size:7.5px;color:#888;margin-top:6px;}
-.ext span{color:#E07820;}
+body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#fff;padding:16px;color:#111;}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.tag{padding:4px 12px;border-radius:100px;font-size:9px;font-weight:600;cursor:default;border:1.5px solid;}
+.tag.on{background:#1D4E5C;color:#fff;border-color:#1D4E5C;}
+.tag.off{background:#fff;color:#555;border-color:#ccc;}
+.items{display:flex;flex-direction:column;}
+.item{padding:10px 0;border-bottom:1px solid #f0f0f0;}
+.item:last-child{border-bottom:none;}
+.meta{display:flex;gap:8px;align-items:center;margin-bottom:4px;}
+.cat{font-size:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#1D4E5C;}
+.date{font-size:8px;color:#bbb;}
+.ttl{font-size:12px;font-weight:600;color:#111;line-height:1.4;}
+.footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;}
+.count{font-size:10px;color:#777;}
+.nxt{background:#1D4E5C;color:#fff;border:none;padding:6px 14px;border-radius:4px;font-size:9px;cursor:default;}
 </style></head><body>
-<div class="block">
-  <div class="bl">Compound tax_query — two sources merged</div>
-  <div class="qrow">
-    <span class="qs">?tag=ESG</span><span class="pl">+</span>
-    <span class="qs cb">☑ Workers</span><span class="pl">+</span>
-    <span class="qs cb">☑ Climate</span><span class="pl">+</span>
-    <span class="qs gd">ESG (dupe guard)</span>
-    <span class="am">→</span>
-    <span class="tq">tax_query[IN]</span>
-  </div>
+<div class="filters">
+  <span class="tag on">ESG</span>
+  <span class="tag off">Rankings</span>
+  <span class="tag off">Workers</span>
+  <span class="tag off">Climate</span>
+  <span class="tag off">Polling</span>
 </div>
-<div class="block">
-  <div class="bl">Tag frequency — arsort() → most-used first</div>
-  <div class="tags">
-    <span class="tag t1">ESG <span class="tc">42</span></span>
-    <span class="tag t2">Rankings <span class="tc">38</span></span>
-    <span class="tag t3">Workers <span class="tc">27</span></span>
-    <span class="tag t3">Climate <span class="tc">19</span></span>
-    <span class="tag t4">Polling <span class="tc">8</span></span>
-  </div>
+<div class="items">
+  <div class="item"><div class="meta"><span class="cat">Just Capital News</span><span class="date">Mar 10, 2025</span></div><div class="ttl">JUST Capital Releases 2025 Corporate Rankings</div></div>
+  <div class="item"><div class="meta"><span class="cat">Ethical Leadership</span><span class="date">Feb 24, 2025</span></div><div class="ttl">Fortune: The Next 3 Years Will Define Capitalism for a Generation ↗</div></div>
+  <div class="item"><div class="meta"><span class="cat">Just Intelligence</span><span class="date">Jan 15, 2025</span></div><div class="ttl">New Research: Worker Treatment Drives Long-Term Returns</div></div>
+  <div class="item"><div class="meta"><span class="cat">Just Announcements</span><span class="date">Jan 5, 2025</span></div><div class="ttl">JUST Capital Completes Transformation to Stakeholder Intelligence Platform</div></div>
 </div>
-<div class="block">
-  <div class="bl">Offset pagination + result count</div>
-  <div class="pag">
-    <div class="rc">20 / 147 Results</div>
-    <button class="nb">Next →</button>
-  </div>
-  <div class="ext">strpos(permalink, home_host) === false → <span>target="_blank"</span></div>
+<div class="footer">
+  <span class="count">20 / 147 Results</span>
+  <button class="nxt">Next →</button>
 </div>
 </body></html>`,
         code: `<?php
@@ -2579,47 +2552,54 @@ if (strpos($post_data['permalink'], $home_host) === false) {
         description: "Built in collaboration with the CTO (back-end data pipeline) and an ex-D3 engineering manager (chart architecture). Jinju's contributions: the PHP/ACF layer that server-renders all chart data into data-* attributes — zero client-side XHR on page load — the CSS responsive viewBox wrapper, and WordPress integration. The chart is a D3 v4 focus + context pattern: the top panel shows a zoomable detail view, the bottom shows the full time range with a draggable brush. Brush and zoom are bidirectionally synced with loop-prevention guards, and a binary bisect tooltip snaps to the nearest data point in O(log n) time.",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;}
-.card{background:#fff;border-radius:9px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
-.ch{background:#1D4E5C;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;}
-.ct{font-size:9.5px;font-weight:600;color:#fff;}
-.cb{font-size:7px;color:rgba(255,255,255,.5);letter-spacing:.04em;}
-.body{padding:12px 14px;}
-.da{font-family:monospace;font-size:7px;color:#888;margin-bottom:10px;background:#f8f7f4;padding:4px 7px;border-radius:4px;}
-.da span{color:#1D4E5C;}
+body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#cce8e4;padding:14px;color:#111;}
+.rtitle{font-size:13px;font-weight:700;text-align:center;margin-bottom:10px;}
+table{width:100%;border-collapse:collapse;border-radius:6px;overflow:hidden;margin-bottom:12px;}
+thead th{background:#1D4E5C;color:#fff;padding:7px 10px;font-size:9px;font-weight:600;text-align:center;border-right:1px solid rgba(255,255,255,.2);}
+thead th:last-child{border-right:none;}
+tbody td{background:#cce8e4;padding:7px 10px;font-size:11px;text-align:center;border-right:1px solid rgba(0,0,0,.08);}
+tbody td:last-child{border-right:none;}
+.card{background:#fff;border-radius:8px;padding:12px 14px;}
+.ctitle{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px;}
+.legend{display:flex;gap:16px;justify-content:center;margin-bottom:8px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:8px;}
+.lline{width:20px;height:2.5px;border-radius:2px;}
 </style></head><body>
+<div class="rtitle">Cumulative Returns since Dec 31 2021</div>
+<table>
+  <thead><tr><th>As Of</th><th>Workforce Advancement Leaders</th><th>Russell 1000 Equal Weighted Index</th></tr></thead>
+  <tbody><tr><td>03-13-2026</td><td>45.66%</td><td>25.88%</td></tr></tbody>
+</table>
 <div class="card">
-  <div class="ch">
-    <div class="ct">Investment Performance — Focus + Context</div>
-    <div class="cb">D3 v4 · collaboration</div>
+  <div class="ctitle">Performance</div>
+  <div class="legend">
+    <div class="leg"><div class="lline" style="background:#2563eb"></div><span style="color:#2563eb">Workforce Advancement Leaders</span></div>
+    <div class="leg"><div class="lline" style="background:#ea580c"></div><span style="color:#ea580c">Russell 1000 Equal Weighted Index</span></div>
   </div>
-  <div class="body">
-    <div class="da">data-chart="<span>[{"date":"2020-01-01","value":100},...]</span>" &nbsp;(zero XHR)</div>
-    <svg viewBox="0 0 380 195" preserveAspectRatio="xMinYMin meet" style="width:100%;height:auto;">
-      <rect x="0" y="0" width="380" height="148" fill="#fafaf8" rx="4"/>
-      <line x1="30" y1="37" x2="375" y2="37" stroke="#eee" stroke-width="1"/>
-      <line x1="30" y1="74" x2="375" y2="74" stroke="#eee" stroke-width="1"/>
-      <line x1="30" y1="111" x2="375" y2="111" stroke="#eee" stroke-width="1"/>
-      <text x="4" y="35" font-size="8" fill="#bbb">150</text>
-      <text x="4" y="72" font-size="8" fill="#bbb">125</text>
-      <text x="4" y="109" font-size="8" fill="#bbb">100</text>
-      <text x="4" y="142" font-size="8" fill="#bbb">75</text>
-      <polyline points="30,122 58,116 86,108 114,100 142,88 170,80 198,70 226,63 254,58 282,62 310,50 338,43 366,36" fill="none" stroke="#1D4E5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="30,122 58,119 86,116 114,113 142,109 170,104 198,100 226,96 254,91 282,88 310,83 338,79 366,74" fill="none" stroke="#E07820" stroke-width="1.5" stroke-dasharray="4,3" stroke-linecap="round"/>
-      <line x1="226" y1="4" x2="226" y2="148" stroke="#1D4E5C" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
-      <circle cx="226" cy="63" r="4" fill="#1D4E5C"/>
-      <rect x="230" y="44" width="92" height="36" rx="4" fill="rgba(29,78,92,0.92)"/>
-      <text x="238" y="58" font-size="8" fill="#fff" font-weight="600">Aug 2022</text>
-      <text x="238" y="70" font-size="8" fill="rgba(255,255,255,0.7)">JUST: +42.8%</text>
-      <text x="148" y="138" font-size="7" fill="#bbb">bisect() → O(log n) tooltip snap</text>
-      <rect x="0" y="155" width="380" height="36" fill="#f0ede8" rx="4"/>
-      <polyline points="30,185 58,183 86,181 114,179 142,176 170,173 198,171 226,169 254,167 282,168 310,165 338,163 366,161" fill="none" stroke="#1D4E5C" stroke-width="1.5" opacity="0.45" stroke-linecap="round"/>
-      <rect x="170" y="155" width="104" height="36" fill="rgba(29,78,92,0.11)" stroke="rgba(29,78,92,0.3)" stroke-width="1.5" rx="2"/>
-      <rect x="170" y="155" width="4" height="36" fill="#1D4E5C" rx="1" opacity="0.55"/>
-      <rect x="270" y="155" width="4" height="36" fill="#1D4E5C" rx="1" opacity="0.55"/>
-      <text x="4" y="151" font-size="7" fill="#bbb">brush ↔ zoom sync (loop-guarded)</text>
-    </svg>
-  </div>
+  <svg viewBox="0 0 360 185" style="width:100%;height:auto;">
+    <text x="10" y="100" font-size="8" fill="#999" transform="rotate(-90,10,100)" text-anchor="middle" font-family="sans-serif">Returns</text>
+    <text x="39" y="13" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">50%</text>
+    <text x="39" y="37" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">40%</text>
+    <text x="39" y="61" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">30%</text>
+    <text x="39" y="85" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">20%</text>
+    <text x="39" y="109" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">10%</text>
+    <text x="39" y="133" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">0%</text>
+    <text x="39" y="157" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">-10%</text>
+    <text x="39" y="181" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">-20%</text>
+    <line x1="42" y1="9" x2="356" y2="9" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="33" x2="356" y2="33" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="57" x2="356" y2="57" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="81" x2="356" y2="81" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="105" x2="356" y2="105" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="129" x2="356" y2="129" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="153" x2="356" y2="153" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="177" x2="356" y2="177" stroke="#e5e7eb" stroke-width="1"/>
+    <line x1="42" y1="129" x2="356" y2="129" stroke="#999" stroke-width="0.8"/>
+    <polyline fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      points="50,129 76,138 103,153 129,177 155,160 182,143 208,118 234,93 261,81 287,57 313,41 339,26 356,19"/>
+    <polyline fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      points="50,129 76,135 103,150 129,177 155,168 182,150 208,129 234,118 261,110 287,93 313,87 339,77 356,67"/>
+  </svg>
 </div>
 </body></html>`,
       },
@@ -2660,10 +2640,21 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
   <div class="alias-row"><span class="tok">--color-surface</span><span class="arr">→</span><span class="tok gray">--color-neutral-50</span></div>
 </div>
 <div class="group">
-  <div class="section-label">3 · Component tokens</div>
-  <div class="alias-row"><span class="tok" style="font-size:7px">--btn-bg-primary</span><span class="arr">→</span><span class="tok gray" style="font-size:7px">--color-accent</span></div>
-  <div class="alias-row"><span class="tok" style="font-size:7px">--card-bg</span><span class="arr">→</span><span class="tok gray" style="font-size:7px">--color-surface</span></div>
-  <div class="alias-row"><span class="tok" style="font-size:7px">--nav-bg</span><span class="arr">→</span><span class="tok gray" style="font-size:7px">--color-surface</span></div>
+  <div class="section-label">3 · Component tokens — rendered</div>
+  <div style="display:flex;flex-direction:column;gap:7px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button style="background:#E07820;color:#fff;border:none;padding:6px 16px;border-radius:100px;font-size:9px;font-weight:600;font-family:sans-serif;cursor:default;flex-shrink:0;">Sign In Now</button>
+      <span style="font-family:monospace;font-size:7.5px;color:#1D4E5C;letter-spacing:.03em;">--btn-bg-primary</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="background:#f8f7f2;border:1px solid #ede9e2;border-radius:6px;padding:5px 12px;font-size:8px;color:#888;font-family:sans-serif;flex-shrink:0;white-space:nowrap;">Content card surface</div>
+      <span style="font-family:monospace;font-size:7.5px;color:#1D4E5C;letter-spacing:.03em;">--card-bg</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="background:#f8f7f2;border:1px solid #ede9e2;border-radius:4px;padding:4px 10px;font-size:8px;font-weight:600;font-family:sans-serif;display:flex;gap:10px;color:#333;flex-shrink:0;white-space:nowrap;"><span>JUST Capital</span><span>Rankings</span><span>Reports</span></div>
+      <span style="font-family:monospace;font-size:7.5px;color:#1D4E5C;letter-spacing:.03em;">--nav-bg</span>
+    </div>
+  </div>
 </div>
 </body></html>`,
         code: `/* ─── 1. Primitives ─────────────────────────────────────────── */
