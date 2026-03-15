@@ -2277,167 +2277,546 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     codeBlocksHeader: "The System in Code",
     codeBlocks: [
       {
-        id: "hero-section",
-        title: "Hero Section",
-        description: "Two-column hero: full-bleed dark teal background with large display type and dual CTAs on the left; floating white news panel with live WordPress content on the right. Responsive — stacks vertically at tablet breakpoint.",
-        language: "css",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;}
-.hero{display:grid;grid-template-columns:1fr 460px;min-height:380px;background:#1D4E5C;padding:52px 64px;gap:40px;align-items:center;}
-.hero-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:18px;font-family:'Courier New',monospace;}
-.hero-title{font-size:44px;line-height:1.06;font-weight:700;color:#fff;margin-bottom:18px;letter-spacing:-.01em;}
-.hero-title u{text-decoration:underline;text-decoration-color:#E07820;text-underline-offset:5px;text-decoration-thickness:2px;}
-.hero-body{font-size:14px;line-height:1.65;color:rgba(255,255,255,.75);max-width:460px;margin-bottom:28px;}
-.ctas{display:flex;gap:12px;}
-.btn-p{background:#E07820;color:#fff;border:2px solid #E07820;padding:10px 24px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;}
-.btn-o{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.45);padding:10px 24px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;}
-.panel{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.22);}
-.news-item{padding:14px 18px;border-bottom:1px solid #f0ede8;}
-.news-item:last-child{border-bottom:none;}
-.tags{display:flex;gap:5px;margin-bottom:7px;flex-wrap:wrap;}
-.tf{background:#1D4E5C;color:#fff;font-size:9px;padding:3px 8px;border-radius:100px;font-weight:600;letter-spacing:.04em;}
-.to{border:1.5px solid #1D4E5C;color:#1D4E5C;font-size:9px;padding:2px 7px;border-radius:100px;font-weight:500;}
-.hl{font-size:13px;line-height:1.4;font-weight:600;color:#111;margin-bottom:0;}
-.arr{color:#E07820;float:right;margin-top:-16px;}
-.see-all{display:flex;justify-content:flex-end;padding:11px 18px;font-size:12px;color:#1D4E5C;font-weight:600;}
-</style></head><body><section class="hero">
-<div>
-  <div class="hero-eyebrow">JUST Capital</div>
-  <h1 class="hero-title">Unlock The Power<br>Of <u>Just</u><br>Intelligence</h1>
-  <p class="hero-body">We translate insights from a decade of public polling, performance data, and financial analysis into actionable intelligence leaders can use to drive long-term business success.</p>
-  <div class="ctas"><button class="btn-p">Sign In Now</button><button class="btn-o">Learn More</button></div>
-</div>
-<div class="panel">
-  <div class="news-item"><div class="tags"><span class="tf">Just Capital News</span></div><div class="hl">Just Capital Welcomes New Board Member</div><span class="arr">→</span></div>
-  <div class="news-item"><div class="tags"><span class="tf">Ethical Leadership</span><span class="to">Responsible AI</span></div><div class="hl">FORTUNE: The Next 3 Years Will Define Capitalism for a Generation</div><span class="arr">→</span></div>
-  <div class="news-item"><div class="tags"><span class="tf">Just Announcements</span><span class="to">Just Intelligence</span></div><div class="hl">Just Capital Completes Transformation to Stakeholder Intelligence Platform</div><span class="arr">→</span></div>
-  <div class="see-all"><span style="border-bottom:1.5px solid #1D4E5C">See All News →</span></div>
-</div>
-</section></body></html>`,
-        code: `.hero {
-  display: grid;
-  grid-template-columns: 1fr 460px;
-  background: var(--color-brand-dark);
-  padding: var(--space-section) var(--space-container);
-  gap: var(--space-xl);
-  align-items: center;
-}
-
-.hero__title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  line-height: 1.06;
-  color: var(--color-text-inverse);
-  letter-spacing: -0.01em;
-}
-
-.hero__title--accent {
-  text-decoration: underline;
-  text-decoration-color: var(--color-accent);
-  text-underline-offset: 5px;
-  text-decoration-thickness: 2px;
-}
-
-/* Floating news panel */
-.news-panel {
-  background: var(--color-surface);
-  border-radius: var(--card-radius);
-  box-shadow: var(--shadow-elevated);
-  overflow: hidden;
-}
-
-.news-item {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--color-neutral-100);
-}
-
-/* Responsive — stack at tablet */
-@media (max-width: 960px) {
-  .hero { grid-template-columns: 1fr; }
-  .news-panel { display: none; }
-}`,
-      },
-      {
-        id: "acf-block",
-        title: "WordPress Block Registration",
-        description: "Custom ACF blocks give the marketing team authoring freedom while keeping markup and CSS under engineering control. Each block registers its own Twig template, field group, and allowed post types — no inline styles, no page builder overhead.",
+        id: "homepage-hero",
+        title: "Homepage Hero — Variadic CTA Builder",
+        description: "The hero accepts an unlimited number of CTAs without a code change — editors add numbered ACF fields in WordPress and the loop picks them up automatically. Logo carousel speed is physics-derived: (170px × logo count) ÷ 50px·s⁻¹, keeping scroll velocity constant regardless of how many logos the CMS holds. The news panel queries WordPress via JSON-configured args stored in ACF, so editors can override taxonomy rules without a deploy.",
         language: "php",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-size:12px;color:#333;}
-.editor{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
-.editor-header{background:#1D4E5C;padding:11px 16px;display:flex;align-items:center;gap:8px;}
-.editor-title{color:rgba(255,255,255,.75);font-size:9px;letter-spacing:.1em;text-transform:uppercase;}
-.editor-badge{background:rgba(255,255,255,.15);color:#fff;font-size:8px;padding:2px 7px;border-radius:4px;margin-left:auto;letter-spacing:.05em;}
-.block-wrap{padding:14px;}
-.block-item{border:1.5px dashed #c5c3be;border-radius:8px;overflow:hidden;}
-.block-label{background:#f8f7f4;padding:6px 12px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#888;border-bottom:1px solid #e5e3de;}
-.fields{padding:10px 12px;display:flex;flex-direction:column;gap:5px;}
-.fr{display:flex;gap:8px;align-items:center;}
-.fn{font-size:9px;color:#666;width:88px;flex-shrink:0;}
-.fi{flex:1;background:#f8f7f4;border:1px solid #ddd;border-radius:4px;padding:3px 7px;font-size:9px;color:#333;font-family:inherit;}
-.fi.on{border-color:#1D4E5C;color:#1D4E5C;}
-.preview-bar{background:#1D4E5C;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
-.pval{font-size:24px;font-weight:700;color:#E07820;}
-.psub{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px;}
-.pfn{font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.06em;}
-</style></head><body><div class="editor">
-  <div class="editor-header">
-    <div class="editor-title">WordPress Block Editor</div>
-    <div class="editor-badge">ACF Pro</div>
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;font-size:12px;color:#333;}
+.grid{display:grid;grid-template-columns:1fr 48px 1fr;gap:10px;align-items:center;}
+.panel{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.ph{background:#1D4E5C;padding:7px 11px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+.fields{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
+.fr{display:flex;gap:5px;align-items:center;}
+.num{width:14px;height:14px;background:#1D4E5C;color:#fff;border-radius:3px;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fname{font-size:7.5px;color:#888;width:82px;flex-shrink:0;font-family:monospace;}
+.fval{flex:1;background:#f8f7f4;border:1px solid #ddd;border-radius:3px;padding:2px 5px;font-size:7.5px;color:#333;}
+.arrow-col{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.al{font-size:7px;color:#888;text-align:center;font-family:monospace;line-height:1.4;}
+.ai{font-size:18px;color:#1D4E5C;}
+.out{padding:10px 11px;}
+.btns{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px;}
+.bp{background:#E07820;color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:9px;font-weight:600;}
+.bo{background:transparent;color:#1D4E5C;border:2px solid #1D4E5C;padding:5px 13px;border-radius:100px;font-size:9px;font-weight:600;}
+.formula{background:#f0f7f9;border-radius:5px;padding:5px 8px;}
+.fl{font-size:7px;color:#aaa;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+.fc{font-family:monospace;font-size:8px;color:#1D4E5C;}
+</style></head><body>
+<div class="grid">
+  <div class="panel">
+    <div class="ph">ACF Fields → WordPress CMS</div>
+    <div class="fields">
+      <div class="fr"><span class="num">1</span><span class="fname">main_cta_text_1</span><input class="fval" value="Sign In Now" readonly></div>
+      <div class="fr"><span class="num">1</span><span class="fname">main_cta_class_1</span><input class="fval" value="btn-primary" readonly></div>
+      <div class="fr"><span class="num">2</span><span class="fname">main_cta_text_2</span><input class="fval" value="Learn More" readonly></div>
+      <div class="fr"><span class="num">2</span><span class="fname">main_cta_class_2</span><input class="fval" value="btn-outline" readonly></div>
+      <div class="fr"><span class="num" style="background:#ddd;color:#aaa">…</span><span class="fname" style="color:#ccc">main_cta_*_N</span><input class="fval" style="color:#ccc" value="no deploy needed" readonly></div>
+    </div>
   </div>
-  <div class="block-wrap">
-    <div class="block-item">
-      <div class="block-label">stat-callout — CMS fields</div>
-      <div class="fields">
-        <div class="fr"><span class="fn">stat_value</span><input class="fi on" value="800+" readonly></div>
-        <div class="fr"><span class="fn">stat_label</span><input class="fi on" value="hardcoded values replaced" readonly></div>
-        <div class="fr"><span class="fn">stat_context</span><input class="fi" value="across 3 dev teams, 1 design system" readonly></div>
-        <div class="fr"><span class="fn">theme</span><input class="fi on" value="brand-dark" readonly></div>
+  <div class="arrow-col">
+    <div class="al">for i=1<br>to 99</div>
+    <div class="ai">→</div>
+  </div>
+  <div class="panel">
+    <div class="ph">Rendered Output</div>
+    <div class="out">
+      <div class="btns">
+        <button class="bp">Sign In Now</button>
+        <button class="bo">Learn More</button>
       </div>
-      <div class="preview-bar">
-        <div><div class="pval">800+</div><div class="psub">hardcoded values replaced</div></div>
-        <div class="pfn">stat-callout.php</div>
+      <div class="formula">
+        <div class="fl">Carousel Duration</div>
+        <div class="fc">(170 × 8 logos) ÷ 50 = 27.2s</div>
       </div>
     </div>
   </div>
-</div></body></html>`,
+</div>
+</body></html>`,
         code: `<?php
 /**
- * Register custom ACF blocks — JUST Capital marketing site
+ * homepage_hero.php — JUST Capital
  *
- * Each block maps to a PHP template in /template-parts/blocks/.
- * Field groups are defined in ACF local JSON and version-controlled.
+ * Pattern 1 — Variadic CTA builder
+ * Reads numbered ACF fields (main_cta_text_1, main_cta_link_1 … up to _99)
+ * so editors can add CTAs from the WordPress CMS without a code change.
  *
- * @package JustCapital
+ * Pattern 2 — Physics-aware logo carousel
+ * Duration scales with logo count so visual scroll speed stays
+ * constant regardless of how many logos live in the CMS.
+ * Formula: (170px × count) ÷ 50px·s⁻¹ = seconds to traverse full strip.
+ *
+ * Pattern 3 — JSON-configured WP_Query
+ * Query args are stored in an ACF field so taxonomy overrides
+ * (e.g. exclude 'Polling' category) don't require a deploy.
  */
-add_action( 'acf/init', 'jc_register_blocks' );
 
-function jc_register_blocks(): void {
-  if ( ! function_exists( 'acf_register_block_type' ) ) return;
+// ── Variadic CTA builder ─────────────────────────────────────────
+$main_ctas             = [];
+$main_ctas_field_types = ['main_cta_text', 'main_cta_link', 'main_cta_class', 'is_new_tab'];
 
-  $blocks = [
-    'hero'         => [ 'icon' => 'cover-image',  'desc' => 'Full-bleed hero with news panel' ],
-    'stat-callout' => [ 'icon' => 'chart-bar',    'desc' => 'Large stat with label and context' ],
-    'card-grid'    => [ 'icon' => 'grid-view',    'desc' => '1–4 column card layout' ],
-    'quote-block'  => [ 'icon' => 'format-quote', 'desc' => 'Pull quote or testimonial' ],
-    'newsletter'   => [ 'icon' => 'email',        'desc' => 'Newsletter signup (Mailchimp)' ],
-  ];
+for ($i = 1; $i <= 99; $i++) {
+    $item = [];
+    foreach ($main_ctas_field_types as $field_type) {
+        $key = $field_type . '_' . $i;
+        if (isset($$key)) {
+            $item[$field_type] = $$key;
+        }
+    }
+    if (!empty($item)) {
+        $main_ctas[] = $item;
+    } else {
+        break; // stop at first empty numbered group
+    }
+}
 
-  foreach ( $blocks as $name => $meta ) {
-    acf_register_block_type([
-      'name'            => $name,
-      'title'           => ucwords( str_replace( '-', ' ', $name ) ),
-      'description'     => $meta['desc'],
-      'icon'            => $meta['icon'],
-      'category'        => 'just-capital',
-      'post_types'      => [ 'page', 'post' ],
-      'render_template' => "template-parts/blocks/{$name}.php",
-      'enqueue_style'   => get_template_directory_uri() . "/assets/css/blocks/{$name}.css",
-      'supports'        => [ 'align' => false, 'anchor' => true ],
-    ]);
-  }
+// ── Physics-aware carousel duration ─────────────────────────────
+$carousel_duration = (170 * count($logos)) / 50;
+?>
+
+<div class="logo-carousel"
+     style="animation-duration: <?= $carousel_duration ?>s;">
+
+    <?php // Logos rendered twice — second copy creates the seamless wrap ?>
+    <?php foreach ($logos as $logo): ?>
+        <img src="<?= esc_url($logo['url']) ?>"
+             alt="<?= esc_attr($logo['alt']) ?>" loading="lazy">
+    <?php endforeach; ?>
+    <?php foreach ($logos as $logo): ?>
+        <img src="<?= esc_url($logo['url']) ?>"
+             alt="<?= esc_attr($logo['alt']) ?>" loading="lazy">
+    <?php endforeach; ?>
+
+</div>
+
+<?php
+// ── JSON-configured WP_Query ─────────────────────────────────────
+// Stored in ACF so editors can change taxonomy rules without a deploy.
+// Default: exclude 'Polling' posts from the hero news panel.
+$wp_query_args = json_decode('{
+    "post_type":      "post",
+    "posts_per_page": 5,
+    "tax_query": [{
+        "taxonomy": "post_tag",
+        "field":    "slug",
+        "terms":    ["Polling"],
+        "operator": "NOT IN"
+    }]
+}', true);
+
+$news_query = new WP_Query($wp_query_args);`,
+      },
+      {
+        id: "rankings-module",
+        title: "Rankings Module — URL State & Multi-Instance Safety",
+        description: "Filter state lives in the URL — every selection is shareable and survives a page reload. JSON data is cache-busted by a git revision token injected at deploy time, so the CDN always serves fresh rankings without a manual cache purge. uniqid() scopes every DOM selector and event listener to its instance, making the module safe to embed multiple times on one page. On mobile (≤768px), the entire ranking row becomes a tap target; on desktop, only the arrow link is.",
+        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;font-size:12px;color:#333;}
+.url-bar{background:#fff;border-radius:5px;padding:5px 10px;font-family:monospace;font-size:8.5px;color:#888;margin-bottom:10px;border:1px solid #e0ddd7;}
+.url-bar span{color:#1D4E5C;font-weight:600;}
+.tabs{display:flex;gap:5px;margin-bottom:10px;}
+.tab{padding:4px 11px;border-radius:100px;font-size:8.5px;font-weight:600;cursor:default;border:1.5px solid #ccc;color:#888;}
+.tab.active{background:#1D4E5C;color:#fff;border-color:#1D4E5C;}
+.mid{font-family:monospace;font-size:7px;color:#aaa;margin-bottom:6px;}
+.row{background:#fff;border-radius:7px;padding:9px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.rn{font-size:18px;font-weight:700;color:#1D4E5C;width:28px;text-align:center;}
+.ri{flex:1;}
+.rc{font-size:11px;font-weight:600;color:#111;margin-bottom:1px;}
+.rs{font-size:8px;color:#888;}
+.seal{width:32px;height:32px;background:#1D4E5C;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;flex-shrink:0;}
+.st{font-size:5px;color:#fff;text-align:center;line-height:1.35;font-weight:700;letter-spacing:.03em;}
+.arr{color:#E07820;font-size:13px;}
+.cache{margin-top:9px;background:#fff;border-radius:5px;padding:6px 10px;font-family:monospace;font-size:7.5px;color:#888;}
+.cache span{color:#1D4E5C;}
+</style></head><body>
+<div class="url-bar">justcapital.com/rankings?<span>filter=tech</span>&year=2025</div>
+<div class="tabs">
+  <div class="tab">All Industries</div>
+  <div class="tab active">Tech</div>
+  <div class="tab">Finance</div>
+  <div class="tab">Retail</div>
+</div>
+<div class="mid">module scope: #rankings_a3f7c2 &nbsp;(uniqid)</div>
+<div class="row">
+  <div class="rn">1</div>
+  <div class="ri"><div class="rc">Microsoft Corporation</div><div class="rs">Technology — Overall Rank #3</div></div>
+  <div class="seal"><div class="st">INDUSTRY<br>LEADER</div></div>
+  <div class="arr">→</div>
+</div>
+<div class="cache">data: companies-2025.json?v=<span>__GIT_REV__</span></div>
+</body></html>`,
+        files: [
+          {
+            label: "rankings.php",
+            language: "php",
+            code: `<?php
+/**
+ * rankings.php — JUST Capital Rankings module
+ *
+ * URL-driven filter state: every filter selection updates the
+ * query string, so filtered views are shareable and reload-safe.
+ *
+ * JSON data source: cache-busted by __GIT_REV__ (replaced by the
+ * build pipeline at deploy time) — browsers always get fresh data
+ * without a manual CDN purge.
+ *
+ * uniqid() scope isolation: safe for multiple rankings instances
+ * on a single page — no shared selectors or event listeners.
+ */
+
+// ── URL-driven filter state ──────────────────────────────────────
+$filter = isset($default_filter) ? $default_filter : '';
+if (array_key_exists('filter', $_GET)) {
+    // Always sanitize before use — never trust $_GET directly
+    $filter = sanitize_text_field($_GET['filter']);
+}
+
+// ── JSON data source with git-revision cache busting ────────────
+$json_path     = THEME_URI . '/assets/data/companies-' . $ranked_year . '.json?v=__GIT_REV__';
+$data['ranks'] = json_decode(file_get_contents($json_path), true);
+
+// ── Instance isolation ───────────────────────────────────────────
+$module_id = uniqid('rankings_');
+?>
+
+<div id="<?= $module_id ?>" class="rankings_module">
+
+<?php for ($i = 0; $i < count($data['ranks']); $i++): ?>
+
+    <div class="ranking_item">
+
+        <?php // Conditional industry-leader seal — only for rank == 1 ?>
+        <?php if ($data['ranks'][$i]['rank']['industry'] == 1): ?>
+            <img src="/wp-content/uploads/2026/02/just-capital-blue-cnbc.png"
+                 class="industry-leader-seal"
+                 alt="JUST Capital Industry Leader">
+        <?php endif; ?>
+
+        <div class="ranking_item_info">
+            <?= esc_html($data['ranks'][$i]['name']) ?>
+        </div>
+
+        <div class="ranking_item_arrow">
+            <a href="<?= esc_url($data['ranks'][$i]['profile_url']) ?>">→</a>
+        </div>
+
+    </div>
+
+<?php endfor; ?>
+</div>`,
+          },
+          {
+            label: "rankings.js",
+            language: "js",
+            code: `/**
+ * URL state management via URI.js
+ *
+ * Debounced 100ms — prevents double-push on rapid filter taps
+ * while still feeling instant to the user.
+ */
+var new_uri = URI(window.location.href);
+var timer;
+
+function add_to_query(name, value) {
+    clearTimeout(timer);
+    new_uri.removeSearch(name).addSearch(name, value);
+    timer = setTimeout(function() {
+        window.location.href = new_uri.toString();
+    }, 100);
+}
+
+/**
+ * Mobile touch-target expansion
+ *
+ * On desktop (> 768px): only the arrow link is clickable.
+ * On mobile (≤ 768px): the entire ranking row becomes the tap target
+ * so users don't have to hit a 16px arrow on a touch screen.
+ *
+ * Re-evaluated on resize to handle orientation changes.
+ */
+function setupRankingItemLinks() {
+    var isMobile = window.innerWidth <= 768;
+
+    document.querySelectorAll('#' + moduleId + ' .ranking_item').forEach(function(item) {
+        var arrow = item.querySelector('.ranking_item_arrow a');
+        item.classList.toggle('clickable', isMobile);
+        item.onclick = isMobile
+            ? function() { window.location.href = arrow.getAttribute('href'); }
+            : null;
+    });
+}
+
+window.addEventListener('resize', setupRankingItemLinks);
+document.addEventListener('DOMContentLoaded', setupRankingItemLinks);`,
+          },
+        ],
+      },
+      {
+        id: "filter-listing",
+        title: "Filter Listing — Compound Query Architecture",
+        description: "Content filter state is composed from two sources — a URL tag parameter (for shareable links) and checkbox selections — merged into a single WP_Query tax_query with a duplicate guard so the same term is never applied twice. Tags are accumulated across the full result set and sorted by frequency, surfacing the most-referenced topics first in the filter UI without any manual ordering. External links are auto-detected by hostname comparison — no per-post flag needed. Offset pagination carries all current filter params forward via add_query_arg().",
+        language: "php",
+        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;font-size:12px;color:#333;}
+.block{background:#fff;border-radius:7px;padding:9px 11px;margin-bottom:9px;}
+.bl{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:7px;}
+.qrow{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
+.qs{background:#e8f0f2;color:#1D4E5C;border:1.5px solid #1D4E5C;font-size:8px;padding:2px 7px;border-radius:3px;font-family:monospace;}
+.qs.cb{background:#fff8f0;color:#E07820;border-color:#E07820;}
+.qs.gd{background:#f5f5f5;color:#bbb;border-color:#ccc;text-decoration:line-through;}
+.pl{color:#999;font-size:10px;}
+.am{color:#888;font-size:10px;margin:0 3px;}
+.tq{background:#1D4E5C;color:#fff;font-size:8px;padding:2px 8px;border-radius:3px;font-family:monospace;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{border-radius:100px;padding:3px 9px;font-size:8px;font-weight:600;cursor:default;display:flex;align-items:center;gap:4px;}
+.t1{background:#1D4E5C;color:#fff;}.t2{background:#2a7a8c;color:#fff;}.t3{background:#e8f0f2;color:#1D4E5C;}.t4{background:#f0ede8;color:#aaa;}
+.tc{font-size:7px;opacity:.7;}
+.pag{display:flex;justify-content:space-between;align-items:center;}
+.rc{font-size:10px;font-weight:700;color:#1D4E5C;}
+.nb{background:#1D4E5C;color:#fff;border:none;padding:5px 12px;border-radius:4px;font-size:8.5px;cursor:default;}
+.ext{font-family:monospace;font-size:7.5px;color:#888;margin-top:6px;}
+.ext span{color:#E07820;}
+</style></head><body>
+<div class="block">
+  <div class="bl">Compound tax_query — two sources merged</div>
+  <div class="qrow">
+    <span class="qs">?tag=ESG</span><span class="pl">+</span>
+    <span class="qs cb">☑ Workers</span><span class="pl">+</span>
+    <span class="qs cb">☑ Climate</span><span class="pl">+</span>
+    <span class="qs gd">ESG (dupe guard)</span>
+    <span class="am">→</span>
+    <span class="tq">tax_query[IN]</span>
+  </div>
+</div>
+<div class="block">
+  <div class="bl">Tag frequency — arsort() → most-used first</div>
+  <div class="tags">
+    <span class="tag t1">ESG <span class="tc">42</span></span>
+    <span class="tag t2">Rankings <span class="tc">38</span></span>
+    <span class="tag t3">Workers <span class="tc">27</span></span>
+    <span class="tag t3">Climate <span class="tc">19</span></span>
+    <span class="tag t4">Polling <span class="tc">8</span></span>
+  </div>
+</div>
+<div class="block">
+  <div class="bl">Offset pagination + result count</div>
+  <div class="pag">
+    <div class="rc">20 / 147 Results</div>
+    <button class="nb">Next →</button>
+  </div>
+  <div class="ext">strpos(permalink, home_host) === false → <span>target="_blank"</span></div>
+</div>
+</body></html>`,
+        code: `<?php
+/**
+ * content_listing_full_page_with_filters.php — JUST Capital
+ *
+ * Compound tax_query: merges a URL-param tag (shareable links)
+ * with checkbox-selected tags, with a duplicate guard so the same
+ * term is never applied twice to the same query.
+ *
+ * Tags accumulate frequency counts across the full result set and
+ * are sorted descending — most-referenced topics surface first in
+ * the filter UI without any manual ordering or CMS config.
+ *
+ * External links auto-detected by hostname comparison — no
+ * per-post 'is_external' field required on any post object.
+ *
+ * Offset pagination carries all current $_GET params forward.
+ */
+
+// ── Compound tax_query builder ───────────────────────────────────
+$selected_tag = sanitize_text_field($_GET['tag'] ?? '');
+
+if (!empty($selected_tag)) {
+    $wp_query_args['tax_query'][] = [
+        'taxonomy' => 'post_tag',
+        'field'    => 'slug',
+        'terms'    => [$selected_tag],
+        'operator' => 'IN',
+    ];
+}
+
+foreach ($tag_filter as $tag_slug) {
+    // Guard: skip if this slug is already applied via the URL param
+    if ($tag_slug !== $selected_tag) {
+        $wp_query_args['tax_query'][] = [
+            'taxonomy' => 'post_tag',
+            'field'    => 'name',
+            'terms'    => [$tag_slug],
+            'operator' => 'IN',
+        ];
+    }
+}
+
+// ── Tag frequency accumulation ───────────────────────────────────
+$all_tags = [];
+while ($results->have_posts()) {
+    $results->the_post();
+    foreach (get_the_tags() ?: [] as $tag) {
+        $all_tags[$tag->name] = ($all_tags[$tag->name] ?? 0) + 1;
+    }
+}
+arsort($all_tags); // highest frequency first → drives filter UI order
+
+// ── Auto external link detection ────────────────────────────────
+// Opens in new tab if the permalink points off-domain.
+// No manual 'is_external' flag required on any post.
+$home_host = parse_url(home_url(), PHP_URL_HOST);
+if (strpos($post_data['permalink'], $home_host) === false) {
+    echo ' target="_blank" rel="noopener noreferrer"';
+}
+?>
+
+<?php // ── Offset pagination — all filter params preserved ─────── ?>
+<a href="<?= esc_url(add_query_arg('offset', $page_offset)) ?>">Next →</a>
+
+<span class="result-count">
+    <?= $offset_counter + $results->post_count ?>
+    / <?= $results->found_posts ?> Results
+</span>`,
+      },
+      {
+        id: "d3-performance-chart",
+        title: "Investment Performance Chart — D3 Focus + Context",
+        description: "Built in collaboration with the CTO (back-end data pipeline) and an ex-D3 engineering manager (chart architecture). Jinju's contributions: the PHP/ACF layer that server-renders all chart data into data-* attributes — zero client-side XHR on page load — the CSS responsive viewBox wrapper, and WordPress integration. The chart is a D3 v4 focus + context pattern: the top panel shows a zoomable detail view, the bottom shows the full time range with a draggable brush. Brush and zoom are bidirectionally synced with loop-prevention guards, and a binary bisect tooltip snaps to the nearest data point in O(log n) time.",
+        language: "js",
+        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;}
+.card{background:#fff;border-radius:9px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.ch{background:#1D4E5C;padding:9px 14px;display:flex;justify-content:space-between;align-items:center;}
+.ct{font-size:9.5px;font-weight:600;color:#fff;}
+.cb{font-size:7px;color:rgba(255,255,255,.5);letter-spacing:.04em;}
+.body{padding:12px 14px;}
+.da{font-family:monospace;font-size:7px;color:#888;margin-bottom:10px;background:#f8f7f4;padding:4px 7px;border-radius:4px;}
+.da span{color:#1D4E5C;}
+</style></head><body>
+<div class="card">
+  <div class="ch">
+    <div class="ct">Investment Performance — Focus + Context</div>
+    <div class="cb">D3 v4 · collaboration</div>
+  </div>
+  <div class="body">
+    <div class="da">data-chart="<span>[{"date":"2020-01-01","value":100},...]</span>" &nbsp;(zero XHR)</div>
+    <svg viewBox="0 0 380 195" preserveAspectRatio="xMinYMin meet" style="width:100%;height:auto;">
+      <rect x="0" y="0" width="380" height="148" fill="#fafaf8" rx="4"/>
+      <line x1="30" y1="37" x2="375" y2="37" stroke="#eee" stroke-width="1"/>
+      <line x1="30" y1="74" x2="375" y2="74" stroke="#eee" stroke-width="1"/>
+      <line x1="30" y1="111" x2="375" y2="111" stroke="#eee" stroke-width="1"/>
+      <text x="4" y="35" font-size="8" fill="#bbb">150</text>
+      <text x="4" y="72" font-size="8" fill="#bbb">125</text>
+      <text x="4" y="109" font-size="8" fill="#bbb">100</text>
+      <text x="4" y="142" font-size="8" fill="#bbb">75</text>
+      <polyline points="30,122 58,116 86,108 114,100 142,88 170,80 198,70 226,63 254,58 282,62 310,50 338,43 366,36" fill="none" stroke="#1D4E5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="30,122 58,119 86,116 114,113 142,109 170,104 198,100 226,96 254,91 282,88 310,83 338,79 366,74" fill="none" stroke="#E07820" stroke-width="1.5" stroke-dasharray="4,3" stroke-linecap="round"/>
+      <line x1="226" y1="4" x2="226" y2="148" stroke="#1D4E5C" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <circle cx="226" cy="63" r="4" fill="#1D4E5C"/>
+      <rect x="230" y="44" width="92" height="36" rx="4" fill="rgba(29,78,92,0.92)"/>
+      <text x="238" y="58" font-size="8" fill="#fff" font-weight="600">Aug 2022</text>
+      <text x="238" y="70" font-size="8" fill="rgba(255,255,255,0.7)">JUST: +42.8%</text>
+      <text x="148" y="138" font-size="7" fill="#bbb">bisect() → O(log n) tooltip snap</text>
+      <rect x="0" y="155" width="380" height="36" fill="#f0ede8" rx="4"/>
+      <polyline points="30,185 58,183 86,181 114,179 142,176 170,173 198,171 226,169 254,167 282,168 310,165 338,163 366,161" fill="none" stroke="#1D4E5C" stroke-width="1.5" opacity="0.45" stroke-linecap="round"/>
+      <rect x="170" y="155" width="104" height="36" fill="rgba(29,78,92,0.11)" stroke="rgba(29,78,92,0.3)" stroke-width="1.5" rx="2"/>
+      <rect x="170" y="155" width="4" height="36" fill="#1D4E5C" rx="1" opacity="0.55"/>
+      <rect x="270" y="155" width="4" height="36" fill="#1D4E5C" rx="1" opacity="0.55"/>
+      <text x="4" y="151" font-size="7" fill="#bbb">brush ↔ zoom sync (loop-guarded)</text>
+    </svg>
+  </div>
+</div>
+</body></html>`,
+        code: `/**
+ * index-concepts-performance.js — JUST Capital
+ * Interactive investment performance chart.
+ *
+ * Built in collaboration with:
+ *   · CTO — back-end data pipeline and ranking methodology
+ *   · Ex-D3 engineering manager — chart architecture, brush/zoom sync
+ *
+ * Jinju's contributions:
+ *   · PHP/ACF layer: server-renders all chart data into data-* attributes
+ *     so the chart bootstraps with zero client-side XHR
+ *   · CSS responsive wrapper: viewBox scaling, no JS resize handler
+ *   · WordPress/ACF integration and editorial content management
+ */
+
+// ── Data-attribute driven init — zero XHR ───────────────────────
+// All chart config and data are server-rendered by the PHP template
+// into data-metadata and data-chart attributes on the container.
+$('[data-chart]').each(function() {
+    var $el       = $(this);
+    var metaData  = JSON.parse($el.attr('data-metadata'));
+    var chartData = JSON.parse($el.attr('data-chart'));
+    initPerformanceChart($el, metaData, chartData);
+});
+
+function initPerformanceChart($el, meta, data) {
+
+    // ── Responsive SVG via viewBox ───────────────────────────────
+    // Scales to any container width without a JS resize listener.
+    var svg = d3.select($el[0]).append('svg')
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+        .attr('viewBox', '0 0 ' +
+              (width + margin.left + margin.right) + ' ' +
+              (height + margin.top + margin.bottom))
+        .classed('svg-content-responsive', true);
+
+    // ── Binary bisect for nearest date — O(log n) tooltip ───────
+    // Avoids a linear scan on every mousemove; handles multi-year
+    // daily datasets without dropping frames.
+    var availableDates = data.map(function(d) { return d.date; });
+
+    overlay.on('mousemove', function() {
+        var mouse       = d3.mouse(this);
+        var dateOnMouse = xMain.invert(mouse[0]);
+        var i           = d3.bisect(availableDates, dateOnMouse);
+        var d0          = availableDates[i - 1];
+        var d1          = availableDates[i];
+        var closestDate = (dateOnMouse - d0 > d1 - dateOnMouse) ? d1 : d0;
+        var nearestX    = xMain(closestDate);
+
+        // ── Tooltip overflow flip ────────────────────────────────
+        // If the tooltip would bleed off the right edge, mirror it
+        // to the left of the cursor instead.
+        var xOffset = (nearestX + tooltipWidth >= rectOverlayWidth)
+            ? (nearestX - tooltipWidth - 20)
+            : (nearestX + 20);
+        tooltip.attr('transform', 'translate(' + xOffset + ',' + mouse[1] + ')');
+    });
+
+    // ── Brush ↔ zoom bidirectional sync ─────────────────────────
+    // Each handler checks d3.event.sourceEvent.type and returns
+    // early if the other handler triggered it — prevents the
+    // two from calling each other in an infinite cycle.
+
+    function brushed() {
+        if (d3.event.sourceEvent &&
+            d3.event.sourceEvent.type === 'zoom') return;
+        var s = d3.event.selection || xContext.range();
+        xMain.domain(s.map(xContext.invert, xContext));
+        focusLine.attr('d', mainLine);
+        focusXAxis.call(xAxisFocus);
+        focusOverlay.call(
+            zoom.transform,
+            d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0)
+        );
+    }
+
+    function zoomed() {
+        if (d3.event.sourceEvent &&
+            d3.event.sourceEvent.type === 'brush') return;
+        var t = d3.event.transform;
+        xMain.domain(t.rescaleX(xContext).domain());
+        focusLine.attr('d', mainLine);
+        focusXAxis.call(xAxisFocus);
+        contextBrush.call(brush.move, xMain.range().map(t.invertX, t));
+    }
+
+    brush.on('brush end', brushed);
+    zoom.on('zoom', zoomed);
 }`,
       },
       {
