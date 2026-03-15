@@ -1083,8 +1083,9 @@ export default function CaseStudy({ project }: Props) {
                   {/* Code + preview layout */}
                   {(() => {
                     const hasPreview = Boolean(block.previewHtml || block.previewSrc);
+                    const hasCode    = Boolean((block.files && block.files.length > 0) || block.code);
                     const stackPanels = isNarrative && hasPreview;
-                    const codePanel = (() => {
+                    const codePanel = hasCode ? (() => {
                       // Normalise to a files array — single-file blocks get one entry
                       const files: CodeFile[] = block.files && block.files.length > 0
                         ? block.files
@@ -1148,7 +1149,7 @@ export default function CaseStudy({ project }: Props) {
                           </pre>
                         </div>
                       );
-                    })();
+                    })() : null;
 
                     const previewPanel = hasPreview ? (
                       <div style={{
@@ -1176,6 +1177,11 @@ export default function CaseStudy({ project }: Props) {
                         ) : null}
                       </div>
                     ) : null;
+
+                    // Preview-only block (no code) → full-width preview panel
+                    if (!hasCode) {
+                      return <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>{previewPanel}</div>;
+                    }
 
                     return (
                       <div
