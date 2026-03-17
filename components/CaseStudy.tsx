@@ -198,228 +198,203 @@ export default function CaseStudy({ project }: Props) {
 
   const renderVisualBlock = (
     block: VisualBlock,
-    options?: { twoCol?: boolean; priority?: boolean },
+    options?: { twoCol?: boolean; priority?: boolean; index?: number },
   ) => {
-    const isTwoCol = options?.twoCol ?? data.visualBlocksColumns === 2;
-    const priority = options?.priority ?? false;
+    const isTwoCol  = options?.twoCol ?? data.visualBlocksColumns === 2;
+    const priority  = options?.priority ?? false;
+    const blockIdx  = options?.index ?? 0;
+
+    // Shared image clip — no card chrome, shadow gives depth
+    const imgClip: React.CSSProperties = {
+      borderRadius: 10,
+      overflow: "hidden",
+      boxShadow: "0 2px 20px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.07)",
+    };
+
+    // Minimal caption — no accent bar, just clean mono text
+    const Caption = ({ text, secondary = false }: { text: string; secondary?: boolean }) => (
+      <p style={{
+        fontFamily: mono,
+        fontSize: secondary ? 11 : 12,
+        lineHeight: 1.6,
+        color: "var(--text-secondary)",
+        marginTop: 12,
+        marginBottom: 0,
+        letterSpacing: "0.01em",
+      }}>
+        {text}
+      </p>
+    );
+
+    // Scroll-reveal — stagger by block index (capped so it never feels slow)
+    const revealDelay = shouldReduceMotion ? 0 : Math.min(blockIdx * 0.04, 0.16);
+    const revealProps = {
+      initial:    shouldReduceMotion ? {} : { opacity: 0, y: 22 },
+      whileInView:{ opacity: 1, y: 0 },
+      viewport:   { once: true, margin: "-80px 0px" } as const,
+      transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as [number,number,number,number], delay: revealDelay },
+    };
+
     return (
-      <div
+      <motion.div
         key={block.id}
         className={isTwoCol && block.noContainer ? "sc-full-span" : undefined}
-        style={{ marginBottom: isTwoCol ? 0 : 72 }}
+        style={{ marginBottom: isTwoCol ? 0 : 80 }}
+        {...revealProps}
       >
+        {/* Block label (e.g. "About Page") */}
+        {block.label && (
+          <p style={{
+            fontFamily: mono, fontSize: 10, letterSpacing: "0.1em",
+            textTransform: "uppercase", color: "var(--text-secondary)",
+            marginBottom: 14, marginTop: 0,
+          }}>
+            {block.label}
+          </p>
+        )}
+
         {/* ── before-after ── */}
         {block.layout === "before-after" ? (
           <>
-            {block.label && (
-              <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
-                {block.label}
-              </p>
-            )}
             {block.phoneScroll ? (
-              /* Phone‑mockup side-by-side */
+              /* Scrollable phone mockups */
               <div className="sc-phone-frames">
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
+                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
                   {block.beforeSrc
                     ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={priority} />
-                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Before</span></div>
+                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span></div>
                   }
                 </div>
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
+                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
                   {block.afterSrc
                     ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
-                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>After</span></div>
+                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>After</span></div>
                   }
                 </div>
               </div>
             ) : (
-              <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start", marginBottom: 12 }}>
-                {/* Before — fixed portrait frame */}
-                <div className="sc-before-panel" style={{ flexShrink: 0 }}>
-                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Before</p>
-                  <div
-                    className="sc-before-panel-inner"
-                    style={{
-                      width: 240, aspectRatio: "9/16",
-                      position: "relative",
-                      background: "var(--card-bg)",
-                      border: `1px ${block.beforeSrc ? "solid" : "dashed"} var(--border)`,
-                      borderRadius: 12, overflow: "hidden",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}
-                  >
+              /* Desktop before/after — wider before panel, no card boxes */
+              <div style={{ display: "flex", gap: 28, flexWrap: "wrap", alignItems: "flex-start" }}>
+                {/* Before */}
+                <div className="sc-before-panel" style={{ flexShrink: 0, width: 280 }}>
+                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
+                  <div style={{ ...imgClip, position: "relative", aspectRatio: block.beforeSrc ? undefined : "9/16", minHeight: block.beforeSrc ? undefined : 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {block.beforeSrc ? (
-                      <Image
-                        src={block.beforeSrc}
-                        alt={`${block.label ?? block.caption} — Before`}
-                        fill
-                        sizes="(max-width: 600px) 240px, 240px"
-                        priority={priority}
-                        style={{ objectFit: "cover" }}
-                      />
+                      <Image src={block.beforeSrc} alt={`${block.label ?? block.caption} — Before`}
+                        fill sizes="(max-width: 600px) 280px, 280px" priority={priority} style={{ objectFit: "cover" }} />
                     ) : (
-                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                        Before screenshot
-                      </span>
+                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span>
                     )}
                   </div>
                 </div>
-
-                {/* After — uncapped so composite images breathe */}
+                {/* After */}
                 <div style={{ flex: 1, minWidth: 280 }}>
-                  <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>After</p>
-                  <div
-                    style={{
-                      background: "var(--card-bg)",
-                      border: `1px ${block.afterSrc ? "solid" : "dashed"} var(--border)`,
-                      borderRadius: 12, overflow: "hidden",
-                      ...(block.afterSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200 }),
-                    }}
-                  >
+                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
+                  <div style={{ ...imgClip, ...(block.afterSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.afterSrc ? (
-                      <Image
-                        src={block.afterSrc}
-                        alt={`${block.label ?? block.caption} — After`}
-                        width={0}
-                        height={0}
-                        sizes="(max-width: 768px) calc(100vw - 48px), 700px"
-                        priority={priority}
-                        style={{ width: "100%", height: "auto", display: "block" }}
-                      />
+                      <Image src={block.afterSrc} alt={`${block.label ?? block.caption} — After`}
+                        width={0} height={0} sizes="(max-width: 768px) calc(100vw - 48px), 700px"
+                        priority={priority} style={{ width: "100%", height: "auto", display: "block" }} />
                     ) : (
-                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 16px", opacity: 0.5 }}>
-                        After screenshot
-                      </span>
+                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>After</span>
                     )}
                   </div>
                 </div>
               </div>
             )}
-            <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-              {block.caption}
-            </p>
+            <Caption text={block.caption} />
           </>
+
         ) : block.layout === "screen-grid" ? (
-          /* Hi-fi screen grid — full height, no forced aspect ratio */
+          /* Phone screen grid — staggered labels, no card border */
           <>
             <div className="sc-screen-grid">
               {(block.screens ?? []).map((screen, idx) => (
-                <div key={screen.src} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                <motion.div
+                  key={screen.src}
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number,number,number,number], delay: shouldReduceMotion ? 0 : idx * 0.06 }}
+                >
                   <span aria-hidden="true" style={{
-                    fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
-                    textTransform: "uppercase", color: "var(--accent)",
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.1em",
+                    textTransform: "uppercase", color: "var(--accent)", opacity: 0.7,
                   }}>
                     {String(idx + 1).padStart(2, "0")}
                   </span>
-                  {/* Phone frame — natural height, no forced crop */}
-                  <div style={{
-                    width: "100%",
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--border)",
-                    borderRadius: 20,
-                    overflow: "hidden",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
-                  }}>
-                    <Image
-                      src={screen.src}
-                      alt={`${screen.label} screen`}
-                      width={0}
-                      height={0}
-                      sizes="(max-width: 768px) 100vw, 300px"
+                  <div style={{ ...imgClip, width: "100%", boxShadow: "0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1)" }}>
+                    <Image src={screen.src} alt={`${screen.label} screen`}
+                      width={0} height={0}
+                      sizes="(max-width: 768px) 100vw, 240px"
                       priority={priority && idx === 0}
                       style={{ width: "100%", height: "auto", display: "block" }}
                     />
                   </div>
                   <span style={{
-                    fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
                     textTransform: "uppercase", color: "var(--text-secondary)",
-                    textAlign: "center",
+                    textAlign: "center", lineHeight: 1.4,
                   }}>
                     {screen.label}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
-            <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 12 }}>
-              {block.caption}
-            </p>
+            <Caption text={block.caption} />
           </>
+
         ) : block.layout === "side-by-side" ? (
-          /* Two images side-by-side */
-          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+          /* Two images — no card chrome, shadow + shared bottom caption row */
+          <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start" }}>
             <div style={{ flex: 1, minWidth: 240 }}>
-              <div style={{
-                background: "var(--card-bg)",
-                border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
-                borderRadius: 12, overflow: "hidden", marginBottom: 10,
-                ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "4/3" }),
-              }}>
+              <div style={imgClip}>
                 {block.imageSrc ? (
-                  <Image
-                    src={block.imageSrc}
-                    alt={block.caption}
-                    width={0}
-                    height={0}
+                  <Image src={block.imageSrc} alt={block.caption}
+                    width={0} height={0}
                     sizes="(max-width: 768px) calc(100vw - 48px), 530px"
                     priority={priority}
-                    style={{ width: "100%", height: "auto", display: "block" }}
-                  />
+                    style={{ width: "100%", height: "auto", display: "block" }} />
                 ) : (
-                  <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.5 }}>Image</span>
+                  <div style={{ aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--card-bg)" }}>
+                    <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Image</span>
+                  </div>
                 )}
               </div>
-              <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
-                {block.caption}
-              </p>
+              <Caption text={block.caption} secondary />
             </div>
 
             {block.imageSrc2 && (
               <div style={{ flex: 1, minWidth: 240 }}>
-                <div style={{
-                  background: "var(--card-bg)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 12, overflow: "hidden", marginBottom: 10,
-                }}>
-                  <Image
-                    src={block.imageSrc2}
-                    alt={block.caption2 ?? block.caption}
-                    width={0}
-                    height={0}
+                <div style={imgClip}>
+                  <Image src={block.imageSrc2} alt={block.caption2 ?? block.caption}
+                    width={0} height={0}
                     sizes="(max-width: 768px) calc(100vw - 48px), 530px"
-                    style={{ width: "100%", height: "auto", display: "block" }}
-                  />
+                    style={{ width: "100%", height: "auto", display: "block" }} />
                 </div>
-                {block.caption2 && (
-                  <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", borderLeft: "2px solid var(--accent)", paddingLeft: 10, margin: 0 }}>
-                    {block.caption2}
-                  </p>
-                )}
+                {block.caption2 && <Caption text={block.caption2} secondary />}
               </div>
             )}
           </div>
+
         ) : (
-          /* Wide / full-bleed image — or centered phone mockup when phoneScroll */
+          /* Wide / full-bleed — or phone mockup */
           <>
             {block.phoneScroll && block.imageSrc ? (
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <PhoneFrame src={block.imageSrc} alt={block.caption} priority={priority} />
               </div>
             ) : (
-              /* noContainer = no card chrome; otherwise standard card */
-              <div
-                style={{
-                  width: "100%",
-                  ...(block.noContainer ? {} : {
-                    background: "var(--card-bg)",
-                    border: `1px ${block.imageSrc ? "solid" : "dashed"} var(--border)`,
-                    borderRadius: 12, overflow: "hidden",
-                  }),
-                  marginBottom: 12,
-                  ...(block.imageSrc ? {} : { display: "flex", alignItems: "center", justifyContent: "center", aspectRatio: "16/9" }),
-                }}
-              >
+              <div style={{
+                width: "100%",
+                ...imgClip,
+                // noContainer: let logos/hero images sit on page bg without shadow box
+                ...(block.noContainer ? { boxShadow: "none", borderRadius: 12 } : {}),
+                ...(block.imageSrc ? {} : { aspectRatio: "16/9", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--card-bg)" }),
+              }}>
                 {block.imageSrc ? (
                   <Image
                     src={block.imageSrc}
@@ -432,29 +407,20 @@ export default function CaseStudy({ project }: Props) {
                     }
                     priority={priority}
                     style={{
-                      width: "100%", height: "auto",
-                      display: "block",
+                      width: "100%", height: "auto", display: "block",
                       borderRadius: block.noContainer ? 12 : 0,
                       ...(block.blendMode ? { mixBlendMode: block.blendMode as React.CSSProperties["mixBlendMode"] } : {}),
                     }}
                   />
                 ) : (
-                  <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", textAlign: "center", padding: "0 20px", opacity: 0.5 }}>
-                    Image
-                  </span>
+                  <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Image</span>
                 )}
               </div>
             )}
-            <p style={{
-              fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
-              borderLeft: "2px solid var(--accent)", paddingLeft: 12,
-              ...(isTwoCol ? { marginBottom: 20 } : {}),
-            }}>
-              {block.caption}
-            </p>
+            <Caption text={block.caption} />
           </>
         )}
-      </div>
+      </motion.div>
     );
   };
 
@@ -1076,7 +1042,7 @@ export default function CaseStudy({ project }: Props) {
             {/* 2-column grid wrapper for Netflix-style layouts */}
             <div className={data.visualBlocksColumns === 2 ? "sc-vblocks-2col" : undefined}>
               {visualBlocksMain.map((block, blockIndex) =>
-                renderVisualBlock(block, { priority: !leadVisual && blockIndex === 0 })
+                renderVisualBlock(block, { priority: !leadVisual && blockIndex === 0, index: blockIndex })
               )}
             </div>
           </div>
