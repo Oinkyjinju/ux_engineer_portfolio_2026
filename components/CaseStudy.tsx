@@ -1,12 +1,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { type Project } from "@/data/projects";
 import { caseStudies, type CodeFile, type VisualBlock } from "@/data/caseStudies";
 import { ProjectThumbnail } from "./ProjectThumbnails";
 import { projects } from "@/data/projects";
+
+// ── Per-case unique components (dynamically imported, ssr:false) ──
+const RulerLines        = dynamic(() => import("./CaseStudy/RulerLines").then(m => m.RulerLines),                   { ssr: false });
+const TokenDepthViz     = dynamic(() => import("./CaseStudy/TokenDepthVisualizer").then(m => m.TokenDepthVisualizer), { ssr: false });
+const StatsCounter      = dynamic(() => import("./CaseStudy/StatsCounter").then(m => m.StatsCounter),               { ssr: false });
+const GridAssembly      = dynamic(() => import("./CaseStudy/GridAssembly").then(m => m.GridAssembly),               { ssr: false });
+const GapLedger         = dynamic(() => import("./CaseStudy/GapLedger").then(m => m.GapLedger),                     { ssr: false });
+const WarmVignette      = dynamic(() => import("./CaseStudy/WarmVignette").then(m => m.WarmVignette),               { ssr: false });
+const RecoveryFlowchart = dynamic(() => import("./CaseStudy/RecoveryFlowchart").then(m => m.RecoveryFlowchart),     { ssr: false });
+const SpecimenGrid      = dynamic(() => import("./CaseStudy/SpecimenGrid").then(m => m.SpecimenGrid),               { ssr: false });
+const ScriptWeightStrip = dynamic(() => import("./CaseStudy/ScriptWeightStrip").then(m => m.ScriptWeightStrip),     { ssr: false });
+const WeChatPrimer      = dynamic(() => import("./CaseStudy/WeChatPrimer").then(m => m.WeChatPrimer),               { ssr: false });
+const BeforeAfterReveal = dynamic(() => import("./CaseStudy/BeforeAfterReveal").then(m => m.BeforeAfterReveal),     { ssr: false });
 
 interface Props { project: Project; }
 
@@ -14,6 +29,19 @@ interface Props { project: Project; }
 const mono  = "'JetBrains Mono', monospace";
 const serif = "'Gloock', Georgia, serif";
 const sans  = "'Red Hat Text', system-ui, sans-serif";
+
+// Hero entrance animation — stagger children on mount.
+// Respects prefers-reduced-motion via useReducedMotion() inside the component.
+const heroContainer = {
+  hidden: {},
+  visible: (reduce: boolean) => ({
+    transition: reduce ? {} : { staggerChildren: 0.08, delayChildren: 0.05 },
+  }),
+};
+const heroItem = (reduce: boolean) => ({
+  hidden: { opacity: 0, y: reduce ? 0 : 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+});
 
 // Phone‑frame mockup — scrollable portrait container with home indicator (no notch)
 function PhoneFrame({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
@@ -102,6 +130,7 @@ export default function CaseStudy({ project }: Props) {
   const [scrolled, setScrolled]     = useState(false);
   // tracks which file tab is active per code block (keyed by block.id)
   const [activeFileTabs, setActiveFileTabs] = useState<Record<string, number>>({});
+  const shouldReduceMotion = useReducedMotion() ?? false;
   const data = caseStudies[project.id];
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
@@ -580,44 +609,55 @@ export default function CaseStudy({ project }: Props) {
             backgroundSize: "48px 48px",
           }}
         />
+        {/* ── Per-case hero background accents ── */}
+        {project.id === "just-intelligence" && <RulerLines />}
+        {project.id === "just-rebrand"       && <GridAssembly accent="#1A6678" />}
+        {project.id === "storycorps"          && <WarmVignette accent="#D4521A" />}
+        {project.id === "netflix-disney"      && <ScriptWeightStrip />}
         {/* Bottom fade */}
         <div aria-hidden="true" style={{
           position: "absolute", bottom: 0, left: 0, right: 0, height: 120,
           background: `linear-gradient(transparent, var(--bg))`, pointerEvents: "none",
         }} />
 
-        <div
+        <motion.div
+          variants={heroContainer}
+          custom={shouldReduceMotion}
+          initial="hidden"
+          animate="visible"
           style={{
             position: "relative", zIndex: 1,
             maxWidth: 1160, margin: "0 auto",
             padding: "80px clamp(24px, 6vw, 96px) 100px",
           }}
         >
-          <Link
-            href="/#work"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-              textTransform: "uppercase", color: "rgba(237,234,227,0.5)",
-              textDecoration: "none", marginBottom: 24,
-              transition: "color 0.2s", borderRadius: 2,
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)"; }}
-            onFocus={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)";
-              (e.currentTarget as HTMLElement).style.outline = "2px solid rgba(237,234,227,0.5)";
-              (e.currentTarget as HTMLElement).style.outlineOffset = "2px";
-            }}
-            onBlur={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)";
-              (e.currentTarget as HTMLElement).style.outline = "none";
-            }}
-          >
-            ← All work
-          </Link>
+          <motion.div variants={heroItem(shouldReduceMotion)}>
+            <Link
+              href="/#work"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                textTransform: "uppercase", color: "rgba(237,234,227,0.5)",
+                textDecoration: "none", marginBottom: 24,
+                transition: "color 0.2s", borderRadius: 2,
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)"; }}
+              onFocus={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)";
+                (e.currentTarget as HTMLElement).style.outline = "2px solid rgba(237,234,227,0.5)";
+                (e.currentTarget as HTMLElement).style.outlineOffset = "2px";
+              }}
+              onBlur={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)";
+                (e.currentTarget as HTMLElement).style.outline = "none";
+              }}
+            >
+              ← All work
+            </Link>
+          </motion.div>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 28 }}>
+          <motion.div variants={heroItem(shouldReduceMotion)} style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 28 }}>
             {project.tags.map((tag) => (
               <span
                 key={tag}
@@ -632,9 +672,10 @@ export default function CaseStudy({ project }: Props) {
                 {tag}
               </span>
             ))}
-          </div>
+          </motion.div>
 
-          <h1
+          <motion.h1
+            variants={heroItem(shouldReduceMotion)}
             style={{
               fontFamily: serif,
               fontSize: "clamp(48px, 7vw, 96px)",
@@ -646,16 +687,36 @@ export default function CaseStudy({ project }: Props) {
             }}
           >
             {project.title}
-          </h1>
-          <p style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.6)", marginBottom: data.heroIntro ? 20 : 0 }}>
+          </motion.h1>
+          <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.6)", marginBottom: (data.heroLede || data.heroIntro) ? 28 : 0 }}>
             {project.subtitle}
-          </p>
-          {data.heroIntro && (
-            <p style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.7)", maxWidth: 600, marginBottom: 0, marginTop: 4 }}>
-              {data.heroIntro}
-            </p>
+          </motion.p>
+          {/* heroLede — punchy 1-sentence opener, display-weight Gloock at near-full opacity */}
+          {data.heroLede && (
+            <motion.p
+              variants={heroItem(shouldReduceMotion)}
+              style={{
+                fontFamily: serif,
+                fontSize: "clamp(20px, 2.2vw, 28px)",
+                fontWeight: 400,
+                lineHeight: 1.3,
+                letterSpacing: "-0.01em",
+                color: "rgba(237,234,227,0.92)",
+                maxWidth: 680,
+                marginBottom: data.heroIntro ? 16 : 0,
+                marginTop: 0,
+              }}
+            >
+              {data.heroLede}
+            </motion.p>
           )}
-        </div>
+          {/* heroIntro — supporting paragraphs, smaller + reduced opacity */}
+          {data.heroIntro && (
+            <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.75, color: "rgba(237,234,227,0.62)", maxWidth: 600, marginBottom: 0, marginTop: 0 }}>
+              {data.heroIntro}
+            </motion.p>
+          )}
+        </motion.div>
       </div>
 
       {/* ── Content ── */}
@@ -766,25 +827,15 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── Tech & Tools ── */}
-        {data.tech && data.tech.length > 0 && (
-          <div style={{ marginBottom: 80 }}>
-            <h2 style={sectionLabelSecondaryStyle(20)}>Tech &amp; Tools</h2>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {data.tech.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    fontFamily: mono, fontSize: 11, letterSpacing: "0.04em",
-                    padding: "6px 14px",
-                    border: "1px solid var(--border)", borderRadius: 20,
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+        {/* ── Per-case supplement after whatIDid ── */}
+        {project.id === "just-rebrand" && (
+          <div style={{ maxWidth: 760, margin: "0 auto" }}>
+            <GapLedger />
+          </div>
+        )}
+        {project.id === "iata" && (
+          <div style={{ maxWidth: 760, margin: "0 auto" }}>
+            <WeChatPrimer />
           </div>
         )}
 
@@ -926,6 +977,28 @@ export default function CaseStudy({ project }: Props) {
           })()}
         </div>
 
+        {/* ── Tech & Tools — after Process so tools are contextualised by the decisions that used them ── */}
+        {data.tech && data.tech.length > 0 && (
+          <div style={{ marginBottom: 80 }}>
+            <h2 style={sectionLabelSecondaryStyle(20)}>Tech &amp; Tools</h2>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {data.tech.map((t) => (
+                <span
+                  key={t}
+                  style={{
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.04em",
+                    padding: "6px 14px",
+                    border: "1px solid var(--border)", borderRadius: 20,
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Key Design Decisions */}
         {data.keyDecisions && data.keyDecisions.length > 0 && (
           <div style={{ marginBottom: 100 }}>
@@ -977,6 +1050,24 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
+        {/* ── Per-case supplement after keyDecisions ── */}
+        {project.id === "just-intelligence" && (
+          <TokenDepthViz />
+        )}
+        {project.id === "storycorps" && (
+          <div style={{ maxWidth: 760, margin: "0 auto" }}>
+            <RecoveryFlowchart accent="#D4521A" />
+          </div>
+        )}
+        {project.id === "netflix-disney" && (
+          <SpecimenGrid />
+        )}
+        {project.id === "iata" && (
+          <div style={{ maxWidth: 760, margin: "0 auto" }}>
+            <BeforeAfterReveal />
+          </div>
+        )}
+
         {/* Visual Blocks */}
         {visualBlocksMain.length > 0 && (
           <div style={{ marginBottom: 100 }}>
@@ -995,7 +1086,10 @@ export default function CaseStudy({ project }: Props) {
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>Results</h2>
-            {isNarrative ? (
+            {/* just-intelligence: animated stats counter */}
+            {project.id === "just-intelligence" ? (
+              <StatsCounter metrics={data.metrics} />
+            ) : isNarrative ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 760, margin: "0 auto" }}>
                 {data.metrics.map((m) => (
                   <div
@@ -1019,19 +1113,21 @@ export default function CaseStudy({ project }: Props) {
                 ))}
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
+              /* Standard layout: no card chrome — numbers sit exposed on the page bg.
+                 Card borders were competing with the numbers for visual weight; the grid
+                 holds them in position, accent color + Gloock provide all the structure needed. */
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 0, borderTop: "1px solid var(--border)" }}>
                 {data.metrics.map((m) => (
                   <div
                     key={m.label}
                     style={{
-                      padding: "20px 28px",
-                      border: "1px solid var(--border)",
-                      borderRadius: 12,
-                      background: "var(--card-bg)",
+                      padding: "32px 28px",
+                      borderRight: "1px solid var(--border)",
+                      borderBottom: "1px solid var(--border)",
                       textAlign: "center",
                     }}
                   >
-                    <div style={{ fontFamily: serif, fontSize: "clamp(32px, 3vw, 44px)", lineHeight: 1, color: "var(--accent)", marginBottom: 6 }}>
+                    <div style={{ fontFamily: serif, fontSize: "clamp(40px, 4vw, 56px)", lineHeight: 1, color: "var(--accent)", marginBottom: 10 }}>
                       {m.value}
                     </div>
                     <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
