@@ -126,7 +126,7 @@ export function TokenDepthVisualizer() {
                       background: "rgba(245,166,35,0.08)",
                       border: "1px solid rgba(245,166,35,0.15)",
                       borderRadius: 4,
-                      color: "rgba(237,234,227,0.75)",
+                      color: "var(--text-secondary)",
                       letterSpacing: "0.02em",
                       whiteSpace: "nowrap",
                     }}
