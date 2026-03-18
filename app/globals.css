@@ -171,16 +171,6 @@ body {
   }
 }
 
-/* ── Case Study: challenge + thumbnail grid stacks on tablet ───────────── */
-@media (max-width: 768px) {
-  .cs-challenge-grid {
-    grid-template-columns: 1fr !important;
-  }
-  .cs-challenge-grid > div:first-child {
-    order: -1;
-  }
-}
-
 /* ── Case Study: nav links hidden on mobile ────────────────────────────── */
 @media (max-width: 640px) {
   .cs-nav-links > a {
@@ -191,16 +181,15 @@ body {
   }
 }
 
-/* ── Case Study: process columns layout — add card treatment ───────────── */
-.cs-process-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: clamp(20px, 3vw, 48px);
-}
+/* ── Case Study: process timeline — responsive ────────────────────────────── */
 @media (max-width: 640px) {
-  .cs-process-columns {
-    grid-template-columns: 1fr !important;
+  .cs-timeline-step {
+    grid-template-columns: 24px 1fr !important;
     gap: 16px !important;
+    padding-bottom: 40px !important;
+  }
+  .cs-timeline-track {
+    left: 11px !important;
   }
 }
 
