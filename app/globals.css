@@ -95,36 +95,8 @@ body {
   align-items: start;
 }
 
-/* ── Lab section: 3-col on desktop, 2-col tablet, 1-col mobile ───────────── */
-.lab-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-/* ── Tablet ──────────────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .accordion-content-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .lab-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .lab-grid > :last-child {
-    grid-column: 1 / -1;
-  }
-}
-
-/* ── Mobile ──────────────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .accordion-content-grid {
     grid-template-columns: 1fr;
-  }
-  .lab-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .lab-grid > :last-child {
-    grid-column: auto;
   }
 }

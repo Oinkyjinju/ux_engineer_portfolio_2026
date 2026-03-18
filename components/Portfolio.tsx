@@ -245,7 +245,7 @@ export default function Portfolio() {
           Things I build to think out loud.
         </p>
 
-        <div className="lab-grid">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
           {LAB_ITEMS.map((item) => (
             <a
               key={item.title}
