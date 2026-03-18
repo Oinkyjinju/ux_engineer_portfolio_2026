@@ -40,6 +40,7 @@ export interface CaseStudyData {
   id: string;
   seoTitle?: string;
   seoDescription?: string;
+  heroLede?: string;
   heroIntro?: string;
   layout?: "standard" | "narrative";
   processLayout?: "columns" | "stacked";

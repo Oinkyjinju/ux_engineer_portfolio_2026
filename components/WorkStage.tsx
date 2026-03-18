@@ -225,13 +225,8 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
             </div>
 
             <div
-              style={{
-                position: "relative", zIndex: 1,
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "clamp(32px, 5vw, 72px)",
-                alignItems: "start",
-              }}
+              className="accordion-content-grid"
+              style={{ position: "relative", zIndex: 1 }}
             >
               {/* Left — details */}
               <div>
