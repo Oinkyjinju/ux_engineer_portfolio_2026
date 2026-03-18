@@ -1006,7 +1006,7 @@ export default function CaseStudy({ project }: Props) {
                 fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
                 textTransform: "uppercase", color: "var(--accent)", fontWeight: 500,
               }}>
-                Phase 2 — In Preparation
+                Phase 2 — Launched
               </span>
             </div>
             <p style={{
@@ -1033,7 +1033,7 @@ export default function CaseStudy({ project }: Props) {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
               >
-                View Phase 2 →
+                Explore Phase 2 →
               </Link>
             )}
           </motion.div>
