@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -122,6 +122,229 @@ const sectionLabelSecondaryStyle = (marginBottom: number): React.CSSProperties =
   marginTop: 0, marginBottom, fontWeight: 400,
 });
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   ProcessTimeline — scroll-linked vertical timeline with animated connecting
+   line and progressive step reveals. Each step is a full-width ROW anchored
+   to a vertical line on the left.
+   ═══════════════════════════════════════════════════════════════════════════ */
+interface TimelineStep {
+  key: string;
+  title: string;
+  icon: string;
+  items: string[];
+}
+
+function ProcessTimeline({ steps, reduce }: { steps: TimelineStep[]; reduce: boolean }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeCount, setActiveCount] = useState(0);
+
+  // Track which steps have scrolled into view
+  useEffect(() => {
+    if (reduce) { setActiveCount(steps.length); return; }
+    const nodes = sectionRef.current?.querySelectorAll("[data-timeline-step]");
+    if (!nodes) return;
+
+    const observers: IntersectionObserver[] = [];
+    let maxSeen = 0;
+
+    nodes.forEach((node, idx) => {
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && idx + 1 > maxSeen) {
+            maxSeen = idx + 1;
+            setActiveCount(maxSeen);
+          }
+        },
+        { rootMargin: "-20% 0px -20% 0px", threshold: 0.1 }
+      );
+      obs.observe(node);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach(o => o.disconnect());
+  }, [steps.length, reduce]);
+
+  const lineProgress = steps.length > 1
+    ? Math.min(1, activeCount / steps.length)
+    : activeCount > 0 ? 1 : 0;
+
+  return (
+    <div ref={sectionRef} className="cs-timeline" style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}>
+      {/* ── Vertical connecting line ── */}
+      <div
+        aria-hidden="true"
+        className="cs-timeline-track"
+        style={{
+          position: "absolute",
+          left: 15,
+          top: 8,
+          bottom: 8,
+          width: 2,
+          zIndex: 0,
+        }}
+      >
+        {/* Background track */}
+        <div style={{ position: "absolute", inset: 0, background: "var(--border)", borderRadius: 1, opacity: 0.5 }} />
+        {/* Animated progress fill */}
+        <motion.div
+          animate={{ scaleY: lineProgress }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "100%",
+            background: "var(--accent)",
+            borderRadius: 1,
+            transformOrigin: "top",
+          }}
+        />
+      </div>
+
+      {/* ── Step rows ── */}
+      {steps.map((step, idx) => {
+        const isActive = idx < activeCount;
+        return (
+          <div
+            key={step.key}
+            data-timeline-step
+            className="cs-timeline-step"
+            style={{
+              position: "relative",
+              display: "grid",
+              gridTemplateColumns: "32px 1fr",
+              gap: 24,
+              paddingBottom: idx < steps.length - 1 ? 56 : 0,
+            }}
+          >
+            {/* Node dot */}
+            <div style={{ display: "flex", justifyContent: "center", paddingTop: 2, position: "relative", zIndex: 1 }}>
+              <motion.div
+                animate={{
+                  background: isActive ? "var(--accent)" : "transparent",
+                  borderColor: isActive ? "var(--accent)" : "var(--border)",
+                  scale: isActive ? 1 : 0.8,
+                }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                  border: "2px solid var(--border)",
+                  background: "transparent",
+                  flexShrink: 0,
+                }}
+              />
+              {/* Pulse ring on activation */}
+              {isActive && !reduce && (
+                <motion.div
+                  initial={{ scale: 1, opacity: 0.5 }}
+                  animate={{ scale: 2.5, opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  style={{
+                    position: "absolute",
+                    top: 2,
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    border: "1px solid var(--accent)",
+                    pointerEvents: "none",
+                  }}
+                />
+              )}
+            </div>
+
+            {/* Content */}
+            <motion.div
+              initial={reduce ? {} : { opacity: 0, y: 16 }}
+              animate={isActive ? { opacity: 1, y: 0 } : reduce ? {} : { opacity: 0, y: 16 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            >
+              {/* Step header: number + title */}
+              <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginBottom: 16 }}>
+                <span
+                  style={{
+                    fontFamily: mono,
+                    fontSize: 11,
+                    letterSpacing: "0.1em",
+                    color: isActive ? "var(--accent)" : "var(--text-tertiary)",
+                    transition: "color 0.4s",
+                    flexShrink: 0,
+                  }}
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <h3
+                  style={{
+                    fontFamily: serif,
+                    fontSize: "clamp(20px, 2vw, 26px)",
+                    fontWeight: 400,
+                    letterSpacing: "-0.01em",
+                    color: "var(--text-primary)",
+                    margin: 0,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {step.title}
+                </h3>
+              </div>
+
+              {/* Bullet list */}
+              <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
+                {step.items.map((item, itemIdx) => (
+                  <motion.li
+                    key={`${step.key}-${itemIdx}`}
+                    initial={reduce ? {} : { opacity: 0, x: -8 }}
+                    animate={isActive ? { opacity: 1, x: 0 } : reduce ? {} : { opacity: 0, x: -8 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], delay: 0.15 + itemIdx * 0.04 }}
+                    style={{
+                      fontFamily: sans,
+                      fontSize: "clamp(14px, 1.1vw, 16px)",
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.75,
+                      padding: "6px 0",
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 10,
+                    }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: 1,
+                        background: isActive ? "var(--accent)" : "var(--text-tertiary)",
+                        marginTop: 8,
+                        flexShrink: 0,
+                        transition: "background 0.4s",
+                      }}
+                    />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+
+              {/* Separator line between steps */}
+              {idx < steps.length - 1 && (
+                <div
+                  style={{
+                    marginTop: 32,
+                    height: 1,
+                    background: "var(--border)",
+                    opacity: 0.5,
+                  }}
+                />
+              )}
+            </motion.div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function CaseStudy({ project }: Props) {
   const [dark, setDark]             = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -188,7 +411,7 @@ export default function CaseStudy({ project }: Props) {
 
   const layout = data.layout ?? "standard";
   const isNarrative = layout === "narrative";
-  const processLayout = data.processLayout ?? (isNarrative ? "stacked" : "columns");
+  // processLayout no longer used — timeline replaces both stacked/columns variants
   const keyDecisionsLayout = data.keyDecisionsLayout ?? (isNarrative ? "stacked" : "grid");
   const visualBlocks = data.visualBlocks ?? [];
   const leadVisual = data.leadVisualId ? visualBlocks.find((block) => block.id === data.leadVisualId) : undefined;
@@ -744,37 +967,180 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Thumbnail + Challenge */}
-        {isNarrative ? (
-          <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
-            <h2 style={sectionLabelStyle(20)}>The Challenge</h2>
-            <p style={{ fontFamily: serif, fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.7, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
-              {data.challenge}
-            </p>
-          </div>
-        ) : (
-          <div
-            className="cs-challenge-grid"
+        {/* ── Phase 2 teaser — promoted to top of content ── */}
+        {data.phase2Teaser && (
+          <motion.div
+            initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px 0px" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "clamp(40px, 6vw, 96px)",
-              alignItems: "center",
-              marginBottom: 100,
+              maxWidth: 760,
+              margin: "0 auto 80px",
+              border: "1px solid var(--accent)",
+              borderRadius: 14,
+              padding: "28px 32px",
+              background: "var(--accent-muted)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+              position: "relative",
+              overflow: "hidden",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "center", overflow: "hidden" }}>
-              <ProjectThumbnail project={project} />
+            {/* Subtle accent gradient strip at top */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 3,
+                background: "var(--accent)",
+                borderRadius: "14px 14px 0 0",
+              }}
+            />
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{
+                fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
+                textTransform: "uppercase", color: "var(--accent)", fontWeight: 500,
+              }}>
+                Phase 2 — In Preparation
+              </span>
             </div>
-
-            <div>
-              <h2 style={sectionLabelStyle(20)}>The Challenge</h2>
-              <p style={{ fontFamily: serif, fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.65, color: "var(--text-primary)", fontWeight: 400, letterSpacing: "-0.01em" }}>
-                {data.challenge}
-              </p>
-            </div>
-          </div>
+            <p style={{
+              fontFamily: serif, fontSize: "clamp(17px, 2vw, 20px)",
+              color: "var(--text-primary)", lineHeight: 1.55,
+              fontWeight: 400, margin: 0, maxWidth: 600,
+            }}>
+              {data.phase2Teaser}
+            </p>
+            {data.phase2Url && (
+              <Link
+                href={data.phase2Url}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: "var(--accent)",
+                  textDecoration: "none",
+                  marginTop: 4,
+                  transition: "opacity 0.2s",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+              >
+                View Phase 2 →
+              </Link>
+            )}
+          </motion.div>
         )}
+
+        {/* ── Challenge — pull-quote treatment ── */}
+        {(() => {
+          const challengeText = data.challenge;
+          const firstSentenceEnd = challengeText.search(/(?<=[.!?])\s/);
+          const pullQuote = firstSentenceEnd > 0
+            ? challengeText.slice(0, firstSentenceEnd + 1)
+            : challengeText;
+          const remainingText = firstSentenceEnd > 0
+            ? challengeText.slice(firstSentenceEnd + 1).trim()
+            : "";
+
+          return (
+            <div style={{ maxWidth: 760, margin: "0 auto 100px", position: "relative" }}>
+              {/* Watermark number */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  top: -20,
+                  left: -12,
+                  fontFamily: serif,
+                  fontSize: "clamp(120px, 14vw, 180px)",
+                  fontWeight: 400,
+                  color: "var(--text-primary)",
+                  opacity: 0.03,
+                  lineHeight: 1,
+                  pointerEvents: "none",
+                  userSelect: "none",
+                  zIndex: 0,
+                }}
+              >
+                01
+              </div>
+
+              <div style={{ position: "relative", zIndex: 1 }}>
+                {/* Accent bar */}
+                <motion.div
+                  aria-hidden="true"
+                  initial={shouldReduceMotion ? {} : { scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    width: 40,
+                    height: 2,
+                    background: "var(--accent)",
+                    marginBottom: 20,
+                    borderRadius: 1,
+                    transformOrigin: "left",
+                  }}
+                />
+
+                {/* Section label */}
+                <h2 style={sectionLabelStyle(28)}>The Challenge</h2>
+
+                {/* Pull quote — first sentence */}
+                <motion.blockquote
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px 0px" }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                  style={{
+                    fontFamily: serif,
+                    fontSize: "clamp(22px, 2.4vw, 32px)",
+                    fontWeight: 400,
+                    lineHeight: 1.35,
+                    letterSpacing: "-0.015em",
+                    color: "var(--text-primary)",
+                    margin: 0,
+                    marginBottom: remainingText ? 28 : 0,
+                    padding: 0,
+                    borderLeft: "3px solid var(--accent)",
+                    paddingLeft: 24,
+                    maxWidth: 680,
+                  }}
+                >
+                  {pullQuote}
+                </motion.blockquote>
+
+                {/* Supporting context */}
+                {remainingText && (
+                  <motion.p
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px 0px" }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                    style={{
+                      fontFamily: sans,
+                      fontSize: 16,
+                      lineHeight: 1.75,
+                      color: "var(--text-secondary)",
+                      maxWidth: 640,
+                      margin: 0,
+                    }}
+                  >
+                    {remainingText}
+                  </motion.p>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Approach */}
         <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
@@ -806,150 +1172,20 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Process — staged system narrative */}
+        {/* ── Process — scroll-linked vertical timeline ── */}
         <div style={{ marginBottom: 100 }}>
-          <h2 style={sectionLabelSecondaryStyle(40)}>How It Got Built</h2>
-          {(() => {
-            const titles = data.processTitles ?? {};
-            const steps = [
-              { key: "discover", title: titles.discover ?? "Discover", icon: "◎", items: data.process?.discover ?? [] },
-              { key: "design",   title: titles.design   ?? "Design",   icon: "◈", items: data.process?.design   ?? [] },
-              { key: "ship",     title: titles.ship     ?? "Ship",     icon: "◆", items: data.process?.ship     ?? [] },
+          <h2 style={sectionLabelStyle(40)}>How It Got Built</h2>
+          <ProcessTimeline
+            steps={[
+              { key: "discover", title: (data.processTitles?.discover ?? "Discover"), icon: "◎", items: data.process?.discover ?? [] },
+              { key: "design",   title: (data.processTitles?.design   ?? "Design"),   icon: "◈", items: data.process?.design   ?? [] },
+              { key: "ship",     title: (data.processTitles?.ship     ?? "Ship"),     icon: "◆", items: data.process?.ship     ?? [] },
               ...(data.process?.govern && data.process.govern.length > 0
-                ? [{ key: "govern", title: titles.govern ?? "Govern", icon: "◐", items: data.process.govern }]
+                ? [{ key: "govern", title: (data.processTitles?.govern ?? "Govern"), icon: "◐", items: data.process.govern }]
                 : []),
-            ];
-            const useStacked = processLayout === "stacked";
-
-            return (
-              <>
-                {!useStacked && steps.length > 3 && (
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
-                    {steps.map((step, idx) => (
-                      <div
-                        key={`process-chip-${step.key}`}
-                        style={{
-                          display: "flex", alignItems: "center", gap: 10,
-                          padding: "6px 14px",
-                          border: "1px solid var(--border)",
-                          borderRadius: 999,
-                          background: "var(--card-bg)",
-                        }}
-                      >
-                        <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.08em", color: "var(--accent)" }}>
-                          {String(idx + 1).padStart(2, "0")}
-                        </span>
-                        <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                          {step.title}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {useStacked ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 760, margin: "0 auto" }}>
-                    {steps.map((step, idx) => (
-                      <div
-                        key={step.key}
-                        style={{
-                          border: "1px solid var(--border)",
-                          borderRadius: 16,
-                          padding: "20px 22px",
-                          background: "var(--card-bg)",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, flexWrap: "wrap" }}>
-                          <div
-                            aria-hidden="true"
-                            style={{
-                              width: 32, height: 32, borderRadius: "50%",
-                              border: "1px solid var(--accent)",
-                              background: "var(--accent-muted)",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              fontFamily: serif, fontSize: 14, color: "var(--accent)",
-                            }}
-                          >
-                            {step.icon}
-                          </div>
-                          <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-                          <h3 style={{ fontFamily: serif, fontSize: 22, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", margin: 0 }}>
-                            {step.title}
-                          </h3>
-                        </div>
-                        <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-                          {step.items.map((item, itemIdx) => (
-                            <li
-                              key={`${step.key}-item-${itemIdx}`}
-                              style={{
-                                fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
-                                lineHeight: 1.7, padding: "6px 0",
-                                display: "flex", alignItems: "flex-start", gap: 8,
-                              }}
-                            >
-                              <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 5, flexShrink: 0 }}>▸</span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="cs-process-columns">
-                    {steps.map((step, idx) => (
-                      <div
-                        key={step.key}
-                        style={{
-                          border: "1px solid var(--border)",
-                          borderRadius: 14,
-                          padding: "24px 22px",
-                          background: "var(--card-bg)",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                          <div
-                            aria-hidden="true"
-                            style={{
-                              width: 36, height: 36, borderRadius: "50%",
-                              border: "1px solid var(--accent)",
-                              background: "var(--accent-muted)",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              fontFamily: serif, fontSize: 16, color: "var(--accent)",
-                            }}
-                          >
-                            {step.icon}
-                          </div>
-                          <span aria-hidden="true" style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-                        </div>
-                        <h3 style={{ fontFamily: serif, fontSize: 22, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 14, marginTop: 0 }}>
-                          {step.title}
-                        </h3>
-                        <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-                          {step.items.map((item, itemIdx) => (
-                            <li
-                              key={`${step.key}-item-${itemIdx}`}
-                              style={{
-                                fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
-                                lineHeight: 1.7, padding: "5px 0",
-                                display: "flex", alignItems: "flex-start", gap: 8,
-                              }}
-                            >
-                              <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 5, flexShrink: 0 }}>▸</span>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            );
-          })()}
+            ]}
+            reduce={shouldReduceMotion}
+          />
         </div>
 
         {/* ── Tech & Tools — after Process so tools are contextualised by the decisions that used them ── */}
@@ -1325,35 +1561,7 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Phase 2 teaser */}
-        {data.phase2Teaser && (
-          <div style={{ marginBottom: 80 }}>
-            {/* Divider with Phase 1 label */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 48 }}>
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-tertiary)", whiteSpace: "nowrap" }}>
-                Phase 1 — Complete
-              </span>
-              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
-            </div>
-            {/* Phase 2 card */}
-            <div style={{
-              border: "1px solid var(--border)",
-              borderRadius: 12,
-              padding: "32px 36px",
-              background: "var(--card-bg)",
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}>
-              <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)" }}>
-                Phase 2 — In Preparation
-              </span>
-              <p style={{ fontFamily: serif, fontSize: "clamp(17px, 2vw, 20px)", color: "var(--text-secondary)", lineHeight: 1.65, fontWeight: 400, margin: 0, maxWidth: 640 }}>
-                {data.phase2Teaser}
-              </p>
-            </div>
-          </div>
-        )}
+        {/* Phase 2 teaser moved to top of content, before Challenge */}
 
         {/* CTA — peak-end: the emotional high point before the reader navigates away */}
         <div

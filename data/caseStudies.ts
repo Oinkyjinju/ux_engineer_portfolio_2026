@@ -81,6 +81,7 @@ export interface CaseStudyData {
   reflection?: string;
   ctaText?: string;
   phase2Teaser?: string;
+  phase2Url?: string;
 }
 
 export const caseStudies: Record<string, CaseStudyData> = {
