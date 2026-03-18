@@ -124,6 +124,7 @@ export default function ContactSection({ dark }: Props) {
           {/* Email copy button */}
           <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
             <button
+              className="contact-email-btn"
               onClick={handleCopy}
               style={{
                 fontFamily: mono,

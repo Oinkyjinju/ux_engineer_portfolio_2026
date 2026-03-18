@@ -262,7 +262,7 @@ export default function HeroSection({ dark }: Props) {
             </span>
           </p>
 
-          <div style={{ marginTop: 40, display: "flex", gap: 16 }}>
+          <div className="hero-ctas" style={{ marginTop: 40, display: "flex", gap: 16 }}>
             <a
               href="#work"
               style={{

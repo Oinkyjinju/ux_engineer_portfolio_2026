@@ -122,6 +122,7 @@ export default function AboutSection({ dark }: Props) {
       </ScrollReveal>
 
       <div
+        className="about-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",

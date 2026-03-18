@@ -490,7 +490,7 @@ export default function CaseStudy({ project }: Props) {
           Jinju Park
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 28, height: "100%" }}>
+        <div className="cs-nav-links" style={{ display: "flex", alignItems: "center", gap: 28, height: "100%" }}>
           {(["Work", "Lab", "About", "Contact"] as const).map((label) => (
             <a
               key={label}
@@ -754,6 +754,7 @@ export default function CaseStudy({ project }: Props) {
           </div>
         ) : (
           <div
+            className="cs-challenge-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -896,9 +897,17 @@ export default function CaseStudy({ project }: Props) {
                     ))}
                   </div>
                 ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "clamp(20px, 3vw, 48px)" }}>
+                  <div className="cs-process-columns">
                     {steps.map((step, idx) => (
-                      <div key={step.key}>
+                      <div
+                        key={step.key}
+                        style={{
+                          border: "1px solid var(--border)",
+                          borderRadius: 14,
+                          padding: "24px 22px",
+                          background: "var(--card-bg)",
+                        }}
+                      >
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
                           <div
                             aria-hidden="true"
@@ -916,7 +925,7 @@ export default function CaseStudy({ project }: Props) {
                             {String(idx + 1).padStart(2, "0")}
                           </span>
                         </div>
-                        <h3 style={{ fontFamily: serif, fontSize: 24, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 16, marginTop: 0 }}>
+                        <h3 style={{ fontFamily: serif, fontSize: 22, fontWeight: 400, letterSpacing: "-0.01em", color: "var(--text-primary)", marginBottom: 14, marginTop: 0 }}>
                           {step.title}
                         </h3>
                         <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
@@ -925,11 +934,11 @@ export default function CaseStudy({ project }: Props) {
                               key={`${step.key}-item-${itemIdx}`}
                               style={{
                                 fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
-                                lineHeight: 1.6, padding: "5px 0",
+                                lineHeight: 1.7, padding: "5px 0",
                                 display: "flex", alignItems: "flex-start", gap: 8,
                               }}
                             >
-                              <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
+                              <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 5, flexShrink: 0 }}>▸</span>
                               {item}
                             </li>
                           ))}
@@ -1082,7 +1091,7 @@ export default function CaseStudy({ project }: Props) {
               /* Standard layout: no card chrome — numbers sit exposed on the page bg.
                  Card borders were competing with the numbers for visual weight; the grid
                  holds them in position, accent color + Gloock provide all the structure needed. */
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 0, borderTop: "1px solid var(--border)" }}>
+              <div className="cs-results-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 0, borderTop: "1px solid var(--border)" }}>
                 {data.metrics.map((m) => (
                   <div
                     key={m.label}
@@ -1155,7 +1164,7 @@ export default function CaseStudy({ project }: Props) {
                       const activeIdx  = activeFileTabs[block.id] ?? 0;
                       const activeFile = files[Math.min(activeIdx, files.length - 1)];
                       return (
-                        <div style={{
+                        <div className="cs-code-panel" style={{
                           background: dark ? "#0d1117" : "#1e1e2e",
                           borderRadius: 12, overflow: "hidden",
                           border: "1px solid rgba(255,255,255,0.07)",
@@ -1274,6 +1283,7 @@ export default function CaseStudy({ project }: Props) {
                     return (
                       <>
                         <div
+                          className={stackPanels ? undefined : "cs-code-layout"}
                           style={{
                             ...(stackPanels
                               ? { display: "flex", flexDirection: "column", gap: 16 }
@@ -1391,11 +1401,11 @@ export default function CaseStudy({ project }: Props) {
           <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 16 }}>
             All Projects
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 8, marginBottom: 32 }}>
+          <div className="cs-footer-projects" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 8, marginBottom: 32 }}>
             {projects.map((p, i) => (
               <span key={p.id} style={{ display: "inline-flex", alignItems: "center" }}>
                 {i > 0 && (
-                  <span aria-hidden="true" style={{ color: "var(--border)", padding: "0 14px", userSelect: "none", fontSize: 11 }}>
+                  <span className="cs-project-sep" aria-hidden="true" style={{ color: "var(--border)", padding: "0 14px", userSelect: "none", fontSize: 11 }}>
                     /
                   </span>
                 )}
@@ -1430,7 +1440,7 @@ export default function CaseStudy({ project }: Props) {
               </span>
             ))}
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+          <div className="cs-footer-nav" style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
             {prevProject ? (
               <a
                 href={`/work/${prevProject.id}`}

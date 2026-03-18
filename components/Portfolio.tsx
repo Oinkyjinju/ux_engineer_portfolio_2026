@@ -171,7 +171,7 @@ export default function Portfolio() {
           Jinju Park
         </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+        <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: 28 }}>
           {["Work", "Lab", "About", "Contact"].map((label) => (
             <a
               key={label}

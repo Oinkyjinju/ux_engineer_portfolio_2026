@@ -113,10 +113,11 @@ export default function ProcessSection({ dark }: Props) {
         </p>
       </ScrollReveal>
 
-      <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "clamp(24px, 4vw, 56px)" }}>
+      <div className="process-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "clamp(24px, 4vw, 56px)" }}>
 
         {/* Connector track + fill — div width is CSS-transitionable */}
         <div
+          className="process-connector"
           aria-hidden
           style={{
             position: "absolute",
