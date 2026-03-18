@@ -164,11 +164,11 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
           </h3>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
-          <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)" }}>
+        <div className="accordion-header-meta" style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
+          <span className="accordion-company" style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)" }}>
             {project.company}
           </span>
-          <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)" }}>
+          <span className="accordion-year" style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)" }}>
             {project.year}
           </span>
           <span

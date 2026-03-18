@@ -47,7 +47,7 @@ function NetflixThumbnail({ project }: { project: Project }) {
   ];
 
   return (
-    <div style={{
+    <div className="project-thumbnail" style={{
       width: 348, height: 228,
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
@@ -141,7 +141,7 @@ function JustIntelligenceThumbnail({ project }: { project: Project }) {
   ];
 
   return (
-    <div style={{
+    <div className="project-thumbnail" style={{
       width: 340, height: 218,
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
@@ -208,7 +208,7 @@ function ComponentSystemThumbnail({ project }: { project: Project }) {
   ];
 
   return (
-    <div style={{
+    <div className="project-thumbnail" style={{
       width: 340, height: 218,
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
@@ -264,7 +264,7 @@ function IATAThumbnail({ project }: { project: Project }) {
   ];
 
   return (
-    <div style={{
+    <div className="project-thumbnail" style={{
       width: 340, height: 218,
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
@@ -327,7 +327,7 @@ function StoryCorpsThumbnail({ project }: { project: Project }) {
   const bars = [18, 32, 45, 28, 55, 40, 62, 35, 48, 30, 58, 42, 36, 52, 24, 44, 60, 38, 50, 26, 48, 34, 56, 40, 30, 50, 44, 22, 46, 38];
 
   return (
-    <div style={{
+    <div className="project-thumbnail" style={{
       width: 340, height: 218,
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",
@@ -387,7 +387,7 @@ function JustWebsiteThumbnail({ project }: { project: Project }) {
   const p = ap("#1D4E5C"); // JUST Capital brand teal — not the card accent (amber)
 
   return (
-    <div style={{
+    <div className="project-thumbnail" style={{
       width: 340, height: 218,
       background: p.bg,
       borderRadius: 16, position: "relative", overflow: "hidden",

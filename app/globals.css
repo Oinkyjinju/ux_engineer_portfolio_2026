@@ -100,3 +100,147 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE OVERRIDES — mobile (640px), tablet (768px), narrow (400px)
+   Components use inline styles, so !important is needed to override.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Nav: hide section links on mobile, keep dark mode toggle ──────────── */
+@media (max-width: 640px) {
+  .nav-links > a {
+    display: none !important;
+  }
+  .nav-links {
+    gap: 12px !important;
+  }
+}
+
+/* ── Hero: stack CTAs vertically on very narrow screens ────────────────── */
+@media (max-width: 400px) {
+  .hero-ctas {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* ── Work accordion: hide company/year on mobile, tighten spacing ──────── */
+@media (max-width: 640px) {
+  .accordion-company,
+  .accordion-year {
+    display: none !important;
+  }
+  .accordion-header-meta {
+    gap: 10px !important;
+  }
+}
+
+/* ── Thumbnails: fluid width on mobile/tablet ──────────────────────────── */
+@media (max-width: 768px) {
+  .project-thumbnail {
+    width: 100% !important;
+    max-width: 348px;
+    height: auto !important;
+    aspect-ratio: 340 / 218;
+  }
+}
+
+/* ── About: stack 2-col grid on mobile/small tablet ────────────────────── */
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Process: stack 3-col on mobile/tablet, hide connector line ─────────── */
+@media (max-width: 768px) {
+  .process-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .process-connector {
+    display: none !important;
+  }
+}
+
+/* ── Contact: shrink email button on very narrow screens ───────────────── */
+@media (max-width: 400px) {
+  .contact-email-btn {
+    font-size: 12px !important;
+    padding: 10px 14px !important;
+  }
+}
+
+/* ── Case Study: challenge + thumbnail grid stacks on tablet ───────────── */
+@media (max-width: 768px) {
+  .cs-challenge-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .cs-challenge-grid > div:first-child {
+    order: -1;
+  }
+}
+
+/* ── Case Study: nav links hidden on mobile ────────────────────────────── */
+@media (max-width: 640px) {
+  .cs-nav-links > a {
+    display: none !important;
+  }
+  .cs-nav-links {
+    gap: 12px !important;
+  }
+}
+
+/* ── Case Study: process columns layout — add card treatment ───────────── */
+.cs-process-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(20px, 3vw, 48px);
+}
+@media (max-width: 640px) {
+  .cs-process-columns {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+/* ── Case Study: code blocks — stack side-by-side on mobile ────────────── */
+@media (max-width: 768px) {
+  .cs-code-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .cs-code-panel {
+    height: 360px !important;
+  }
+}
+
+/* ── Case Study: results metrics grid ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .cs-results-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media (max-width: 400px) {
+  .cs-results-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Case Study: footer project list ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .cs-footer-projects {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    row-gap: 4px !important;
+  }
+  .cs-footer-projects .cs-project-sep {
+    display: none !important;
+  }
+  .cs-footer-nav {
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  .cs-footer-nav > a:last-child {
+    text-align: left !important;
+  }
+}
