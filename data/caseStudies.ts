@@ -176,7 +176,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
     reflection:
       "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right.\n\nIt also taught me to treat the design system not as a deliverable but as a decision log — every token is a choice that will either pay for itself or cost you. That's the standard I've kept since.",
     ctaText: "I build products meant to outlast the team that shipped them. If you're working on something where the abstractions need to be right the first time, I want to hear about it.",
-    phase2Teaser: "Phase 2 — currently in preparation — documents what seven years of foundation made possible. The work is being documented with the same care that went into building it.",
+    phase2Teaser: "Phase 2 — redesigned the platform as JUST Capital rebranded, introducing new features driven by real user usage patterns and fresh stakeholder feedback to improve the analyst experience end-to-end.",
+    phase2Url: "/work/just-intelligence-v2",
   },
 
   "just-wordpress": {
