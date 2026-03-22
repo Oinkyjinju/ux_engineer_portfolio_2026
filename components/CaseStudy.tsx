@@ -109,17 +109,17 @@ function CodeHighlight({ code }: { code: string; language: string }) {
 
 // Primary section label — design-thinking sections (Challenge, Approach, Decisions, Reflection, Results)
 const sectionLabelStyle = (marginBottom: number): React.CSSProperties => ({
-  fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+  fontFamily: mono, fontSize: 12, letterSpacing: "0.12em",
   textTransform: "uppercase", color: "var(--accent)",
-  marginTop: 0, marginBottom, fontWeight: 400,
+  marginTop: 0, marginBottom, fontWeight: 500,
 });
 // Secondary section label — logistical/process sections (Tech & Tools, How It Got Built)
-// Uses text-secondary (not text-tertiary) to remain readable at ~4.7:1 contrast on dark bg
+// Uses text-secondary (not text-tertiary) to remain readable at ~5.5:1 contrast on dark bg
 // Distinguishable from primary accent labels by color (gray vs. amber) not by opacity
 const sectionLabelSecondaryStyle = (marginBottom: number): React.CSSProperties => ({
-  fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+  fontFamily: mono, fontSize: 12, letterSpacing: "0.12em",
   textTransform: "uppercase", color: "var(--text-secondary)",
-  marginTop: 0, marginBottom, fontWeight: 400,
+  marginTop: 0, marginBottom, fontWeight: 500,
 });
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -300,9 +300,9 @@ function ProcessTimeline({ steps, reduce }: { steps: TimelineStep[]; reduce: boo
                     transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], delay: 0.15 + itemIdx * 0.04 }}
                     style={{
                       fontFamily: sans,
-                      fontSize: "clamp(14px, 1.1vw, 16px)",
+                      fontSize: "clamp(15px, 1.2vw, 17px)",
                       color: "var(--text-secondary)",
-                      lineHeight: 1.75,
+                      lineHeight: 1.8,
                       padding: "6px 0",
                       display: "flex",
                       alignItems: "flex-start",
@@ -376,8 +376,8 @@ export default function CaseStudy({ project }: Props) {
     ? {
         "--bg":               "#09090E",
         "--text-primary":     "#EDEAE3",
-        "--text-secondary":   "#7D7A73",
-        "--text-tertiary":    "#4A4846",
+        "--text-secondary":   "#908D86",
+        "--text-tertiary":    "#706E6B",
         "--border":           "rgba(255,255,255,0.07)",
         "--card-bg":          "rgba(255,255,255,0.025)",
         "--accent":           "#F5A623",
@@ -388,7 +388,7 @@ export default function CaseStudy({ project }: Props) {
         "--bg":               "#F8F7F2",
         "--text-primary":     "#0E0D0A",
         "--text-secondary":   "#5A5855",
-        "--text-tertiary":    "#8E8C89",
+        "--text-tertiary":    "#706E6B",
         "--border":           "rgba(0,0,0,0.09)",
         "--card-bg":          "rgba(0,0,0,0.03)",
         "--accent":           "#2563EB",
@@ -468,7 +468,7 @@ export default function CaseStudy({ project }: Props) {
         {/* Block label (e.g. "About Page") */}
         {block.label && (
           <p style={{
-            fontFamily: mono, fontSize: 10, letterSpacing: "0.1em",
+            fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
             textTransform: "uppercase", color: "var(--text-secondary)",
             marginBottom: 14, marginTop: 0,
           }}>
@@ -483,17 +483,17 @@ export default function CaseStudy({ project }: Props) {
               /* Scrollable phone mockups */
               <div className="sc-phone-frames">
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
                   {block.beforeSrc
                     ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={priority} />
-                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span></div>
+                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span></div>
                   }
                 </div>
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
                   {block.afterSrc
                     ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
-                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>After</span></div>
+                    : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>After</span></div>
                   }
                 </div>
               </div>
@@ -502,26 +502,26 @@ export default function CaseStudy({ project }: Props) {
               <div style={{ display: "flex", gap: 28, flexWrap: "wrap", alignItems: "flex-start" }}>
                 {/* Before */}
                 <div className="sc-before-panel" style={{ flexShrink: 0, width: 280 }}>
-                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
                   <div style={{ ...imgClip, position: "relative", aspectRatio: block.beforeSrc ? undefined : "9/16", minHeight: block.beforeSrc ? undefined : 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {block.beforeSrc ? (
                       <Image src={block.beforeSrc} alt={`${block.label ?? block.caption} — Before`}
                         fill sizes="(max-width: 600px) 280px, 280px" priority={priority} style={{ objectFit: "cover" }} />
                     ) : (
-                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span>
+                      <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span>
                     )}
                   </div>
                 </div>
                 {/* After */}
                 <div style={{ flex: 1, minWidth: 280 }}>
-                  <p style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
                   <div style={{ ...imgClip, ...(block.afterSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.afterSrc ? (
                       <Image src={block.afterSrc} alt={`${block.label ?? block.caption} — After`}
                         width={0} height={0} sizes="(max-width: 768px) calc(100vw - 48px), 700px"
                         priority={priority} style={{ width: "100%", height: "auto", display: "block" }} />
                     ) : (
-                      <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>After</span>
+                      <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>After</span>
                     )}
                   </div>
                 </div>
@@ -544,7 +544,7 @@ export default function CaseStudy({ project }: Props) {
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number,number,number,number], delay: shouldReduceMotion ? 0 : idx * 0.06 }}
                 >
                   <span aria-hidden="true" style={{
-                    fontFamily: mono, fontSize: 10, letterSpacing: "0.1em",
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
                     textTransform: "uppercase", color: "var(--accent)", opacity: 0.7,
                   }}>
                     {String(idx + 1).padStart(2, "0")}
@@ -558,7 +558,7 @@ export default function CaseStudy({ project }: Props) {
                     />
                   </div>
                   <span style={{
-                    fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
                     textTransform: "uppercase", color: "var(--text-secondary)",
                     textAlign: "center", lineHeight: 1.4,
                   }}>
@@ -583,7 +583,7 @@ export default function CaseStudy({ project }: Props) {
                     style={{ width: "100%", height: "auto", display: "block" }} />
                 ) : (
                   <div style={{ aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--card-bg)" }}>
-                    <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Image</span>
+                    <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Image</span>
                   </div>
                 )}
               </div>
@@ -636,7 +636,7 @@ export default function CaseStudy({ project }: Props) {
                     }}
                   />
                 ) : (
-                  <span style={{ fontFamily: mono, fontSize: 9, color: "var(--text-secondary)", opacity: 0.4 }}>Image</span>
+                  <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Image</span>
                 )}
               </div>
             )}
@@ -748,7 +748,7 @@ export default function CaseStudy({ project }: Props) {
               display: "flex", alignItems: "center", gap: 7,
               background: "var(--card-bg)", border: "1px solid var(--border)",
               borderRadius: 20, padding: "5px 13px", cursor: "pointer",
-              fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
+              fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
               textTransform: "uppercase", color: "var(--text-secondary)",
               transition: "border-color 0.2s",
             }}
@@ -826,19 +826,19 @@ export default function CaseStudy({ project }: Props) {
               style={{
                 display: "inline-flex", alignItems: "center", gap: 6,
                 fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-                textTransform: "uppercase", color: "rgba(237,234,227,0.5)",
+                textTransform: "uppercase", color: "rgba(237,234,227,0.72)",
                 textDecoration: "none", marginBottom: 24,
                 transition: "color 0.2s", borderRadius: 2,
               }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.72)"; }}
               onFocus={(e) => {
                 (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.9)";
-                (e.currentTarget as HTMLElement).style.outline = "2px solid rgba(237,234,227,0.5)";
+                (e.currentTarget as HTMLElement).style.outline = "2px solid rgba(237,234,227,0.72)";
                 (e.currentTarget as HTMLElement).style.outlineOffset = "2px";
               }}
               onBlur={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.5)";
+                (e.currentTarget as HTMLElement).style.color = "rgba(237,234,227,0.72)";
                 (e.currentTarget as HTMLElement).style.outline = "none";
               }}
             >
@@ -851,7 +851,7 @@ export default function CaseStudy({ project }: Props) {
               <span
                 key={tag}
                 style={{
-                  fontFamily: mono, fontSize: 10, letterSpacing: "0.06em",
+                  fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
                   textTransform: "uppercase", padding: "4px 12px",
                   borderRadius: 20, border: "1px solid rgba(237,234,227,0.3)",
                   color: "rgba(237,234,227,0.85)", background: "rgba(0,0,0,0.22)",
@@ -877,7 +877,7 @@ export default function CaseStudy({ project }: Props) {
           >
             {project.title}
           </motion.h1>
-          <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.6)", marginBottom: (data.heroLede || data.heroIntro) ? 28 : 0 }}>
+          <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.78)", marginBottom: (data.heroLede || data.heroIntro) ? 28 : 0 }}>
             {project.subtitle}
           </motion.p>
           {/* heroLede — punchy 1-sentence opener, display-weight Gloock at near-full opacity */}
@@ -891,7 +891,7 @@ export default function CaseStudy({ project }: Props) {
                 lineHeight: 1.3,
                 letterSpacing: "-0.01em",
                 color: "rgba(237,234,227,0.92)",
-                maxWidth: 680,
+                maxWidth: 640,
                 marginBottom: data.heroIntro ? 16 : 0,
                 marginTop: 0,
               }}
@@ -901,7 +901,7 @@ export default function CaseStudy({ project }: Props) {
           )}
           {/* heroIntro — supporting paragraphs, smaller + reduced opacity */}
           {data.heroIntro && (
-            <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.75, color: "rgba(237,234,227,0.62)", maxWidth: 600, marginBottom: 0, marginTop: 0 }}>
+            <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.78)", maxWidth: 640, marginBottom: 0, marginTop: 0 }}>
               {data.heroIntro}
             </motion.p>
           )}
@@ -927,10 +927,10 @@ export default function CaseStudy({ project }: Props) {
                     borderTop: idx === 0 ? "none" : "1px solid var(--border)",
                   }}
                 >
-                  <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)" }}>
+                  <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)" }}>
                     {item.label}
                   </span>
-                  <span style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: 520 }}>
+                  <span style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6 }}>
                     {item.value}
                   </span>
                 </div>
@@ -949,7 +949,7 @@ export default function CaseStudy({ project }: Props) {
           >
             {metaItems.map((item) => (
               <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
-                <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
+                <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
                   {item.label}
                 </p>
                 <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>
@@ -967,77 +967,171 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── Phase 2 teaser — promoted to top of content ── */}
-        {data.phase2Teaser && (
-          <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px 0px" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              maxWidth: 760,
-              margin: "0 auto 80px",
-              border: "1px solid var(--accent)",
-              borderRadius: 14,
-              padding: "28px 32px",
-              background: "var(--accent-muted)",
-              display: "flex",
-              flexDirection: "column",
-              gap: 14,
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Subtle accent gradient strip at top */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 3,
-                background: "var(--accent)",
-                borderRadius: "14px 14px 0 0",
-              }}
-            />
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{
-                fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "var(--accent)", fontWeight: 500,
-              }}>
-                Phase 2 — Launched
-              </span>
-            </div>
-            <p style={{
-              fontFamily: serif, fontSize: "clamp(17px, 2vw, 20px)",
-              color: "var(--text-primary)", lineHeight: 1.55,
-              fontWeight: 400, margin: 0, maxWidth: 600,
-            }}>
-              {data.phase2Teaser}
-            </p>
-            {data.phase2Url && (
-              <Link
-                href={data.phase2Url}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  color: "var(--accent)",
-                  textDecoration: "none",
-                  marginTop: 4,
-                  transition: "opacity 0.2s",
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-              >
-                Explore Phase 2 →
+        {/* ── Phase 2 teaser — "The Redacted Briefing" ── */}
+        {data.phase2Teaser && data.phase2Url && (() => {
+          const Phase2Briefing = () => {
+            const [isRevealed, setIsRevealed] = useState(false);
+
+            // Split teaser into segments: plain text and redacted words
+            // Redact key words to create intrigue
+            const teaserParts: { text: string; redact: boolean; delay: number }[] = (() => {
+              const raw = data.phase2Teaser!;
+              // Find words to redact: "platform", "rebranded", "real user usage patterns", "stakeholder feedback"
+              const redactions = [
+                { word: "platform", delay: 0 },
+                { word: "rebranded", delay: 70 },
+                { word: "real user usage patterns", delay: 140 },
+                { word: "fresh stakeholder feedback", delay: 210 },
+              ];
+
+              let remaining = raw;
+              const parts: { text: string; redact: boolean; delay: number }[] = [];
+
+              for (const r of redactions) {
+                const idx = remaining.toLowerCase().indexOf(r.word.toLowerCase());
+                if (idx === -1) continue;
+                if (idx > 0) parts.push({ text: remaining.slice(0, idx), redact: false, delay: 0 });
+                parts.push({ text: remaining.slice(idx, idx + r.word.length), redact: true, delay: r.delay });
+                remaining = remaining.slice(idx + r.word.length);
+              }
+              if (remaining) parts.push({ text: remaining, redact: false, delay: 0 });
+              return parts;
+            })();
+
+            return (
+              <Link href={data.phase2Url!} style={{ textDecoration: "none", display: "block" }}>
+                <motion.div
+                  onMouseEnter={() => setIsRevealed(true)}
+                  onMouseLeave={() => setIsRevealed(false)}
+                  onFocus={() => setIsRevealed(true)}
+                  onBlur={() => setIsRevealed(false)}
+                  onTouchStart={() => setIsRevealed(true)}
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    maxWidth: 760,
+                    margin: "0 auto 80px",
+                    padding: "28px 0 28px 24px",
+                    position: "relative",
+                    cursor: "pointer",
+                  }}
+                >
+                  {/* Left accent border — grows on hover */}
+                  <motion.div
+                    aria-hidden="true"
+                    animate={{ scaleY: isRevealed ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                      position: "absolute",
+                      left: 0, top: 0, bottom: 0,
+                      width: 2,
+                      background: "var(--accent)",
+                      transformOrigin: "top",
+                    }}
+                  />
+
+                  {/* Classification label + version indicator */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+                    <motion.span
+                      animate={{ color: isRevealed ? "var(--accent)" : "var(--text-tertiary)" }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        fontFamily: mono, fontSize: 11, letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {isRevealed ? "Declassified" : "Classified"} // Sequel
+                    </motion.span>
+                    <span style={{
+                      fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                      textTransform: "uppercase", color: "var(--accent)",
+                      background: "var(--accent-muted)",
+                      padding: "2px 8px", borderRadius: 2,
+                    }}>
+                      v2 Launched
+                    </span>
+                  </div>
+
+                  {/* Redacted paragraph */}
+                  <p style={{
+                    fontFamily: sans, fontSize: 16,
+                    color: "var(--text-secondary)",
+                    lineHeight: 1.75, marginBottom: 18,
+                  }}>
+                    {teaserParts.map((part, i) => {
+                      if (!part.redact) return <span key={i}>{part.text}</span>;
+                      return (
+                        <span key={i} style={{ position: "relative", display: "inline" }}>
+                          {/* The actual word — fades in on reveal */}
+                          <motion.span
+                            animate={{ opacity: isRevealed ? 1 : 0 }}
+                            transition={{
+                              duration: 0.3,
+                              delay: shouldReduceMotion ? 0 : part.delay / 1000,
+                            }}
+                            style={{ position: "relative", zIndex: 1 }}
+                          >
+                            {part.text}
+                          </motion.span>
+                          {/* The redaction block — fades out on reveal */}
+                          <motion.span
+                            aria-hidden="true"
+                            animate={{
+                              opacity: isRevealed ? 0 : 1,
+                              scaleX: isRevealed ? 0.97 : 1,
+                            }}
+                            transition={{
+                              duration: 0.25,
+                              delay: shouldReduceMotion ? 0 : part.delay / 1000,
+                            }}
+                            style={{
+                              position: "absolute",
+                              inset: "1px -3px",
+                              background: "var(--text-primary)",
+                              borderRadius: 1,
+                              transformOrigin: "left",
+                              pointerEvents: "none",
+                            }}
+                          />
+                        </span>
+                      );
+                    })}
+                  </p>
+
+                  {/* CTA line */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <motion.span
+                      animate={{ color: isRevealed ? "var(--accent)" : "var(--text-tertiary)" }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        fontFamily: mono, fontSize: 11,
+                        letterSpacing: "0.1em", textTransform: "uppercase",
+                      }}
+                    >
+                      {isRevealed ? "Read full briefing" : "Hover to declassify"}
+                    </motion.span>
+                    <motion.span
+                      animate={{
+                        x: isRevealed ? 4 : 0,
+                        opacity: isRevealed ? 1 : 0,
+                      }}
+                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                      style={{
+                        fontFamily: mono, fontSize: 12,
+                        color: "var(--accent)",
+                      }}
+                    >
+                      →
+                    </motion.span>
+                  </div>
+                </motion.div>
               </Link>
-            )}
-          </motion.div>
-        )}
+            );
+          };
+          return <Phase2Briefing />;
+        })()}
 
         {/* ── Challenge — pull-quote treatment ── */}
         {(() => {
@@ -1051,46 +1145,8 @@ export default function CaseStudy({ project }: Props) {
             : "";
 
           return (
-            <div style={{ maxWidth: 760, margin: "0 auto 100px", position: "relative" }}>
-              {/* Watermark number */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  top: -20,
-                  left: -12,
-                  fontFamily: serif,
-                  fontSize: "clamp(120px, 14vw, 180px)",
-                  fontWeight: 400,
-                  color: "var(--text-primary)",
-                  opacity: 0.03,
-                  lineHeight: 1,
-                  pointerEvents: "none",
-                  userSelect: "none",
-                  zIndex: 0,
-                }}
-              >
-                01
-              </div>
-
-              <div style={{ position: "relative", zIndex: 1 }}>
-                {/* Accent bar */}
-                <motion.div
-                  aria-hidden="true"
-                  initial={shouldReduceMotion ? {} : { scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true, margin: "-60px 0px" }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    width: 40,
-                    height: 2,
-                    background: "var(--accent)",
-                    marginBottom: 20,
-                    borderRadius: 1,
-                    transformOrigin: "left",
-                  }}
-                />
-
+            <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
+              <div>
                 {/* Section label */}
                 <h2 style={sectionLabelStyle(28)}>The Challenge</h2>
 
@@ -1112,7 +1168,6 @@ export default function CaseStudy({ project }: Props) {
                     padding: 0,
                     borderLeft: "3px solid var(--accent)",
                     paddingLeft: 24,
-                    maxWidth: 680,
                   }}
                 >
                   {pullQuote}
@@ -1130,7 +1185,6 @@ export default function CaseStudy({ project }: Props) {
                       fontSize: 16,
                       lineHeight: 1.75,
                       color: "var(--text-secondary)",
-                      maxWidth: 640,
                       margin: 0,
                     }}
                   >
@@ -1142,13 +1196,59 @@ export default function CaseStudy({ project }: Props) {
           );
         })()}
 
-        {/* Approach */}
-        <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
-          <h2 style={sectionLabelStyle(20)}>My Approach</h2>
-          <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
-            {data.approach}
-          </p>
-        </div>
+        {/* Approach — scroll-linked word emphasis */}
+        {(() => {
+          const ApproachReveal = () => {
+            const elRef = useRef<HTMLDivElement>(null);
+            const [scrollProg, setScrollProg] = useState(0);
+            const approachWords = data.approach.split(/(\s+)/);
+
+            useEffect(() => {
+              if (shouldReduceMotion) { setScrollProg(1); return; }
+              const el = elRef.current;
+              if (!el) return;
+              const onScroll = () => {
+                const rect = el.getBoundingClientRect();
+                const vh = window.innerHeight;
+                const raw = (vh * 0.8 - rect.top) / (vh * 0.55);
+                setScrollProg(Math.max(0, Math.min(1, raw)));
+              };
+              window.addEventListener("scroll", onScroll, { passive: true });
+              onScroll();
+              return () => window.removeEventListener("scroll", onScroll);
+            }, []);
+
+            return (
+              <div ref={elRef} style={{ maxWidth: 760, margin: "0 auto 80px" }}>
+                <h2 style={sectionLabelStyle(20)}>The Thinking</h2>
+                <p style={{
+                  fontFamily: sans,
+                  fontSize: "clamp(16px, 1.4vw, 18px)",
+                  lineHeight: 1.8,
+                  margin: 0,
+                }}>
+                  {approachWords.map((w, i) => {
+                    // Words transition from tertiary → primary as scroll progresses
+                    const wordProgress = scrollProg * approachWords.length;
+                    const t = Math.max(0, Math.min(1, wordProgress - i));
+                    return (
+                      <span
+                        key={i}
+                        style={{
+                          color: t > 0.5 ? "var(--text-primary)" : "var(--text-tertiary)",
+                          transition: "color 0.12s ease",
+                        }}
+                      >
+                        {w}
+                      </span>
+                    );
+                  })}
+                </p>
+              </div>
+            );
+          };
+          return <ApproachReveal />;
+        })()}
 
         {/* What I Was Responsible For */}
         {data.whatIDid && (
@@ -1210,56 +1310,154 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Key Design Decisions */}
-        {data.keyDecisions && data.keyDecisions.length > 0 && (
-          <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(32)}>{data.keyDecisionsLabel ?? "Key Design Decisions"}</h2>
-            <div
-              style={{
-                ...(keyDecisionsLayout === "stacked"
-                  ? { display: "flex", flexDirection: "column", gap: 16, maxWidth: 760, margin: "0 auto" }
-                  : {
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                      gap: 0,
-                      border: "1px solid var(--border)",
-                      borderRadius: 12,
-                      overflow: "hidden",
-                    }),
-              }}
-              role="list"
-            >
-              {data.keyDecisions.map((decision, i) => (
-                <div
-                  key={`decision-${i}`}
-                  role="listitem"
-                  style={{
-                    padding: keyDecisionsLayout === "stacked" ? "22px 24px" : "32px 28px",
-                    background: "var(--card-bg)",
-                    border: keyDecisionsLayout === "stacked" ? "1px solid var(--border)" : undefined,
-                    borderRadius: keyDecisionsLayout === "stacked" ? 12 : 0,
-                    borderRight: keyDecisionsLayout === "stacked" ? undefined : "1px solid var(--border)",
-                    borderBottom: keyDecisionsLayout === "stacked" ? undefined : "1px solid var(--border)",
-                  }}
-                >
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      display: "block",
-                      fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
-                      color: "var(--accent)", marginBottom: 12,
-                    }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p style={{ fontFamily: sans, fontSize: 15, lineHeight: 1.65, color: "var(--text-primary)", margin: 0 }}>
-                    {decision}
-                  </p>
+        {/* Key Design Decisions — interactive accordion with large numbers */}
+        {data.keyDecisions && data.keyDecisions.length > 0 && (() => {
+          const DecisionsAccordion = () => {
+            const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+
+            return (
+              <div style={{ marginBottom: 100, maxWidth: 760, margin: "0 auto 100px" }}>
+                <h2 style={sectionLabelStyle(32)}>{data.keyDecisionsLabel ?? "Key Design Decisions"}</h2>
+                <div>
+                  {data.keyDecisions!.map((decision, i) => {
+                    const isOpen = expandedIdx === i;
+                    const panelId = `decision-panel-${i}`;
+                    const triggerId = `decision-trigger-${i}`;
+                    return (
+                      <div
+                        key={`decision-${i}`}
+                        style={{
+                          borderBottom: "1px solid var(--border)",
+                          position: "relative",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {/* Hover/active highlight */}
+                        <motion.div
+                          aria-hidden="true"
+                          animate={{ opacity: isOpen ? 0.025 : 0 }}
+                          style={{
+                            position: "absolute", inset: 0,
+                            background: "var(--accent)",
+                            pointerEvents: "none",
+                          }}
+                        />
+
+                        {/* Header row: large number + first few words as preview */}
+                        <button
+                          id={triggerId}
+                          aria-expanded={isOpen}
+                          aria-controls={panelId}
+                          onClick={() => setExpandedIdx(isOpen ? null : i)}
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: 20,
+                            padding: "24px 16px 24px 0",
+                            position: "relative",
+                            zIndex: 1,
+                            width: "100%",
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            textAlign: "left",
+                          }}
+                        >
+                          {/* Large number */}
+                          <motion.span
+                            animate={{ color: isOpen ? "var(--accent)" : "var(--text-tertiary)" }}
+                            transition={{ duration: 0.2 }}
+                            style={{
+                              fontFamily: serif,
+                              fontSize: 36,
+                              lineHeight: 1,
+                              fontWeight: 400,
+                              flexShrink: 0,
+                              width: 48,
+                              textAlign: "right",
+                            }}
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </motion.span>
+
+                          {/* Preview text (truncated when closed) */}
+                          <span style={{ flex: 1, minWidth: 0 }}>
+                            <motion.span
+                              animate={{
+                                color: isOpen ? "var(--text-primary)" : "var(--text-secondary)",
+                              }}
+                              style={{
+                                fontFamily: sans,
+                                fontSize: 16,
+                                lineHeight: 1.7,
+                                display: "block",
+                                ...(isOpen ? {} : {
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  whiteSpace: "nowrap",
+                                }),
+                              }}
+                            >
+                              {decision}
+                            </motion.span>
+                          </span>
+
+                          {/* Expand indicator */}
+                          <motion.span
+                            aria-hidden="true"
+                            animate={{ rotate: isOpen ? 45 : 0 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                            style={{
+                              fontFamily: mono,
+                              fontSize: 18,
+                              color: "var(--text-secondary)",
+                              flexShrink: 0,
+                              lineHeight: 1,
+                              marginTop: 6,
+                            }}
+                          >
+                            +
+                          </motion.span>
+                        </button>
+
+                        {/* Expanded content */}
+                        <motion.div
+                          id={panelId}
+                          role="region"
+                          aria-labelledby={triggerId}
+                          initial={false}
+                          animate={{
+                            height: isOpen ? "auto" : 0,
+                            opacity: isOpen ? 1 : 0,
+                          }}
+                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ overflow: "hidden" }}
+                        >
+                          <div style={{
+                            paddingLeft: 68,
+                            paddingBottom: 28,
+                            paddingRight: 32,
+                          }}>
+                            <p style={{
+                              fontFamily: sans,
+                              fontSize: 16,
+                              lineHeight: 1.75,
+                              color: "var(--text-primary)",
+                              margin: 0,
+                            }}>
+                              {decision}
+                            </p>
+                          </div>
+                        </motion.div>
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              </div>
+            );
+          };
+          return <DecisionsAccordion />;
+        })()}
 
         {/* ── Per-case supplement after keyDecisions ── */}
         {project.id === "just-intelligence" && (
@@ -1293,81 +1491,98 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* Results — single row, equal-height cards */}
+        {/* Results — staggered scroll-reveal with large typography */}
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(32)}>Results</h2>
+            <h2 style={sectionLabelStyle(32)}>What Shipped</h2>
             {/* just-intelligence: animated stats counter */}
             {project.id === "just-intelligence" ? (
               <StatsCounter metrics={data.metrics} />
-            ) : isNarrative ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 760, margin: "0 auto" }}>
-                {data.metrics.map((m) => (
-                  <div
-                    key={m.label}
-                    style={{
-                      padding: "16px 20px",
-                      border: "1px solid var(--border)",
-                      borderRadius: 12,
-                      background: "var(--card-bg)",
-                    }}
-                  >
-                    <div className="sc-metric-row">
-                      <div style={{ fontFamily: serif, fontSize: "clamp(28px, 3vw, 36px)", lineHeight: 1.1, color: "var(--accent)" }}>
-                        {m.value}
-                      </div>
-                      <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                        {m.label}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             ) : (
-              /* Standard layout: no card chrome — numbers sit exposed on the page bg.
-                 Card borders were competing with the numbers for visual weight; the grid
-                 holds them in position, accent color + Gloock provide all the structure needed. */
-              <div className="cs-results-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 0, borderTop: "1px solid var(--border)" }}>
-                {data.metrics.map((m) => (
-                  <div
+              <div className="cs-results-grid" style={{ maxWidth: 760, margin: "0 auto" }}>
+                {data.metrics.map((m, idx) => (
+                  <motion.div
                     key={m.label}
+                    initial={shouldReduceMotion ? {} : { opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-40px 0px" }}
+                    transition={{
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: shouldReduceMotion ? 0 : idx * 0.1,
+                    }}
                     style={{
-                      padding: "32px 28px",
-                      borderRight: "1px solid var(--border)",
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: 20,
+                      padding: "28px 0",
                       borderBottom: "1px solid var(--border)",
-                      textAlign: "center",
                     }}
                   >
-                    <div style={{ fontFamily: serif, fontSize: "clamp(40px, 4vw, 56px)", lineHeight: 1, color: "var(--accent)", marginBottom: 10 }}>
+                    {/* Large metric value */}
+                    <span style={{
+                      fontFamily: serif,
+                      fontSize: "clamp(36px, 5vw, 56px)",
+                      lineHeight: 1,
+                      color: "var(--accent)",
+                      fontWeight: 400,
+                      flexShrink: 0,
+                      minWidth: 120,
+                    }}>
                       {m.value}
-                    </div>
-                    <div style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                    </span>
+                    {/* Label */}
+                    <span style={{
+                      fontFamily: mono,
+                      fontSize: 11,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.5,
+                    }}>
                       {m.label}
-                    </div>
-                  </div>
+                    </span>
+                  </motion.div>
                 ))}
               </div>
             )}
           </div>
         )}
 
-        {/* What Changed (outcomes) */}
+        {/* What Changed (outcomes) — staggered scroll reveal */}
         {data.outcomes && data.outcomes.length > 0 && (
           <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
             <h2 style={sectionLabelStyle(24)}>What Changed</h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.outcomes.map((outcome, i) => (
-                <li
+                <motion.li
                   key={`outcome-${i}`}
+                  initial={shouldReduceMotion ? {} : { opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-30px 0px" }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: shouldReduceMotion ? 0 : i * 0.06,
+                  }}
                   style={{
-                    display: "flex", alignItems: "flex-start", gap: 12,
-                    padding: "12px 0", borderBottom: "1px solid var(--border)",
-                    fontFamily: sans, fontSize: 15, color: "var(--text-secondary)", lineHeight: 1.6,
+                    display: "flex", alignItems: "flex-start", gap: 14,
+                    padding: "16px 0", borderBottom: "1px solid var(--border)",
+                    fontFamily: sans, fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.7,
                   }}
                 >
-                  <span aria-hidden="true" style={{ color: "var(--accent)", fontSize: 10, marginTop: 4, flexShrink: 0 }}>▸</span>
+                  {/* Accent dash marker */}
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      width: 16, height: 1,
+                      background: "var(--accent)",
+                      marginTop: 12,
+                      flexShrink: 0,
+                    }}
+                  />
                   {outcome}
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
@@ -1384,7 +1599,7 @@ export default function CaseStudy({ project }: Props) {
                   <p style={{ fontFamily: mono, fontSize: 12, letterSpacing: "0.06em", color: "var(--text-primary)", marginBottom: 6, fontWeight: 500 }}>
                     {block.title}
                   </p>
-                  <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 20, maxWidth: 640 }}>
+                  <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 20 }}>
                     {block.description}
                   </p>
                   {/* Code + preview layout */}
@@ -1423,14 +1638,21 @@ export default function CaseStudy({ project }: Props) {
                                     key={f.label}
                                     onClick={() => setActiveFileTabs(prev => ({ ...prev, [block.id]: i }))}
                                     style={{
-                                      fontFamily: mono, fontSize: 10, letterSpacing: "0.08em",
+                                      fontFamily: mono, fontSize: 11, letterSpacing: "0.08em",
                                       textTransform: "uppercase",
                                       padding: "10px 16px",
                                       background: "transparent", border: "none",
-                                      borderBottom: isActive ? "2px solid #F5A623" : "2px solid transparent",
+                                      borderBottom: isActive ? "2px solid var(--accent)" : "2px solid transparent",
                                       color: isActive ? "#cdd6f4" : "rgba(255,255,255,0.3)",
                                       cursor: "pointer",
                                       transition: "color 0.15s",
+                                    }}
+                                    onFocus={(e) => {
+                                      (e.currentTarget as HTMLElement).style.outline = "2px solid var(--accent)";
+                                      (e.currentTarget as HTMLElement).style.outlineOffset = "-2px";
+                                    }}
+                                    onBlur={(e) => {
+                                      (e.currentTarget as HTMLElement).style.outline = "none";
                                     }}
                                   >
                                     {f.label}
@@ -1496,10 +1718,10 @@ export default function CaseStudy({ project }: Props) {
                             alignItems: "center",
                             gap: 5,
                             fontFamily: mono,
-                            fontSize: 10,
+                            fontSize: 11,
                             letterSpacing: "0.08em",
                             textTransform: "uppercase",
-                            color: "var(--text-tertiary)",
+                            color: "var(--text-secondary)",
                             textDecoration: "none",
                             padding: "5px 12px",
                             border: "1px solid var(--border)",
@@ -1539,74 +1761,226 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── Reflection — after code evidence so it reads as earned wisdom ── */}
-        {data.reflection && (
-          <div style={{ maxWidth: 960, margin: "0 auto 100px" }}>
-            <h2 style={sectionLabelStyle(20)}>Reflection</h2>
-            <blockquote style={{
-              fontFamily: serif,
-              fontSize: "clamp(18px, 1.7vw, 24px)",
-              lineHeight: 1.6,
-              color: "var(--text-primary)",
-              fontWeight: 400,
-              letterSpacing: "-0.02em",
-              borderLeft: "4px solid var(--accent)",
-              padding: "32px 36px",
-              background: "var(--accent-muted)",
-              borderRadius: 8,
-              margin: 0,
-            }}>
-              {data.reflection}
-            </blockquote>
-          </div>
-        )}
+        {/* ── Reflection — typewriter reveal on scroll ── */}
+        {data.reflection && (() => {
+          const ReflectionReveal = () => {
+            const containerRef = useRef<HTMLDivElement>(null);
+            const [progress, setProgress] = useState(0);
+            const words = data.reflection!.split(/(\s+)/);
+
+            useEffect(() => {
+              if (shouldReduceMotion) { setProgress(1); return; }
+              const el = containerRef.current;
+              if (!el) return;
+
+              const handleScroll = () => {
+                const rect = el.getBoundingClientRect();
+                const viewH = window.innerHeight;
+                // Start revealing when top enters viewport, complete when bottom reaches center
+                const start = viewH * 0.85;
+                const end = viewH * 0.25;
+                const raw = (start - rect.top) / (start - end);
+                setProgress(Math.max(0, Math.min(1, raw)));
+              };
+
+              window.addEventListener("scroll", handleScroll, { passive: true });
+              handleScroll();
+              return () => window.removeEventListener("scroll", handleScroll);
+            }, []);
+
+            const visibleCount = Math.ceil(progress * words.length);
+
+            return (
+              <div ref={containerRef} style={{ maxWidth: 760, margin: "0 auto 100px" }}>
+                <h2 style={sectionLabelStyle(28)}>Reflection</h2>
+
+                <div style={{ position: "relative" }}>
+                  {/* Blinking cursor at the end of visible text */}
+                  <p style={{
+                    fontFamily: serif,
+                    fontSize: "clamp(20px, 2.2vw, 28px)",
+                    lineHeight: 1.45,
+                    letterSpacing: "-0.015em",
+                    color: "var(--text-primary)",
+                    fontWeight: 400,
+                    margin: 0,
+                  }}>
+                    {words.map((word, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          opacity: i < visibleCount ? 1 : 0.06,
+                          transition: "opacity 0.15s ease",
+                        }}
+                      >
+                        {word}
+                      </span>
+                    ))}
+                    {/* Cursor */}
+                    {progress < 1 && (
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          display: "inline-block",
+                          width: 2,
+                          height: "0.9em",
+                          background: "var(--accent)",
+                          marginLeft: 2,
+                          verticalAlign: "text-bottom",
+                          animation: "cursorBlink 1s step-end infinite",
+                        }}
+                      />
+                    )}
+                  </p>
+
+                  {/* Progress line at bottom */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      marginTop: 32,
+                      height: 1,
+                      background: "var(--border)",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div style={{
+                      position: "absolute",
+                      top: 0, left: 0, bottom: 0,
+                      width: `${progress * 100}%`,
+                      background: "var(--accent)",
+                      transition: "width 0.1s linear",
+                    }} />
+                  </div>
+                </div>
+              </div>
+            );
+          };
+          return <ReflectionReveal />;
+        })()}
 
         {/* Phase 2 teaser moved to top of content, before Challenge */}
 
-        {/* CTA — peak-end: the emotional high point before the reader navigates away */}
-        <div
-          style={{
-            textAlign: "center",
-            padding: "64px 0 80px",
-          }}
-        >
-          <p style={{ fontFamily: serif, fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 24, fontWeight: 400, letterSpacing: "-0.01em" }}>
-            {data.ctaText ?? "Interested in working together?"}
-          </p>
-          <Link
-            href="/#contact"
-            style={{
-              display: "inline-block",
-              fontFamily: sans, fontSize: 14, fontWeight: 500,
-              color: dark ? "#09090E" : "#ffffff",
-              background: "var(--accent)",
-              padding: "12px 28px", borderRadius: 8,
-              textDecoration: "none",
-              transition: "opacity 0.2s, transform 0.2s",
-              transform: "translateY(0)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.opacity = "0.85";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.opacity = "1";
-              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            }}
-            onFocus={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--text-primary)";
-            }}
-            onBlur={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = "";
-            }}
-          >
-            Get in touch →
-          </Link>
-        </div>
+        {/* CTA — magnetic cursor-reactive ending */}
+        {(() => {
+          const MagneticCTA = () => {
+            const btnRef = useRef<HTMLAnchorElement>(null);
+            const [btnOffset, setBtnOffset] = useState({ x: 0, y: 0 });
+            const [isHovered, setIsHovered] = useState(false);
+
+            const handleMouseMove = (e: React.MouseEvent) => {
+              if (!btnRef.current || shouldReduceMotion) return;
+              const rect = btnRef.current.getBoundingClientRect();
+              const centerX = rect.left + rect.width / 2;
+              const centerY = rect.top + rect.height / 2;
+              const distX = e.clientX - centerX;
+              const distY = e.clientY - centerY;
+              // Magnetic pull — button follows cursor within bounds
+              setBtnOffset({ x: distX * 0.25, y: distY * 0.25 });
+            };
+
+            const handleMouseLeave = () => {
+              setBtnOffset({ x: 0, y: 0 });
+              setIsHovered(false);
+            };
+
+            return (
+              <div
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  textAlign: "center",
+                  padding: "100px 0 120px",
+                  position: "relative",
+                }}
+              >
+                {/* Separator line */}
+                <motion.div
+                  aria-hidden="true"
+                  initial={shouldReduceMotion ? {} : { scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    width: 60,
+                    height: 1,
+                    background: "var(--border)",
+                    margin: "0 auto 48px",
+                    transformOrigin: "center",
+                  }}
+                />
+
+                <motion.p
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    fontFamily: serif,
+                    fontSize: "clamp(24px, 3.5vw, 40px)",
+                    color: "var(--text-primary)",
+                    marginBottom: 32,
+                    fontWeight: 400,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {data.ctaText ?? "I build the things between design and engineering. If that gap is costing your team, let\u2019s talk."}
+                </motion.p>
+
+                {/* Magnetic button */}
+                <motion.div
+                  animate={{
+                    x: btnOffset.x,
+                    y: btnOffset.y,
+                  }}
+                  transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+                  style={{ display: "inline-block" }}
+                >
+                  <Link
+                    ref={btnRef}
+                    href="/#contact"
+                    onMouseEnter={() => setIsHovered(true)}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 10,
+                      fontFamily: mono,
+                      fontSize: 12,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: isHovered ? (dark ? "#09090E" : "#ffffff") : "var(--text-primary)",
+                      background: isHovered ? "var(--accent)" : "transparent",
+                      padding: "14px 32px",
+                      border: `1px solid ${isHovered ? "var(--accent)" : "var(--border)"}`,
+                      borderRadius: 0,
+                      textDecoration: "none",
+                      transition: "background 0.3s, color 0.3s, border-color 0.3s",
+                    }}
+                    onFocus={(e) => {
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--accent)";
+                    }}
+                    onBlur={(e) => {
+                      (e.currentTarget as HTMLElement).style.boxShadow = "";
+                    }}
+                  >
+                    <span>Start a conversation</span>
+                    <motion.span
+                      animate={{ x: isHovered ? 4 : 0 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                    >
+                      →
+                    </motion.span>
+                  </Link>
+                </motion.div>
+              </div>
+            );
+          };
+          return <MagneticCTA />;
+        })()}
 
         {/* ── Footer nav — after the CTA so navigation doesn't compete with the peak moment ── */}
         <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, marginBottom: 64 }}>
-          <p style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 16 }}>
+          <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
             All Projects
           </p>
           <div className="cs-footer-projects" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 8, marginBottom: 32 }}>
@@ -1617,13 +1991,13 @@ export default function CaseStudy({ project }: Props) {
                     /
                   </span>
                 )}
-                <a
+                <Link
                   href={`/work/${p.id}`}
                   aria-current={p.id === project.id ? "page" : undefined}
                   style={{
                     fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: p.id === project.id ? "var(--text-primary)" : "var(--text-tertiary)",
+                    color: p.id === project.id ? "var(--text-primary)" : "var(--text-secondary)",
                     fontWeight: p.id === project.id ? 500 : 400,
                     textDecoration: "none",
                     borderBottom: `1px solid ${p.id === project.id ? "var(--text-primary)" : "transparent"}`,
@@ -1633,24 +2007,24 @@ export default function CaseStudy({ project }: Props) {
                   onMouseEnter={(e) => {
                     if (p.id !== project.id) {
                       (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
-                      (e.currentTarget as HTMLElement).style.borderBottomColor = "var(--text-tertiary)";
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = "var(--text-secondary)";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (p.id !== project.id) {
-                      (e.currentTarget as HTMLElement).style.color = "var(--text-tertiary)";
+                      (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
                       (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent";
                     }
                   }}
                 >
                   {p.title}
-                </a>
+                </Link>
               </span>
             ))}
           </div>
           <div className="cs-footer-nav" style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
             {prevProject ? (
-              <a
+              <Link
                 href={`/work/${prevProject.id}`}
                 style={{
                   fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
@@ -1669,12 +2043,12 @@ export default function CaseStudy({ project }: Props) {
                   (e.currentTarget as HTMLElement).style.outline = "none";
                 }}
               >
-                <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>← Previous</span>
+                <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>← Previous</span>
                 {prevProject.title}
-              </a>
+              </Link>
             ) : <span />}
             {nextProject ? (
-              <a
+              <Link
                 href={`/work/${nextProject.id}`}
                 style={{
                   fontFamily: sans, fontSize: 16, color: "var(--text-secondary)",
@@ -1693,9 +2067,9 @@ export default function CaseStudy({ project }: Props) {
                   (e.currentTarget as HTMLElement).style.outline = "none";
                 }}
               >
-                <span style={{ fontFamily: mono, fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Next →</span>
+                <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>Next →</span>
                 {nextProject.title}
-              </a>
+              </Link>
             ) : <span />}
           </div>
         </div>
