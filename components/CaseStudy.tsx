@@ -352,11 +352,16 @@ export default function CaseStudy({ project }: Props) {
   });
   const [scrolled, setScrolled]     = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentSection, setCurrentSection] = useState("");
   // tracks which file tab is active per code block (keyed by block.id)
   const [activeFileTabs, setActiveFileTabs] = useState<Record<string, number>>({});
   const shouldReduceMotion = useReducedMotion() ?? false;
   const metaSectionRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const sidebarLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const data = caseStudies[project.id];
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
@@ -371,6 +376,28 @@ export default function CaseStudy({ project }: Props) {
         const metaBottom = metaSectionRef.current.getBoundingClientRect().bottom;
         const footerTop = footerRef.current?.getBoundingClientRect().top ?? Infinity;
         setShowSidebar(metaBottom < 0 && footerTop > 400);
+
+        // Calculate scroll progress between meta section and footer
+        const metaTopAbs = metaSectionRef.current.getBoundingClientRect().top + window.scrollY;
+        const footerTopAbs = (footerRef.current?.getBoundingClientRect().top ?? Infinity) + window.scrollY;
+        const totalRange = footerTopAbs - metaTopAbs;
+        if (totalRange > 0) {
+          const progress = Math.min(1, Math.max(0, (window.scrollY - metaTopAbs) / totalRange));
+          setScrollProgress(progress);
+        }
+      }
+
+      // Detect current section from h2 headings
+      if (contentRef.current) {
+        const headings = contentRef.current.querySelectorAll("h2");
+        let active = "";
+        headings.forEach((h) => {
+          const rect = h.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.4) {
+            active = h.textContent ?? "";
+          }
+        });
+        setCurrentSection(active);
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -687,32 +714,90 @@ export default function CaseStudy({ project }: Props) {
       @media (max-width: 640px) { .sc-disconnect-grid { grid-template-columns: 1fr !important; } .sc-disconnect-grid > div { border-right: none !important; border-bottom: 1px solid var(--border); } .sc-disconnect-grid > div:last-child { border-bottom: none; } }
       @media (max-width: 580px) { .sc-scale-grid { grid-template-columns: repeat(2, 1fr) !important; } }
 
-      /* ── Sticky sidebar widget ── */
-      .sc-sidebar-widget {
+      /* ── Reading Companion Strip ── */
+      .sc-sidebar-strip {
         position: fixed;
         left: clamp(12px, 2vw, 24px);
         top: 50%;
         transform: translateY(-50%);
         z-index: 90;
-        width: 200px;
-        padding: 16px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
+        width: 44px;
+        height: 140px;
+        border-radius: 22px;
         background: var(--bg);
+        border: 1px solid var(--border);
         backdrop-filter: blur(16px);
         box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-        transition: opacity 0.35s ease, transform 0.35s ease;
+        overflow: hidden;
+        transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
       }
-      .sc-sidebar-widget[data-visible="false"] {
+      .sc-sidebar-strip[data-visible="false"] {
         opacity: 0;
-        transform: translateY(-50%) translateX(-20px);
         pointer-events: none;
+        transform: translateY(-50%) translateX(-20px);
       }
-      .sc-sidebar-widget[data-visible="true"] {
+      .sc-sidebar-strip[data-visible="true"] {
         opacity: 1;
         transform: translateY(-50%) translateX(0);
       }
-      @media (max-width: 1440px) { .sc-sidebar-widget { display: none !important; } }
+      .sc-sidebar-strip[data-expanded="true"] {
+        width: 210px;
+        height: auto;
+        border-radius: 14px;
+      }
+      .sc-strip-progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        background: var(--accent);
+        border-radius: 0 2px 2px 0;
+        transition: none;
+        z-index: 2;
+      }
+      .sc-strip-collapsed {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+        gap: 8px;
+        height: 100%;
+        justify-content: center;
+        transition: opacity 0.2s ease;
+      }
+      .sc-sidebar-strip[data-expanded="true"] .sc-strip-collapsed {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+      }
+      .sc-strip-expanded {
+        opacity: 0;
+        pointer-events: none;
+        padding: 16px 16px 16px 20px;
+        transition: opacity 0.3s ease 0.1s;
+        min-width: 210px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .sc-sidebar-strip[data-expanded="true"] .sc-strip-expanded {
+        opacity: 1;
+        pointer-events: auto;
+        position: relative;
+      }
+      .sc-strip-section-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--text-tertiary);
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+      .sc-strip-section-dot[data-active="true"] {
+        background: var(--accent);
+        transform: scale(1.4);
+      }
+      @media (max-width: 1440px) { .sc-sidebar-strip { display: none !important; } }
 
       /* ── StoryCorps journey strip + recording responsive ── */
       .sc-journey-strip::-webkit-scrollbar { display: none; }
@@ -879,51 +964,133 @@ export default function CaseStudy({ project }: Props) {
         </div>
       </nav>
 
-      {/* ── Sticky sidebar project info widget ── */}
-      <div
-        className="sc-sidebar-widget"
-        data-visible={showSidebar ? "true" : "false"}
-        aria-hidden={!showSidebar}
-      >
-        <p style={{
-          fontFamily: serif,
-          fontSize: 16,
-          fontWeight: 400,
-          lineHeight: 1.2,
-          color: "var(--text-primary)",
-          marginBottom: 4,
-        }}>
-          {project.title}
-        </p>
-        <p style={{
-          fontFamily: sans,
-          fontSize: 11,
-          color: "var(--text-tertiary)",
-          lineHeight: 1.4,
-          marginBottom: 12,
-          borderBottom: "1px solid var(--border)",
-          paddingBottom: 10,
-        }}>
-          {project.subtitle}
-        </p>
-        {metaItems.slice(0, 4).map((item) => (
-          <div key={item.label} style={{ marginBottom: 8 }}>
-            <p style={{
-              fontFamily: mono, fontSize: 8, letterSpacing: "0.12em",
-              textTransform: "uppercase", color: "var(--accent)",
-              marginBottom: 1, lineHeight: 1,
-            }}>
-              {item.label}
-            </p>
-            <p style={{
-              fontFamily: sans, fontSize: 11,
-              color: "var(--text-secondary)", lineHeight: 1.35,
-            }}>
-              {item.value}
-            </p>
+      {/* ── Reading Companion Strip ── */}
+      {(() => {
+        const sectionNames = ["Challenge", "Process", "Design", "Outcome"];
+        const truncatedSection = currentSection.length > 18
+          ? currentSection.slice(0, 18) + "…"
+          : currentSection;
+        return (
+          <div
+            className="sc-sidebar-strip"
+            data-visible={showSidebar ? "true" : "false"}
+            data-expanded={sidebarHovered ? "true" : "false"}
+            aria-hidden={!showSidebar}
+            aria-label="Project information"
+            role="complementary"
+            onMouseEnter={() => {
+              if (sidebarLeaveTimer.current) clearTimeout(sidebarLeaveTimer.current);
+              setSidebarHovered(true);
+            }}
+            onMouseLeave={() => {
+              sidebarLeaveTimer.current = setTimeout(() => setSidebarHovered(false), 120);
+            }}
+          >
+            {/* Progress bar — always visible as left accent line */}
+            <div
+              className="sc-strip-progress"
+              style={{ height: `${scrollProgress * 100}%` }}
+            />
+
+            {/* Collapsed state: initial circle + section dots */}
+            <div className="sc-strip-collapsed">
+              {/* Project initial */}
+              <div style={{
+                width: 24, height: 24, borderRadius: "50%",
+                background: "var(--accent)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontFamily: serif, fontSize: 13, fontWeight: 400,
+                color: "#fff", lineHeight: 1,
+                flexShrink: 0,
+              }}>
+                {project.title.charAt(0)}
+              </div>
+
+              {/* Section indicator dots */}
+              {sectionNames.map((name) => (
+                <div
+                  key={name}
+                  className="sc-strip-section-dot"
+                  data-active={currentSection.toLowerCase().includes(name.toLowerCase()) ? "true" : "false"}
+                  title={name}
+                />
+              ))}
+
+              {/* Scroll percentage */}
+              <p style={{
+                fontFamily: mono, fontSize: 8, color: "var(--text-tertiary)",
+                lineHeight: 1, margin: 0, letterSpacing: "0.02em",
+              }}>
+                {Math.round(scrollProgress * 100)}%
+              </p>
+            </div>
+
+            {/* Expanded state: full metadata card */}
+            <div className="sc-strip-expanded">
+              <p style={{
+                fontFamily: serif,
+                fontSize: 15,
+                fontWeight: 400,
+                lineHeight: 1.2,
+                color: "var(--text-primary)",
+                marginBottom: 2,
+              }}>
+                {project.title}
+              </p>
+              <p style={{
+                fontFamily: sans,
+                fontSize: 11,
+                color: "var(--text-tertiary)",
+                lineHeight: 1.4,
+                marginBottom: 12,
+                paddingBottom: 10,
+                borderBottom: "1px solid var(--border)",
+              }}>
+                {project.subtitle}
+              </p>
+
+              {metaItems.slice(0, 4).map((item) => (
+                <div key={item.label} style={{ marginBottom: 8 }}>
+                  <p style={{
+                    fontFamily: mono, fontSize: 9, letterSpacing: "0.12em",
+                    textTransform: "uppercase", color: "var(--accent)",
+                    marginBottom: 1, lineHeight: 1,
+                  }}>
+                    {item.label}
+                  </p>
+                  <p style={{
+                    fontFamily: sans, fontSize: 11,
+                    color: "var(--text-secondary)", lineHeight: 1.35,
+                  }}>
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+
+              {/* Current section indicator */}
+              {currentSection && (
+                <div style={{
+                  marginTop: 8,
+                  paddingTop: 8,
+                  borderTop: "1px solid var(--border)",
+                  display: "flex", alignItems: "center", gap: 6,
+                }}>
+                  <div style={{
+                    width: 6, height: 6, borderRadius: "50%",
+                    background: "var(--accent)", flexShrink: 0,
+                  }} />
+                  <p style={{
+                    fontFamily: mono, fontSize: 9, letterSpacing: "0.06em",
+                    color: "var(--text-tertiary)", lineHeight: 1, margin: 0,
+                  }}>
+                    {truncatedSection}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-        ))}
-      </div>
+        );
+      })()}
 
       {/* ── Hero ── */}
       <div
@@ -1057,7 +1224,7 @@ export default function CaseStudy({ project }: Props) {
       </div>
 
       {/* ── Content ── */}
-      <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(24px, 6vw, 96px)" }}>
+      <div ref={contentRef} style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(24px, 6vw, 96px)" }}>
 
         {/* Meta strip */}
         <div ref={metaSectionRef} />
