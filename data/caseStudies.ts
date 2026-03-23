@@ -8,6 +8,7 @@ export interface VisualBlock {
   noContainer?: boolean;   // render image with no card background/border (for logo/hero images)
   beforeSrc?: string;
   afterSrc?: string;
+  afterScreens?: Array<{ src: string; label: string }>;
   imageSrc?: string;
   // side-by-side: second image + its caption
   imageSrc2?: string;
@@ -2729,13 +2730,13 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     heroIntro:
       "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. I designed the systems that made that possible at scale — the typography framework, the component library, and the cross-studio review process that both studios still use.",
     role: "Design Ops Lead & UX Designer",
-    team: "Cross-studio · LA + London · Wordbank/Unfold",
+    team: "Cross-studio · Wordbank → Unfold",
     snapshot: {
       timeline: "8+ years · ongoing",
       tools: "Figma, cross-studio review framework, multilingual QA",
     },
     challenge:
-      "Before a shared standard existed, each studio made localization calls in isolation. A title treatment could clear internal review in LA and fail QA in London — evaluated by someone who couldn't read the script, against criteria that didn't exist. With 50+ languages and launch windows that don't move, that was the problem that needed a system. Latin was the easy part.",
+      "Before a shared standard existed, each studio made localization calls in isolation. A title treatment could clear internal review at one studio and fail QA at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. With 50+ languages and launch windows that don't move, that was the problem that needed a system. Latin was the easy part.",
     approach:
       "I built the design ops infrastructure that made multilingual work scalable — typography systems purpose-built for Arabic, Japanese, and Hebrew, a cross-studio review process that worked across time zones, and a Figma component library maintained as a single source of truth across 50+ languages. Each script demanded independent decisions about line-height, container behavior, and optical weight. A font swap was never an option.",
     whatIDid:
@@ -2743,7 +2744,7 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     process: {
       discover: [
         "Typography audit across 50+ language families",
-        "Studio workflow interviews in LA and London — surfacing the gap where each studio made localization decisions in isolation with no shared framework",
+        "Cross-studio workflow interviews — surfacing the gap where each studio made localization decisions in isolation with no shared framework",
         "RTL, CJK, and Arabic layout requirements research — documented as Figma constraints, not just notes",
         "Brand guideline analysis for both platforms",
       ],
@@ -2757,17 +2758,17 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
         "Design handoff packages structured with script-agnostic annotations and per-language variant frames",
         "I ran QA across all language variants before every launch — title treatment sign-off was mine",
         "I scaled the Figma component library across both studios — managing versioning to prevent fork divergence as the language count grew",
-        "Both studios adopted the review process and documentation I built — it became the cross-studio localization standard across LA and London, still in use eight years later",
+        "Both studios adopted the review process and documentation I built — it became the cross-studio localization standard, still in use eight years later",
       ],
     },
     keyDecisions: [
       "Built a language-agnostic QA framework for evaluating title treatments across scripts — criteria based on visual weight, stroke contrast, and spatial rhythm rather than linguistic meaning. This was necessary because no single reviewer could read all 50+ languages.",
-      "Established a cross-studio review cadence that worked across LA and London time zones — asynchronous annotation rounds followed by live critique only for unresolved decisions. Eliminated the 'everyone on a call at midnight' problem.",
+      "Established a cross-studio review cadence that worked across international time zones — asynchronous annotation rounds followed by live critique only for unresolved decisions. Eliminated the 'everyone on a call at midnight' problem.",
       "Chose to extend the existing Figma component library for each new script family rather than maintain separate libraries per studio — added initial overhead but prevented fork divergence as the library scaled to 50+ languages.",
     ],
     outcomes: [
       "Multilingual typography system rebuilt from first principles for 6 script families — no script treated as a Latin variant, which is why it still works for languages added after it was built",
-      "Cross-studio localization review process adopted across LA and London — still the operating standard eight years later, no successor process written",
+      "Cross-studio localization review process adopted across both studios — still the operating standard eight years later, no successor process written",
       "Language-agnostic QA framework enabling script review without linguistic knowledge — visual weight and rhythm criteria replacing readability checks",
       "Two global studios operating to a shared design standard across 50+ languages, with zero library forks over 8 years",
     ],
@@ -2822,6 +2823,18 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
         layout: "wide",
         imageSrc: "/netflix/tt-captain-underpants-ro.png",
         caption: "Animated content, illustrated letterforms — the rules are different. When the type is drawn, not set, a font swap is not an option. The Romanian string is significantly longer. Both constraints had to be solved while keeping the cartoonish structural weight that defines the brand: the oversized caps, the stacked hierarchy, the chaos-as-system.",
+      },
+      {
+        id: "brews",
+        layout: "wide",
+        imageSrc: "/netflix/tt-brews-ro.png",
+        caption: "Distressed, textural type — the worn letterforms are the brand identity. The Romanian localization had to preserve that weathered quality while fitting a different string length into the same visual space.",
+      },
+      {
+        id: "context",
+        layout: "wide",
+        imageSrc: "/netflix/context-poster.jpg",
+        caption: "Title treatment in context — the Korean localization of Diecisiete in its final poster composition. The work isn't a type specimen; it's a shipped product.",
       },
     ],
     metrics: [
@@ -2948,27 +2961,25 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     challenge:
       "StoryCorps was about to launch an NPR partnership that would triple their user base — and the recording flow failed silently, with no recovery path. A dropped call meant a lost story. At that scale, that was not a UX problem. It was a reputational one. Onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products.",
     approach:
-      "I led UX and visual design for both platforms simultaneously — one shared component system, no separate iOS/Android workstreams. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-comfortable users. Every interaction had to be forgiving by default. Working directly with Echobind's React Native team meant I was speccing against real implementation constraints, not handing off to a black box.",
-    whatIDid:
-      "I was the only designer on the project — owning every decision, from information architecture to component specs to handoff annotations, with no other designer in the room.",
+      "I was the only designer — owning every decision from information architecture to component specs, with no other designer in the room. I led UX and visual design for both platforms simultaneously through one shared component system, speccing against real React Native implementation constraints alongside Echobind's engineering team. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-comfortable users. Every interaction had to be forgiving by default.",
     process: {
       discover: [
-        "Interviewed storytellers and reviewed App Store feedback to identify top failure points — especially around recording loss and confusing onboarding",
-        "Competitor recording app audit: Rev, Otter, Voice Memos",
-        "150+ App Store reviews analyzed — dominant theme was lost recordings with no recovery path. The failure happened silently: no error state, no recovery prompt. That shaped every recording-flow decision.",
-        "NPR brand alignment sessions to understand new user segment and co-brand requirements",
+        "150+ App Store reviews analyzed — dominant complaint was lost recordings with no recovery path. No error state, no recovery prompt. That finding shaped every recording-flow decision that followed.",
+        "Interviewed storytellers to understand where the app disappeared and where it got in the way — the gap between 'I want to record my grandmother' and actually pressing record was too wide",
+        "Competitor audit (Rev, Otter, Voice Memos) revealed that session recovery was table stakes everywhere except StoryCorps",
+        "NPR brand alignment sessions to define how two identities coexist without confusing a new user segment",
       ],
       design: [
-        "Built a shared cross-platform component system and redesigned friction-heavy flows: onboarding, recording, and submission",
-        "Recording interface redesign: persistent session state, visible time counter, one-tap pause — spec called for local draft auto-save on pause, backgrounding, and interruption, with a 'Resume your recording' prompt on next launch",
-        "Onboarding reduced from 7 steps to 3 by removing the forced account-creation gate — first recording possible without signing up",
-        "NPR brand integration without losing StoryCorps' warmth — two identities, one coherent experience",
+        "Designed the session recovery flow first — local draft auto-save on pause, backgrounding, and interruption, with a 'Resume your recording' prompt on next launch. This was the non-negotiable.",
+        "Removed the account gate before first recording. Users could capture a story immediately, then create an account to save it. Trade-off accepted: delayed first-party retention data.",
+        "Unified iOS and Android through one React Native-ready component system — annotated every platform divergence (e.g., Android hardware back during recording requires a confirmation dialog; iOS swipe-to-dismiss requires a different interrupt handler)",
+        "NPR co-brand integration: added brand elements without redesigning StoryCorps' core identity — warmth and accessibility over visual refresh",
       ],
       ship: [
-        "Owned launch QA across both platforms — accessibility audit, regression testing across all critical flows, and final sign-off before release to 100k+ active users",
-        "React Native component annotations with explicit platform-divergence notes — for example, Android hardware back during recording requires a confirmation dialog the spec defines explicitly; iOS swipe-to-dismiss requires a different interrupt handler. The spec called out these cases by platform.",
-        "Accessibility audit against WCAG AA: contrast ratios, touch targets (44px min), screen reader labels — critical for an older user base, verified with axe-core and VoiceOver",
-        "Embedded with Echobind's React Native engineers during implementation — adapted specs in real time as platform constraints emerged",
+        "Embedded with Echobind's React Native engineers during implementation — adapted specs in real time as platform constraints emerged, not after the fact",
+        "WCAG AA accessibility audit: contrast ratios, 44px touch targets, screen reader labels — verified with axe-core and VoiceOver, critical for an older user base",
+        "Owned launch QA across both platforms — regression testing across all critical flows and final sign-off before release to 100k+ active users",
+        "Post-launch monitoring: tracked App Store reviews for recording-loss complaints to validate the session recovery design held under real conditions",
       ],
     },
     keyDecisions: [
@@ -2986,27 +2997,20 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     visualBlocksHeader: "What Got Redesigned",
     visualBlocks: [
       {
-        id: "flow",
-        layout: "screen-grid",
-        caption: "The complete recording journey. Eight screens. One shared component language. Designed so a grandparent who has never used a recording app can reach 'Published' without asking for help.",
-        screens: [
-          { src: "/storycorps/prepare.svg",   label: "Prepare" },
-          { src: "/storycorps/questions.svg", label: "Questions" },
-          { src: "/storycorps/record.svg",    label: "Record" },
-          { src: "/storycorps/photos.svg",    label: "Upload Photo" },
-          { src: "/storycorps/metadata.svg",  label: "Review" },
-          { src: "/storycorps/preview.svg",   label: "Preview" },
-          { src: "/storycorps/published.svg", label: "Published!" },
-          { src: "/storycorps/sign-in.svg",   label: "Sign In (optional)" },
-        ],
-      },
-      {
         id: "onboarding",
         layout: "before-after",
         label: "Onboarding",
         caption: "The old flow asked users to create an account before hearing a single word of their own voice. This one doesn't. Three steps to recording, zero friction gates.",
         beforeSrc: "/storycorps/onboarding-before.png",
         afterSrc: "/storycorps/onboarding-after.png",
+        afterScreens: [
+          { src: "/storycorps/onboarding-01-signin.png", label: "Sign In" },
+          { src: "/storycorps/onboarding-02-signup.png", label: "Create Account" },
+          { src: "/storycorps/onboarding-03-interests.png", label: "Pick Interests" },
+          { src: "/storycorps/onboarding-04-profile.png", label: "Finish Profile" },
+          { src: "/storycorps/onboarding-05-email.png", label: "Check Email" },
+          { src: "/storycorps/onboarding-06-home.png", label: "Home" },
+        ],
       },
       {
         id: "recording",
@@ -3015,18 +3019,41 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
         caption: "A dropped call used to mean a lost story. Persistent session state means interruption is recoverable — designed that way from the first wireframe, not patched in QA.",
         beforeSrc: "/storycorps/recording-before.png",
         afterSrc: "/storycorps/recording-after.png",
+        afterScreens: [
+          { src: "/storycorps/recording-01-prepare.png", label: "Prepare" },
+          { src: "/storycorps/recording-02-questions.png", label: "Questions" },
+          { src: "/storycorps/recording-03-record.png", label: "Record" },
+          { src: "/storycorps/recording-04-photos.png", label: "Photos" },
+          { src: "/storycorps/recording-05-imageselect.png", label: "Select Images" },
+          { src: "/storycorps/recording-06-description.png", label: "Description" },
+          { src: "/storycorps/recording-07-privacy.png", label: "Privacy" },
+          { src: "/storycorps/recording-08-preview.png", label: "Preview" },
+          { src: "/storycorps/recording-09-published.png", label: "Published!" },
+        ],
       },
       {
-        id: "system-listen",
-        layout: "side-by-side",
-        caption: "One design system, two platforms. The left shows where iOS and Android share the same token. The divergence points are documented — not assumed.",
-        imageSrc: "/storycorps/design-system.png",
-        caption2: "The Listen feed — inline playback, language and date filters, and a deliberate two-step deletion to prevent accidental story loss.",
-        imageSrc2: "/storycorps/listen-stories.png",
+        id: "listen-feed",
+        layout: "screen-grid",
+        caption: "Discovery was an afterthought in v1. Inline playback, full transcripts, and filters by language, location, and community made the Listen feed the second reason people opened the app.",
+        screens: [
+          { src: "/storycorps/feed-01-player.png", label: "Listen Feed" },
+          { src: "/storycorps/feed-02-transcript.png", label: "Read Transcript" },
+          { src: "/storycorps/feed-03-filter.png", label: "Filter Stories" },
+        ],
+      },
+      {
+        id: "profile",
+        layout: "screen-grid",
+        caption: "Interview counts, collections, saved questions — a personal archive that grows with every conversation recorded.",
+        screens: [
+          { src: "/storycorps/profile-01-myprofile.png", label: "My Profile" },
+          { src: "/storycorps/profile-02-questions.png", label: "My Questions" },
+          { src: "/storycorps/profile-03-collections.png", label: "Collections" },
+        ],
       },
     ],
     metrics: [
-      { value: "4.6★", label: "App Store rating maintained at scale — NPR partnership tripled user volume" },
+      { value: "4.6★", label: "iOS App Store rating held through NPR launch — user volume tripled, rating didn't drop" },
       { value: "3",    label: "onboarding steps (from 7)" },
       { value: "2",    label: "platforms, 1 shared component system" },
     ],
@@ -3034,6 +3061,6 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     reflection:
       "StoryCorps forced a rethinking of what 'done' means. A recording feature is not reliable because it works 95% of the time — it is reliable because it recovers gracefully from the 5%, and that recovery has to be designed, not assumed. Every session-state decision I made was really a question about what happens when things go wrong.",
     ctaText:
-      "I design and build — close enough to the code to catch the edge cases, close enough to the user to know which ones matter. Let's work together.",
+      "I design and build — close enough to the code to catch the edge cases, close enough to the user to know which ones matter. Let's talk about your next product.",
   },
 };
