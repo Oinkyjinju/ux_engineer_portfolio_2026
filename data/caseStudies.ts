@@ -92,7 +92,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "7 years designing and building JUST Capital's flagship data platform — from research sessions with financial analysts to 30+ production React components, serving 3M+ users across institutional investors and the general public.",
     heroIntro:
-      "Seven years. One product. Thirty production components — the first and the thirtieth built by the same person, from the same research sessions, with the same abstraction model underneath.\n\nJUST Intelligence is a corporate accountability data platform for institutional investors and financial analysts. The data it surfaces is dense by design — that density is the product. My constraint was not to simplify it. My constraint was to make navigating 240+ weighted indicators feel like the analyst had always known where everything was.",
+      "Institutional investors use JUST Intelligence to decide where to allocate capital based on how companies treat their workers, customers, and communities. The dataset: 240+ weighted indicators across 1,000 public companies. The users: financial analysts who live in Bloomberg terminals and have zero tolerance for a number they can't trace back to its source.\n\nI've been the lead product designer and front-end engineer on this platform for seven years. I designed the information architecture, built the component library, wrote the D3 visualizations, and shipped the React front-end. The first component and the thirtieth were built from the same abstraction model — and both survived two full rebrands without a rewrite.",
     role: "Lead Product Designer & Front-End Engineer",
     team: "2 designers · 4 engineers · 1 PM",
     snapshot: {
@@ -100,36 +100,37 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "React, TypeScript, D3.js, Figma, Design Tokens, axe-core",
     },
     challenge:
-      "JUST Capital's flagship data platform needed to make complex ESG and corporate accountability metrics actionable for institutional investors — without triggering the skepticism financial analysts apply to any metric they didn't model themselves. The data set was 240+ weighted indicators across 1,000+ companies. The users operated in Bloomberg terminals and Excel, with zero tolerance for ambiguity about what a number means or where it came from. The risk wasn't building something generic. The risk was building something technically correct but cognitively unreliable.",
+      "The risk was building something technically correct but cognitively unreliable. Financial analysts apply deep skepticism to any metric they didn't model themselves — if your visualization implies a ranking gap that doesn't exist in the underlying data, you've lost their trust permanently. JUST Capital's dataset is 240+ weighted indicators across 1,000+ companies. The users operate in Bloomberg terminals and Excel, with zero tolerance for ambiguity about what a number means or where it came from. The constraint wasn't simplifying the data. The constraint was making navigating that density feel effortless.",
     approach:
       "I embedded with the engineering team from the start — running user research with analysts, translating those sessions directly into Figma components, and then writing the React that shipped them. No handoff document, no translation layer. I owned the spec and the PR. When an analyst session revealed a new data pattern, I was in the codebase the same week.",
     whatIDid:
       "I was the only designer embedded full-time with the engineering team. I owned every visual decision — the design token system, the component library, the data visualization specifications, and the accessibility audit framework. When a component changed in Figma, I updated the CSS custom properties the same day. The design-to-code loop was deliberately tight because the product demanded it.",
     process: {
       discover: [
-        "Stakeholder workshops with research analysts and institutional investors across 3 firm types",
-        "12 recorded user sessions — dominant themes: search friction, ranking legibility, and comparisons across sectors",
-        "Heuristic audit of v1 with 47 annotated issues, prioritized by user impact vs. build cost",
-        "Data architecture review to understand query latency and progressive disclosure constraints",
+        "12 recorded user sessions surfaced the core tension: analysts trusted JUST's methodology but couldn't navigate the data fast enough to use it in real workflows — average time-to-comparison was 4x what they tolerated in Bloomberg",
+        "Heuristic audit of v1 produced 47 annotated issues, prioritized by user impact vs. build cost — top finding: the ranking view made rank #3 and #8 look equivalent because it showed ordinal position without score distance",
+        "Data architecture review revealed query latency constraints that ruled out real-time filtering on the full dataset — progressive disclosure became a design requirement, not a preference",
+        "Stakeholder workshops with 3 firm types (asset managers, ESG researchers, corporate clients) revealed fundamentally different entry points — no single dashboard could serve all three without a modular information architecture",
       ],
       design: [
-        "Token-based design system: 150+ CSS custom properties synced to Figma variables — one source of truth across design and engineering",
-        "Data visualization system built on D3 specs — ranking distributions, composite scores, and sector comparison charts designed from first principles",
-        "Component library in Figma and React with matching names, props, and variant structure",
-        "Accessibility-first from the first wireframe — axe-core integrated into every PR, not added at QA",
+        "Token-based design system built before any feature work: 150+ CSS custom properties in three layers (global → semantic → component) — the architecture decision that made two future rebrands possible without component rewrites",
+        "D3.js visualization system designed from first principles — every chart encodes score distance, not just ordinal rank, because a 0.4-point gap between #3 and #8 is the analyst's actual decision input",
+        "Component library with matching Figma and React naming, props, and variant structure — one source of truth that eliminated the translation layer between design intent and shipped code",
+        "Accessibility baked into every component spec from wireframe: axe-core in PRs, WCAG AA contrast on data-dense tables, keyboard navigation through 1,000-row datasets",
       ],
       ship: [
-        "React + TypeScript front-end built alongside the Figma component library — no separate handoff phase",
-        "D3.js data visualizations with progressive disclosure: summary → sector → company → indicator",
-        "WCAG AA compliance verified with axe-core and VoiceOver across all dashboard features",
-        "30+ production components shipped over 7 years, with token-based architecture absorbing two full rebrands",
+        "React + TypeScript front-end built alongside the Figma library — no handoff phase, no spec document. When an analyst session revealed a new pattern, I was in the codebase the same week",
+        "D3.js visualizations with progressive disclosure: Overall → Stakeholder → Issue → Metric → Datapoint. Five drill-down levels, each reducing cognitive load by 80%",
+        "AI-powered Ask Me Anything interface with prompt cards and natural language search — grounded in JUST Capital's proprietary dataset with source citations",
+        "30+ production components maintained over 7 years — token architecture absorbed two full rebrands by changing only the alias layer, never the component code",
       ],
     },
     keyDecisions: [
-      "Built a token-based design system before anything else — 150+ CSS custom properties organized in three layers: global values, semantic aliases, and component-specific tokens. Every color, spacing, and type decision lived in a token. When two full rebrands came, they touched only the alias layer — not a single component needed rewriting. Nothing gets hardcoded.",
-      "The data patterns at JUST — ranking distributions, composite scores, multi-weighted sector comparisons — didn't map to any pre-built chart library. A sorted bar chart of 1,000 companies makes a rank of #3 and #8 look equivalent when the score gap between them is 0.4 points. Chose D3.js to build visualizations from first principles, where proximity and relative distance could be made as legible as the absolute score.",
-      "Embedded accessibility into every component spec from the first wireframe rather than treating it as a QA gate. axe-core ran in every PR review. WCAG AA compliance on a complex data platform is a design constraint, not a post-hoc fix — it has to be in the component API from the start.",
+      "Tokens before features — The first month was spent on infrastructure, not UI. 150+ CSS custom properties organized in three layers: global values, semantic aliases, and component-specific tokens. When two full rebrands came years later, they touched only the alias layer. Not a single component needed rewriting. The bet was that investing in the right abstraction early would pay compound returns — and over seven years, it did.",
+      "Distance over rank — The data patterns at JUST (ranking distributions, composite scores, multi-weighted sector comparisons) didn't map to any pre-built chart library. A sorted bar chart of 1,000 companies makes rank #3 and #8 look equivalent when the score gap is 0.4 points. Built every visualization from scratch in D3 so that proximity and relative distance were as legible as the absolute score. The treemap encodes weight as area and performance as color — two dimensions in one view.",
+      "Accessibility as architecture — Embedded axe-core into every PR review from day one rather than treating accessibility as a QA gate. On a platform where analysts navigate 1,000-row tables with keyboard shortcuts, WCAG AA compliance isn't a checkbox — it's a core product requirement that shapes the component API from the first wireframe.",
     ],
+    keyDecisionsLabel: "Key Tradeoffs",
     outcomes: [
       "30+ production components shipped and maintained over 7 years — component library that both design and engineering owned, with zero forks across teams",
       "Token-based system absorbed two full visual rebrands without component rewrites — every brand decision was a token update, not a codebase sweep",
@@ -159,19 +160,17 @@ export const caseStudies: Record<string, CaseStudyData> = {
         caption: "A sorted list of 1,000 companies makes rank #3 and rank #8 look equivalent. What matters is the score gap between them. The distribution model shows where a company sits relative to its peers — not just its ordinal position.",
       },
       {
-        id: "scenario-tokens",
-        layout: "side-by-side",
-        imageSrc: "/just/just-ji-scenario.png",
-        caption: "Scenario analysis: adjust metric weights to model hypothetical scoring outcomes. Built for ESG analysts who need to stress-test weighting assumptions before publishing a portfolio thesis.",
-        imageSrc2: "/just/just-branding-guidelines.png",
-        caption2: "Token architecture: three layers — global values → semantic aliases → component tokens. Two full rebrands changed only the alias layer. The documentation exists because the system had to be legible to engineers who weren't there when it was built.",
+        id: "scenario",
+        layout: "wide",
+        imageSrc: "/just/ji-scenario-analysis-create_new.png",
+        caption: "Scenario Analysis — adjust metric weights to model hypothetical scoring outcomes. Built for ESG analysts who need to stress-test weighting assumptions before publishing a portfolio thesis.",
       },
     ],
     metrics: [
-      { value: "7+",  label: "years in production" },
-      { value: "30+", label: "components shipped" },
-      { value: "2",   label: "full rebrands, zero component rewrites" },
-      { value: "AA",  label: "WCAG compliance, built in from day one" },
+      { value: "3M+", label: "users served across institutional investors and the public" },
+      { value: "7+",  label: "years in production — same abstraction model" },
+      { value: "30+", label: "components shipped, zero forks across teams" },
+      { value: "2",   label: "full rebrands absorbed — only the token alias layer changed" },
     ],
     tech: ["React", "TypeScript", "D3.js", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
     reflection:

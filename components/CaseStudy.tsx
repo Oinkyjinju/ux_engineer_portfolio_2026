@@ -812,6 +812,8 @@ export default function CaseStudy({ project }: Props) {
         .sc-metrics-grid > div:last-child { border-bottom: none; }
       }
 
+
+
       /* ── Netflix specimens + trirow responsive ── */
       @media (max-width: 700px) {
         .sc-netflix-specimens { grid-template-columns: 1fr !important; }
@@ -1379,7 +1381,7 @@ export default function CaseStudy({ project }: Props) {
                     {teaserParts.map((part, i) => {
                       if (!part.redact) return <span key={i}>{part.text}</span>;
                       return (
-                        <span key={i} style={{ position: "relative", display: "inline" }}>
+                        <span key={i} style={{ position: "relative", display: "inline", cursor: "pointer" }}>
                           {/* The actual word — fades in on reveal */}
                           <motion.span
                             animate={{ opacity: isRevealed ? 1 : 0 }}
@@ -2646,8 +2648,7 @@ export default function CaseStudy({ project }: Props) {
                   margin: "0 auto",
                   borderTop: "1px solid var(--border)",
                   borderBottom: "1px solid var(--border)",
-                }}
-              >
+                }}>
                 {data.metrics.map((m, idx) => (
                   <motion.div
                     key={m.label}
@@ -2663,8 +2664,7 @@ export default function CaseStudy({ project }: Props) {
                       textAlign: "center",
                       padding: "40px 12px",
                       borderRight: idx < data.metrics!.length - 1 ? "1px solid var(--border)" : "none",
-                    }}
-                  >
+                    }}>
                     <span style={{
                       fontFamily: serif,
                       fontSize: "clamp(40px, 5vw, 64px)",
@@ -3220,7 +3220,7 @@ export default function CaseStudy({ project }: Props) {
         })()}
 
         {/* ── Footer nav — after the CTA so navigation doesn't compete with the peak moment ── */}
-        <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, marginBottom: 64 }}>
+        <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, paddingBottom: 80 }}>
           <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
             All Projects
           </p>
@@ -3316,6 +3316,44 @@ export default function CaseStudy({ project }: Props) {
         </div>
 
       </div>
+
+      {/* ── Site footer ── */}
+      <footer
+        style={{
+          padding: "32px clamp(24px, 6vw, 96px) 40px",
+          borderTop: "1px solid var(--border)",
+          background: "var(--bg)",
+          color: "var(--text-secondary)",
+          display: "flex", justifyContent: "space-between",
+          alignItems: "center", flexWrap: "wrap", gap: 12,
+          position: "relative", zIndex: 2,
+        }}
+      >
+        <div style={{ display: "flex", gap: 20 }}>
+          {[
+            { label: "Email",    href: "/contact" },
+            { label: "LinkedIn", href: "https://www.linkedin.com/in/jinjuparkoinky/" },
+            { label: "GitHub",   href: "https://github.com/Oinkyjinju/ux_engineer_portfolio_2026" },
+          ].map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              style={{
+                fontFamily: mono, fontSize: 11, letterSpacing: "0.05em",
+                textTransform: "uppercase", color: "var(--text-secondary)",
+                textDecoration: "none", transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-secondary)"; }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
+          Jinju Park © 2026
+        </span>
+      </footer>
     </div>
     </>
   );
