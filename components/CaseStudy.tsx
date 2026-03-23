@@ -222,7 +222,7 @@ function ProcessTimeline({ steps, reduce }: { steps: TimelineStep[]; reduce: boo
             <div style={{ display: "flex", justifyContent: "center", paddingTop: 2, position: "relative", zIndex: 1 }}>
               <motion.div
                 animate={{
-                  background: isActive ? "var(--accent)" : "transparent",
+                  background: isActive ? "var(--accent)" : "rgba(0,0,0,0)",
                   borderColor: isActive ? "var(--accent)" : "var(--border)",
                   scale: isActive ? 1 : 0.8,
                 }}
@@ -232,7 +232,7 @@ function ProcessTimeline({ steps, reduce }: { steps: TimelineStep[]; reduce: boo
                   height: 12,
                   borderRadius: "50%",
                   border: "2px solid var(--border)",
-                  background: "transparent",
+                  background: "rgba(0,0,0,0)",
                   flexShrink: 0,
                 }}
               />
@@ -351,9 +351,12 @@ export default function CaseStudy({ project }: Props) {
     return localStorage.getItem("theme") === "dark";
   });
   const [scrolled, setScrolled]     = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   // tracks which file tab is active per code block (keyed by block.id)
   const [activeFileTabs, setActiveFileTabs] = useState<Record<string, number>>({});
   const shouldReduceMotion = useReducedMotion() ?? false;
+  const metaSectionRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
   const data = caseStudies[project.id];
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
@@ -361,7 +364,15 @@ export default function CaseStudy({ project }: Props) {
   const nextProject  = projects[currentIndex + 1];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      // Show sidebar when meta section scrolls out of view, hide near footer
+      if (metaSectionRef.current) {
+        const metaBottom = metaSectionRef.current.getBoundingClientRect().bottom;
+        const footerTop = footerRef.current?.getBoundingClientRect().top ?? Infinity;
+        setShowSidebar(metaBottom < 0 && footerTop > 400);
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -673,9 +684,100 @@ export default function CaseStudy({ project }: Props) {
       @media (max-width: 640px) { .sc-meta-row { flex-direction: column; align-items: flex-start; } }
       .sc-metric-row { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
       @media (max-width: 640px) { .sc-metric-row { flex-direction: column; align-items: flex-start; } }
+      @media (max-width: 640px) { .sc-disconnect-grid { grid-template-columns: 1fr !important; } .sc-disconnect-grid > div { border-right: none !important; border-bottom: 1px solid var(--border); } .sc-disconnect-grid > div:last-child { border-bottom: none; } }
+      @media (max-width: 580px) { .sc-scale-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+
+      /* ── Sticky sidebar widget ── */
+      .sc-sidebar-widget {
+        position: fixed;
+        left: clamp(12px, 2vw, 24px);
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 90;
+        width: 200px;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+      .sc-sidebar-widget[data-visible="false"] {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-20px);
+        pointer-events: none;
+      }
+      .sc-sidebar-widget[data-visible="true"] {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+      }
+      @media (max-width: 1440px) { .sc-sidebar-widget { display: none !important; } }
+
+      /* ── StoryCorps journey strip + recording responsive ── */
+      .sc-journey-strip::-webkit-scrollbar { display: none; }
+      .sc-journey-strip { -ms-overflow-style: none; scrollbar-width: none; }
+      @media (max-width: 560px) {
+        .sc-storycorps-recording { grid-template-columns: 1fr !important; gap: 16px !important; }
+        .sc-storycorps-recording > span { transform: rotate(90deg); }
+      }
+      @media (max-width: 640px) {
+        .sc-metrics-grid { grid-template-columns: 1fr !important; }
+        .sc-metrics-grid > div { border-right: none !important; border-bottom: 1px solid var(--border); }
+        .sc-metrics-grid > div:last-child { border-bottom: none; }
+      }
+
+      /* ── Netflix specimens + trirow responsive ── */
+      @media (max-width: 700px) {
+        .sc-netflix-specimens { grid-template-columns: 1fr !important; }
+      }
+      @media (max-width: 560px) {
+        .sc-netflix-trirow { grid-template-columns: 1fr !important; }
+      }
+
+      /* ── Netflix & Disney+ — forced dark, editorial type specimen feel ── */
+      .cs-netflix-page {
+        --bg: #0a0a0f !important;
+        --text-primary: #EDEAE3 !important;
+        --text-secondary: rgba(237,234,227,0.65) !important;
+        --text-tertiary: rgba(237,234,227,0.38) !important;
+        --border: rgba(237,234,227,0.1) !important;
+        --card-bg: rgba(237,234,227,0.04) !important;
+        --accent: #E50914 !important;
+        --accent-muted: rgba(229,9,20,0.12) !important;
+        --nav-bg-scrolled: rgba(10,10,15,0.92) !important;
+        background-color: #0a0a0f !important;
+        color: #EDEAE3 !important;
+      }
+      .cs-netflix-page nav { border-bottom-color: rgba(237,234,227,0.06) !important; }
+      /* Netflix section headings — override ALL h2s to large editorial serif */
+      .cs-netflix-page h2 {
+        font-family: 'Gloock', Georgia, serif !important;
+        font-size: clamp(24px, 3vw, 38px) !important;
+        font-weight: 400 !important;
+        letter-spacing: -0.015em !important;
+        text-transform: none !important;
+        color: #EDEAE3 !important;
+        line-height: 1.2 !important;
+      }
+      .cs-netflix-page h2::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: #E50914;
+        margin-bottom: 14px;
+      }
+      /* Netflix meta strip — no rounded card, clean dark grid */
+      .cs-netflix-page .sc-meta-row span:first-child { color: #E50914 !important; }
+      /* Netflix link colors */
+      .cs-netflix-page a { color: rgba(237,234,227,0.72) !important; }
+      .cs-netflix-page a:hover { color: #EDEAE3 !important; }
+      /* Netflix trirow — 3-up at larger, 1-col on small */
     ` }} />
     <div
       suppressHydrationWarning
+      className={project.id === "netflix-disney" ? "cs-netflix-page" : undefined}
       style={{
         ...(theme as React.CSSProperties),
         backgroundColor: "var(--bg)",
@@ -777,6 +879,52 @@ export default function CaseStudy({ project }: Props) {
         </div>
       </nav>
 
+      {/* ── Sticky sidebar project info widget ── */}
+      <div
+        className="sc-sidebar-widget"
+        data-visible={showSidebar ? "true" : "false"}
+        aria-hidden={!showSidebar}
+      >
+        <p style={{
+          fontFamily: serif,
+          fontSize: 16,
+          fontWeight: 400,
+          lineHeight: 1.2,
+          color: "var(--text-primary)",
+          marginBottom: 4,
+        }}>
+          {project.title}
+        </p>
+        <p style={{
+          fontFamily: sans,
+          fontSize: 11,
+          color: "var(--text-tertiary)",
+          lineHeight: 1.4,
+          marginBottom: 12,
+          borderBottom: "1px solid var(--border)",
+          paddingBottom: 10,
+        }}>
+          {project.subtitle}
+        </p>
+        {metaItems.slice(0, 4).map((item) => (
+          <div key={item.label} style={{ marginBottom: 8 }}>
+            <p style={{
+              fontFamily: mono, fontSize: 8, letterSpacing: "0.12em",
+              textTransform: "uppercase", color: "var(--accent)",
+              marginBottom: 1, lineHeight: 1,
+            }}>
+              {item.label}
+            </p>
+            <p style={{
+              fontFamily: sans, fontSize: 11,
+              color: "var(--text-secondary)", lineHeight: 1.35,
+            }}>
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+
       {/* ── Hero ── */}
       <div
         style={{
@@ -801,7 +949,7 @@ export default function CaseStudy({ project }: Props) {
         {/* ── Per-case hero background accents ── */}
         {project.id === "just-intelligence" && <RulerLines />}
         {project.id === "just-rebrand"       && <GridAssembly accent="#1A6678" />}
-        {project.id === "storycorps"          && <WarmVignette accent="#D4521A" />}
+        {project.id === "storycorps"          && <WarmVignette accent="#B5441A" />}
         {project.id === "netflix-disney"      && <ScriptWeightStrip />}
         {/* Bottom fade */}
         <div aria-hidden="true" style={{
@@ -912,6 +1060,7 @@ export default function CaseStudy({ project }: Props) {
       <div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 clamp(24px, 6vw, 96px)" }}>
 
         {/* Meta strip */}
+        <div ref={metaSectionRef} />
         {isNarrative ? (
           <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
             <div style={{ border: "1px solid var(--border)", borderRadius: 16, background: "var(--card-bg)", overflow: "hidden" }}>
@@ -1133,9 +1282,10 @@ export default function CaseStudy({ project }: Props) {
           return <Phase2Briefing />;
         })()}
 
-        {/* ── Challenge — pull-quote treatment ── */}
+        {/* ── Challenge ── */}
         {(() => {
           const challengeText = data.challenge;
+          const isNetflix = project.id === "netflix-disney";
           const firstSentenceEnd = challengeText.search(/(?<=[.!?])\s/);
           const pullQuote = firstSentenceEnd > 0
             ? challengeText.slice(0, firstSentenceEnd + 1)
@@ -1144,6 +1294,83 @@ export default function CaseStudy({ project }: Props) {
             ? challengeText.slice(firstSentenceEnd + 1).trim()
             : "";
 
+          // Netflix & Disney+ — "The Disconnect" two-column layout
+          if (isNetflix) {
+            return (
+              <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
+                <h2 style={sectionLabelStyle(28)}>The Disconnect</h2>
+
+                {/* Three-step disconnect — showing the process gap */}
+                <div
+                  className="sc-disconnect-grid"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr",
+                    gap: 0,
+                    alignItems: "start",
+                    marginBottom: 32,
+                    borderTop: "1px solid var(--border)",
+                    borderBottom: "1px solid var(--border)",
+                  }}
+                >
+                  {[
+                    { step: "01", label: "Title clears review", detail: "One studio approves based on brand guidelines written for Latin." },
+                    { step: "02", label: "Same title, second studio", detail: "Reviewer evaluates a script they cannot read, against criteria that don\u2019t exist." },
+                    { step: "03", label: "QA fails", detail: "No shared standard. No shared language for what \u2018correct\u2019 means across scripts." },
+                  ].map((item, idx) => (
+                    <motion.div
+                      key={item.step}
+                      initial={shouldReduceMotion ? {} : { opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px 0px" }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: shouldReduceMotion ? 0 : idx * 0.1 }}
+                      style={{
+                        padding: "28px 20px",
+                        borderRight: idx < 2 ? "1px solid var(--border)" : "none",
+                      }}
+                    >
+                      <span style={{
+                        fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                        color: idx === 2 ? "#E50914" : "var(--text-tertiary)",
+                        display: "block", marginBottom: 10,
+                      }}>
+                        {item.step}
+                      </span>
+                      <p style={{
+                        fontFamily: serif, fontSize: 17, lineHeight: 1.4,
+                        color: "var(--text-primary)", margin: "0 0 8px",
+                      }}>
+                        {item.label}
+                      </p>
+                      <p style={{
+                        fontFamily: sans, fontSize: 13, lineHeight: 1.55,
+                        color: "var(--text-tertiary)", margin: 0,
+                      }}>
+                        {item.detail}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Full challenge text below */}
+                <motion.p
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                  style={{
+                    fontFamily: sans, fontSize: 16, lineHeight: 1.75,
+                    color: "var(--text-secondary)", margin: 0,
+                  }}
+                >
+                  {challengeText}
+                </motion.p>
+              </div>
+            );
+          }
+
+          // Default — pull-quote treatment
           return (
             <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
               <div>
@@ -1195,6 +1422,59 @@ export default function CaseStudy({ project }: Props) {
             </div>
           );
         })()}
+
+        {/* Netflix — Script Families showcase band */}
+        {project.id === "netflix-disney" && (
+          <div style={{
+            margin: "0 0 80px",
+            padding: "48px 0",
+            borderTop: "1px solid var(--border)",
+            borderBottom: "1px solid var(--border)",
+          }}>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              flexWrap: "wrap",
+              gap: "24px 40px",
+            }}>
+              {[
+                { script: "Latin", sample: "Stranger Things", font: serif },
+                { script: "한국어", sample: "기묘한 이야기", font: "system-ui" },
+                { script: "日本語", sample: "ストレンジャー", font: "system-ui" },
+                { script: "العربية", sample: "أشياء غريبة", font: "system-ui" },
+                { script: "עברית", sample: "דברים מוזרים", font: "system-ui" },
+                { script: "Кириллица", sample: "Очень странные", font: "system-ui" },
+              ].map((s, i) => (
+                <motion.div
+                  key={s.script}
+                  initial={shouldReduceMotion ? {} : { opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : i * 0.06 }}
+                  style={{ textAlign: "center", flex: "1 1 auto", minWidth: 100 }}
+                >
+                  <p style={{
+                    fontFamily: s.font,
+                    fontSize: 20,
+                    color: "var(--text-primary)",
+                    margin: "0 0 6px",
+                    lineHeight: 1.4,
+                    opacity: 0.7,
+                  }}>
+                    {s.sample}
+                  </p>
+                  <span style={{
+                    fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+                    textTransform: "uppercase", color: "#E50914",
+                  }}>
+                    {s.script}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Approach — scroll-linked word emphasis */}
         {(() => {
@@ -1314,6 +1594,7 @@ export default function CaseStudy({ project }: Props) {
         {data.keyDecisions && data.keyDecisions.length > 0 && (() => {
           const DecisionsAccordion = () => {
             const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+            const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
             return (
               <div style={{ marginBottom: 100, maxWidth: 760, margin: "0 auto 100px" }}>
@@ -1321,15 +1602,20 @@ export default function CaseStudy({ project }: Props) {
                 <div>
                   {data.keyDecisions!.map((decision, i) => {
                     const isOpen = expandedIdx === i;
+                    const isHoveredItem = hoveredIdx === i;
                     const panelId = `decision-panel-${i}`;
                     const triggerId = `decision-trigger-${i}`;
                     return (
                       <div
                         key={`decision-${i}`}
+                        onMouseEnter={() => setHoveredIdx(i)}
+                        onMouseLeave={() => setHoveredIdx(null)}
                         style={{
                           borderBottom: "1px solid var(--border)",
                           position: "relative",
                           overflow: "hidden",
+                          transition: "background 0.25s ease",
+                          background: isHoveredItem && !isOpen ? "rgba(237,234,227,0.03)" : "transparent",
                         }}
                       >
                         {/* Hover/active highlight */}
@@ -1365,7 +1651,7 @@ export default function CaseStudy({ project }: Props) {
                         >
                           {/* Large number */}
                           <motion.span
-                            animate={{ color: isOpen ? "var(--accent)" : "var(--text-tertiary)" }}
+                            animate={{ color: isOpen ? "var(--accent)" : isHoveredItem ? "var(--accent)" : "var(--text-tertiary)" }}
                             transition={{ duration: 0.2 }}
                             style={{
                               fontFamily: serif,
@@ -1384,7 +1670,7 @@ export default function CaseStudy({ project }: Props) {
                           <span style={{ flex: 1, minWidth: 0 }}>
                             <motion.span
                               animate={{
-                                color: isOpen ? "var(--text-primary)" : "var(--text-secondary)",
+                                color: isOpen ? "var(--text-primary)" : isHoveredItem ? "var(--text-primary)" : "var(--text-secondary)",
                               }}
                               style={{
                                 fontFamily: sans,
@@ -1465,7 +1751,7 @@ export default function CaseStudy({ project }: Props) {
         )}
         {project.id === "storycorps" && (
           <div style={{ maxWidth: 760, margin: "0 auto" }}>
-            <RecoveryFlowchart accent="#D4521A" />
+            <RecoveryFlowchart accent="#B5441A" />
           </div>
         )}
         {project.id === "netflix-disney" && (
@@ -1478,7 +1764,691 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Visual Blocks */}
-        {visualBlocksMain.length > 0 && (
+        {visualBlocksMain.length > 0 && project.id === "netflix-disney" ? (
+          /* ── Netflix: editorial image layout — 3-act narrative structure ── */
+          <div style={{ marginBottom: 100 }}>
+            <h2 style={sectionLabelStyle(40)}>{data.visualBlocksHeader ?? "What Got Built"}</h2>
+
+            {/* ─── ACT 1: THE BRIEF — logos, restrained ─── */}
+            {(() => {
+              const logos = visualBlocksMain.find(b => b.id === "logos");
+              if (!logos?.imageSrc) return null;
+              return (
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ maxWidth: 480, margin: "0 auto 60px", textAlign: "center" }}
+                >
+                  <div style={{
+                    borderRadius: 8, overflow: "hidden",
+                  }}>
+                    <Image
+                      src={logos.imageSrc}
+                      alt={logos.caption}
+                      width={0} height={0}
+                      sizes="480px"
+                      priority
+                      style={{ width: "100%", height: "auto", display: "block" }}
+                    />
+                  </div>
+                  <p style={{
+                    fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                    color: "rgba(237,234,227,0.72)", margin: "16px 0 0", textAlign: "left",
+                  }}>
+                    {logos.caption}
+                  </p>
+                </motion.div>
+              );
+            })()}
+
+            {/* ─── ACT 2: THE CRAFT — paired + solo images ─── */}
+
+            {/* Group A: Script Translation — Runway + Naruto (2-up) */}
+            {(() => {
+              const pairs: Array<{ id: string; tag: string }> = [
+                { id: "runway", tag: "Calligraphic → Latin" },
+                { id: "naruto", tag: "Latin → Katakana + Kanji" },
+              ];
+              return (
+                <div style={{ marginBottom: 48 }}>
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#E50914", marginBottom: 16,
+                  }}>
+                    Script Translation as Design Decision
+                  </p>
+                  <div className="sc-netflix-specimens" style={{
+                    display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20,
+                  }}>
+                    {pairs.map(({ id, tag }) => {
+                      const block = visualBlocksMain.find(b => b.id === id);
+                      if (!block?.imageSrc) return null;
+                      return (
+                        <motion.div
+                          key={id}
+                          initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: "-60px 0px" }}
+                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                          style={{
+                            background: "rgba(237,234,227,0.03)",
+                            border: "1px solid rgba(237,234,227,0.08)",
+                            borderRadius: 10, overflow: "hidden",
+                          }}
+                        >
+                          <Image
+                            src={block.imageSrc}
+                            alt={block.caption}
+                            width={0} height={0}
+                            sizes="(max-width: 700px) 100vw, 330px"
+                            style={{ width: "100%", height: "auto", display: "block" }}
+                          />
+                          <div style={{ padding: "14px 16px" }}>
+                            <span style={{
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                              textTransform: "uppercase", color: "#E50914",
+                              background: "rgba(229,9,20,0.1)",
+                              border: "1px solid rgba(229,9,20,0.2)",
+                              borderRadius: 3, padding: "2px 7px",
+                              display: "inline-block", marginBottom: 10,
+                            }}>
+                              {tag}
+                            </span>
+                            <p style={{
+                              fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                              color: "rgba(237,234,227,0.72)", margin: 0,
+                            }}>
+                              {block.caption}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Group B: Design Iteration — Diecisiete + Context Poster (paired) */}
+            {(() => {
+              const diecisiete = visualBlocksMain.find(b => b.id === "diecisiete");
+              const poster = visualBlocksMain.find(b => b.id === "context");
+              if (!diecisiete?.imageSrc) return null;
+              return (
+                <div style={{ marginBottom: 48 }}>
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#E50914", marginBottom: 16,
+                  }}>
+                    From Iteration to Shipped Product
+                  </p>
+                  <div className="sc-netflix-specimens" style={{
+                    display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20,
+                  }}>
+                    {/* Diecisiete — design iteration */}
+                    <motion.div
+                      initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-60px 0px" }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      style={{
+                        background: "rgba(237,234,227,0.03)",
+                        border: "1px solid rgba(237,234,227,0.08)",
+                        borderRadius: 10, overflow: "hidden",
+                        display: "flex", flexDirection: "column",
+                      }}
+                    >
+                      <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
+                        <Image
+                          src={diecisiete.imageSrc}
+                          alt={diecisiete.caption}
+                          width={0} height={0}
+                          sizes="(max-width: 700px) 100vw, 330px"
+                          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
+                        />
+                      </div>
+                      <div style={{ padding: "14px 16px", flexShrink: 0 }}>
+                        <span style={{
+                          fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                          textTransform: "uppercase", color: "#E50914",
+                          background: "rgba(229,9,20,0.1)",
+                          border: "1px solid rgba(229,9,20,0.2)",
+                          borderRadius: 3, padding: "2px 7px",
+                          display: "inline-block", marginBottom: 10,
+                        }}>
+                          ES → KO
+                        </span>
+                        <p style={{
+                          fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                          color: "rgba(237,234,227,0.72)", margin: 0,
+                        }}>
+                          {diecisiete.caption}
+                        </p>
+                      </div>
+                    </motion.div>
+
+                    {/* Context poster — shipped product */}
+                    {poster?.imageSrc && (
+                      <motion.div
+                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-60px 0px" }}
+                        transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                        style={{
+                          borderRadius: 10, overflow: "hidden",
+                          display: "flex", flexDirection: "column",
+                        }}
+                      >
+                        <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
+                          <Image
+                            src={poster.imageSrc}
+                            alt={poster.caption}
+                            width={0} height={0}
+                            sizes="(max-width: 700px) 100vw, 330px"
+                            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
+                          />
+                        </div>
+                        <p style={{
+                          fontFamily: serif, fontSize: 14, lineHeight: 1.6,
+                          color: "rgba(237,234,227,0.72)", margin: "12px 0 0",
+                          fontStyle: "italic", flexShrink: 0,
+                        }}>
+                          {poster.caption}
+                        </p>
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Group C: String Length + Brand Constraints — Hospital + History (2-up) */}
+            {(() => {
+              const pairs: Array<{ id: string; tag: string }> = [
+                { id: "hospital", tag: "KO → RO" },
+                { id: "history", tag: "EN → KO" },
+              ];
+              return (
+                <div style={{ marginBottom: 60 }}>
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#E50914", marginBottom: 16,
+                  }}>
+                    String Length &amp; Brand Constraints
+                  </p>
+                  <div className="sc-netflix-specimens" style={{
+                    display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20,
+                  }}>
+                    {pairs.map(({ id, tag }) => {
+                      const block = visualBlocksMain.find(b => b.id === id);
+                      if (!block?.imageSrc) return null;
+                      return (
+                        <motion.div
+                          key={id}
+                          initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: "-60px 0px" }}
+                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                          style={{
+                            background: "rgba(237,234,227,0.03)",
+                            border: "1px solid rgba(237,234,227,0.08)",
+                            borderRadius: 10, overflow: "hidden",
+                          }}
+                        >
+                          <Image
+                            src={block.imageSrc}
+                            alt={block.caption}
+                            width={0} height={0}
+                            sizes="(max-width: 700px) 100vw, 330px"
+                            style={{ width: "100%", height: "auto", display: "block" }}
+                          />
+                          <div style={{ padding: "14px 16px" }}>
+                            <span style={{
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                              textTransform: "uppercase", color: "#E50914",
+                              background: "rgba(229,9,20,0.1)",
+                              border: "1px solid rgba(229,9,20,0.2)",
+                              borderRadius: 3, padding: "2px 7px",
+                              display: "inline-block", marginBottom: 10,
+                            }}>
+                              {tag}
+                            </span>
+                            <p style={{
+                              fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                              color: "rgba(237,234,227,0.72)", margin: 0,
+                            }}>
+                              {block.caption}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* ─── ACT 3: THE RANGE — 3-up compact contact sheet ─── */}
+            {(() => {
+              const triIds = ["moscraciun", "captainunderpants", "brews"];
+              const triLabels: Record<string, string> = {
+                moscraciun: "RO → EN",
+                captainunderpants: "EN → RO",
+                brews: "EN → RO",
+              };
+              const triBlocks = triIds
+                .map(id => visualBlocksMain.find(b => b.id === id))
+                .filter((b): b is VisualBlock => !!b && !!b.imageSrc);
+              if (triBlocks.length === 0) return null;
+              return (
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ marginBottom: 48 }}
+                >
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#E50914", marginBottom: 16,
+                  }}>
+                    Illustrated &amp; Dimensional Letterforms
+                  </p>
+                  <div className="sc-netflix-trirow" style={{
+                    display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16,
+                  }}>
+                    {triBlocks.map((block) => (
+                      <div
+                        key={block.id}
+                        style={{
+                          borderRadius: 8, overflow: "hidden",
+                          border: "1px solid rgba(237,234,227,0.08)",
+                          background: "rgba(237,234,227,0.03)",
+                          position: "relative",
+                        }}
+                      >
+                        <Image
+                          src={block.imageSrc!}
+                          alt={block.caption}
+                          width={0} height={0}
+                          sizes="(max-width: 560px) 100vw, (max-width: 700px) 33vw, 213px"
+                          style={{
+                            width: "100%", height: "auto",
+                            display: "block",
+                          }}
+                        />
+                        {/* Script label overlay */}
+                        <span style={{
+                          position: "absolute", bottom: 8, left: 8,
+                          fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+                          color: "#E50914",
+                          background: "rgba(10,10,15,0.85)",
+                          border: "1px solid rgba(229,9,20,0.3)",
+                          borderRadius: 3, padding: "2px 6px",
+                        }}>
+                          {triLabels[block.id] ?? ""}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Shared group caption */}
+                  <p style={{
+                    fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                    color: "rgba(237,234,227,0.72)", margin: "16px 0 0",
+                  }}>
+                    Illustrated, embossed, and textural type — when letterforms are drawn rather than set,
+                    a font swap is not an option. Each required re-engineering the brand&apos;s visual identity
+                    at a different string length.
+                  </p>
+                </motion.div>
+              );
+            })()}
+
+            {/* Context poster now paired with diecisiete above */}
+          </div>
+        ) : visualBlocksMain.length > 0 && project.id === "storycorps" ? (
+          /* ── StoryCorps: warm mobile app walkthrough layout ── */
+          <div style={{ marginBottom: 100 }}>
+            <h2 style={sectionLabelStyle(40)}>{data.visualBlocksHeader ?? "What Got Redesigned"}</h2>
+
+            {/* ─── 1. Onboarding Before/After ─── */}
+            {(() => {
+              const block = visualBlocksMain.find(b => b.id === "onboarding");
+              if (!block) return null;
+              return (
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ marginBottom: 56 }}
+                >
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#B5441A", marginBottom: 20,
+                  }}>
+                    {block.label ?? "Onboarding"} — Before &amp; After
+                  </p>
+
+                  {/* Before: muted, smaller phone */}
+                  {block.beforeSrc && (
+                    <div style={{ marginBottom: 24 }}>
+                      <p style={{
+                        fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                        textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 8,
+                      }}>Before — 7 steps</p>
+                      <div style={{
+                        maxWidth: 220, margin: "0 auto",
+                        filter: "saturate(0.4) opacity(0.8)",
+                      }}>
+                        <PhoneFrame src={block.beforeSrc} alt="Onboarding — Before" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* After: filmstrip of individual screens */}
+                  {(block as any).afterScreens && (
+                    <div>
+                      <p style={{
+                        fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                        textTransform: "uppercase", color: "#B5441A", marginBottom: 8,
+                      }}>After — Redesigned Flow</p>
+                      <div
+                        className="sc-journey-strip"
+                        tabIndex={0}
+                        role="region"
+                        aria-label="Onboarding redesigned flow screens"
+                        style={{
+                          display: "flex", gap: 16,
+                          overflowX: "auto", overflowY: "visible",
+                          scrollSnapType: "x mandatory",
+                          padding: "16px 16px 16px 16px",
+                          margin: "-16px -16px -16px -16px",
+                          maskImage: "linear-gradient(90deg, black 0%, black 90%, transparent 100%)",
+                          WebkitMaskImage: "linear-gradient(90deg, black 0%, black 90%, transparent 100%)",
+                        }}
+                      >
+                        {((block as any).afterScreens as Array<{ src: string; label: string }>).map((screen, idx) => (
+                          <motion.div
+                            key={screen.src}
+                            initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            whileHover={{ scale: 1.08, zIndex: 10 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                            style={{
+                              flex: "0 0 auto",
+                              width: 180,
+                              scrollSnapAlign: "start",
+                              textAlign: "center",
+                              position: "relative",
+                              zIndex: 1,
+                              cursor: "pointer",
+                            }}
+                          >
+                            <p style={{
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+                              textTransform: "uppercase", color: "#B5441A",
+                              marginBottom: 6,
+                            }}>
+                              {String(idx + 1).padStart(2, "0")}
+                            </p>
+                            <PhoneFrame src={screen.src} alt={screen.label} />
+                            <p style={{
+                              fontFamily: mono, fontSize: 10, letterSpacing: "0.08em",
+                              textTransform: "uppercase", color: "var(--text-secondary)",
+                              marginTop: 6, marginBottom: 0,
+                            }}>
+                              {screen.label}
+                            </p>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <p style={{
+                    fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                    color: "var(--text-secondary)", margin: "16px 0 0",
+                  }}>
+                    {block.caption}
+                  </p>
+                </motion.div>
+              );
+            })()}
+
+            {/* ─── 2. Recording Before/After ─── */}
+            {(() => {
+              const block = visualBlocksMain.find(b => b.id === "recording");
+              if (!block) return null;
+              return (
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ marginBottom: 56 }}
+                >
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#B5441A", marginBottom: 20,
+                  }}>
+                    {block.label ?? "Recording Screen"} — Before &amp; After
+                  </p>
+
+                  {/* Before: muted, smaller */}
+                  {block.beforeSrc && (
+                    <div style={{ marginBottom: 24 }}>
+                      <p style={{
+                        fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                        textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 8,
+                      }}>Before</p>
+                      <div style={{
+                        maxWidth: 220, margin: "0 auto",
+                        filter: "saturate(0.4) opacity(0.8)",
+                      }}>
+                        <PhoneFrame src={block.beforeSrc} alt="Recording — Before" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* After: filmstrip of recording process */}
+                  {(block as any).afterScreens && (
+                    <div>
+                      <p style={{
+                        fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                        textTransform: "uppercase", color: "#B5441A", marginBottom: 8,
+                      }}>After — Complete Recording Process</p>
+                      <div
+                        className="sc-journey-strip"
+                        tabIndex={0}
+                        role="region"
+                        aria-label="Recording process screens"
+                        style={{
+                          display: "flex", gap: 16,
+                          overflowX: "auto", overflowY: "visible",
+                          scrollSnapType: "x mandatory",
+                          padding: "16px 16px 16px 16px",
+                          margin: "-16px -16px -16px -16px",
+                          maskImage: "linear-gradient(90deg, black 0%, black 90%, transparent 100%)",
+                          WebkitMaskImage: "linear-gradient(90deg, black 0%, black 90%, transparent 100%)",
+                        }}
+                      >
+                        {((block as any).afterScreens as Array<{ src: string; label: string }>).map((screen, idx) => (
+                          <motion.div
+                            key={screen.src}
+                            initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            whileHover={{ scale: 1.08, zIndex: 10 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                            style={{
+                              flex: "0 0 auto",
+                              width: 180,
+                              scrollSnapAlign: "start",
+                              textAlign: "center",
+                              position: "relative",
+                              zIndex: 1,
+                              cursor: "pointer",
+                            }}
+                          >
+                            <p style={{
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
+                              textTransform: "uppercase", color: "#B5441A",
+                              marginBottom: 6,
+                            }}>
+                              {String(idx + 1).padStart(2, "0")}
+                            </p>
+                            <PhoneFrame src={screen.src} alt={screen.label} />
+                            <p style={{
+                              fontFamily: mono, fontSize: 10, letterSpacing: "0.08em",
+                              textTransform: "uppercase", color: "var(--text-secondary)",
+                              marginTop: 6, marginBottom: 0,
+                            }}>
+                              {screen.label}
+                            </p>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <p style={{
+                    fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                    color: "var(--text-secondary)", margin: "16px 0 0",
+                  }}>
+                    {block.caption}
+                  </p>
+                </motion.div>
+              );
+            })()}
+
+            {/* ─── 3. Listen Feed — phone filmstrip ─── */}
+            {(() => {
+              const block = visualBlocksMain.find(b => b.id === "listen-feed");
+              if (!block?.screens) return null;
+              const screens = block.screens as Array<{ src: string; label: string }>;
+              return (
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ marginBottom: 56 }}
+                >
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#B5441A", marginBottom: 20,
+                  }}>
+                    Listen Feed
+                  </p>
+
+                  <div style={{
+                    display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap",
+                  }}>
+                    {screens.map((screen, idx) => (
+                      <motion.div
+                        key={screen.src}
+                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        whileHover={{ scale: 1.08, zIndex: 10 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                        style={{
+                          flex: "0 0 auto",
+                          width: 200,
+                          textAlign: "center",
+                          position: "relative",
+                          zIndex: 1,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <PhoneFrame src={screen.src} alt={screen.label} />
+                        <p style={{
+                          fontFamily: mono, fontSize: 10, letterSpacing: "0.08em",
+                          textTransform: "uppercase", color: "var(--text-secondary)",
+                          marginTop: 8, marginBottom: 0,
+                        }}>
+                          {screen.label}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <p style={{
+                    fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                    color: "var(--text-secondary)", margin: "16px 0 0",
+                  }}>
+                    {block.caption}
+                  </p>
+                </motion.div>
+              );
+            })()}
+
+            {/* ─── 5. Profile — phone filmstrip ─── */}
+            {(() => {
+              const block = visualBlocksMain.find(b => b.id === "profile");
+              if (!block?.screens) return null;
+              const screens = block.screens as Array<{ src: string; label: string }>;
+              return (
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#B5441A", marginBottom: 20,
+                  }}>
+                    User Profile
+                  </p>
+
+                  <div style={{
+                    display: "flex", gap: 20, justifyContent: "center", flexWrap: "wrap",
+                  }}>
+                    {screens.map((screen, idx) => (
+                      <motion.div
+                        key={screen.src}
+                        initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        whileHover={{ scale: 1.08, zIndex: 10 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                        style={{
+                          flex: "0 0 auto",
+                          width: 200,
+                          textAlign: "center",
+                          position: "relative",
+                          zIndex: 1,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <PhoneFrame src={screen.src} alt={screen.label} />
+                        <p style={{
+                          fontFamily: mono, fontSize: 10, letterSpacing: "0.08em",
+                          textTransform: "uppercase", color: "var(--text-secondary)",
+                          marginTop: 8, marginBottom: 0,
+                        }}>
+                          {screen.label}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <p style={{
+                    fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                    color: "var(--text-secondary)", margin: "16px 0 0",
+                  }}>
+                    {block.caption}
+                  </p>
+                </motion.div>
+              );
+            })()}
+          </div>
+        ) : visualBlocksMain.length > 0 ? (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(40)}>{data.visualBlocksHeader ?? "What Got Redesigned"}</h2>
 
@@ -1489,49 +2459,107 @@ export default function CaseStudy({ project }: Props) {
               )}
             </div>
           </div>
-        )}
+        ) : null}
 
         {/* Results — staggered scroll-reveal with large typography */}
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(32)}>What Shipped</h2>
-            {/* just-intelligence: animated stats counter */}
-            {project.id === "just-intelligence" ? (
-              <StatsCounter metrics={data.metrics} />
-            ) : (
-              <div className="cs-results-grid" style={{ maxWidth: 760, margin: "0 auto" }}>
+            <h2 style={sectionLabelStyle(32)}>
+              {project.id === "netflix-disney" ? "The Scale" : "What Shipped"}
+            </h2>
+            {/* netflix-disney: centered 4-column dramatic grid */}
+            {project.id === "netflix-disney" ? (
+              <div
+                className="sc-scale-grid"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gap: 0,
+                  maxWidth: 760,
+                  margin: "0 auto",
+                  borderTop: "1px solid var(--border)",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
                 {data.metrics.map((m, idx) => (
                   <motion.div
                     key={m.label}
-                    initial={shouldReduceMotion ? {} : { opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-40px 0px" }}
                     transition={{
-                      duration: 0.6,
+                      duration: 0.5,
                       ease: [0.16, 1, 0.3, 1],
-                      delay: shouldReduceMotion ? 0 : idx * 0.1,
+                      delay: shouldReduceMotion ? 0 : idx * 0.08,
                     }}
                     style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      gap: 20,
-                      padding: "28px 0",
-                      borderBottom: "1px solid var(--border)",
+                      textAlign: "center",
+                      padding: "40px 12px",
+                      borderRight: idx < data.metrics!.length - 1 ? "1px solid var(--border)" : "none",
                     }}
                   >
-                    {/* Large metric value */}
+                    <span style={{
+                      fontFamily: serif,
+                      fontSize: "clamp(40px, 5vw, 64px)",
+                      lineHeight: 1,
+                      color: "#E50914",
+                      fontWeight: 400,
+                      display: "block",
+                      marginBottom: 12,
+                    }}>
+                      {m.value}
+                    </span>
+                    <span style={{
+                      fontFamily: mono,
+                      fontSize: 10,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--text-tertiary)",
+                      lineHeight: 1.4,
+                    }}>
+                      {m.label}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            ) : project.id === "just-intelligence" ? (
+              <StatsCounter metrics={data.metrics} />
+            ) : (
+              <div className="sc-metrics-grid" style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${Math.min(data.metrics.length, 3)}, 1fr)`,
+                gap: 0,
+                borderTop: "1px solid var(--border)",
+                borderBottom: "1px solid var(--border)",
+              }}>
+                {data.metrics.map((m, idx) => (
+                  <motion.div
+                    key={m.label}
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px 0px" }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: shouldReduceMotion ? 0 : idx * 0.08,
+                    }}
+                    style={{
+                      textAlign: "center",
+                      padding: "32px 16px",
+                      borderRight: idx < data.metrics!.length - 1 ? "1px solid var(--border)" : "none",
+                    }}
+                  >
                     <span style={{
                       fontFamily: serif,
                       fontSize: "clamp(36px, 5vw, 56px)",
                       lineHeight: 1,
                       color: "var(--accent)",
                       fontWeight: 400,
-                      flexShrink: 0,
-                      minWidth: 120,
+                      display: "block",
+                      marginBottom: 12,
                     }}>
                       {m.value}
                     </span>
-                    {/* Label */}
                     <span style={{
                       fontFamily: mono,
                       fontSize: 11,
@@ -1552,7 +2580,9 @@ export default function CaseStudy({ project }: Props) {
         {/* What Changed (outcomes) — staggered scroll reveal */}
         {data.outcomes && data.outcomes.length > 0 && (
           <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
-            <h2 style={sectionLabelStyle(24)}>What Changed</h2>
+            <h2 style={sectionLabelStyle(24)}>
+              {project.id === "netflix-disney" ? "What Standardized" : "What Changed"}
+            </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
               {data.outcomes.map((outcome, i) => (
                 <motion.li
@@ -1761,8 +2791,50 @@ export default function CaseStudy({ project }: Props) {
           </div>
         )}
 
-        {/* ── Reflection — typewriter reveal on scroll ── */}
+        {/* ── Footer ref for sidebar visibility ── */}
+        <div ref={footerRef} />
+
+        {/* ── Reflection ── */}
         {data.reflection && (() => {
+          // Netflix & Disney+ — editorial centered quote, no typewriter
+          if (project.id === "netflix-disney") {
+            return (
+              <div style={{ margin: "0 auto 100px", textAlign: "center", maxWidth: 900, padding: "0 24px" }}>
+                <motion.div
+                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px 0px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {/* Thin rule */}
+                  <div aria-hidden="true" style={{
+                    width: 40, height: 1, background: "#E50914",
+                    margin: "0 auto 32px",
+                  }} />
+                  <p style={{
+                    fontFamily: serif,
+                    fontSize: "clamp(22px, 2.8vw, 36px)",
+                    lineHeight: 1.4,
+                    letterSpacing: "-0.02em",
+                    color: "var(--text-primary)",
+                    fontWeight: 400,
+                    margin: "0 0 24px",
+                    fontStyle: "italic",
+                  }}>
+                    {data.reflection}
+                  </p>
+                  <span style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
+                    textTransform: "uppercase", color: "var(--text-tertiary)",
+                  }}>
+                    Reflection
+                  </span>
+                </motion.div>
+              </div>
+            );
+          }
+
+          // Default — typewriter reveal
           const ReflectionReveal = () => {
             const containerRef = useRef<HTMLDivElement>(null);
             const [progress, setProgress] = useState(0);
@@ -1954,7 +3026,9 @@ export default function CaseStudy({ project }: Props) {
                       border: `1px solid ${isHovered ? "var(--accent)" : "var(--border)"}`,
                       borderRadius: 0,
                       textDecoration: "none",
-                      transition: "background 0.3s, color 0.3s, border-color 0.3s",
+                      transform: isHovered ? "scale(1.04)" : "scale(1)",
+                      boxShadow: isHovered ? `0 4px 24px ${project.id === "netflix-disney" ? "rgba(229,9,20,0.3)" : project.id === "storycorps" ? "rgba(181,68,26,0.3)" : "rgba(0,0,0,0.15)"}` : "none",
+                      transition: "background 0.3s, color 0.3s, border-color 0.3s, transform 0.25s ease, box-shadow 0.3s",
                     }}
                     onFocus={(e) => {
                       (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--accent)";
