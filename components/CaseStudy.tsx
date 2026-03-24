@@ -1230,53 +1230,26 @@ export default function CaseStudy({ project }: Props) {
 
         {/* Meta strip */}
         <div ref={metaSectionRef} />
-        {isNarrative ? (
-          <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
-            <div style={{ border: "1px solid var(--border)", borderRadius: 16, background: "var(--card-bg)", overflow: "hidden" }}>
-              <div style={{ padding: "16px 22px", borderBottom: "1px solid var(--border)" }}>
-                <p style={sectionLabelSecondaryStyle(4)}>Project Snapshot</p>
-              </div>
-              {metaItems.map((item, idx) => (
-                <div
-                  key={item.label}
-                  className="sc-meta-row"
-                  style={{
-                    padding: "14px 22px",
-                    borderTop: idx === 0 ? "none" : "1px solid var(--border)",
-                  }}
-                >
-                  <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)" }}>
-                    {item.label}
-                  </span>
-                  <span style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                    {item.value}
-                  </span>
-                </div>
-              ))}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 1,
+            borderBottom: "1px solid var(--border)",
+            marginBottom: 80,
+          }}
+        >
+          {metaItems.map((item) => (
+            <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
+              <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
+                {item.label}
+              </p>
+              <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                {item.value}
+              </p>
             </div>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-              gap: 1,
-              borderBottom: "1px solid var(--border)",
-              marginBottom: 80,
-            }}
-          >
-            {metaItems.map((item) => (
-              <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
-                <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
-                  {item.label}
-                </p>
-                <p style={{ fontFamily: sans, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>
-                  {item.value}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+          ))}
+        </div>
 
         {isNarrative && leadVisual && (
           <div style={{ marginBottom: 100 }}>
