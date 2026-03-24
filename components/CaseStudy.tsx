@@ -536,22 +536,23 @@ export default function CaseStudy({ project }: Props) {
                 </div>
               </div>
             ) : (
-              /* Desktop before/after — wider before panel, no card boxes */
-              <div style={{ display: "flex", gap: 28, flexWrap: "wrap", alignItems: "flex-start" }}>
+              /* Desktop before/after — stacked labels, full-width images */
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
                 {/* Before */}
-                <div className="sc-before-panel" style={{ flexShrink: 0, width: 280 }}>
+                <div>
                   <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
-                  <div style={{ ...imgClip, position: "relative", aspectRatio: block.beforeSrc ? undefined : "9/16", minHeight: block.beforeSrc ? undefined : 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ ...imgClip, ...(block.beforeSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.beforeSrc ? (
                       <Image src={block.beforeSrc} alt={`${block.label ?? block.caption} — Before`}
-                        fill sizes="(max-width: 600px) 280px, 280px" priority={priority} style={{ objectFit: "cover" }} />
+                        width={0} height={0} sizes="(max-width: 768px) calc(100vw - 48px), 700px"
+                        priority={priority} style={{ width: "100%", height: "auto", display: "block" }} />
                     ) : (
                       <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span>
                     )}
                   </div>
                 </div>
                 {/* After */}
-                <div style={{ flex: 1, minWidth: 280 }}>
+                <div>
                   <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
                   <div style={{ ...imgClip, ...(block.afterSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.afterSrc ? (
@@ -1608,12 +1609,9 @@ export default function CaseStudy({ project }: Props) {
               gap: "24px 40px",
             }}>
               {[
-                { script: "Latin", sample: "Stranger Things", font: serif },
+                { script: "English (Original)", sample: "Stranger Things", font: serif },
                 { script: "한국어", sample: "기묘한 이야기", font: "system-ui" },
                 { script: "日本語", sample: "ストレンジャー", font: "system-ui" },
-                { script: "العربية", sample: "أشياء غريبة", font: "system-ui" },
-                { script: "עברית", sample: "דברים מוזרים", font: "system-ui" },
-                { script: "Кириллица", sample: "Очень странные", font: "system-ui" },
               ].map((s, i) => (
                 <motion.div
                   key={s.script}
@@ -3048,7 +3046,7 @@ export default function CaseStudy({ project }: Props) {
                       <span
                         key={i}
                         style={{
-                          opacity: i < visibleCount ? 1 : 0.06,
+                          opacity: i < visibleCount ? 1 : 0.25,
                           transition: "opacity 0.15s ease",
                         }}
                       >

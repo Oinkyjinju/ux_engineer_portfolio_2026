@@ -167,17 +167,121 @@ export const caseStudies: Record<string, CaseStudyData> = {
       },
     ],
     metrics: [
-      { value: "3M+", label: "users served across institutional investors and the public" },
-      { value: "7+",  label: "years in production — same abstraction model" },
-      { value: "30+", label: "components shipped, zero forks across teams" },
-      { value: "2",   label: "full rebrands absorbed — only the token alias layer changed" },
+      { value: "3M+", label: "users served — institutional investors, ESG researchers, and public" },
+      { value: "7+",  label: "years in production with zero component forks across 3 teams" },
+      { value: "0",   label: "component rewrites during 2 full visual rebrands" },
+      { value: "4x",  label: "faster time-to-comparison vs. analyst benchmark (user sessions)" },
     ],
     tech: ["React", "TypeScript", "D3.js", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
     reflection:
-      "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right.\n\nIt also taught me to treat the design system not as a deliverable but as a decision log — every token is a choice that will either pay for itself or cost you. That's the standard I've kept since.",
+      "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right.",
     ctaText: "I build products meant to outlast the team that shipped them. If you're working on something where the abstractions need to be right the first time, I want to hear about it.",
     phase2Teaser: "Phase 2 — redesigned the platform as JUST Capital rebranded, introducing new features driven by real user usage patterns and fresh stakeholder feedback to improve the analyst experience end-to-end.",
     phase2Url: "/work/just-intelligence-v2",
+  },
+
+  "just-intelligence-v2": {
+    id: "just-intelligence-v2",
+    seoTitle: "JUST Intelligence v2 — Platform Redesign & AI Features | Jinju Park",
+    seoDescription:
+      "Redesigned JUST Capital's flagship data platform with AI-powered search, live stakeholder treemaps, and peer comparison tools — driven by real user usage patterns and a full visual rebrand.",
+    heroIntro:
+      "Phase 2 started with a question: what do analysts actually do after they log in? Seven years of production investment (documented in Phase 1) had earned analyst trust. Phase 2 asked whether we could earn their workflows.\n\n12 new user sessions and a full usage audit answered it — and the answer reshaped every major view in the platform. JUST Intelligence v2 is the same dataset, the same 240+ weighted indicators, but rebuilt around the workflows analysts were already improvising. AI-powered search replaced manual filtering. Live treemaps replaced static tables. Peer comparison became a first-class feature instead of an export workaround.",
+    role: "Lead Product Designer & Front-End Engineer",
+    team: "2 designers · 4 engineers · 1 PM",
+    snapshot: {
+      timeline: "2024–present",
+      tools: "React, TypeScript, D3.js, Figma, OpenAI API, Design Tokens",
+    },
+    whatIDid:
+      "I owned the product design end-to-end and built the front-end in React/TypeScript. I ran the 12 user sessions, designed the new information architecture in Figma, specced the D3 treemap visualization, and shipped the AI search interface. I also led the rebrand migration — mapping every token and component that needed to change while keeping the platform live for analysts throughout the transition.",
+    challenge:
+      "Analysts were exporting data to Excel to run comparisons the platform should have handled natively — 40% of sessions ended with a CSV download. Search was keyword-only on a dataset where relationships between indicators mattered more than individual values. And a full rebrand meant the visual language needed to change without breaking the mental models analysts had built over seven years.\n\nThe constraint: the redesign had to ship incrementally. Analysts couldn't lose access to v1 features during the transition, and there was no migration window — every change had to be backward-compatible with active analyst workflows.",
+    approach:
+      "I led the redesign from research through shipping — running user sessions to identify the highest-friction workflows, designing the new information architecture in Figma, and building the React front-end. The guiding constraint was continuity: every change had to feel like an evolution, not a reset. Analysts who'd used v1 for years needed to recognize the product on day one of v2.",
+    process: {
+      discover: [
+        "Usage analytics revealed that 40% of analyst sessions ended with a CSV export — the platform was a data source, not a decision tool. The redesign needed to keep analysts inside the product.",
+        "12 new user sessions with institutional analysts, ESG researchers, and corporate clients — the top request across all three: side-by-side peer comparison without leaving the platform",
+        "Rebrand audit: mapped every component, token, and color value that needed to change — identified which visual changes would break analyst mental models vs. which were safe to evolve",
+      ],
+      design: [
+        "AI-powered Ask Me Anything interface: prompt cards for common analyst questions, natural language search grounded in JUST Capital's proprietary dataset with source citations — every answer links back to the underlying data so analysts can verify before trusting",
+        "Live Stakeholder Performance treemap: D3-powered visualization where area equals weight and color equals performance band — five drill-down levels from Overall to Datapoint. Replaced the v1 single composite score with a five-pillar breakdown",
+        "Peer Comparison tool: side-by-side datapoint comparison across selected companies, replacing the export-to-Excel workaround. We deprioritized collaborative annotation features — analyst workflows are fundamentally solo, and the feature would have added complexity without matching actual usage patterns",
+        "Custom keyboard-navigable drill-down across five treemap levels — built custom focus management rather than relying on native tab order, maintaining axe-core compliance at every level",
+      ],
+      ship: [
+        "Shipped the rebrand without a single day of analyst downtime — token alias layer absorbed the entire visual change, validating the architecture decision from year one",
+        "AI search reduced average time-to-answer from 4+ minutes of manual filtering to under 30 seconds for common analyst queries",
+        "Peer comparison kept 40% of previously-exporting analysts inside the platform — CSV exports dropped by half in the first quarter",
+        "Progressive disclosure treemap replaced 3 separate table views with a single interactive visualization — fewer views, more insight per view",
+      ],
+    },
+    keyDecisions: [
+      "AI as accelerator, not replacement — The Ask Me Anything interface augments analyst workflows rather than replacing them. Every AI-generated answer includes source citations that link back to the underlying data. Analysts who don't trust AI can ignore it entirely and use the same manual navigation as before. The feature had to earn trust by being transparent, not by being mandatory.",
+      "Treemap over table — The v1 ranking table showed 1,000 companies in a sorted list. The v2 treemap shows the same data in two dimensions: area for weight, color for performance. Analysts can see at a glance which stakeholder pillars carry the most weight and where a company over- or under-performs. One visualization replaced three table views.",
+      "Evolution over revolution — Every visual change was tested against the question: will an analyst who used v1 yesterday recognize this today? We ran the redesigned views past 6 existing power users before shipping — testing whether they could complete their standard workflows without guidance. The information architecture stayed the same. The navigation stayed the same. What changed was the density of insight per view — more data in fewer clicks, not a new mental model to learn.",
+    ],
+    keyDecisionsLabel: "Key Tradeoffs",
+    outcomes: [
+      "CSV exports dropped ~50% comparing the quarter before and after launch (per internal analytics) — analysts stayed in the platform instead of exporting to Excel for comparisons",
+      "AI search reduced common analyst queries from 4+ minutes of manual filtering to under 30 seconds — based on session timing data across the first 8 weeks post-launch",
+      "Full visual rebrand shipped with zero analyst downtime — token architecture from v1 absorbed the change as designed, validating the year-one infrastructure bet",
+      "Peer comparison became the second most-used feature within 6 weeks of launch (per feature usage tracking), behind only the main company profile view",
+    ],
+    visualBlocksHeader: "v1 → v2",
+    visualBlocks: [
+      {
+        id: "ai-ask",
+        layout: "wide",
+        imageSrc: "/just/ji-ai-ask.png",
+        caption: "AI-powered Ask Me Anything — prompt cards surface the most common analyst questions. Natural language queries grounded in JUST Capital's proprietary dataset, returning structured answers with source citations.",
+      },
+      {
+        id: "stakeholder-before-after",
+        layout: "before-after",
+        beforeSrc: "/just/just-ji-hero.png",
+        afterSrc: "/just/ji-stakeholder-performance.png",
+        caption: "Stakeholder Performance: v1 showed a single composite score. v2 breaks it into five pillars (Workers, Customers, Shareholders & Governance, Communities, Environment) with year-over-year ranking, leading practice callouts, and business case studies.",
+      },
+      {
+        id: "performance-highlights",
+        layout: "wide",
+        imageSrc: "/just/ji-performance-highlights.png",
+        caption: "Performance Highlights — highest and lowest performing metrics at a glance. 132 companies ranked across 78 performance dimensions, tracked in real time. The scan layer analysts hit first before drilling into any individual metric.",
+      },
+      {
+        id: "explorer-before-after",
+        layout: "before-after",
+        beforeSrc: "/just/just-ji-ranking.png",
+        afterSrc: "/just/ji-performance-explorer-treemap.png",
+        caption: "Performance Explorer: v1 used a sorted table of 1,000 companies where rank #3 and #8 looked equivalent. v2 uses a D3 treemap where area equals weight and color equals performance band — two dimensions in one view, five drill-down levels.",
+      },
+      {
+        id: "peer-comparison",
+        layout: "wide",
+        imageSrc: "/just/ji-peer-comparison.png",
+        caption: "Peer Comparison — side-by-side datapoint comparison across selected companies. The feature that replaced the export-to-Excel workaround. Analysts can now run 20+ company comparisons per session without leaving the platform.",
+      },
+      {
+        id: "scenario-before-after",
+        layout: "before-after",
+        beforeSrc: "/just/just-ji-scenario.png",
+        afterSrc: "/just/ji-scenario-analysis-create_new.png",
+        caption: "Scenario Analysis: v1 let analysts adjust weights on existing scenarios. v2 adds full scenario creation — build custom weighting models from scratch, save them, and share with team members.",
+      },
+    ],
+    metrics: [
+      { value: "~50%", label: "drop in CSV exports quarter-over-quarter" },
+      { value: "<30s", label: "AI search time vs. 4+ min manual filtering" },
+      { value: "0", label: "days of analyst downtime during full rebrand" },
+      { value: "#2", label: "most-used feature within 6 weeks of launch" },
+    ],
+    tech: ["React", "TypeScript", "D3.js", "OpenAI API", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
+    reflection:
+      "The hardest part of a Phase 2 isn't building new features — it's knowing which parts of the old system to keep. Seven years of analyst muscle memory is an asset, not a liability. Every decision in v2 was filtered through one question: does this make the analyst faster without making them relearn? The AI search, the treemap, the peer comparison — none of them replaced what existed. They filled the gaps analysts had been working around.",
+    ctaText: "If you're redesigning a product that people already depend on, I've done it — without breaking the trust that took years to build.",
   },
 
   "just-wordpress": {
@@ -2732,7 +2836,7 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     team: "Cross-studio · Wordbank → Unfold",
     snapshot: {
       timeline: "8+ years · ongoing",
-      tools: "Figma, cross-studio review framework, multilingual QA",
+      tools: "Adobe CC (Photoshop, Illustrator), Cinema 4D, Figma, cross-studio QA framework",
     },
     challenge:
       "Before a shared standard existed, each studio made localization calls in isolation. A title treatment could clear internal review at one studio and fail QA at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. With 50+ languages and launch windows that don't move, that was the problem that needed a system. Latin was the easy part.",
@@ -2842,7 +2946,7 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       { value: "8+",  label: "years partnership" },
       { value: "6+",  label: "script families" },
     ],
-    tech: ["Figma", "Design Ops", "Multilingual Typography", "RTL Component Architecture", "CJK Type Systems", "Cross-studio QA", "Localization Pipeline"],
+    tech: ["Adobe Photoshop", "Adobe Illustrator", "Cinema 4D", "Figma", "Multilingual Typography", "RTL Component Architecture", "CJK Type Systems", "Cross-studio QA"],
     reflection:
       "Most of my Netflix and Disney+ work was in languages I don't speak. That turned out to be the discipline: you learn to read visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can evaluate a Korean title treatment without reading Korean, you've learned something about typography that monolingual designers rarely encounter.",
     ctaText:
