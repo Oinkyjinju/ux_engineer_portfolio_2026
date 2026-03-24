@@ -1209,7 +1209,6 @@ export default function CaseStudy({ project }: Props) {
                 lineHeight: 1.3,
                 letterSpacing: "-0.01em",
                 color: "rgba(237,234,227,0.92)",
-                maxWidth: 640,
                 marginBottom: data.heroIntro ? 16 : 0,
                 marginTop: 0,
               }}
@@ -1219,7 +1218,7 @@ export default function CaseStudy({ project }: Props) {
           )}
           {/* heroIntro — supporting paragraphs, smaller + reduced opacity */}
           {data.heroIntro && (
-            <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.78)", maxWidth: 640, marginBottom: 0, marginTop: 0 }}>
+            <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 16, lineHeight: 1.75, color: "rgba(237,234,227,0.78)", marginBottom: 0, marginTop: 0 }}>
               {data.heroIntro}
             </motion.p>
           )}
