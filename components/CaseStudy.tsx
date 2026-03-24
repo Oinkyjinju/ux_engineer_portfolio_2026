@@ -536,22 +536,23 @@ export default function CaseStudy({ project }: Props) {
                 </div>
               </div>
             ) : (
-              /* Desktop before/after — wider before panel, no card boxes */
-              <div style={{ display: "flex", gap: 28, flexWrap: "wrap", alignItems: "flex-start" }}>
+              /* Desktop before/after — stacked labels, full-width images */
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
                 {/* Before */}
-                <div className="sc-before-panel" style={{ flexShrink: 0, width: 280 }}>
+                <div>
                   <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
-                  <div style={{ ...imgClip, position: "relative", aspectRatio: block.beforeSrc ? undefined : "9/16", minHeight: block.beforeSrc ? undefined : 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ ...imgClip, ...(block.beforeSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.beforeSrc ? (
                       <Image src={block.beforeSrc} alt={`${block.label ?? block.caption} — Before`}
-                        fill sizes="(max-width: 600px) 280px, 280px" priority={priority} style={{ objectFit: "cover" }} />
+                        width={0} height={0} sizes="(max-width: 768px) calc(100vw - 48px), 700px"
+                        priority={priority} style={{ width: "100%", height: "auto", display: "block" }} />
                     ) : (
                       <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span>
                     )}
                   </div>
                 </div>
                 {/* After */}
-                <div style={{ flex: 1, minWidth: 280 }}>
+                <div>
                   <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
                   <div style={{ ...imgClip, ...(block.afterSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.afterSrc ? (
@@ -811,6 +812,8 @@ export default function CaseStudy({ project }: Props) {
         .sc-metrics-grid > div { border-right: none !important; border-bottom: 1px solid var(--border); }
         .sc-metrics-grid > div:last-child { border-bottom: none; }
       }
+
+
 
       /* ── Netflix specimens + trirow responsive ── */
       @media (max-width: 700px) {
@@ -1379,7 +1382,7 @@ export default function CaseStudy({ project }: Props) {
                     {teaserParts.map((part, i) => {
                       if (!part.redact) return <span key={i}>{part.text}</span>;
                       return (
-                        <span key={i} style={{ position: "relative", display: "inline" }}>
+                        <span key={i} style={{ position: "relative", display: "inline", cursor: "pointer" }}>
                           {/* The actual word — fades in on reveal */}
                           <motion.span
                             animate={{ opacity: isRevealed ? 1 : 0 }}
@@ -1606,12 +1609,9 @@ export default function CaseStudy({ project }: Props) {
               gap: "24px 40px",
             }}>
               {[
-                { script: "Latin", sample: "Stranger Things", font: serif },
+                { script: "English (Original)", sample: "Stranger Things", font: serif },
                 { script: "한국어", sample: "기묘한 이야기", font: "system-ui" },
                 { script: "日本語", sample: "ストレンジャー", font: "system-ui" },
-                { script: "العربية", sample: "أشياء غريبة", font: "system-ui" },
-                { script: "עברית", sample: "דברים מוזרים", font: "system-ui" },
-                { script: "Кириллица", sample: "Очень странные", font: "system-ui" },
               ].map((s, i) => (
                 <motion.div
                   key={s.script}
@@ -2646,8 +2646,7 @@ export default function CaseStudy({ project }: Props) {
                   margin: "0 auto",
                   borderTop: "1px solid var(--border)",
                   borderBottom: "1px solid var(--border)",
-                }}
-              >
+                }}>
                 {data.metrics.map((m, idx) => (
                   <motion.div
                     key={m.label}
@@ -2663,8 +2662,7 @@ export default function CaseStudy({ project }: Props) {
                       textAlign: "center",
                       padding: "40px 12px",
                       borderRight: idx < data.metrics!.length - 1 ? "1px solid var(--border)" : "none",
-                    }}
-                  >
+                    }}>
                     <span style={{
                       fontFamily: serif,
                       fontSize: "clamp(40px, 5vw, 64px)",
@@ -3048,7 +3046,7 @@ export default function CaseStudy({ project }: Props) {
                       <span
                         key={i}
                         style={{
-                          opacity: i < visibleCount ? 1 : 0.06,
+                          opacity: i < visibleCount ? 1 : 0.25,
                           transition: "opacity 0.15s ease",
                         }}
                       >
@@ -3220,7 +3218,7 @@ export default function CaseStudy({ project }: Props) {
         })()}
 
         {/* ── Footer nav — after the CTA so navigation doesn't compete with the peak moment ── */}
-        <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, marginBottom: 64 }}>
+        <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, paddingBottom: 80 }}>
           <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 16 }}>
             All Projects
           </p>
@@ -3316,6 +3314,44 @@ export default function CaseStudy({ project }: Props) {
         </div>
 
       </div>
+
+      {/* ── Site footer ── */}
+      <footer
+        style={{
+          padding: "32px clamp(24px, 6vw, 96px) 40px",
+          borderTop: "1px solid var(--border)",
+          background: "var(--bg)",
+          color: "var(--text-secondary)",
+          display: "flex", justifyContent: "space-between",
+          alignItems: "center", flexWrap: "wrap", gap: 12,
+          position: "relative", zIndex: 2,
+        }}
+      >
+        <div style={{ display: "flex", gap: 20 }}>
+          {[
+            { label: "Email",    href: "/contact" },
+            { label: "LinkedIn", href: "https://www.linkedin.com/in/jinjuparkoinky/" },
+            { label: "GitHub",   href: "https://github.com/Oinkyjinju/ux_engineer_portfolio_2026" },
+          ].map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              style={{
+                fontFamily: mono, fontSize: 11, letterSpacing: "0.05em",
+                textTransform: "uppercase", color: "var(--text-secondary)",
+                textDecoration: "none", transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-secondary)"; }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
+          Jinju Park © 2026
+        </span>
+      </footer>
     </div>
     </>
   );
