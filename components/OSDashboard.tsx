@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Cartridge {
@@ -175,6 +176,14 @@ export default function OSDashboard() {
         style={{ borderColor: "var(--os-border, #222)" }}
       >
         <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="font-mono text-[9px] tracking-widest text-[#444] hover:text-[#FF4D00] transition-colors duration-150"
+            style={{ textDecoration: "none" }}
+          >
+            &#9664; EXIT
+          </Link>
+          <div className="w-px h-3 bg-[#222]" />
           <span className="font-mono text-xs font-black tracking-[0.3em] text-[#FF4D00]">JINJU.OS</span>
           <span className="font-mono text-[9px] text-[#333] tracking-widest">v1.0.0</span>
         </div>

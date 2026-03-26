@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { projects, type Project } from "@/data/projects";
 
 // ── Graph data ────────────────────────────────────────────────────────────────
@@ -274,16 +275,28 @@ export default function GraphDemo() {
       <header
         style={{
           position: "absolute", top: 28, left: 32, zIndex: 10,
-          pointerEvents: "none",
         }}
       >
-        <p style={{ color: "#2d3f56", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", margin: 0 }}>
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            color: "#475569", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase",
+            textDecoration: "none", marginBottom: 8, pointerEvents: "auto",
+            transition: "color 0.2s ease",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#e2e8f0")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#475569")}
+        >
+          <span style={{ fontSize: 14 }}>&#8592;</span> Back to Portfolio
+        </Link>
+        <p style={{ color: "#2d3f56", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", margin: 0, pointerEvents: "none" }}>
           Semantic Knowledge Graph
         </p>
-        <h1 style={{ color: "#e2e8f0", fontSize: 28, fontWeight: 700, margin: "4px 0 4px", lineHeight: 1 }}>
+        <h1 style={{ color: "#e2e8f0", fontSize: 28, fontWeight: 700, margin: "4px 0 4px", lineHeight: 1, pointerEvents: "none" }}>
           Jinju Park
         </h1>
-        <p style={{ color: "#334155", fontSize: 12, margin: 0 }}>
+        <p style={{ color: "#334155", fontSize: 12, margin: 0, pointerEvents: "none" }}>
           Hover a skill · Click a project
         </p>
       </header>

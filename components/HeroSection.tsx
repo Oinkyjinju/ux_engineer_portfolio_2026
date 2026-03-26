@@ -6,7 +6,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 const TICKER_SKILLS = [
   "React", "·", "Next.js", "·", "TypeScript", "·", "Figma", "·",
   "Design Systems", "·", "CSS / Sass", "·", "PHP · WordPress", "·",
-  "Three.js", "·", "Motion Design", "·", "Accessibility", "·",
+  "D3", "·", "Motion Design", "·", "Accessibility", "·",
   "Cross-cultural UX", "·", "UX Research", "·", "Prototyping", "·",
   "Team Leadership", "·",
 ];
