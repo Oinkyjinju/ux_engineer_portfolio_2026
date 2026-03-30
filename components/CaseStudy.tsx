@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +28,350 @@ interface Props { project: Project; }
 // Font constants — stable, no need to recreate per render
 const mono  = "'JetBrains Mono', monospace";
 const serif = "'Gloock', Georgia, serif";
-const sans  = "'Red Hat Text', system-ui, sans-serif";
+const sans = "'Red Hat Text', system-ui, sans-serif";
+
+// ── Phase 2 Teaser — extracted to avoid infinite re-render from inline useState ──
+function Phase2Briefing({ teaser, url, shouldReduceMotion }: { teaser: string; url: string; shouldReduceMotion: boolean | null }) {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  const teaserParts: { text: string; redact: boolean; delay: number }[] = (() => {
+    const redactions = [
+      { word: "platform", delay: 0 },
+      { word: "rebranded", delay: 70 },
+      { word: "real user usage patterns", delay: 140 },
+      { word: "fresh stakeholder feedback", delay: 210 },
+    ];
+    let remaining = teaser;
+    const parts: { text: string; redact: boolean; delay: number }[] = [];
+    for (const r of redactions) {
+      const idx = remaining.toLowerCase().indexOf(r.word.toLowerCase());
+      if (idx === -1) continue;
+      if (idx > 0) parts.push({ text: remaining.slice(0, idx), redact: false, delay: 0 });
+      parts.push({ text: remaining.slice(idx, idx + r.word.length), redact: true, delay: r.delay });
+      remaining = remaining.slice(idx + r.word.length);
+    }
+    if (remaining) parts.push({ text: remaining, redact: false, delay: 0 });
+    return parts;
+  })();
+
+  return (
+    <Link href={url} style={{ textDecoration: "none", display: "block" }}>
+      <motion.div
+        onMouseEnter={() => setIsRevealed(true)}
+        onMouseLeave={() => setIsRevealed(false)}
+        onFocus={() => setIsRevealed(true)}
+        onBlur={() => setIsRevealed(false)}
+        onTouchStart={() => setIsRevealed(true)}
+        initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px 0px" }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          maxWidth: 760,
+          margin: "0 auto 80px",
+          padding: "28px 0 28px 24px",
+          position: "relative",
+          cursor: "pointer",
+        }}
+      >
+        {/* Left accent border — grows on hover */}
+        <motion.div
+          aria-hidden="true"
+          animate={{ scaleY: isRevealed ? 1 : 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: "absolute",
+            left: 0, top: 0, bottom: 0,
+            width: 2,
+            background: "var(--accent)",
+            transformOrigin: "top",
+          }}
+        />
+
+        {/* Classification label + version indicator */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+          <span
+            style={{
+              fontFamily: mono, fontSize: 11, letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: isRevealed ? "var(--accent)" : "var(--text-tertiary)",
+              transition: "color 0.3s ease",
+            }}
+          >
+            {isRevealed ? "Declassified" : "Classified"} // Sequel
+          </span>
+          <span style={{
+            fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+            textTransform: "uppercase", color: "var(--accent)",
+            background: "var(--accent-muted)",
+            padding: "2px 8px", borderRadius: 2,
+          }}>
+            v2 Launched
+          </span>
+        </div>
+
+        {/* Redacted paragraph */}
+        <p style={{
+          fontFamily: sans, fontSize: 16,
+          color: "var(--text-secondary)",
+          lineHeight: 1.75, marginBottom: 18,
+        }}>
+          {teaserParts.map((part, i) => {
+            if (!part.redact) return <span key={i}>{part.text}</span>;
+            return (
+              <span key={i} style={{ position: "relative", display: "inline", cursor: "pointer" }}>
+                <span
+                  style={{
+                    position: "relative", zIndex: 1,
+                    opacity: isRevealed ? 1 : 0,
+                    transition: `opacity 0.3s ease ${shouldReduceMotion ? 0 : part.delay}ms`,
+                  }}
+                >
+                  {part.text}
+                </span>
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    inset: "1px -3px",
+                    background: "var(--text-primary)",
+                    borderRadius: 1,
+                    transformOrigin: "left",
+                    pointerEvents: "none",
+                    opacity: isRevealed ? 0 : 1,
+                    transform: isRevealed ? "scaleX(0.97)" : "scaleX(1)",
+                    transition: `opacity 0.25s ease ${shouldReduceMotion ? 0 : part.delay}ms, transform 0.25s ease ${shouldReduceMotion ? 0 : part.delay}ms`,
+                  }}
+                />
+              </span>
+            );
+          })}
+        </p>
+
+        {/* CTA line */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span
+            style={{
+              fontFamily: mono, fontSize: 11,
+              letterSpacing: "0.1em", textTransform: "uppercase",
+              color: isRevealed ? "var(--accent)" : "var(--text-tertiary)",
+              transition: "color 0.3s ease",
+            }}
+          >
+            {isRevealed ? "Read full briefing" : "Hover to declassify"}
+          </span>
+          <span
+            style={{
+              fontFamily: mono, fontSize: 12,
+              color: "var(--accent)",
+              opacity: isRevealed ? 1 : 0,
+              transform: isRevealed ? "translateX(4px)" : "translateX(0)",
+              transition: "opacity 0.3s ease, transform 0.3s ease",
+            }}
+          >
+            →
+          </span>
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
+
+// ── Approach — scroll-linked word emphasis (extracted to avoid inline useState remount) ──
+function ApproachReveal({ approach, shouldReduceMotion, sectionLabelStyle }: { approach: string; shouldReduceMotion: boolean | null; sectionLabelStyle: (mb: number) => React.CSSProperties }) {
+  const elRef = useRef<HTMLDivElement>(null);
+  const [scrollProg, setScrollProg] = useState(0);
+  const approachWords = approach.split(/(\s+)/);
+
+  useEffect(() => {
+    if (shouldReduceMotion) { setScrollProg(1); return; }
+    const el = elRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const raw = (vh * 0.8 - rect.top) / (vh * 0.55);
+      setScrollProg(Math.max(0, Math.min(1, raw)));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [shouldReduceMotion]);
+
+  return (
+    <div ref={elRef} style={{ maxWidth: 760, margin: "0 auto 80px" }}>
+      <h2 style={sectionLabelStyle(20)}>The Thinking</h2>
+      <p style={{
+        fontFamily: sans,
+        fontSize: "clamp(16px, 1.4vw, 18px)",
+        lineHeight: 1.8,
+        margin: 0,
+      }}>
+        {approachWords.map((w, i) => {
+          const wordProgress = scrollProg * approachWords.length;
+          const t = Math.max(0, Math.min(1, wordProgress - i));
+          return (
+            <span
+              key={i}
+              style={{
+                color: t > 0.5 ? "var(--text-primary)" : "var(--text-tertiary)",
+                transition: "color 0.12s ease",
+              }}
+            >
+              {w}
+            </span>
+          );
+        })}
+      </p>
+    </div>
+  );
+}
+
+// ── Reflection — typewriter reveal (extracted to avoid inline useState remount) ──
+function ReflectionReveal({ reflection, shouldReduceMotion, sectionLabelStyle }: { reflection: string; shouldReduceMotion: boolean | null; sectionLabelStyle: (mb: number) => React.CSSProperties }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const words = reflection.split(/(\s+)/);
+
+  useEffect(() => {
+    if (shouldReduceMotion) { setProgress(1); return; }
+    const el = containerRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const start = viewH * 0.85;
+      const end = viewH * 0.25;
+      const raw = (start - rect.top) / (start - end);
+      setProgress(Math.max(0, Math.min(1, raw)));
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [shouldReduceMotion]);
+
+  const visibleCount = Math.ceil(progress * words.length);
+
+  return (
+    <div ref={containerRef} style={{ maxWidth: 760, margin: "0 auto 100px" }}>
+      <h2 style={sectionLabelStyle(28)}>Reflection</h2>
+      <div style={{ position: "relative" }}>
+        <p style={{
+          fontFamily: "'Gloock', Georgia, serif",
+          fontSize: "clamp(20px, 2.2vw, 28px)",
+          lineHeight: 1.45,
+          letterSpacing: "-0.015em",
+          color: "var(--text-primary)",
+          fontWeight: 400,
+          margin: 0,
+        }}>
+          {words.map((word, i) => (
+            <span
+              key={i}
+              style={{
+                opacity: i < visibleCount ? 1 : 0.25,
+                transition: "opacity 0.15s ease",
+              }}
+            >
+              {word}
+            </span>
+          ))}
+          {progress < 1 && (
+            <span
+              aria-hidden="true"
+              style={{
+                display: "inline-block",
+                width: 2,
+                height: "0.9em",
+                background: "var(--accent)",
+                marginLeft: 2,
+                verticalAlign: "text-bottom",
+                animation: "cursorBlink 1s step-end infinite",
+              }}
+            />
+          )}
+        </p>
+        <div
+          aria-hidden="true"
+          style={{
+            marginTop: 32,
+            height: 1,
+            background: "var(--border)",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{
+            position: "absolute",
+            top: 0, left: 0, bottom: 0,
+            width: `${progress * 100}%`,
+            background: "var(--accent)",
+            transition: "width 0.1s linear",
+          }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── MagneticCTA — extracted to avoid inline useState remount ──
+function MagneticCTA({ ctaText, shouldReduceMotion, dark, projectId }: { ctaText?: string; shouldReduceMotion: boolean | null; dark: boolean; projectId: string }) {
+  const btnRef = useRef<HTMLAnchorElement>(null);
+  const [btnOffset, setBtnOffset] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!btnRef.current || shouldReduceMotion) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    setBtnOffset({ x: (e.clientX - centerX) * 0.25, y: (e.clientY - centerY) * 0.25 });
+  };
+  const handleMouseLeave = () => { setBtnOffset({ x: 0, y: 0 }); setIsHovered(false); };
+  return (
+    <div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ textAlign: "center", padding: "100px 0 120px", position: "relative" }}>
+      <motion.div aria-hidden="true" initial={shouldReduceMotion ? {} : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ width: 60, height: 1, background: "var(--border)", margin: "0 auto 48px", transformOrigin: "center" }} />
+      <motion.p initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "'Gloock', Georgia, serif", fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 32, fontWeight: 400, letterSpacing: "-0.01em" }}>
+        {ctaText ?? "I build the things between design and engineering. If that gap is costing your team, let\u2019s talk."}
+      </motion.p>
+      <motion.div animate={{ x: btnOffset.x, y: btnOffset.y }} transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }} style={{ display: "inline-block" }}>
+        <Link ref={btnRef} href="/#contact" onMouseEnter={() => setIsHovered(true)} style={{
+          display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase",
+          color: isHovered ? (dark ? "#09090E" : "#ffffff") : "var(--text-primary)",
+          background: isHovered ? "var(--accent)" : "transparent",
+          padding: "14px 32px", border: `1px solid ${isHovered ? "var(--accent)" : "var(--border)"}`, borderRadius: 0, textDecoration: "none",
+          transform: isHovered ? "scale(1.04)" : "scale(1)",
+          boxShadow: isHovered ? `0 4px 24px ${projectId === "netflix-disney" ? "rgba(229,9,20,0.3)" : projectId === "storycorps" ? "rgba(181,68,26,0.3)" : "rgba(0,0,0,0.15)"}` : "none",
+          transition: "background 0.3s, color 0.3s, border-color 0.3s, transform 0.25s ease, box-shadow 0.3s",
+        }}
+          onFocus={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--accent)"; }}
+          onBlur={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
+        >
+          <span>Start a conversation</span>
+          <motion.span animate={{ x: isHovered ? 4 : 0 }} transition={{ type: "spring", stiffness: 400, damping: 15 }}>→</motion.span>
+        </Link>
+      </motion.div>
+    </div>
+  );
+}
+
+// ── LiveBanner — extracted to avoid inline useState remount ──
+function LiveBanner({ url }: { url: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div style={{ marginTop: 24, marginBottom: 40 }}>
+      <motion.a href={url} target="_blank" rel="noopener noreferrer"
+        onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
+        animate={{ scale: hovered ? 1.015 : 1, boxShadow: hovered ? "0 8px 32px rgba(0,0,0,0.18)" : "0 2px 8px rgba(0,0,0,0.06)" }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: "'JetBrains Mono', monospace", fontSize: 13, letterSpacing: "0.06em", textTransform: "uppercase", color: "#fff", background: "var(--accent)", padding: "18px 28px", textDecoration: "none", borderRadius: 8, overflow: "hidden", position: "relative" }}
+      >
+        <span style={{ position: "relative", zIndex: 1 }}>View Live Site</span>
+        <motion.span animate={{ x: hovered ? 6 : 0, y: hovered ? -4 : 0 }} transition={{ type: "spring", stiffness: 400, damping: 15 }} style={{ fontSize: 18, position: "relative", zIndex: 1 }}>↗</motion.span>
+        <motion.div animate={{ opacity: hovered ? 1 : 0 }} transition={{ duration: 0.3 }} style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.12) 100%)", pointerEvents: "none" }} />
+      </motion.a>
+    </div>
+  );
+}
 
 // Hero entrance animation — stagger children on mount.
 // Respects prefers-reduced-motion via useReducedMotion() inside the component.
@@ -410,6 +753,15 @@ export default function CaseStudy({ project }: Props) {
     setDark(newDark);
   };
 
+  // Convert hex to rgba for muted variant
+  const hexToRgba = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  };
+  const accentColor = project.accent;
+
   const theme = dark
     ? {
         "--bg":               "#09090E",
@@ -418,8 +770,8 @@ export default function CaseStudy({ project }: Props) {
         "--text-tertiary":    "#706E6B",
         "--border":           "rgba(255,255,255,0.07)",
         "--card-bg":          "rgba(255,255,255,0.025)",
-        "--accent":           "#F5A623",
-        "--accent-muted":     "rgba(245,166,35,0.12)",
+        "--accent":           accentColor,
+        "--accent-muted":     hexToRgba(accentColor, 0.12),
         "--nav-bg-scrolled":  "rgba(9,9,14,0.82)",
       }
     : {
@@ -429,8 +781,8 @@ export default function CaseStudy({ project }: Props) {
         "--text-tertiary":    "#706E6B",
         "--border":           "rgba(0,0,0,0.09)",
         "--card-bg":          "rgba(0,0,0,0.03)",
-        "--accent":           "#2563EB",
-        "--accent-muted":     "rgba(37,99,235,0.1)",
+        "--accent":           accentColor,
+        "--accent-muted":     hexToRgba(accentColor, 0.1),
         "--nav-bg-scrolled":  "rgba(248,247,242,0.82)",
         "--thumbnail-shadow": "0 2px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)",
       };
@@ -611,7 +963,7 @@ export default function CaseStudy({ project }: Props) {
 
         ) : block.layout === "side-by-side" ? (
           /* Two images — no card chrome, shadow + shared bottom caption row */
-          <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start" }}>
+          <div style={{ display: "flex", gap: 24, flexWrap: "wrap", alignItems: "center" }}>
             <div style={{ flex: 1, minWidth: 240 }}>
               <div style={imgClip}>
                 {block.imageSrc ? (
@@ -703,7 +1055,7 @@ export default function CaseStudy({ project }: Props) {
       .sc-before-panel { flex-shrink: 0; }
       @media (max-width: 600px) { .sc-before-panel { flex-shrink: 1; flex: 1; min-width: 0; } .sc-before-panel-inner { width: 100% !important; max-width: 240px; margin: 0 auto; } }
       .sc-phone-scroll::-webkit-scrollbar { display: none; }
-      .sc-phone-frames { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 12px; }
+      .sc-phone-frames { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-start; justify-content: center; margin-bottom: 12px; }
       @media (max-width: 580px) { .sc-phone-frames { justify-content: center; } }
       .sc-vblocks-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
       @media (max-width: 700px) { .sc-vblocks-2col { grid-template-columns: 1fr; } }
@@ -1253,176 +1605,47 @@ export default function CaseStudy({ project }: Props) {
 
         {isNarrative && leadVisual && (
           <div style={{ marginBottom: 100 }}>
-            <h2 style={sectionLabelStyle(20)}>{data.leadVisualHeader ?? "Shipped Output"}</h2>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+              <h2 style={sectionLabelStyle(20)}>{data.leadVisualHeader ?? "Shipped Output"}</h2>
+              {data.liveSiteUrl && (() => {
+                const LiveLinkTop = () => {
+                  const [hovered, setHovered] = useState(false);
+                  return (
+                    <a
+                      href={data.liveSiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => setHovered(true)}
+                      onMouseLeave={() => setHovered(false)}
+                      style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: mono, fontSize: 14, letterSpacing: "0.06em", color: "var(--accent)", textDecoration: "none", paddingBottom: 4, position: "relative" }}
+                    >
+                      <span>View Live Site</span>
+                      <motion.span
+                        animate={{ x: hovered ? 3 : 0, y: hovered ? -3 : 0 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                        style={{ fontSize: 16 }}
+                      >
+                        ↗
+                      </motion.span>
+                      <motion.span
+                        animate={{ scaleX: hovered ? 1 : 0 }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "var(--accent)", transformOrigin: "left" }}
+                      />
+                    </a>
+                  );
+                };
+                return <LiveLinkTop />;
+              })()}
+            </div>
             {renderVisualBlock(leadVisual, { twoCol: false, priority: true })}
           </div>
         )}
 
         {/* ── Phase 2 teaser — "The Redacted Briefing" ── */}
-        {data.phase2Teaser && data.phase2Url && (() => {
-          const Phase2Briefing = () => {
-            const [isRevealed, setIsRevealed] = useState(false);
-
-            // Split teaser into segments: plain text and redacted words
-            // Redact key words to create intrigue
-            const teaserParts: { text: string; redact: boolean; delay: number }[] = (() => {
-              const raw = data.phase2Teaser!;
-              // Find words to redact: "platform", "rebranded", "real user usage patterns", "stakeholder feedback"
-              const redactions = [
-                { word: "platform", delay: 0 },
-                { word: "rebranded", delay: 70 },
-                { word: "real user usage patterns", delay: 140 },
-                { word: "fresh stakeholder feedback", delay: 210 },
-              ];
-
-              let remaining = raw;
-              const parts: { text: string; redact: boolean; delay: number }[] = [];
-
-              for (const r of redactions) {
-                const idx = remaining.toLowerCase().indexOf(r.word.toLowerCase());
-                if (idx === -1) continue;
-                if (idx > 0) parts.push({ text: remaining.slice(0, idx), redact: false, delay: 0 });
-                parts.push({ text: remaining.slice(idx, idx + r.word.length), redact: true, delay: r.delay });
-                remaining = remaining.slice(idx + r.word.length);
-              }
-              if (remaining) parts.push({ text: remaining, redact: false, delay: 0 });
-              return parts;
-            })();
-
-            return (
-              <Link href={data.phase2Url!} style={{ textDecoration: "none", display: "block" }}>
-                <motion.div
-                  onMouseEnter={() => setIsRevealed(true)}
-                  onMouseLeave={() => setIsRevealed(false)}
-                  onFocus={() => setIsRevealed(true)}
-                  onBlur={() => setIsRevealed(false)}
-                  onTouchStart={() => setIsRevealed(true)}
-                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px 0px" }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    maxWidth: 760,
-                    margin: "0 auto 80px",
-                    padding: "28px 0 28px 24px",
-                    position: "relative",
-                    cursor: "pointer",
-                  }}
-                >
-                  {/* Left accent border — grows on hover */}
-                  <motion.div
-                    aria-hidden="true"
-                    animate={{ scaleY: isRevealed ? 1 : 0 }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                      position: "absolute",
-                      left: 0, top: 0, bottom: 0,
-                      width: 2,
-                      background: "var(--accent)",
-                      transformOrigin: "top",
-                    }}
-                  />
-
-                  {/* Classification label + version indicator */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-                    <motion.span
-                      animate={{ color: isRevealed ? "var(--accent)" : "var(--text-tertiary)" }}
-                      transition={{ duration: 0.3 }}
-                      style={{
-                        fontFamily: mono, fontSize: 11, letterSpacing: "0.18em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {isRevealed ? "Declassified" : "Classified"} // Sequel
-                    </motion.span>
-                    <span style={{
-                      fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
-                      textTransform: "uppercase", color: "var(--accent)",
-                      background: "var(--accent-muted)",
-                      padding: "2px 8px", borderRadius: 2,
-                    }}>
-                      v2 Launched
-                    </span>
-                  </div>
-
-                  {/* Redacted paragraph */}
-                  <p style={{
-                    fontFamily: sans, fontSize: 16,
-                    color: "var(--text-secondary)",
-                    lineHeight: 1.75, marginBottom: 18,
-                  }}>
-                    {teaserParts.map((part, i) => {
-                      if (!part.redact) return <span key={i}>{part.text}</span>;
-                      return (
-                        <span key={i} style={{ position: "relative", display: "inline", cursor: "pointer" }}>
-                          {/* The actual word — fades in on reveal */}
-                          <motion.span
-                            animate={{ opacity: isRevealed ? 1 : 0 }}
-                            transition={{
-                              duration: 0.3,
-                              delay: shouldReduceMotion ? 0 : part.delay / 1000,
-                            }}
-                            style={{ position: "relative", zIndex: 1 }}
-                          >
-                            {part.text}
-                          </motion.span>
-                          {/* The redaction block — fades out on reveal */}
-                          <motion.span
-                            aria-hidden="true"
-                            animate={{
-                              opacity: isRevealed ? 0 : 1,
-                              scaleX: isRevealed ? 0.97 : 1,
-                            }}
-                            transition={{
-                              duration: 0.25,
-                              delay: shouldReduceMotion ? 0 : part.delay / 1000,
-                            }}
-                            style={{
-                              position: "absolute",
-                              inset: "1px -3px",
-                              background: "var(--text-primary)",
-                              borderRadius: 1,
-                              transformOrigin: "left",
-                              pointerEvents: "none",
-                            }}
-                          />
-                        </span>
-                      );
-                    })}
-                  </p>
-
-                  {/* CTA line */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <motion.span
-                      animate={{ color: isRevealed ? "var(--accent)" : "var(--text-tertiary)" }}
-                      transition={{ duration: 0.3 }}
-                      style={{
-                        fontFamily: mono, fontSize: 11,
-                        letterSpacing: "0.1em", textTransform: "uppercase",
-                      }}
-                    >
-                      {isRevealed ? "Read full briefing" : "Hover to declassify"}
-                    </motion.span>
-                    <motion.span
-                      animate={{
-                        x: isRevealed ? 4 : 0,
-                        opacity: isRevealed ? 1 : 0,
-                      }}
-                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                      style={{
-                        fontFamily: mono, fontSize: 12,
-                        color: "var(--accent)",
-                      }}
-                    >
-                      →
-                    </motion.span>
-                  </div>
-                </motion.div>
-              </Link>
-            );
-          };
-          return <Phase2Briefing />;
-        })()}
+        {data.phase2Teaser && data.phase2Url && (
+          <Phase2Briefing teaser={data.phase2Teaser} url={data.phase2Url} shouldReduceMotion={shouldReduceMotion} />
+        )}
 
         {/* ── Challenge ── */}
         {(() => {
@@ -1616,58 +1839,7 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Approach — scroll-linked word emphasis */}
-        {(() => {
-          const ApproachReveal = () => {
-            const elRef = useRef<HTMLDivElement>(null);
-            const [scrollProg, setScrollProg] = useState(0);
-            const approachWords = data.approach.split(/(\s+)/);
-
-            useEffect(() => {
-              if (shouldReduceMotion) { setScrollProg(1); return; }
-              const el = elRef.current;
-              if (!el) return;
-              const onScroll = () => {
-                const rect = el.getBoundingClientRect();
-                const vh = window.innerHeight;
-                const raw = (vh * 0.8 - rect.top) / (vh * 0.55);
-                setScrollProg(Math.max(0, Math.min(1, raw)));
-              };
-              window.addEventListener("scroll", onScroll, { passive: true });
-              onScroll();
-              return () => window.removeEventListener("scroll", onScroll);
-            }, []);
-
-            return (
-              <div ref={elRef} style={{ maxWidth: 760, margin: "0 auto 80px" }}>
-                <h2 style={sectionLabelStyle(20)}>The Thinking</h2>
-                <p style={{
-                  fontFamily: sans,
-                  fontSize: "clamp(16px, 1.4vw, 18px)",
-                  lineHeight: 1.8,
-                  margin: 0,
-                }}>
-                  {approachWords.map((w, i) => {
-                    // Words transition from tertiary → primary as scroll progresses
-                    const wordProgress = scrollProg * approachWords.length;
-                    const t = Math.max(0, Math.min(1, wordProgress - i));
-                    return (
-                      <span
-                        key={i}
-                        style={{
-                          color: t > 0.5 ? "var(--text-primary)" : "var(--text-tertiary)",
-                          transition: "color 0.12s ease",
-                        }}
-                      >
-                        {w}
-                      </span>
-                    );
-                  })}
-                </p>
-              </div>
-            );
-          };
-          return <ApproachReveal />;
-        })()}
+        <ApproachReveal approach={data.approach} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />
 
         {/* What I Was Responsible For */}
         {data.whatIDid && (
@@ -1757,14 +1929,15 @@ export default function CaseStudy({ project }: Props) {
                           background: isHoveredItem && !isOpen ? "rgba(237,234,227,0.03)" : "transparent",
                         }}
                       >
-                        {/* Hover/active highlight */}
-                        <motion.div
+                        {/* Hover/active highlight — CSS transition to avoid scroll-triggered re-animation */}
+                        <div
                           aria-hidden="true"
-                          animate={{ opacity: isOpen ? 0.025 : 0 }}
                           style={{
                             position: "absolute", inset: 0,
                             background: "var(--accent)",
                             pointerEvents: "none",
+                            opacity: isOpen ? 0.025 : 0,
+                            transition: "opacity 0.25s ease",
                           }}
                         />
 
@@ -1788,10 +1961,8 @@ export default function CaseStudy({ project }: Props) {
                             textAlign: "left",
                           }}
                         >
-                          {/* Large number */}
-                          <motion.span
-                            animate={{ color: isOpen ? "var(--accent)" : isHoveredItem ? "var(--accent)" : "var(--text-tertiary)" }}
-                            transition={{ duration: 0.2 }}
+                          {/* Large number — CSS transition (not Framer animate) to prevent scroll-triggered color flash */}
+                          <span
                             style={{
                               fontFamily: serif,
                               fontSize: 36,
@@ -1800,22 +1971,23 @@ export default function CaseStudy({ project }: Props) {
                               flexShrink: 0,
                               width: 48,
                               textAlign: "right",
+                              color: isOpen ? "var(--accent)" : isHoveredItem ? "var(--accent)" : "var(--text-tertiary)",
+                              transition: "color 0.2s ease",
                             }}
                           >
                             {String(i + 1).padStart(2, "0")}
-                          </motion.span>
+                          </span>
 
-                          {/* Preview text (truncated when closed) */}
+                          {/* Preview text (truncated when closed) — CSS transition to prevent scroll flash */}
                           <span style={{ flex: 1, minWidth: 0 }}>
-                            <motion.span
-                              animate={{
-                                color: isOpen ? "var(--text-primary)" : isHoveredItem ? "var(--text-primary)" : "var(--text-secondary)",
-                              }}
+                            <span
                               style={{
                                 fontFamily: sans,
                                 fontSize: 16,
                                 lineHeight: 1.7,
                                 display: "block",
+                                color: isOpen ? "var(--text-primary)" : isHoveredItem ? "var(--text-primary)" : "var(--text-secondary)",
+                                transition: "color 0.2s ease",
                                 ...(isOpen ? {} : {
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
@@ -1824,7 +1996,7 @@ export default function CaseStudy({ project }: Props) {
                               }}
                             >
                               {decision}
-                            </motion.span>
+                            </span>
                           </span>
 
                           {/* Expand indicator */}
@@ -2759,6 +2931,9 @@ export default function CaseStudy({ project }: Props) {
         {data.codeBlocks && data.codeBlocks.length > 0 && (
           <div style={{ marginBottom: 80 }}>
             <p style={sectionLabelStyle(32)}>{data.codeBlocksHeader ?? "In Code"}</p>
+            <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-tertiary)", lineHeight: 1.5, marginBottom: 32, maxWidth: 640, opacity: 0.7 }}>
+              Previews are simplified reproductions — not pixel-perfect mirrors of the live product. They illustrate how complex data problems were reduced to clear interface patterns and how the underlying code was structured.
+            </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
               {data.codeBlocks.map((block) => (
                 <div key={block.id}>
@@ -2853,14 +3028,34 @@ export default function CaseStudy({ project }: Props) {
                         border: "1px solid var(--border)",
                         background: "var(--card-bg)",
                         display: "flex", alignItems: "stretch",
-                        height: 500,
+                        ...(block.previewHtml ? { height: "fit-content" } : {}),
                       }}>
                         {block.previewHtml ? (
                           <iframe
                             srcDoc={block.previewHtml}
                             title={`${block.title} preview`}
-                            style={{ width: "100%", border: "none", display: "block", height: "100%" }}
-                            sandbox="allow-same-origin"
+                            style={{ width: "100%", border: "none", display: "block", minHeight: 360 }}
+                            sandbox="allow-same-origin allow-scripts"
+                            ref={(iframe) => {
+                              if (!iframe) return;
+                              const resize = () => {
+                                try {
+                                  const body = iframe.contentDocument?.body;
+                                  if (body) {
+                                    const h = body.offsetHeight;
+                                    if (h && h > 50) iframe.style.height = `${h}px`;
+                                  }
+                                } catch { /* cross-origin fallback */ }
+                              };
+                              iframe.addEventListener("load", () => {
+                                resize();
+                                setTimeout(resize, 200);
+                                setTimeout(resize, 600);
+                              });
+                              setTimeout(resize, 100);
+                              setTimeout(resize, 500);
+                              setTimeout(resize, 1000);
+                            }}
                           />
                         ) : block.previewSrc ? (
                           <Image
@@ -2909,14 +3104,10 @@ export default function CaseStudy({ project }: Props) {
                       <>
                         <div
                           className={stackPanels ? undefined : "cs-code-layout"}
-                          style={{
-                            ...(stackPanels
-                              ? { display: "flex", flexDirection: "column", gap: 16 }
-                              : { display: "grid", gridTemplateColumns: hasPreview ? "1fr 1fr" : "1fr", gap: 16 }),
-                          }}
+                          style={{ display: "flex", flexDirection: "column", gap: 16 }}
                         >
-                          {stackPanels ? previewPanel : codePanel}
-                          {stackPanels ? codePanel : previewPanel}
+                          {previewPanel}
+                          {codePanel}
                         </div>
                         {liveLink}
                       </>
@@ -2972,222 +3163,20 @@ export default function CaseStudy({ project }: Props) {
           }
 
           // Default — typewriter reveal
-          const ReflectionReveal = () => {
-            const containerRef = useRef<HTMLDivElement>(null);
-            const [progress, setProgress] = useState(0);
-            const words = data.reflection!.split(/(\s+)/);
-
-            useEffect(() => {
-              if (shouldReduceMotion) { setProgress(1); return; }
-              const el = containerRef.current;
-              if (!el) return;
-
-              const handleScroll = () => {
-                const rect = el.getBoundingClientRect();
-                const viewH = window.innerHeight;
-                // Start revealing when top enters viewport, complete when bottom reaches center
-                const start = viewH * 0.85;
-                const end = viewH * 0.25;
-                const raw = (start - rect.top) / (start - end);
-                setProgress(Math.max(0, Math.min(1, raw)));
-              };
-
-              window.addEventListener("scroll", handleScroll, { passive: true });
-              handleScroll();
-              return () => window.removeEventListener("scroll", handleScroll);
-            }, []);
-
-            const visibleCount = Math.ceil(progress * words.length);
-
-            return (
-              <div ref={containerRef} style={{ maxWidth: 760, margin: "0 auto 100px" }}>
-                <h2 style={sectionLabelStyle(28)}>Reflection</h2>
-
-                <div style={{ position: "relative" }}>
-                  {/* Blinking cursor at the end of visible text */}
-                  <p style={{
-                    fontFamily: serif,
-                    fontSize: "clamp(20px, 2.2vw, 28px)",
-                    lineHeight: 1.45,
-                    letterSpacing: "-0.015em",
-                    color: "var(--text-primary)",
-                    fontWeight: 400,
-                    margin: 0,
-                  }}>
-                    {words.map((word, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          opacity: i < visibleCount ? 1 : 0.25,
-                          transition: "opacity 0.15s ease",
-                        }}
-                      >
-                        {word}
-                      </span>
-                    ))}
-                    {/* Cursor */}
-                    {progress < 1 && (
-                      <span
-                        aria-hidden="true"
-                        style={{
-                          display: "inline-block",
-                          width: 2,
-                          height: "0.9em",
-                          background: "var(--accent)",
-                          marginLeft: 2,
-                          verticalAlign: "text-bottom",
-                          animation: "cursorBlink 1s step-end infinite",
-                        }}
-                      />
-                    )}
-                  </p>
-
-                  {/* Progress line at bottom */}
-                  <div
-                    aria-hidden="true"
-                    style={{
-                      marginTop: 32,
-                      height: 1,
-                      background: "var(--border)",
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div style={{
-                      position: "absolute",
-                      top: 0, left: 0, bottom: 0,
-                      width: `${progress * 100}%`,
-                      background: "var(--accent)",
-                      transition: "width 0.1s linear",
-                    }} />
-                  </div>
-                </div>
-              </div>
-            );
-          };
-          return <ReflectionReveal />;
+          return <ReflectionReveal reflection={data.reflection!} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />;
         })()}
 
         {/* Phase 2 teaser moved to top of content, before Challenge */}
 
         {/* CTA — magnetic cursor-reactive ending */}
-        {(() => {
-          const MagneticCTA = () => {
-            const btnRef = useRef<HTMLAnchorElement>(null);
-            const [btnOffset, setBtnOffset] = useState({ x: 0, y: 0 });
-            const [isHovered, setIsHovered] = useState(false);
+        <MagneticCTA
+          ctaText={data.ctaText}
+          shouldReduceMotion={shouldReduceMotion}
+          dark={dark}
+          projectId={project.id}
+        />
 
-            const handleMouseMove = (e: React.MouseEvent) => {
-              if (!btnRef.current || shouldReduceMotion) return;
-              const rect = btnRef.current.getBoundingClientRect();
-              const centerX = rect.left + rect.width / 2;
-              const centerY = rect.top + rect.height / 2;
-              const distX = e.clientX - centerX;
-              const distY = e.clientY - centerY;
-              // Magnetic pull — button follows cursor within bounds
-              setBtnOffset({ x: distX * 0.25, y: distY * 0.25 });
-            };
-
-            const handleMouseLeave = () => {
-              setBtnOffset({ x: 0, y: 0 });
-              setIsHovered(false);
-            };
-
-            return (
-              <div
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                style={{
-                  textAlign: "center",
-                  padding: "100px 0 120px",
-                  position: "relative",
-                }}
-              >
-                {/* Separator line */}
-                <motion.div
-                  aria-hidden="true"
-                  initial={shouldReduceMotion ? {} : { scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    width: 60,
-                    height: 1,
-                    background: "var(--border)",
-                    margin: "0 auto 48px",
-                    transformOrigin: "center",
-                  }}
-                />
-
-                <motion.p
-                  initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    fontFamily: serif,
-                    fontSize: "clamp(24px, 3.5vw, 40px)",
-                    color: "var(--text-primary)",
-                    marginBottom: 32,
-                    fontWeight: 400,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {data.ctaText ?? "I build the things between design and engineering. If that gap is costing your team, let\u2019s talk."}
-                </motion.p>
-
-                {/* Magnetic button */}
-                <motion.div
-                  animate={{
-                    x: btnOffset.x,
-                    y: btnOffset.y,
-                  }}
-                  transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
-                  style={{ display: "inline-block" }}
-                >
-                  <Link
-                    ref={btnRef}
-                    href="/#contact"
-                    onMouseEnter={() => setIsHovered(true)}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 10,
-                      fontFamily: mono,
-                      fontSize: 12,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: isHovered ? (dark ? "#09090E" : "#ffffff") : "var(--text-primary)",
-                      background: isHovered ? "var(--accent)" : "transparent",
-                      padding: "14px 32px",
-                      border: `1px solid ${isHovered ? "var(--accent)" : "var(--border)"}`,
-                      borderRadius: 0,
-                      textDecoration: "none",
-                      transform: isHovered ? "scale(1.04)" : "scale(1)",
-                      boxShadow: isHovered ? `0 4px 24px ${project.id === "netflix-disney" ? "rgba(229,9,20,0.3)" : project.id === "storycorps" ? "rgba(181,68,26,0.3)" : "rgba(0,0,0,0.15)"}` : "none",
-                      transition: "background 0.3s, color 0.3s, border-color 0.3s, transform 0.25s ease, box-shadow 0.3s",
-                    }}
-                    onFocus={(e) => {
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 2px var(--bg), 0 0 0 4px var(--accent)";
-                    }}
-                    onBlur={(e) => {
-                      (e.currentTarget as HTMLElement).style.boxShadow = "";
-                    }}
-                  >
-                    <span>Start a conversation</span>
-                    <motion.span
-                      animate={{ x: isHovered ? 4 : 0 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                    >
-                      →
-                    </motion.span>
-                  </Link>
-                </motion.div>
-              </div>
-            );
-          };
-          return <MagneticCTA />;
-        })()}
+        {data.liveSiteUrl && <LiveBanner url={data.liveSiteUrl} />}
 
         {/* ── Footer nav — after the CTA so navigation doesn't compete with the peak moment ── */}
         <div style={{ borderTop: "1px solid var(--border)", paddingTop: 40, paddingBottom: 80 }}>

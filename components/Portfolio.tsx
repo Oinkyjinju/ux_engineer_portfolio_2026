@@ -234,7 +234,7 @@ export default function Portfolio() {
             textTransform: "uppercase", color: "var(--accent)", marginBottom: 16,
           }}
         >
-          Lab
+          Design Engineering Lab
         </p>
         <p
           style={{
@@ -242,7 +242,7 @@ export default function Portfolio() {
             marginBottom: 36, maxWidth: 400,
           }}
         >
-          Things I build to think out loud.
+          Prototypes, experiments, and proof-of-concepts — built to test ideas before they become products.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>

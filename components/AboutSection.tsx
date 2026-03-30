@@ -6,15 +6,15 @@ import ScrollReveal from "./ScrollReveal";
 const SKILL_CLUSTERS = {
   Design: [
     "Figma", "Design Systems", "Interaction Design",
-    "UX Research", "Prototyping", "Visual Design",
+    "UX Research", "Prototyping", "UX Interview", "Design Tokens",
   ],
   Code: [
     "React", "Next.js", "TypeScript", "CSS / Sass",
-    "PHP / WordPress", "Three.js",
+    "PHP / WordPress", "D3",
   ],
   Process: [
     "Design Ops", "Cross-cultural UX", "Team Leadership",
-    "Accessibility", "Stakeholder Facilitation", "Figma Tokens",
+    "Accessibility", "Figma Tokens",
   ],
 } as const;
 
@@ -218,6 +218,9 @@ export default function AboutSection({ dark }: Props) {
                       border: "1px solid var(--border)",
                       color: "var(--text-secondary)",
                       background: "var(--card-bg)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      height: 34,
                       opacity: visibleSkills.includes(skill) ? 1 : 0,
                       transform: visibleSkills.includes(skill) ? "translateY(0)" : "translateY(8px)",
                       transition: "opacity 0.3s ease, transform 0.3s ease",
