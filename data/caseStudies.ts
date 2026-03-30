@@ -187,7 +187,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "Redesigned JUST Capital's flagship data platform with AI-powered search, live stakeholder treemaps, and peer comparison tools — driven by real user usage patterns and a full visual rebrand.",
     heroIntro:
-      "Phase 2 started with a question: what do analysts actually do after they log in? Seven years of production investment (documented in Phase 1) had earned analyst trust. Phase 2 asked whether we could earn their workflows.\n\n12 new user sessions and a full usage audit answered it — and the answer reshaped every major view in the platform. JUST Intelligence v2 is the same dataset, the same 240+ weighted indicators, but rebuilt around the workflows analysts were already improvising. AI-powered search replaced manual filtering. Live treemaps replaced static tables. Peer comparison became a first-class feature instead of an export workaround.",
+      "40% of analyst sessions ended in a CSV export. The platform was a data source — not a decision tool.\n\nPhase 2 turned that around. I ran 12 user sessions, audited every workflow, and redesigned the platform around the patterns analysts were already improvising outside of it. Same dataset. Same 240+ weighted indicators. Entirely different relationship between user and system.",
     role: "Lead Product Designer & Front-End Engineer",
     team: "2 designers · 4 engineers · 1 PM",
     snapshot: {
@@ -195,41 +195,41 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "React, TypeScript, D3, Figma, OpenAI API, Design Tokens",
     },
     whatIDid:
-      "I owned the product design end-to-end and built the front-end in React/TypeScript. I ran the 12 user sessions, designed the new information architecture in Figma, specced the D3 treemap visualization, and shipped the AI search interface. I also led the rebrand migration — mapping every token and component that needed to change while keeping the platform live for analysts throughout the transition.",
+      "Owned product design and front-end engineering. Ran 12 user sessions. Designed the information architecture in Figma. Specced the D3 treemap. Shipped the AI search interface. Led the rebrand migration — remapping every token and component while keeping the platform live for analysts throughout.",
     challenge:
-      "Analysts were exporting data to Excel to run comparisons the platform should have handled natively — 40% of sessions ended with a CSV download. Search was keyword-only on a dataset where relationships between indicators mattered more than individual values. And a full rebrand meant the visual language needed to change without breaking the mental models analysts had built over seven years.\n\nThe constraint: the redesign had to ship incrementally. Analysts couldn't lose access to v1 features during the transition, and there was no migration window — every change had to be backward-compatible with active analyst workflows.",
+      "Three problems, one constraint. Analysts exported to Excel for comparisons the platform should have handled. Search was keyword-only on a relational dataset. And a full rebrand meant changing the visual language without breaking seven years of muscle memory.\n\nThe constraint: no migration window. Every change shipped incrementally, backward-compatible with active analyst workflows. No downtime. No relearning curve.",
     approach:
-      "I led the redesign from research through shipping — running user sessions to identify the highest-friction workflows, designing the new information architecture in Figma, and building the React front-end. The guiding constraint was continuity: every change had to feel like an evolution, not a reset. Analysts who'd used v1 for years needed to recognize the product on day one of v2.",
+      "Research through shipping. I identified the highest-friction workflows, redesigned the IA in Figma, and built the React front-end. The guiding principle: evolution, not reset. Every change was tested against one question — will an analyst who used v1 yesterday recognize this today?",
     process: {
       discover: [
-        "Usage analytics revealed that 40% of analyst sessions ended with a CSV export — the platform was a data source, not a decision tool. The redesign needed to keep analysts inside the product.",
-        "12 new user sessions with institutional analysts, ESG researchers, and corporate clients — the top request across all three: side-by-side peer comparison without leaving the platform",
-        "Rebrand audit: mapped every component, token, and color value that needed to change — identified which visual changes would break analyst mental models vs. which were safe to evolve",
+        "40% of sessions ended in CSV export — the platform was a data source, not a decision tool",
+        "12 user sessions across institutional analysts, ESG researchers, and corporate clients. Universal top request: peer comparison without leaving the platform",
+        "Rebrand audit mapped every component and token. Separated safe visual changes from those that would break analyst mental models",
       ],
       design: [
-        "AI-powered Ask Me Anything interface: prompt cards for common analyst questions, natural language search grounded in JUST Capital's proprietary dataset with source citations — every answer links back to the underlying data so analysts can verify before trusting",
-        "Live Stakeholder Performance treemap: D3-powered visualization where area equals weight and color equals performance band — five drill-down levels from Overall to Datapoint. Replaced the v1 single composite score with a five-pillar breakdown",
-        "Peer Comparison tool: side-by-side datapoint comparison across selected companies, replacing the export-to-Excel workaround. We deprioritized collaborative annotation features — analyst workflows are fundamentally solo, and the feature would have added complexity without matching actual usage patterns",
-        "Custom keyboard-navigable drill-down across five treemap levels — built custom focus management rather than relying on native tab order, maintaining axe-core compliance at every level",
+        "AI Ask Me Anything — natural language search with source citations. Every answer links back to underlying data so analysts verify before trusting",
+        "D3 treemap — area encodes weight, color encodes performance band. Five drill-down levels replaced v1's flat composite score",
+        "Peer Comparison — side-by-side across 6+ companies. Deprioritized collaborative annotation (analyst workflows are solo; it would add complexity without matching usage)",
+        "Custom keyboard navigation across five treemap levels — axe-core compliant focus management at every depth",
       ],
       ship: [
-        "Shipped the rebrand without a single day of analyst downtime — token alias layer absorbed the entire visual change, validating the architecture decision from year one",
-        "AI search reduced average time-to-answer from 4+ minutes of manual filtering to under 30 seconds for common analyst queries",
-        "Peer comparison kept 40% of previously-exporting analysts inside the platform — CSV exports dropped by half in the first quarter",
-        "Progressive disclosure treemap replaced 3 separate table views with a single interactive visualization — fewer views, more insight per view",
+        "Rebrand shipped with zero analyst downtime — token alias layer absorbed the entire visual change",
+        "AI search: 4+ min manual filtering → under 30 seconds",
+        "CSV exports dropped ~50% in the first quarter post-launch",
+        "One treemap replaced three separate table views",
       ],
     },
     keyDecisions: [
-      "AI as accelerator, not replacement — The Ask Me Anything interface augments analyst workflows rather than replacing them. Every AI-generated answer includes source citations that link back to the underlying data. Analysts who don't trust AI can ignore it entirely and use the same manual navigation as before. The feature had to earn trust by being transparent, not by being mandatory.",
-      "Treemap over table — The v1 ranking table showed 1,000 companies in a sorted list. The v2 treemap shows the same data in two dimensions: area for weight, color for performance. Analysts can see at a glance which stakeholder pillars carry the most weight and where a company over- or under-performs. One visualization replaced three table views.",
-      "Evolution over revolution — Every visual change was tested against the question: will an analyst who used v1 yesterday recognize this today? We ran the redesigned views past 6 existing power users before shipping — testing whether they could complete their standard workflows without guidance. The information architecture stayed the same. The navigation stayed the same. What changed was the density of insight per view — more data in fewer clicks, not a new mental model to learn.",
+      "AI as accelerator, not replacement — Every AI answer includes source citations. Analysts who don't trust it can ignore it entirely. The feature earns trust through transparency, not by being mandatory.",
+      "Treemap over table — v1 showed 1,000 companies in a sorted list. v2 encodes weight as area, performance as color — two dimensions at a glance. One visualization replaced three table views.",
+      "Evolution over revolution — Ran redesigned views past 6 power users before shipping. Could they complete standard workflows without guidance? Same IA, same navigation. What changed: density of insight per view.",
     ],
     keyDecisionsLabel: "Key Tradeoffs",
     outcomes: [
-      "CSV exports dropped ~50% comparing the quarter before and after launch (per internal analytics) — analysts stayed in the platform instead of exporting to Excel for comparisons",
-      "AI search reduced common analyst queries from 4+ minutes of manual filtering to under 30 seconds — based on session timing data across the first 8 weeks post-launch",
-      "Full visual rebrand shipped with zero analyst downtime — token architecture from v1 absorbed the change as designed, validating the year-one infrastructure bet",
-      "Peer comparison became the second most-used feature within 6 weeks of launch (per feature usage tracking), behind only the main company profile view",
+      "~50% drop in CSV exports quarter-over-quarter — analysts stopped exporting because the platform finally handled comparisons natively",
+      "AI search reduced time-to-answer from 4+ min to <30s (8-week post-launch session data)",
+      "Zero analyst downtime during full rebrand — token architecture from v1 absorbed the change as designed",
+      "Peer comparison became #2 most-used feature within 6 weeks, behind only the company profile view",
     ],
     visualBlocksHeader: "v1 → v2",
     visualBlocks: [
@@ -237,49 +237,49 @@ export const caseStudies: Record<string, CaseStudyData> = {
         id: "ai-ask",
         layout: "wide",
         imageSrc: "/just/ji-ai-ask.png",
-        caption: "AI Ask Me Anything — prompt cards scaffold the most common analyst queries, turning 4-minute manual filter workflows into 30-second natural language lookups. Every response cites its source data so analysts can verify before they trust.",
+        caption: "AI Ask Me Anything — prompt cards scaffold common queries. 4-min manual workflows → 30-second lookups. Every response cites its source data.",
       },
       {
         id: "stakeholder-before-after",
         layout: "before-after",
         beforeSrc: "/just/just-ji-stk-old.png",
         afterSrc: "/just/ji-stakeholder-performance.png",
-        caption: "v1 displayed raw rank numbers in a flat table with no performance context. v2 introduces quintile-coded pillar cards with weight visibility, expandable bar charts benchmarked against industry average and top performer, and a live index return — replacing a scan-and-export workflow with an at-a-glance diagnostic.",
+        caption: "v1: raw ranks in a flat table. v2: quintile-coded pillar cards, expandable bar charts benchmarked against industry average and top performer, live index return. Scan-and-export → at-a-glance diagnostic.",
       },
       {
         id: "treemap-before-after",
         layout: "before-after",
         beforeSrc: "/just/just-ji-treemap-old.svg",
         afterSrc: "/just/ji-performance-explorer-treemap.png",
-        caption: "v1's treemap was a single-dimension drill-down with no performance encoding. v2 maps area to weight and color to quintile band — encoding two variables simultaneously — with five progressive zoom levels from Overall down to individual Datapoint.",
+        caption: "v1: single-dimension drill-down, no performance encoding. v2: area = weight, color = quintile band. Two variables, one visualization. Five zoom levels from Overall → Datapoint.",
       },
       {
         id: "performance-highlights",
         layout: "before-after",
         beforeSrc: "/just/just-ji-highlight-old.svg",
         afterSrc: "/just/ji-performance-highlights.png",
-        caption: "The scan layer analysts hit before drilling into anything. Highest and lowest performing metrics surface immediately with rank, tie count, and universe size — giving analysts a diagnostic starting point across 78 dimensions without a single filter click.",
+        caption: "The scan layer before drilling. Highest and lowest metrics surface with rank, tie count, and universe size — 78 dimensions, zero filter clicks.",
       },
       {
         id: "explorer-before-after",
         layout: "before-after",
         beforeSrc: "/just/just-ji-stk-dpcard-old.svg",
         afterSrc: "/just/ji-explorer-dpcard.png",
-        caption: "v1's datapoint card showed a static value with no peer context. v2 adds industry and overall distribution via donut charts, year-over-year comparison, methodology source links, and a disclosure prompt — turning a dead-end data point into a self-contained research view.",
+        caption: "v1: static value, no peer context. v2: distribution donut charts, YoY comparison, methodology links, disclosure prompt. Dead-end data point → self-contained research view.",
       },
       {
         id: "peer-comparison",
         layout: "before-after",
         beforeSrc: "/just/just-ji-pc-dp-old.png",
         afterSrc: "/just/just-ji-pc-dp.png",
-        caption: "v1 limited comparison to two companies with tooltip-based values. v2 scales to six-plus companies in a structured table with searchable add, industry tags, and a direct link to Scenario Analysis — the feature that cut CSV exports by roughly 50%.",
+        caption: "v1: two companies, tooltip values. v2: 6+ companies in a structured table with search, industry tags, and direct link to Scenario Analysis — the feature behind the 50% CSV export drop.",
       },
       {
         id: "scenario-before-after",
         layout: "before-after",
         beforeSrc: "/just/just-ji-scenario-old.png",
         afterSrc: "/just/ji-scenario-analysis-create_new.png",
-        caption: "v1 buried scenario creation inside the results view with no clear entry point. v2 separates Create and Find into distinct cards, adds a structured sidebar for navigating stakeholder categories, and surfaces industry statistics inline — making what-if modeling a first-class workflow instead of a hidden feature.",
+        caption: "v1: scenario creation buried in results, no entry point. v2: Create and Find as distinct cards, structured sidebar, inline industry stats. What-if modeling as a first-class workflow.",
       },
     ],
     codeBlocksHeader: "The System in Code",
@@ -287,12 +287,13 @@ export const caseStudies: Record<string, CaseStudyData> = {
       {
         id: "stakeholder-scorecard",
         title: "Stakeholder Scorecard — Quintile Ranking with Universe Toggle",
-        description: "Company performance across five stakeholder categories (Workers, Communities, Customers, Environment, Shareholders & Governance), ranked against the full JUST Capital universe or narrowed to industry peers via a radio toggle. Rank thresholds are computed dynamically — top/bottom 5% get special callout wrappers. Each stakeholder card expands into a bar chart comparing company score against universe average and top performer, with a live Index Concept return that colors green/red based on sign. Business case studies are filtered by stakeholder slug and gated behind entitlement checks.",
+        description: "Five stakeholder categories ranked against full universe or industry peers via radio toggle. Dynamic quintile thresholds. Expandable bar charts with universe avg and top performer. Live Index Concept return color-coded by sign. Business case studies filtered by stakeholder slug, gated behind entitlement checks.",
         language: "php",
         liveUrl: "https://justcapital.com",
         previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Helvetica Neue','Segoe UI',sans-serif;background:#fff;padding:20px 24px;color:#111;font-size:12px;}
+html,body{height:auto;overflow:hidden;}
+body{font-family:-apple-system,'Helvetica Neue','Segoe UI',sans-serif;background:#fff;padding:16px 20px;color:#111;font-size:12px;}
 .sc-wrap{max-width:680px;margin:0 auto;}
 .sc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
 .sc-updated{display:inline-flex;align-items:center;gap:5px;font-size:8px;color:#E07820;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
@@ -643,7 +644,7 @@ $universe_types = [
     ],
     tech: ["React", "TypeScript", "D3", "OpenAI API", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
     reflection:
-      "The hardest part of a Phase 2 isn't building new features — it's knowing which parts of the old system to keep. Seven years of analyst muscle memory is an asset, not a liability. Every decision in v2 was filtered through one question: does this make the analyst faster without making them relearn? The AI search, the treemap, the peer comparison — none of them replaced what existed. They filled the gaps analysts had been working around.",
+      "The hardest part of a Phase 2 is knowing what to keep. Seven years of muscle memory is an asset, not a liability. Every v2 decision ran through one filter: does this make the analyst faster without making them relearn? Nothing was replaced. The gaps were filled.",
     ctaText: "If you're redesigning a product that people already depend on, I've done it — without breaking the trust that took years to build.",
   },
 

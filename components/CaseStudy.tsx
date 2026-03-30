@@ -2931,6 +2931,9 @@ export default function CaseStudy({ project }: Props) {
         {data.codeBlocks && data.codeBlocks.length > 0 && (
           <div style={{ marginBottom: 80 }}>
             <p style={sectionLabelStyle(32)}>{data.codeBlocksHeader ?? "In Code"}</p>
+            <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-tertiary)", lineHeight: 1.5, marginBottom: 32, maxWidth: 640, opacity: 0.7 }}>
+              Previews are simplified reproductions — not pixel-perfect mirrors of the live product. They illustrate how complex data problems were reduced to clear interface patterns and how the underlying code was structured.
+            </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
               {data.codeBlocks.map((block) => (
                 <div key={block.id}>
@@ -3031,14 +3034,27 @@ export default function CaseStudy({ project }: Props) {
                           <iframe
                             srcDoc={block.previewHtml}
                             title={`${block.title} preview`}
-                            style={{ width: "100%", border: "none", display: "block", minHeight: 200 }}
+                            style={{ width: "100%", border: "none", display: "block", minHeight: 360 }}
                             sandbox="allow-same-origin allow-scripts"
-                            onLoad={(e) => {
-                              const iframe = e.currentTarget;
-                              try {
-                                const h = iframe.contentDocument?.documentElement?.scrollHeight;
-                                if (h) iframe.style.height = `${h}px`;
-                              } catch { /* cross-origin fallback */ }
+                            ref={(iframe) => {
+                              if (!iframe) return;
+                              const resize = () => {
+                                try {
+                                  const body = iframe.contentDocument?.body;
+                                  if (body) {
+                                    const h = body.offsetHeight;
+                                    if (h && h > 50) iframe.style.height = `${h}px`;
+                                  }
+                                } catch { /* cross-origin fallback */ }
+                              };
+                              iframe.addEventListener("load", () => {
+                                resize();
+                                setTimeout(resize, 200);
+                                setTimeout(resize, 600);
+                              });
+                              setTimeout(resize, 100);
+                              setTimeout(resize, 500);
+                              setTimeout(resize, 1000);
                             }}
                           />
                         ) : block.previewSrc ? (
@@ -3088,14 +3104,10 @@ export default function CaseStudy({ project }: Props) {
                       <>
                         <div
                           className={stackPanels ? undefined : "cs-code-layout"}
-                          style={{
-                            ...(stackPanels
-                              ? { display: "flex", flexDirection: "column", gap: 16 }
-                              : { display: "grid", gridTemplateColumns: hasPreview ? "1fr 1fr" : "1fr", gap: 16 }),
-                          }}
+                          style={{ display: "flex", flexDirection: "column", gap: 16 }}
                         >
-                          {stackPanels ? previewPanel : codePanel}
-                          {stackPanels ? codePanel : previewPanel}
+                          {previewPanel}
+                          {codePanel}
                         </div>
                         {liveLink}
                       </>
