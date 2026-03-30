@@ -262,7 +262,48 @@ export default function HeroSection({ dark }: Props) {
             </span>
           </p>
 
-          <div className="hero-ctas" style={{ marginTop: 40, display: "flex", gap: 16 }}>
+          {/* Metrics bar */}
+          <div
+            style={{
+              display: "flex",
+              gap: 32,
+              marginTop: 32,
+              flexWrap: "wrap",
+            }}
+          >
+            {[
+              { value: "7+", label: "Years Senior Exp" },
+              { value: "50+", label: "Global Languages" },
+              { value: "200M+", label: "Users Impacted" },
+            ].map((m) => (
+              <div key={m.label} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                <span
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 18,
+                    fontWeight: 600,
+                    color: "var(--accent)",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  {m.value}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 10,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    color: "var(--text-tertiary)",
+                  }}
+                >
+                  {m.label}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="hero-ctas" style={{ marginTop: 32, display: "flex", gap: 16 }}>
             <a
               href="#work"
               style={{

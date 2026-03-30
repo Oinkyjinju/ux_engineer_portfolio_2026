@@ -239,7 +239,8 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
                     <span
                       key={tag}
                       style={{
-                        fontFamily: mono, fontSize: 10, letterSpacing: "0.05em",
+                        fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
+                        textTransform: "uppercase",
                         border: "1px solid var(--border)", borderRadius: 20,
                         padding: "3px 10px", color: "var(--text-tertiary)",
                       }}

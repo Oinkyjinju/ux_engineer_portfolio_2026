@@ -1521,7 +1521,7 @@ export default function CaseStudy({ project }: Props) {
               <span
                 key={tag}
                 style={{
-                  fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+                  fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
                   textTransform: "uppercase", padding: "4px 12px",
                   borderRadius: 20, border: "1px solid rgba(237,234,227,0.3)",
                   color: "rgba(237,234,227,0.85)", background: "rgba(0,0,0,0.22)",
@@ -1888,7 +1888,8 @@ export default function CaseStudy({ project }: Props) {
                 <span
                   key={t}
                   style={{
-                    fontFamily: mono, fontSize: 11, letterSpacing: "0.04em",
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
+                    textTransform: "uppercase",
                     padding: "6px 14px",
                     border: "1px solid var(--border)", borderRadius: 20,
                     color: "var(--text-secondary)",
