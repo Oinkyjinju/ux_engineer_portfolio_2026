@@ -247,18 +247,18 @@ export default function HeroSection({ dark }: Props) {
               color: "var(--text-secondary)",
             }}
           >
-            I close the gap between what gets designed
+            Architecting the systems that scale global products —
             <br />
-            and what gets shipped.
+            from design intent to production reality.
             <br />
             <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-secondary)" }}>
-              Seven years doing both — at{" "}
+              Seven years leading the intersection of high-fidelity UX and front-end engineering at{" "}
               <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>JUST Capital</span>,
-              {" "}through Wordbank/Unfold for{" "}
+              {" "}across 50+ languages for{" "}
               <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Netflix</span> and{" "}
               <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Disney+</span>,
-              {" "}and with Echobind for{" "}
-              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>StoryCorps</span>.
+              {" "}and for{" "}
+              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>StoryCorps</span> with NPR.
             </span>
           </p>
 
@@ -272,9 +272,9 @@ export default function HeroSection({ dark }: Props) {
             }}
           >
             {[
-              { value: "7+", label: "Years Senior Exp" },
+              { value: "7+", label: "Years Lead Experience" },
               { value: "50+", label: "Global Languages" },
-              { value: "200M+", label: "Users Impacted" },
+              { value: "25+", label: "Concurrent Global Projects" },
             ].map((m) => (
               <div key={m.label} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                 <span
