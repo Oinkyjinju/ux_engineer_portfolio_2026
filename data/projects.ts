@@ -31,16 +31,6 @@ export const projects: Project[] = [
     gradient: "135deg, #2a0005, #E50914",
   },
   {
-    id: "just-rebrand",
-    title: "JUST Capital Website",
-    subtitle: "Front-End Engineering · WordPress CMS · 35 Custom Modules",
-    tags: ["Front-End Dev", "WordPress CMS", "Design Systems"],
-    year: "2026",
-    company: "CMS Engineering",
-    accent: "#E07820",
-    gradient: "135deg, #131f2b, #1a3550",
-  },
-  {
     id: "storycorps",
     title: "StoryCorps",
     subtitle: "iOS & Android Redesign · NPR Partnership",
@@ -49,6 +39,16 @@ export const projects: Project[] = [
     company: "StoryCorps",
     accent: "#EF553F",
     gradient: "135deg, #7a2010, #EF553F",
+  },
+  {
+    id: "just-rebrand",
+    title: "JUST Capital Website",
+    subtitle: "Front-End Engineering · WordPress CMS · 35 Custom Modules",
+    tags: ["Front-End Dev", "WordPress CMS", "Design Systems"],
+    year: "2026",
+    company: "CMS Engineering",
+    accent: "#E07820",
+    gradient: "135deg, #131f2b, #1a3550",
   },
   {
     id: "just-intelligence",
