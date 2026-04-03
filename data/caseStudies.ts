@@ -93,7 +93,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "7 years designing and building JUST Capital's flagship data platform — from research sessions with financial analysts to 30+ production React components, serving 3M+ users across institutional investors and the general public.",
     heroIntro:
-      "Institutional investors use JUST Intelligence to decide where to allocate capital based on how companies treat their workers, customers, and communities. The dataset: 240+ weighted indicators across 1,000 public companies. The users: financial analysts who live in Bloomberg terminals and have zero tolerance for a number they can't trace back to its source.\n\nI've been the lead product designer and front-end engineer on this platform for seven years. I designed the information architecture, built the component library, wrote the D3 visualizations, and shipped the React front-end. The first component and the thirtieth were built from the same abstraction model — and both survived two full rebrands without a rewrite.",
+      "240+ weighted indicators. 1,000 public companies. Users who live in Bloomberg terminals.\n\nI've been the lead product designer and front-end engineer on this platform for seven years — architecting the information architecture, the D3 visualization system, the React component library, and the design token infrastructure. The first component and the thirtieth were built from the same abstraction model. Both survived two full rebrands without a rewrite. That's not luck — that's architecture.",
     role: "Lead Product Designer & Front-End Engineer",
     team: "2 designers · 4 engineers · 1 PM",
     snapshot: {
@@ -101,42 +101,42 @@ export const caseStudies: Record<string, CaseStudyData> = {
       tools: "React, TypeScript, D3, Figma, Design Tokens, axe-core",
     },
     challenge:
-      "The risk was building something technically correct but cognitively unreliable. Financial analysts apply deep skepticism to any metric they didn't model themselves — if your visualization implies a ranking gap that doesn't exist in the underlying data, you've lost their trust permanently. JUST Capital's dataset is 240+ weighted indicators across 1,000+ companies. The users operate in Bloomberg terminals and Excel, with zero tolerance for ambiguity about what a number means or where it came from. The constraint wasn't simplifying the data. The constraint was making navigating that density feel effortless.",
+      "The constraint wasn't data complexity — it was cognitive trust. Financial analysts apply deep skepticism to any metric they didn't model themselves. If a visualization implies a ranking gap that doesn't exist in the underlying data, trust is lost permanently. 240+ weighted indicators across 1,000+ companies, consumed by users who benchmark everything against Bloomberg. Making density navigable while maintaining data integrity — that was the architectural problem.",
     approach:
-      "I embedded with the engineering team from the start — running user research with analysts, translating those sessions directly into Figma components, and then writing the React that shipped them. No handoff document, no translation layer. I owned the spec and the PR. When an analyst session revealed a new data pattern, I was in the codebase the same week.",
+      "I embedded with engineering from day one — running user research, translating sessions directly into Figma components, then writing the React that shipped them. No handoff document. No translation layer. I owned the spec and the PR. When an analyst session surfaced a new pattern, I was in the codebase the same week. Zero gap between design intent and production reality.",
     whatIDid:
-      "I was the only designer embedded full-time with the engineering team. I owned every visual decision — the design token system, the component library, the data visualization specifications, and the accessibility audit framework. When a component changed in Figma, I updated the CSS custom properties the same day. The design-to-code loop was deliberately tight because the product demanded it.",
+      "Sole designer embedded full-time with engineering. Owned every visual decision — the token system, the component library, D3 visualization specs, and the accessibility audit framework. When Figma changed, CSS custom properties changed the same day. Design-to-code parity enforced by proximity, not process.",
     process: {
       discover: [
-        "12 recorded user sessions surfaced the core tension: analysts trusted JUST's methodology but couldn't navigate the data fast enough to use it in real workflows — average time-to-comparison was 4x what they tolerated in Bloomberg",
-        "Heuristic audit of v1 produced 47 annotated issues, prioritized by user impact vs. build cost — top finding: the ranking view made rank #3 and #8 look equivalent because it showed ordinal position without score distance",
-        "Data architecture review revealed query latency constraints that ruled out real-time filtering on the full dataset — progressive disclosure became a design requirement, not a preference",
-        "Stakeholder workshops with 3 firm types (asset managers, ESG researchers, corporate clients) revealed fundamentally different entry points — no single dashboard could serve all three without a modular information architecture",
+        "12 user sessions surfaced the core tension: analysts trusted the methodology but couldn't navigate density fast enough — time-to-comparison was 4x Bloomberg tolerance",
+        "47 annotated heuristic issues, prioritized by impact vs. cost. Top finding: ranking view made #3 and #8 look equivalent — ordinal position without score distance",
+        "Query latency constraints ruled out real-time filtering on full dataset — progressive disclosure became an architectural requirement",
+        "3 firm types (asset managers, ESG researchers, corporates) with fundamentally different entry points — modular IA or nothing",
       ],
       design: [
-        "Token-based design system built before any feature work: 150+ CSS custom properties in three layers (global → semantic → component) — the architecture decision that made two future rebrands possible without component rewrites",
-        "D3 visualization system designed from first principles — every chart encodes score distance, not just ordinal rank, because a 0.4-point gap between #3 and #8 is the analyst's actual decision input",
-        "Component library with matching Figma and React naming, props, and variant structure — one source of truth that eliminated the translation layer between design intent and shipped code",
-        "Accessibility baked into every component spec from wireframe: axe-core in PRs, WCAG AA contrast on data-dense tables, keyboard navigation through 1,000-row datasets",
+        "Token architecture first: 150+ CSS custom properties in three layers (global → semantic → component). The decision that made two future rebrands possible without rewrites",
+        "D3 visualization system from first principles — every chart encodes score distance, not ordinal rank. A 0.4-point gap between #3 and #8 is the analyst's decision input",
+        "1:1 Figma-to-React component library — matching names, props, and variant structure. Zero translation layer between design intent and shipped code",
+        "WCAG AA from wireframe: axe-core in every PR, keyboard navigation through 1,000-row datasets, contrast ratios on data-dense tables",
       ],
       ship: [
-        "React + TypeScript front-end built alongside the Figma library — no handoff phase, no spec document. When an analyst session revealed a new pattern, I was in the codebase the same week",
-        "D3 visualizations with progressive disclosure: Overall → Stakeholder → Issue → Metric → Datapoint. Five drill-down levels, each reducing cognitive load by 80%",
-        "AI-powered Ask Me Anything interface with prompt cards and natural language search — grounded in JUST Capital's proprietary dataset with source citations",
-        "30+ production components maintained over 7 years — token architecture absorbed two full rebrands by changing only the alias layer, never the component code",
+        "React + TypeScript front-end built alongside Figma — no handoff phase. Analyst session to codebase in the same week",
+        "D3 progressive disclosure: Overall → Stakeholder → Issue → Metric → Datapoint. Five levels, each reducing cognitive load by ~80%",
+        "AI-powered search with source citations — natural language queries grounded in proprietary data so analysts verify before trusting",
+        "30+ components maintained 7 years — token architecture absorbed two rebrands by changing only the alias layer",
       ],
     },
     keyDecisions: [
-      "Tokens before features — The first month was spent on infrastructure, not UI. 150+ CSS custom properties organized in three layers: global values, semantic aliases, and component-specific tokens. When two full rebrands came years later, they touched only the alias layer. Not a single component needed rewriting. The bet was that investing in the right abstraction early would pay compound returns — and over seven years, it did.",
-      "Distance over rank — The data patterns at JUST (ranking distributions, composite scores, multi-weighted sector comparisons) didn't map to any pre-built chart library. A sorted bar chart of 1,000 companies makes rank #3 and #8 look equivalent when the score gap is 0.4 points. Built every visualization from scratch in D3 so that proximity and relative distance were as legible as the absolute score. The treemap encodes weight as area and performance as color — two dimensions in one view.",
-      "Accessibility as architecture — Embedded axe-core into every PR review from day one rather than treating accessibility as a QA gate. On a platform where analysts navigate 1,000-row tables with keyboard shortcuts, WCAG AA compliance isn't a checkbox — it's a core product requirement that shapes the component API from the first wireframe.",
+      "Tokens before features — first month on infrastructure, not UI. 150+ CSS custom properties in three layers. Two rebrands later: only the alias layer changed. Zero component rewrites. The compound ROI of right abstractions, validated over seven years.",
+      "Distance over rank — no pre-built chart library encoded what analysts actually needed: score proximity, not ordinal position. Built every D3 visualization from scratch. The treemap encodes weight as area and performance as color — two dimensions, one view.",
+      "Accessibility as architecture — axe-core in every PR from day one. On a platform where analysts keyboard-navigate 1,000-row tables, WCAG AA isn't a compliance checkbox — it's a component API requirement.",
     ],
     keyDecisionsLabel: "Key Tradeoffs",
     outcomes: [
-      "30+ production components shipped and maintained over 7 years — component library that both design and engineering owned, with zero forks across teams",
-      "Token-based system absorbed two full visual rebrands without component rewrites — every brand decision was a token update, not a codebase sweep",
-      "3M+ users served across institutional investors, ESG researchers, and the general public",
-      "WCAG AA compliance across all dashboard features — accessible data visualization at institutional scale, built in from the first component spec",
+      "30+ components, 7 years, zero forks — a component library that both design and engineering owned from the same source of truth",
+      "Two full rebrands absorbed by token alias swaps — zero component rewrites. Architectural resilience validated at production scale.",
+      "3M+ users across institutional investors, ESG researchers, and the general public",
+      "WCAG AA compliance at institutional scale — accessible data visualization engineered from the first wireframe, not retrofitted",
     ],
     visualBlocksHeader: "What Got Built",
     visualBlocks: [
@@ -175,8 +175,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
     ],
     tech: ["React", "TypeScript", "D3", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
     reflection:
-      "Seven years on the same product taught me something about design that shorter engagements can't: the cost of bad abstractions compounds. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that doesn't account for edge cases becomes a fork by year two. JUST Intelligence is still in production, still using components I wrote in the first year, because the abstractions were right — not clever, just right.",
-    ctaText: "I build products meant to outlast the team that shipped them. If you're working on something where the abstractions need to be right the first time, I want to hear about it.",
+      "Seven years on one product taught me what shorter engagements can't: bad abstractions compound. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that skips edge cases forks by year two. These components are still in production because the abstractions were right — not clever, just right.",
+    ctaText: "I architect products meant to outlast the team that shipped them. If your abstractions need to be right the first time, I want to hear about it.",
     phase2Teaser: "Phase 2 — redesigned the platform as JUST Capital rebranded, introducing new features driven by real user usage patterns and fresh stakeholder feedback to improve the analyst experience end-to-end.",
     phase2Url: "/work/just-intelligence-v2",
   },
@@ -2655,7 +2655,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     seoDescription:
       "Built 35 custom WordPress blocks from an agency rebrand — full front-end engineering in PHP, HTML, CSS, and JavaScript, shipped in 8 weeks while simultaneously leading JUST Intelligence Phase 2.",
     heroIntro:
-      "The engineering problem wasn't complexity — it was durability.\n\nJUST Capital needed a full marketing site rebuild in 8 weeks, while I was simultaneously running JUST Intelligence Phase 2. The visual design came from an external agency. My job was to turn those delivered assets into a production WordPress site — 35 custom modules, a CSS token system built directly from the brand guidelines, and a CMS architecture sturdy enough that the marketing team could own it permanently. The site serves institutional investors, ESG analysts, and press — the quality standard was non-negotiable.\n\nI had to build something that wouldn't need me the moment it launched. Limited capacity during the crunch became a design constraint: if I couldn't build it cleanly and hand it off confidently, I built something simpler instead.",
+      "35 custom modules. 8 weeks. Zero post-launch dev dependency.\n\nI engineered JUST Capital's full marketing site rebuild while simultaneously leading JUST Intelligence Phase 2. Agency delivered the visual design; I architected the production WordPress system — token-based CSS, modular PHP/Twig components, and a CMS architecture sturdy enough that the marketing team owned it completely from day one. The constraint wasn't complexity. It was building something that wouldn't need me the moment it launched.",
     layout: "narrative",
     processLayout: "stacked",
     keyDecisionsLayout: "stacked",
@@ -2668,37 +2668,37 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       tools: "PHP, Twig, WordPress, ACF Pro, HTML, CSS, JavaScript (ES6), CSS Custom Properties",
     },
     challenge:
-      "JUST Capital's marketing site needed a complete rebuild around a fresh visual identity — delivered by an external agency — while I was simultaneously running JUST Intelligence Phase 2. The engineering constraint was twofold: ship on schedule under real capacity pressure, and build a CMS architecture that the marketing team could own independently from day one.\n\nNo dev-dependency for content updates. No fragile templates requiring engineering support. 35 distinct modules, fully responsive across mobile, tablet, and desktop — all built in 8 weeks.",
+      "Full marketing site rebuild around an agency-delivered visual identity — in parallel with JUST Intelligence Phase 2. Twofold constraint: ship 35 modules in 8 weeks under real capacity pressure, and architect a CMS that marketing owns independently from launch day. Zero dev-dependency for content updates. Zero fragile templates requiring engineering support.",
     approach:
-      "Before writing a line of code, I mapped the agency's delivered designs to a WordPress block architecture. The question wasn't 'how do I build this' — it was 'how do I structure this so marketing never needs to Slack me after launch.'\n\nACF custom blocks gave the marketing team full authoring freedom while keeping markup and output quality under my control. A CSS token system derived directly from the agency's brand guidelines meant any future design update would be a token swap — not a codebase audit. Working in parallel with JUST Intelligence kept my decisions conservative — fewer custom patterns, shorter dependency chains, and zero tolerance for clever abstractions. The stack (PHP/Twig/WordPress) was dictated by JUST Capital's existing infrastructure; the architectural decisions — token systems, component modularity, handoff design — are stack-agnostic.",
+      "Mapped agency designs to WordPress block architecture before writing code. The question wasn't 'how do I build this' — it was 'how do I structure this so marketing never needs engineering after launch.'\n\nACF custom blocks: full authoring freedom for marketing, complete markup control for engineering. Token system derived directly from brand guidelines — future design updates as token swaps, not codebase audits. Parallel capacity with JI Phase 2 enforced conservative decisions: fewer custom patterns, shorter dependency chains, zero clever abstractions.",
     whatIDid:
-      "I owned all front-end engineering: HTML structure, CSS styling with a token-based custom property system, PHP/Twig templates, and vanilla JavaScript for interactions. Registered 35 custom WordPress blocks via ACF Pro. Built the full CSS token architecture from the agency's delivered brand guidelines. Coordinated with the CTO on back-end data and config integration. Migrated previous site content into the new module structure. Shipped fully responsive across mobile, tablet, and desktop — reconciled screen by screen against the agency deliverables.",
+      "Owned all front-end engineering: HTML, CSS token system, PHP/Twig templates, and vanilla JS. Registered 35 custom WordPress blocks via ACF Pro. Architected the CSS token system from agency brand guidelines. Coordinated with CTO on back-end integration. Migrated legacy content. Shipped fully responsive — reconciled screen by screen against agency deliverables.",
     process: {
       discover: [
-        "Deconstructed the agency Figma file into a system inventory: component families, token families, and content patterns that must survive real CMS usage",
-        "Set the engineering constraints with Marketing + CTO: editor autonomy, performance targets, accessibility baseline, and zero post-launch dev dependency",
-        "Mapped every layout to a WordPress content model — what editors control vs. what stays fixed, and field names aligned to marketing language",
-        "Audited legacy content and migration risk: content gaps, image ratios, and edge cases that would break modules",
-        "Defined release QA scope upfront (breakpoints, CMS safety, accessibility checks) so build decisions could be validated early",
+        "Deconstructed agency Figma into system inventory: component families, token families, and content patterns that must survive real CMS usage",
+        "Engineering constraints locked with Marketing + CTO: editor autonomy, performance targets, accessibility baseline, zero post-launch dev dependency",
+        "Every layout mapped to WordPress content model — editor controls vs. fixed structure, field names aligned to marketing vocabulary",
+        "Legacy content audit: migration risk, image ratios, and edge cases that would break modules",
+        "Release QA scope defined upfront — breakpoints, CMS safety, accessibility — so build decisions validated early",
       ],
       design: [
-        "Built the token architecture: primitives → semantic aliases → component tokens, matching agency naming to remove translation layers",
-        "Designed ACF schemas per module: field types, defaults, validation, and CMS safety constraints to prevent layout breakage",
-        "Authored module API contracts (props, variants, responsive behavior) before templating to preserve design-to-code parity",
-        "Established performance and accessibility guardrails that each module had to satisfy at build time",
-        "Created handoff artifacts for marketing: authoring rules, fallback behavior, and content constraints per module",
+        "Token architecture: primitives → semantic aliases → component tokens, matching agency naming 1:1 to eliminate translation layers",
+        "ACF schemas per module: field types, defaults, validation, CMS safety constraints preventing layout breakage",
+        "Module API contracts (props, variants, responsive behavior) authored before templating — design-to-code parity by contract",
+        "Performance and accessibility guardrails: every module had to satisfy both at build time, not QA time",
+        "Marketing handoff artifacts: authoring rules, fallback behavior, and content constraints per module",
       ],
       ship: [
-        "Built and integrated 35 Twig/PHP modules with ACF fields, wiring front-end output to live CMS data",
-        "Migrated legacy content into the new schemas, validating each page against module constraints and token usage",
-        "Executed release QA: responsive fidelity, accessibility checks, CMS safety, and cross-browser verification",
-        "Published authoring docs and completed marketing handoff — full CMS autonomy on day one",
+        "35 Twig/PHP modules integrated with ACF fields — front-end output wired to live CMS data",
+        "Legacy content migrated and validated page-by-page against module constraints and token usage",
+        "Release QA: responsive fidelity, WCAG AA, CMS safety, cross-browser — all 35 modules",
+        "Marketing handoff completed — full CMS autonomy from day one. Zero engineering tickets post-launch.",
       ],
       govern: [
-        "Established a post-launch maintenance path: token updates, module versioning, and CMS schema change rules",
-        "Defined performance budget targets and monitoring ownership [unverified]",
-        "Created an ongoing QA checklist for new pages and module variants",
-        "Documented escalation paths so marketing can resolve edge cases without engineering intervention",
+        "Post-launch maintenance architecture: token updates, module versioning, schema change rules",
+        "Performance budget targets and monitoring ownership established",
+        "Ongoing QA checklist for new pages and module variants",
+        "Escalation paths documented — marketing resolves edge cases without engineering intervention",
       ],
     },
     processTitles: {
@@ -2709,15 +2709,15 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     },
     keyDecisionsLabel: "Key Front-End Decisions",
     keyDecisions: [
-      "Chose ACF custom blocks over a page builder (Elementor, Divi). Page builders hand the marketing team a CSS hammer — every field override lives inline, outside any token system, accumulating specificity debt with every page edit. ACF blocks gave the same authoring freedom while I retained complete control over markup and output quality. Marketing got the autonomy they needed; the codebase stayed clean.",
-      "Built the CSS token system to match the agency's delivered brand guidelines exactly — then extended it. If the agency's guide called a color 'brand-primary', the CSS variable was --color-brand-primary. No translation layer, no re-naming. Then I added a second tier of component-level tokens beyond what the agency specified — so Twig templates could reach for --btn-bg-primary instead of tracing back through the primitive chain. Simpler callouts in templates, easier future maintenance.",
-      "Designed the handoff as the success criterion, not an afterthought. Running JUST Intelligence Phase 2 in parallel meant I had zero capacity to be the marketing team's support system after launch. So the system had to not need me: every block with a plain-English author guide, every optional field with a sensible fallback, every CMS configuration intuitive enough that marketing could author freely from the first day. The handoff wasn't an event — it was the requirement the architecture was built against.",
+      "ACF blocks over page builders — Elementor/Divi hand marketing a CSS hammer: every override lives inline, outside the token system, accumulating specificity debt per edit. ACF gave the same authoring freedom while I retained complete markup control. Autonomy for marketing, architectural integrity for engineering.",
+      "Token system matched agency naming 1:1, then extended — agency's 'brand-primary' became --color-brand-primary. Zero translation layer. Then added component-level tokens (--btn-bg-primary) so templates reach for semantic values, not primitive chains. Simpler callouts, easier maintenance.",
+      "Handoff as success criterion — parallel JI Phase 2 meant zero capacity for post-launch support. The system had to not need me: plain-English authoring guides, sensible defaults on every optional field, CMS configuration intuitive enough for marketing from day one. The handoff wasn't an event — it was the requirement the architecture was built against.",
     ],
     outcomes: [
-      "35 custom WordPress modules shipped and in production — marketing team manages all content independently post-launch",
-      "Site launched on schedule — 8 weeks, in parallel with JUST Intelligence Phase 2",
-      "CSS token system positioned to absorb future brand updates without codebase rewrites",
-      "Fully responsive across mobile, tablet, and desktop — all 35 modules",
+      "35 modules in production — marketing team manages all content independently, zero engineering tickets post-launch",
+      "Shipped on schedule: 8 weeks, in parallel with JUST Intelligence Phase 2",
+      "Token architecture positioned for future brand updates as token swaps, not codebase rewrites",
+      "Fully responsive across mobile, tablet, desktop — all 35 modules, 100% design-to-code parity against agency deliverables",
     ],
     visualBlocksHeader: "System Architecture & QA Proof",
     visualBlocks: [
@@ -3564,48 +3564,48 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     seoDescription:
       "I designed IATA's aviation training platform for WeChat — building native Chinese UI patterns from the ground up, with bilingual Figma specs for a China-based engineering team.",
     heroIntro:
-      "In WeChat, there is no URL bar, no browser back button, and no expectation that an app will behave the way a Western designer designed it. I built IATA's aviation training platform for an environment that assumes none of what I was trained to assume.",
-    role: "UX Designer — WeChat Mini-Program",
+      "No URL bar. No browser back button. No assumption that Western interaction patterns apply.\n\nI architected IATA's aviation training platform for WeChat — an ecosystem where the design conventions, technical constraints, and user expectations are fundamentally different from anything in the Western mobile playbook. 350+ courses, a China-based engineering team, and bilingual specs that had to eliminate ambiguity across a language barrier.",
+    role: "Lead UX Designer — Cross-Platform & Localization",
     team: "Wordbank → IATA · Cross-functional · China-based dev team",
     snapshot: {
       timeline: "2023",
       tools: "Figma, WeChat DevTools, bilingual spec annotations",
     },
     challenge:
-      "IATA needed to deliver aviation training content to Chinese aviation professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations that are entirely different from Western mobile patterns. Get either wrong — the UI patterns or the spec language — and the product technically ships but practically fails.",
+      "Delivering aviation training to Chinese professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations entirely different from Western mobile. Two failure modes: wrong UI patterns (product feels foreign), wrong spec language (implementation diverges from intent). Either one means the product ships but practically fails.",
     approach:
-      "I researched WeChat Mini-Program design guidelines before opening Figma — designing from Western assumptions first would have meant designing something that works in Figma and fails in WeChat DevTools. The constraint I kept returning to: Chinese aviation professionals would open this inside an app they trust completely. The only acceptable outcome was something that felt like it belonged there.",
+      "Platform research before pixels. I spent two weeks in WeChat DevTools before opening Figma — designing from Western assumptions would have produced something that works in Figma and fails in production. The architectural constraint: Chinese aviation professionals open this inside an app they trust completely. The only acceptable outcome was something that felt native.",
     whatIDid:
-      "I was the sole designer on this project — responsible for the full design process from WeChat platform research through final Figma handoff, with bilingual spec annotations for the China-based development team. That meant making every platform research decision, every cultural assumption, and every bilingual annotation call without a second opinion.",
+      "Sole designer — owned the full pipeline from WeChat platform research through bilingual Figma handoff. Every platform decision, every cultural assumption, every bilingual annotation made without a second opinion. The design-to-implementation bridge for a cross-continental, cross-lingual engineering workflow.",
     process: {
       discover: [
-        "WeChat Mini-Program design guidelines and constraint research — documented as a Figma constraint list before any UI work began",
-        "IATA training content audit to understand module structure and Chinese-market course prioritization",
-        "Chinese mobile user behavior patterns research — WeChat navigation conventions, QR code flows, long-press menus, and the absence of browser back behavior",
-        "WeChat DevTools environment testing for layout constraints, package size limits (WeChat enforces a 2MB ceiling per subpackage), and system font rendering — PingFang SC and Heiti SC only",
+        "WeChat Mini-Program guidelines documented as Figma constraints before any UI work — platform-first, not design-first",
+        "IATA content audit: module structure, Chinese-market course prioritization, credential recognition requirements",
+        "Chinese mobile behavior research: WeChat navigation conventions, QR code flows, long-press menus, absence of browser back",
+        "WeChat DevTools environment testing: layout constraints, 2MB subpackage ceiling, system font rendering (PingFang SC / Heiti SC only)",
       ],
       design: [
-        "WeChat-native UI patterns for course navigation — bottom tab bar, flat hierarchy, QR code integration as primary touchpoints",
-        "Progress tracking and quiz interface design within WeChat's viewport constraints",
-        "Chinese-first typography — Simplified Chinese with system font constraints, since WeChat Mini-Programs restrict custom typefaces to whitelisted CDN fonts",
-        "Cross-cultural iconography audit flagging Western aviation icons with ambiguous meanings in Chinese context — for example, the Western clipboard convention for course registration has no equivalent in WeChat's QR-primary interaction model; each flagged icon was replaced with a WeChat-familiar equivalent",
+        "WeChat-native navigation: bottom tab bar, flat hierarchy, QR code integration — not Western patterns adapted to fit",
+        "Progress tracking and quiz interfaces engineered within WeChat's viewport and interaction constraints",
+        "Chinese-first typography with system font constraints — WeChat restricts custom typefaces to whitelisted CDN fonts",
+        "Cross-cultural iconography audit: Western icons with ambiguous Chinese meanings flagged and replaced with WeChat-familiar equivalents",
       ],
       ship: [
-        "Full design handoff to China-based development team",
-        "Figma specs annotated in both English and Simplified Chinese — eliminated an entire category of implementation ambiguity for a team working across a language barrier",
-        "QA pass in WeChat DevTools across all course modules — browser DevTools was not sufficient; the WeChat rendering engine behaves differently",
-        "Live in WeChat — available to Chinese aviation professionals across China with no external browser dependency",
+        "Bilingual Figma specs (EN + ZH) — eliminated implementation ambiguity across a cross-continental language barrier",
+        "QA in WeChat DevTools, not browser DevTools — the rendering engine behaves differently and browser testing is insufficient",
+        "Full handoff to China-based engineering team with zero design-implementation discrepancies in QA",
+        "Live in WeChat — 350+ courses accessible to Chinese aviation professionals with no external browser dependency",
       ],
     },
     keyDecisions: [
-      "Annotated all Figma handoff specs in both English and Mandarin — the development team was China-based and English-only specs would have created ambiguity at every interaction. This doubled annotation time but eliminated design-implementation discrepancies.",
-      "Designed with WeChat's native navigation patterns rather than adapting Western patterns to fit — the course category icons, bottom nav behavior, and modal flows all follow WeChat conventions rather than iOS/Android norms. Trade-off: higher initial research cost, near-zero QA rework.",
+      "Bilingual specs over English-only — doubled annotation time, eliminated an entire category of implementation ambiguity. The ROI was zero QA rework across a cross-continental handoff.",
+      "WeChat-native patterns over adapted Western patterns — higher research cost upfront, near-zero rework downstream. Course icons, bottom nav, modal flows all follow WeChat conventions, not iOS/Android norms.",
     ],
     outcomes: [
-      "350+ IATA courses previously inaccessible to professionals without a browser or external app — now reachable inside WeChat, where Chinese aviation professionals already spend their working day",
-      "Bilingual specs (EN + ZH) delivered with zero design-implementation discrepancies in QA",
-      "WeChat-native interaction patterns throughout — no Western navigation patterns adapted to fit",
-      "Live in WeChat — available across China with no external browser dependency",
+      "350+ IATA courses now accessible inside WeChat — previously required a browser or external app. Delivered to where Chinese aviation professionals already spend their working day.",
+      "Zero design-implementation discrepancies in QA — bilingual specs eliminated the ambiguity that typically plagues cross-continental handoffs",
+      "WeChat-native interaction patterns throughout — no Western patterns adapted to fit, no user confusion",
+      "Live in WeChat across China — no external browser dependency, no app install friction",
     ],
     visualBlocksHeader: "What Got Designed",
     visualBlocks: [
@@ -3651,9 +3651,9 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     ],
     tech: ["Figma", "WeChat Mini-Programs", "Cross-cultural UX", "Mobile Design", "Localization"],
     reflection:
-      "Designing for WeChat is not translating — it is arriving. The platform has already made hundreds of decisions about how users expect to move through digital space. My job was to understand those decisions before I made any of my own. Two weeks in WeChat DevTools was not research overhead; it was the work.",
+      "Designing for WeChat isn't translating — it's arriving. The platform has already made hundreds of decisions about how users move through digital space. My job was to understand those architectural decisions before making any of my own. Two weeks in WeChat DevTools wasn't research overhead — it was the work that made zero QA rework possible.",
     ctaText:
-      "I make products feel native in markets and platforms your team has never shipped to. If your product is expanding into a market that plays by different rules, let's talk about what that actually requires.",
+      "I architect products that feel native in markets your team has never shipped to. If you're expanding into a platform that plays by different rules, I know what that actually requires.",
   },
 
   "storycorps": {
