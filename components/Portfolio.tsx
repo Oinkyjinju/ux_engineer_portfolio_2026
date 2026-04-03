@@ -15,30 +15,35 @@ const LAB_ITEMS = [
     title: "Physics Sandbox",
     tech: "Three.js · React",
     desc: "Draggable 3D objects with deterministic choreography.",
+    rdNote: "Exploring deterministic physics engines for branded, high-performance UI motion.",
     href: "/",
   },
   {
     title: "Micro-Interactions",
     tech: "Framer Motion · Web APIs",
     desc: "Four production-ready interactions. No extra libraries.",
+    rdNote: "Testing Framer Motion spring configs that feel premium at 60fps on low-end devices.",
     href: "/micro",
   },
   {
     title: "Graph Demo",
     tech: "D3.js · Next.js",
     desc: "Force-directed data visualization, interactive.",
+    rdNote: "Experimenting with WebGL-accelerated force layouts for high-density ESG data viz.",
     href: "/graph",
   },
   {
     title: "OS Dashboard",
     tech: "React · CSS",
     desc: "Desktop-style UI with draggable windows.",
+    rdNote: "Prototyping windowed UI patterns for multi-panel analyst dashboards.",
     href: "/os",
   },
   {
     title: "Betjeman & Barton",
     tech: "HTML · CSS · JS",
     desc: "Luxury tea house e-commerce concept — cursor-follow previews, dropdown nav, product hover overlays.",
+    rdNote: "Cursor-driven interaction models for high-end e-commerce — no framework dependencies.",
     href: "/betjeman",
   },
 ];
@@ -274,6 +279,17 @@ export default function Portfolio() {
               <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.55, margin: 0 }}>
                 {item.desc}
               </p>
+              {item.rdNote && (
+                <p style={{
+                  fontFamily: mono, fontSize: 10, letterSpacing: "0.04em",
+                  color: "var(--text-tertiary)", lineHeight: 1.5,
+                  marginTop: 12, paddingTop: 10,
+                  borderTop: "1px solid var(--border)",
+                  fontStyle: "italic", opacity: 0.7,
+                }}>
+                  R&amp;D: {item.rdNote}
+                </p>
+              )}
             </a>
           ))}
         </div>

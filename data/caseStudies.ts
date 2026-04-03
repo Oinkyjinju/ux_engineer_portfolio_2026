@@ -84,6 +84,7 @@ export interface CaseStudyData {
   liveSiteUrl?: string;
   phase2Teaser?: string;
   phase2Url?: string;
+  specSheet?: { label: string; value: string }[];
 }
 
 export const caseStudies: Record<string, CaseStudyData> = {
@@ -100,6 +101,12 @@ export const caseStudies: Record<string, CaseStudyData> = {
       timeline: "2017–present",
       tools: "React, TypeScript, D3, Figma, Design Tokens, axe-core",
     },
+    specSheet: [
+      { label: "Primary Stack", value: "React · TypeScript · D3 · CSS Custom Properties" },
+      { label: "Accessibility", value: "WCAG 2.1 AA · axe-core in every PR" },
+      { label: "Engineering Impact", value: "0 component rewrites across 2 full rebrands" },
+      { label: "Scale", value: "3M+ users · 7 years in production" },
+    ],
     challenge:
       "The constraint wasn't data complexity — it was cognitive trust. Financial analysts apply deep skepticism to any metric they didn't model themselves. If a visualization implies a ranking gap that doesn't exist in the underlying data, trust is lost permanently. 240+ weighted indicators across 1,000+ companies, consumed by users who benchmark everything against Bloomberg. Making density navigable while maintaining data integrity — that was the architectural problem.",
     approach:
@@ -194,6 +201,12 @@ export const caseStudies: Record<string, CaseStudyData> = {
       timeline: "2026",
       tools: "React, TypeScript, D3, Figma, OpenAI API, Design Tokens",
     },
+    specSheet: [
+      { label: "Primary Stack", value: "React · TypeScript · D3 · OpenAI API" },
+      { label: "Accessibility", value: "WCAG 2.1 AA · axe-core · keyboard nav across 5 treemap levels" },
+      { label: "Engineering Impact", value: "~50% CSV export reduction · <30s time-to-insight" },
+      { label: "Scale", value: "S&P 500 analysts · 240+ weighted indicators · 1,000 companies" },
+    ],
     whatIDid:
       "Owned product design and front-end engineering. Ran 12 user sessions. Designed the information architecture in Figma. Specced the D3 treemap. Shipped the AI search interface. Led the rebrand migration — remapping every token and component while keeping the platform live for analysts throughout.",
     challenge:
@@ -652,6 +665,12 @@ $universe_types = [
     id: "just-wordpress",
     role: "Design Systems Engineer",
     team: "1 designer · 3 dev teams · 1 content team",
+    specSheet: [
+      { label: "Primary Stack", value: "PHP · Twig · CSS Custom Properties · Figma Tokens" },
+      { label: "Accessibility", value: "WCAG 2.1 AA baseline across all components" },
+      { label: "Engineering Impact", value: "100% design-to-code parity · 800+ hardcoded values replaced" },
+      { label: "Scale", value: "30+ components · 3 dev teams onboarded" },
+    ],
     challenge:
       "5+ years of accumulated front-end debt. No component system. No design tokens. No shared language between design and engineering. Three separate teams building the same patterns three different ways — a force multiplier in reverse.",
     approach:
@@ -2667,6 +2686,12 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       timeline: "2026 (8 weeks crunch)",
       tools: "PHP, Twig, WordPress, ACF Pro, HTML, CSS, JavaScript (ES6), CSS Custom Properties",
     },
+    specSheet: [
+      { label: "Primary Stack", value: "PHP · Twig · WordPress · ACF Pro · CSS Custom Properties" },
+      { label: "Accessibility", value: "WCAG 2.1 AA · responsive across all 35 modules" },
+      { label: "Engineering Impact", value: "Zero engineering tickets post-launch · 8-week delivery" },
+      { label: "Scale", value: "35 custom modules · CMS autonomy for marketing from day one" },
+    ],
     challenge:
       "Full marketing site rebuild around an agency-delivered visual identity — in parallel with JUST Intelligence Phase 2. Twofold constraint: ship 35 modules in 8 weeks under real capacity pressure, and architect a CMS that marketing owns independently from launch day. Zero dev-dependency for content updates. Zero fragile templates requiring engineering support.",
     approach:
@@ -3443,6 +3468,12 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       timeline: "8+ years · ongoing",
       tools: "Adobe CC (Photoshop, Illustrator), Cinema 4D, Figma, cross-studio QA framework",
     },
+    specSheet: [
+      { label: "Primary Stack", value: "Figma · Adobe CC · Cinema 4D · Cross-studio QA framework" },
+      { label: "Accessibility", value: "Language-agnostic QA across 6 script families" },
+      { label: "Engineering Impact", value: "Zero library forks over 8 years · 100% brand parity" },
+      { label: "Scale", value: "50+ languages · 2 global studios · 25+ concurrent projects" },
+    ],
     challenge:
       "Two studios making localization decisions in isolation. A title treatment could clear QA at one studio and fail at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. Text expansion, directional logic, and character density variance across 50+ languages — with launch windows that don't move.",
     approach:
@@ -3571,6 +3602,12 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       timeline: "2023",
       tools: "Figma, WeChat DevTools, bilingual spec annotations",
     },
+    specSheet: [
+      { label: "Primary Stack", value: "Figma · WeChat DevTools · Bilingual (EN/ZH) specs" },
+      { label: "Accessibility", value: "WeChat-native interaction patterns · PingFang SC/Heiti SC" },
+      { label: "Engineering Impact", value: "Zero QA rework across cross-continental handoff" },
+      { label: "Scale", value: "350+ courses · China-based dev team · WeChat ecosystem" },
+    ],
     challenge:
       "Delivering aviation training to Chinese professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations entirely different from Western mobile. Two failure modes: wrong UI patterns (product feels foreign), wrong spec language (implementation diverges from intent). Either one means the product ships but practically fails.",
     approach:
@@ -3669,6 +3706,12 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       timeline: "6 weeks / 2021",
       tools: "Figma, React Native specs, WCAG AA checks",
     },
+    specSheet: [
+      { label: "Primary Stack", value: "Figma · React Native · VoiceOver · TalkBack" },
+      { label: "Accessibility", value: "WCAG 2.1 AA · 44px touch targets · screen reader optimized" },
+      { label: "Engineering Impact", value: "7 → 3 step onboarding · 4.6★ rating held through 3x scale" },
+      { label: "Scale", value: "100k+ users · 2 platforms · 1 shared component system" },
+    ],
     challenge:
       "An NPR partnership was about to triple the user base — and the recording flow failed silently. No recovery path. A dropped call meant a lost story. At that scale, that was a reputational risk, not a UX bug. Onboarding was 7 steps deep, and iOS/Android had diverged into two different products.",
     approach:
