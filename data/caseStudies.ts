@@ -187,7 +187,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "Redesigned JUST Capital's flagship data platform with AI-powered search, live stakeholder treemaps, and peer comparison tools — driven by real user usage patterns and a full visual rebrand.",
     heroIntro:
-      "40% of analyst sessions ended in a CSV export. The platform was a data source — not a decision tool.\n\nPhase 2 turned that around. I ran 12 user sessions, audited every workflow, and redesigned the platform around the patterns analysts were already improvising outside of it. Same dataset. Same 240+ weighted indicators. Entirely different relationship between user and system.",
+      "40% of analyst sessions ended in a CSV export. The platform was a data source — not a decision tool.\n\nI architected the transformation from a once-a-year audit portal into a daily decision-support utility for S&P 500 analysts. 12 user sessions, full workflow audit, and a redesign built around the patterns analysts were already improvising outside the system. Same dataset. Same 240+ weighted indicators. Entirely different behavioral relationship between user and platform.",
     role: "Lead Product Designer & Front-End Engineer",
     team: "2 designers · 4 engineers · 1 PM",
     snapshot: {
@@ -197,9 +197,9 @@ export const caseStudies: Record<string, CaseStudyData> = {
     whatIDid:
       "Owned product design and front-end engineering. Ran 12 user sessions. Designed the information architecture in Figma. Specced the D3 treemap. Shipped the AI search interface. Led the rebrand migration — remapping every token and component while keeping the platform live for analysts throughout.",
     challenge:
-      "Three problems, one constraint. Analysts exported to Excel for comparisons the platform should have handled. Search was keyword-only on a relational dataset. And a full rebrand meant changing the visual language without breaking seven years of muscle memory.\n\nThe constraint: no migration window. Every change shipped incrementally, backward-compatible with active analyst workflows. No downtime. No relearning curve.",
+      "Three problems, one constraint. Analysts exported to Excel for comparisons the platform should have handled. Search was keyword-only on a relational dataset built for structured queries. And a full rebrand meant changing the visual language without breaking seven years of muscle memory.\n\nThe constraint: managing LLM integration (unstructured output, latency, unpredictable formatting) inside a high-fidelity D3 environment — with no migration window. Every change shipped incrementally, backward-compatible with active analyst workflows.",
     approach:
-      "Research through shipping. I identified the highest-friction workflows, redesigned the IA in Figma, and built the React front-end. The guiding principle: evolution, not reset. Every change was tested against one question — will an analyst who used v1 yesterday recognize this today?",
+      "I spearheaded the product strategy through research and shipping simultaneously. Identified the highest-friction workflows, redesigned the IA in Figma, and engineered the React front-end. Used UX testing data to balance stakeholder feature requests with the technical reality of LLM streaming. Guiding principle: evolution, not reset.",
     process: {
       discover: [
         "40% of sessions ended in CSV export — the platform was a data source, not a decision tool",
@@ -226,10 +226,10 @@ export const caseStudies: Record<string, CaseStudyData> = {
     ],
     keyDecisionsLabel: "Key Tradeoffs",
     outcomes: [
-      "~50% drop in CSV exports quarter-over-quarter — analysts stopped exporting because the platform finally handled comparisons natively",
-      "AI search reduced time-to-answer from 4+ min to <30s (8-week post-launch session data)",
-      "Zero analyst downtime during full rebrand — token architecture from v1 absorbed the change as designed",
-      "Peer comparison became #2 most-used feature within 6 weeks, behind only the company profile view",
+      "~50% drop in CSV exports QoQ — analysts stopped exporting because the platform finally handled comparisons natively. Behavioral transformation from data source to decision tool.",
+      "AI search: 4+ min manual filtering → <30s time-to-insight. 8-week post-launch data confirmed the shift from keyword lookup to natural language exploration.",
+      "Zero analyst downtime during full rebrand — token architecture absorbed the entire visual change as designed. Architectural resilience validated.",
+      "Peer comparison: #2 most-used feature within 6 weeks of launch — the workflow analysts were improvising in Excel, now native to the platform.",
     ],
     visualBlocksHeader: "v1 → v2",
     visualBlocks: [
@@ -644,8 +644,8 @@ $universe_types = [
     ],
     tech: ["React", "TypeScript", "D3", "OpenAI API", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
     reflection:
-      "The hardest part of a Phase 2 is knowing what to keep. Seven years of muscle memory is an asset, not a liability. Every v2 decision ran through one filter: does this make the analyst faster without making them relearn? Nothing was replaced. The gaps were filled.",
-    ctaText: "If you're redesigning a product that people already depend on, I've done it — without breaking the trust that took years to build.",
+      "The hardest part of a Phase 2 isn't building new features — it's governing what stays. Seven years of muscle memory is architectural capital, not technical debt. Every v2 decision ran through one filter: does this accelerate the analyst without forcing them to relearn? Nothing was replaced. The gaps were filled. That restraint was the strategy.",
+    ctaText: "If you're transforming a product that people already depend on — I've architected that transition without breaking the trust that took years to build.",
   },
 
   "just-wordpress": {
@@ -653,27 +653,27 @@ $universe_types = [
     role: "Design Systems Engineer",
     team: "1 designer · 3 dev teams · 1 content team",
     challenge:
-      "JUST Capital's marketing site carried 5+ years of accumulated front-end debt — no component system, no design tokens, no shared language between designers and developers. Three separate teams were building the same patterns three different ways.",
+      "5+ years of accumulated front-end debt. No component system. No design tokens. No shared language between design and engineering. Three separate teams building the same patterns three different ways — a force multiplier in reverse.",
     approach:
-      "I audited the entire site, catalogued every UI pattern, and then built a PHP component library backed by a Figma token system. The goal wasn't to rebuild everything at once — it was to create a foundation that made the right thing the easy thing for every developer who touched the codebase.",
+      "I architected a headless design system that served as the single source of truth across teams — a PHP component library backed by a Figma token pipeline. The goal: make the right thing the easy thing for every developer who touches the codebase. Design-to-code parity, not design-to-code aspiration.",
     process: {
       discover: [
-        "Full UI audit: 200+ screen states catalogued and categorized",
-        "Developer interviews to understand where friction was highest",
-        "Token extraction from legacy CSS — naming conventions mapped",
-        "Figma library gap analysis against existing components",
+        "Full UI audit: 200+ screen states catalogued — mapped every pattern, variant, and inconsistency across the codebase",
+        "Developer interviews to identify highest-friction handoff points — where design intent broke down in implementation",
+        "Token extraction from legacy CSS — 800+ hardcoded values catalogued with naming convention mapping",
+        "Figma library gap analysis: what existed, what was missing, what was wrong",
       ],
       design: [
-        "30+ Figma components with documented variants and states",
-        "Design token system: semantic tokens layered over primitives",
-        "Migration mapping from legacy markup to new component API",
-        "Onboarding documentation written for developers, not designers",
+        "30+ Figma components with documented variants, states, and responsive behavior — the spec that became the contract",
+        "Two-layer token architecture: semantic tokens over primitives. The abstraction layer that later absorbed a full rebrand as a token swap",
+        "Migration mapping from legacy markup to component API — incremental adoption path, not a rewrite mandate",
+        "Developer-first documentation: onboarding written for engineers, not designers",
       ],
       ship: [
-        "PHP component library with Twig templating",
-        "CSS custom property system replacing 800+ hardcoded values",
-        "Three development teams onboarded within first quarter",
-        "Component changelog maintained alongside Figma updates",
+        "PHP component library with Twig templating — bridging Figma tokens to a legacy WordPress CMS",
+        "CSS custom property system replacing 800+ hardcoded values with a single source of truth",
+        "Three development teams onboarded within first quarter — deployment velocity increase measurable by Q2",
+        "Component changelog maintained in lockstep with Figma updates — design-to-code parity enforced, not assumed",
       ],
     },
     metrics: [
@@ -3436,49 +3436,49 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     seoDescription:
       "8 years building the design ops infrastructure for Netflix and Disney+ across 50+ languages, 2 global studios, and every major script system — Latin, CJK, Arabic, Cyrillic, Hebrew.",
     heroIntro:
-      "When 'Hospital Playlist' becomes 'Coridoarele Spitalului+' in Romanian, the title treatment has to survive the translation — same visual weight, same brand voice, different script. I designed the systems that made that possible at scale — the typography framework, the component library, and the cross-studio review process that both studios still use.",
-    role: "Design Ops Lead & UX Designer",
+      "50+ languages. Two global studios. Zero shared standards when I started.\n\nI engineered the design ops infrastructure that made multilingual scalability possible — the typography framework, the cross-studio component library, and the QA process that both studios still operate on eight years later. Every script family rebuilt from first principles, not adjusted from Latin defaults.",
+    role: "Lead Design Technologist & DesignOps Architect",
     team: "Cross-studio · Wordbank → Unfold",
     snapshot: {
       timeline: "8+ years · ongoing",
       tools: "Adobe CC (Photoshop, Illustrator), Cinema 4D, Figma, cross-studio QA framework",
     },
     challenge:
-      "Before a shared standard existed, each studio made localization calls in isolation. A title treatment could clear internal review at one studio and fail QA at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. With 50+ languages and launch windows that don't move, that was the problem that needed a system. Latin was the easy part.",
+      "Two studios making localization decisions in isolation. A title treatment could clear QA at one studio and fail at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. Text expansion, directional logic, and character density variance across 50+ languages — with launch windows that don't move.",
     approach:
-      "I built the design ops infrastructure that made multilingual work scalable — typography systems purpose-built for Arabic, Japanese, and Hebrew, a cross-studio review process that worked across time zones, and a Figma component library maintained as a single source of truth across 50+ languages. Each script demanded independent decisions about line-height, container behavior, and optical weight. A font swap was never an option.",
+      "I architected the design ops infrastructure from scratch — token-based typography systems for Arabic, Japanese, and Hebrew, a cross-studio review process that scaled across time zones, and a Figma component library as the single source of truth. Each script demanded independent decisions about line-height, container behavior, and optical weight. A font swap was never an option.",
     whatIDid:
-      "I owned the design side of the localization pipeline — typography decisions, title treatment QA, cross-studio review processes, and the Figma component library that both studios used. The operational infrastructure that let two studios work to a shared standard was mine to build and maintain.",
+      "Owned the design infrastructure of the localization pipeline — typography systems, title treatment QA, cross-studio review processes, and the shared Figma library. The operational architecture that let two studios converge on a shared standard was mine to build and maintain.",
     process: {
       discover: [
-        "Typography audit across 50+ language families",
-        "Cross-studio workflow interviews — surfacing the gap where each studio made localization decisions in isolation with no shared framework",
-        "RTL, CJK, and Arabic layout requirements research — documented as Figma constraints, not just notes",
-        "Brand guideline analysis for both platforms",
+        "Typography audit across 50+ language families — cataloguing text expansion ratios, character density, and directional requirements per script",
+        "Cross-studio workflow analysis — surfaced the architectural gap: no shared framework, no shared criteria, no shared vocabulary",
+        "RTL, CJK, and Arabic layout research documented as Figma constraints with explicit component variants",
+        "Brand guideline analysis for both platforms — mapping where visual identity rules conflicted with script requirements",
       ],
       design: [
-        "Multilingual typography system covering Latin, CJK, Arabic, Cyrillic, and Hebrew — each rebuilt from first principles, not adjusted from Latin defaults",
-        "RTL layout templates for Arabic and Hebrew, with explicit component variants for directionality",
-        "Cross-studio design review process and critique framework — adapted for reviewers who cannot read the script they are evaluating",
-        "Platform-specific component specs for Netflix and Disney+ brand alignment",
+        "Token-based typography system across 6 script families (Latin, CJK, Arabic, Cyrillic, Hebrew, Devanagari) — dynamically scaled by language-specific character density",
+        "RTL layout architecture for Arabic and Hebrew with explicit directional component variants",
+        "Language-agnostic QA framework — evaluation criteria based on visual weight, stroke contrast, and spatial rhythm rather than linguistic meaning",
+        "Cross-studio review cadence: async annotation rounds, live critique only for unresolved decisions",
       ],
       ship: [
-        "Design handoff packages structured with script-agnostic annotations and per-language variant frames",
-        "I ran QA across all language variants before every launch — title treatment sign-off was mine",
-        "I scaled the Figma component library across both studios — managing versioning to prevent fork divergence as the language count grew",
-        "Both studios adopted the review process and documentation I built — it became the cross-studio localization standard, still in use eight years later",
+        "Handoff packages with script-agnostic annotations and per-language variant frames",
+        "Owned title treatment QA and sign-off across all language variants before every launch",
+        "Scaled the Figma component library across both studios — zero library forks over 8 years",
+        "Review process became the cross-studio localization standard, still the operating framework eight years later",
       ],
     },
     keyDecisions: [
-      "Built a language-agnostic QA framework for evaluating title treatments across scripts — criteria based on visual weight, stroke contrast, and spatial rhythm rather than linguistic meaning. This was necessary because no single reviewer could read all 50+ languages.",
-      "Established a cross-studio review cadence that worked across international time zones — asynchronous annotation rounds followed by live critique only for unresolved decisions. Eliminated the 'everyone on a call at midnight' problem.",
-      "Chose to extend the existing Figma component library for each new script family rather than maintain separate libraries per studio — added initial overhead but prevented fork divergence as the library scaled to 50+ languages.",
+      "Language-agnostic QA over linguistic review — criteria based on visual weight, stroke contrast, and spatial rhythm. No single reviewer reads 50+ languages; the framework had to work without that assumption.",
+      "Async-first review cadence across time zones — annotation rounds async, live critique reserved for unresolved decisions. Eliminated the coordination tax.",
+      "Single library, not per-studio forks — extending one Figma component library per script family added overhead upfront but prevented divergence as the system scaled. Zero forks over 8 years validated the architectural bet.",
     ],
     outcomes: [
-      "Multilingual typography system rebuilt from first principles for 6 script families — no script treated as a Latin variant, which is why it still works for languages added after it was built",
-      "Cross-studio localization review process adopted across both studios — still the operating standard eight years later, no successor process written",
-      "Language-agnostic QA framework enabling script review without linguistic knowledge — visual weight and rhythm criteria replacing readability checks",
-      "Two global studios operating to a shared design standard across 50+ languages, with zero library forks over 8 years",
+      "Typography system rebuilt from first principles across 6 script families — architected for extensibility, which is why it still works for languages added years after it was built",
+      "Cross-studio localization standard still the operating framework eight years later — no successor process has been needed",
+      "Language-agnostic QA enabled script review without linguistic knowledge — a force multiplier for a team that couldn't hire native readers for every language",
+      "Two global studios, 50+ languages, zero library forks — architectural resilience at scale",
     ],
     visualBlocksHeader: "What Got Built",
     visualBlocksColumns: 2,
@@ -3553,9 +3553,9 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     ],
     tech: ["Adobe Photoshop", "Adobe Illustrator", "Cinema 4D", "Figma", "Multilingual Typography", "RTL Component Architecture", "CJK Type Systems", "Cross-studio QA"],
     reflection:
-      "Most of my Netflix and Disney+ work was in languages I don't speak. That turned out to be the discipline: you learn to read visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can evaluate a Korean title treatment without reading Korean, you've learned something about typography that monolingual designers rarely encounter.",
+      "Most of my Netflix and Disney+ work was in languages I don't speak. That became the discipline: evaluating visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can govern a Korean title treatment without reading Korean, you've built a system that scales beyond any individual's linguistic knowledge.",
     ctaText:
-      "I build design systems that other designers can use without the context I had when I built them. If your team is scaling across languages, markets, or studios, let's talk.",
+      "I architect design infrastructure that scales beyond the person who built it. If your team is governing quality across languages, markets, or studios — let's talk.",
   },
 
   "iata": {
@@ -3662,7 +3662,7 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     seoDescription:
       "I led UX and visual design for StoryCorps on iOS and Android, reducing onboarding friction and improving recording reliability for real families preserving oral history.",
     heroIntro:
-      "A family sits down to record a story they've carried for decades. The app crashes. Without a recovery path, that story is gone. I redesigned StoryCorps' iOS and Android experience so the technology disappears and the conversation stays.",
+      "The app crashed mid-recording. No recovery path. A family's story — gone.\n\nI led the mobile UX engineering for a national digital archive, redesigning the iOS and Android experience so the technology disappears and the conversation stays. Solo designer, two platforms, one shared component system — shipped in 6 weeks ahead of an NPR partnership that tripled the user base.",
     role: "Lead Mobile Designer (iOS + Android)",
     team: "Solo designer · 1 director · 2 engineers · NPR stakeholders",
     snapshot: {
@@ -3670,40 +3670,39 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       tools: "Figma, React Native specs, WCAG AA checks",
     },
     challenge:
-      "StoryCorps was about to launch an NPR partnership that would triple their user base — and the recording flow failed silently, with no recovery path. A dropped call meant a lost story. At that scale, that was not a UX problem. It was a reputational one. Onboarding created unnecessary friction, and iOS/Android patterns had diverged enough to feel like two different products.",
+      "An NPR partnership was about to triple the user base — and the recording flow failed silently. No recovery path. A dropped call meant a lost story. At that scale, that was a reputational risk, not a UX bug. Onboarding was 7 steps deep, and iOS/Android had diverged into two different products.",
     approach:
-      "I was the only designer — owning every decision from information architecture to component specs, with no other designer in the room. I led UX and visual design for both platforms simultaneously through one shared component system, speccing against real React Native implementation constraints alongside Echobind's engineering team. The design constraint I kept returning to: this app is used by grandparents recording family history, not tech-comfortable users. Every interaction had to be forgiving by default.",
+      "Solo designer owning every decision from IA to component specs. I engineered UX and visual design for both platforms through one shared React Native component system, speccing against real implementation constraints in real time. The architectural constraint: this app is used by grandparents, not power users. Every interaction had to be forgiving by default.",
     process: {
       discover: [
-        "150+ App Store reviews analyzed — dominant complaint was lost recordings with no recovery path. No error state, no recovery prompt. That finding shaped every recording-flow decision that followed.",
-        "Interviewed storytellers to understand where the app disappeared and where it got in the way — the gap between 'I want to record my grandmother' and actually pressing record was too wide",
-        "Competitor audit (Rev, Otter, Voice Memos) revealed that session recovery was table stakes everywhere except StoryCorps",
-        "NPR brand alignment sessions to define how two identities coexist without confusing a new user segment",
+        "150+ App Store reviews analyzed — lost recordings with no recovery path was the dominant complaint. That finding shaped every architectural decision",
+        "Storyteller interviews surfaced the friction gap: 'I want to record my grandmother' → actually pressing record was too many steps apart",
+        "Competitor audit (Rev, Otter, Voice Memos): session recovery was table stakes everywhere except StoryCorps",
+        "NPR brand alignment: defined how two identities coexist without confusing a new user segment",
       ],
       design: [
-        "Designed the session recovery flow first — local draft auto-save on pause, backgrounding, and interruption, with a 'Resume your recording' prompt on next launch. This was the non-negotiable.",
-        "Removed the account gate before first recording. Users could capture a story immediately, then create an account to save it. Trade-off accepted: delayed first-party retention data.",
-        "Unified iOS and Android through one React Native-ready component system — annotated every platform divergence (e.g., Android hardware back during recording requires a confirmation dialog; iOS swipe-to-dismiss requires a different interrupt handler)",
-        "NPR co-brand integration: added brand elements without redesigning StoryCorps' core identity — warmth and accessibility over visual refresh",
+        "Engineered session recovery first — local draft auto-save on pause, backgrounding, and interruption. Non-negotiable architectural decision",
+        "Removed the account gate before first recording — users capture immediately, create account to save. Trade-off: delayed retention data",
+        "Standardized iOS and Android through one React Native component system — annotated every platform divergence with explicit interrupt handlers",
+        "NPR co-brand integration without redesigning core identity — accessibility and warmth over visual refresh",
       ],
       ship: [
-        "Embedded with Echobind's React Native engineers during implementation — adapted specs in real time as platform constraints emerged, not after the fact",
-        "WCAG AA accessibility audit: contrast ratios, 44px touch targets, screen reader labels — verified with axe-core and VoiceOver, critical for an older user base",
-        "Owned launch QA across both platforms — regression testing across all critical flows and final sign-off before release to 100k+ active users",
-        "Post-launch monitoring: tracked App Store reviews for recording-loss complaints to validate the session recovery design held under real conditions",
+        "Embedded with React Native engineers — adapted specs in real time as platform constraints emerged",
+        "WCAG AA compliance: contrast ratios, 44px touch targets, VoiceOver/TalkBack labels — critical for an older user base",
+        "Owned launch QA and final sign-off across both platforms before release to 100k+ users",
+        "Post-launch: tracked App Store reviews to validate session recovery held under real conditions",
       ],
     },
     keyDecisions: [
-      "Removed the account gate before first recording — users could capture a story immediately, then create an account to save it. Trade-off: delayed first-party retention data until post-recording.",
-      "Redesigned recording flow with persistent session state, visible timer, and safer interruption handling — prioritized recovery over simplicity, because a lost story is worse than a slightly busier screen.",
-      "Unified iOS/Android patterns through one React Native-ready component language — accepted minor platform deviation to ship faster and maintain a single source of truth.",
-      "Integrated NPR co-brand elements without redesigning StoryCorps' core visual identity — kept warmth and accessibility over visual refresh.",
+      "Removed the account gate — users record immediately, create account to save. Trade-off: delayed retention data. ROI: eliminated the highest-friction drop-off point in the funnel.",
+      "Persistent session state over simplified recording — prioritized recovery over simplicity. A lost story is worse than a busier screen. Architectural resilience over aesthetic minimalism.",
+      "Single React Native component system over platform-native — accepted minor platform deviation for deployment velocity and a single source of truth across iOS and Android.",
     ],
     outcomes: [
-      "Onboarding reduced from 7 steps to 3 — users reach first recording without creating an account",
-      "App Store rating held at 4.6★ as user volume scaled with the NPR partnership launch",
-      "Lost recordings dropped out of the top-reported App Store complaint categories in the quarter after launch — the dominant support issue before the redesign, designed out rather than patched",
-      "iOS and Android shipped from a single React Native component library — no platform-specific backlog, no divergence debt from day one",
+      "Onboarding: 7 steps → 3. Users reach first recording without creating an account",
+      "4.6★ App Store rating held through NPR launch — user volume tripled, rating didn't drop",
+      "Lost recordings eliminated as top App Store complaint — the dominant issue before redesign, architected out rather than patched",
+      "Single component library shipped both platforms — zero divergence debt from day one",
     ],
     visualBlocksHeader: "What Got Redesigned",
     visualBlocks: [
@@ -3770,8 +3769,8 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
     ],
     tech: ["Figma", "iOS", "Android", "React Native specs", "WCAG AA", "Design Systems"],
     reflection:
-      "StoryCorps forced a rethinking of what 'done' means. A recording feature is not reliable because it works 95% of the time — it is reliable because it recovers gracefully from the 5%, and that recovery has to be designed, not assumed. Every session-state decision I made was really a question about what happens when things go wrong.",
+      "StoryCorps redefined what 'done' means for me. Reliability isn't the 95% that works — it's architecting the recovery path for the 5% that doesn't. Every session-state decision was really a question about what happens when things go wrong, and that recovery had to be engineered, not assumed.",
     ctaText:
-      "I design and build — close enough to the code to catch the edge cases, close enough to the user to know which ones matter. Let's talk about your next product.",
+      "I architect and ship — close enough to the code to catch edge cases, close enough to the user to know which ones matter. If your next product needs both, let's talk.",
   },
 };
