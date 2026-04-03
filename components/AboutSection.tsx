@@ -67,12 +67,13 @@ export default function AboutSection({ dark }: Props) {
     { kind: "keyword", text: "const" },
     { kind: "var",     text: " Jinju" },
     { kind: "punct",   text: " = {" },
-    { kind: "key",     text: '  role:',     val: ' "Senior UX Engineer",' },
-    { kind: "key",     text: '  location:', val: ' "New York",' },
+    { kind: "key",     text: '  role:',     val: ' "Staff Design Technologist",' },
+    { kind: "key",     text: '  location:', val: ' "New Jersey → NYC",' },
+    { kind: "key",     text: '  speaks:',   val: ' ["English", "Korean"],' },
     { kind: "key",     text: '  focus:',    val: ' [' },
-    { kind: "str",     text: '    "Design Systems",' },
-    { kind: "str",     text: '    "Front-End Dev",' },
-    { kind: "str",     text: '    "Cross-cultural UX"' },
+    { kind: "str",     text: '    "Design Systems Architecture",' },
+    { kind: "str",     text: '    "Data Visualization (D3)",' },
+    { kind: "str",     text: '    "Cross-cultural UX at Scale"' },
     { kind: "key",     text: '  ],' },
     { kind: "key",     text: '  shipped:',  val: ' true' },
     { kind: "punct",   text: "};" },
@@ -144,9 +145,9 @@ export default function AboutSection({ dark }: Props) {
                 marginBottom: 24,
               }}
             >
-              UX Engineer based
+              Design Technologist
               <br />
-              in New York.
+              as Force Multiplier.
             </h2>
             <p
               style={{
@@ -154,13 +155,12 @@ export default function AboutSection({ dark }: Props) {
                 color: "var(--text-secondary)", marginBottom: 20,
               }}
             >
-              Seven years building the thing most teams treat as a boundary: the gap
-              between what gets designed and what gets shipped. At JUST Capital I ran
-              both sides — writing the Figma components and the React that rendered
-              them, owning the design system and the pull request. At Wordbank/Unfold
-              I solved multilingual typography at scale across Netflix and Disney+ in
-              50+ languages. With Echobind I led mobile UX for StoryCorps&apos; iOS
-              and Android redesign alongside NPR.
+              I speak B&eacute;zier curves to designers and latency budgets to engineers.
+              Seven years operating at the intersection — architecting design systems
+              at JUST Capital (Figma tokens to React components, owned end-to-end),
+              governing multilingual typography at global scale for Netflix and Disney+
+              across 50+ languages and 6 script families, and leading mobile UX
+              engineering for StoryCorps with NPR. Based in New Jersey, shipping in NYC.
             </p>
             <p
               style={{
@@ -170,7 +170,7 @@ export default function AboutSection({ dark }: Props) {
                 paddingLeft: 16, marginLeft: 0,
               }}
             >
-              The through-line: I do not hand work off. I follow it through.
+              Korean-fluent. CJK-literate. The through-line: I don&apos;t hand work off — I architect it, build it, and ship it.
             </p>
 
             {/* Skill tabs */}

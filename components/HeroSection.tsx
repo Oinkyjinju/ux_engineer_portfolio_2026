@@ -273,8 +273,9 @@ export default function HeroSection({ dark }: Props) {
           >
             {[
               { value: "7+", label: "Years Lead Experience" },
-              { value: "50+", label: "Global Languages" },
+              { value: "200M+", label: "Users Impacted" },
               { value: "25+", label: "Concurrent Global Projects" },
+              { value: "50+", label: "Languages Shipped" },
             ].map((m) => (
               <div key={m.label} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                 <span
