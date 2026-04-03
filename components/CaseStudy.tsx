@@ -1603,6 +1603,54 @@ export default function CaseStudy({ project }: Props) {
           ))}
         </div>
 
+        {/* Director's Spec Sheet */}
+        {data.specSheet && data.specSheet.length > 0 && (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: 0,
+              marginBottom: 80,
+              marginTop: -48,
+              background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.015)",
+              border: "1px solid var(--border)",
+              borderRadius: 8,
+              overflow: "hidden",
+            }}
+          >
+            {data.specSheet.map((spec, i) => (
+              <div
+                key={spec.label}
+                style={{
+                  padding: "20px 24px",
+                  borderRight: i < data.specSheet!.length - 1 ? "1px solid var(--border)" : "none",
+                }}
+              >
+                <p style={{
+                  fontFamily: mono,
+                  fontSize: 9,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "var(--text-tertiary)",
+                  marginBottom: 6,
+                }}>
+                  {spec.label}
+                </p>
+                <p style={{
+                  fontFamily: mono,
+                  fontSize: 11,
+                  letterSpacing: "0.04em",
+                  color: "var(--text-primary)",
+                  lineHeight: 1.5,
+                  fontWeight: 500,
+                }}>
+                  {spec.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
         {isNarrative && leadVisual && (
           <div style={{ marginBottom: 100 }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
