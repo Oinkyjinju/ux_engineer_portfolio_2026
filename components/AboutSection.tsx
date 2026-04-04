@@ -145,9 +145,9 @@ export default function AboutSection({ dark }: Props) {
                 marginBottom: 24,
               }}
             >
-              Design Technologist
+              Complexity is the baseline.
               <br />
-              as Force Multiplier.
+              Clarity is the achievement.
             </h2>
             <p
               style={{
@@ -155,12 +155,13 @@ export default function AboutSection({ dark }: Props) {
                 color: "var(--text-secondary)", marginBottom: 20,
               }}
             >
-              I speak B&eacute;zier curves to designers and latency budgets to engineers.
-              Seven years operating at the intersection — architecting design systems
-              at JUST Capital (Figma tokens to React components, owned end-to-end),
-              governing multilingual typography at global scale for Netflix and Disney+
-              across 50+ languages and 6 script families, and leading mobile UX
-              engineering for StoryCorps with NPR. Based in New Jersey, shipping in NYC.
+              I specialize in the architecture of unified design-to-code infrastructure — turning
+              high-density information into scalable, interactive systems without sacrificing
+              performance or accessibility. I don&apos;t just build components; I engineer the standards
+              that allow cross-functional teams to ship faster and more consistently. Whether
+              architecting a zero-to-one design system or optimizing real-time AI data streams,
+              I act as a strategic force multiplier — ensuring design intent is perfectly
+              translated into technical reality. Based in New Jersey, shipping in NYC.
             </p>
             <p
               style={{
@@ -170,7 +171,7 @@ export default function AboutSection({ dark }: Props) {
                 paddingLeft: 16, marginLeft: 0,
               }}
             >
-              Korean-fluent. CJK-literate. The through-line: I don&apos;t hand work off — I architect it, build it, and ship it.
+              Korean-fluent. CJK-literate. The through-line: end-to-end ownership — I architect it, engineer it, and ship it.
             </p>
 
             {/* Skill tabs */}
