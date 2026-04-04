@@ -239,7 +239,7 @@ export default function Portfolio() {
             textTransform: "uppercase", color: "var(--accent)", marginBottom: 16,
           }}
         >
-          Design Engineering Lab
+          The Interaction Laboratory
         </p>
         <p
           style={{
@@ -247,7 +247,7 @@ export default function Portfolio() {
             marginBottom: 36, maxWidth: 400,
           }}
         >
-          Prototypes, experiments, and proof-of-concepts — built to test ideas before they become products.
+          Where logic meets play. Generative physics sandboxes, WebGL explorations, and experimental interaction models for complex data sets.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>

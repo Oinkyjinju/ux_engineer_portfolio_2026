@@ -247,18 +247,21 @@ export default function HeroSection({ dark }: Props) {
               color: "var(--text-secondary)",
             }}
           >
-            Architecting the systems that scale global products —
+            Architecting systems for high-density data.
             <br />
-            from design intent to production reality.
+            <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-secondary)", display: "inline-block", marginTop: 8 }}>
+              I engineer the technical infrastructure for complex digital products — end-to-end design systems
+              and data-intelligence tools that transform massive datasets into intuitive, high-performance interfaces.
+            </span>
             <br />
-            <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-secondary)" }}>
-              Seven years leading the intersection of high-fidelity UX and front-end engineering at{" "}
-              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>JUST Capital</span>,
-              {" "}across 50+ languages for{" "}
-              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Netflix</span> and{" "}
-              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Disney+</span>,
-              {" "}and for{" "}
-              <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>StoryCorps</span> with NPR.
+            <span style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--text-tertiary)", display: "inline-block", marginTop: 8 }}>
+              From governing global UI systems for 200M+ users at{" "}
+              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>Netflix</span> and{" "}
+              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>Disney+</span>
+              {" "}to crafting motion-rich mobile experiences for{" "}
+              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>StoryCorps</span> with NPR —
+              currently building data-intelligence tools at{" "}
+              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>JUST Capital</span>.
             </span>
           </p>
 
@@ -272,10 +275,9 @@ export default function HeroSection({ dark }: Props) {
             }}
           >
             {[
-              { value: "7+", label: "Years Lead Experience" },
-              { value: "200M+", label: "Users Impacted" },
-              { value: "25+", label: "Concurrent Global Projects" },
-              { value: "50+", label: "Languages Shipped" },
+              { value: "7+", label: "Years Senior Experience" },
+              { value: "1,000+", label: "Data-Point Visualizations" },
+              { value: "50+", label: "Global Languages Shipped" },
             ].map((m) => (
               <div key={m.label} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                 <span
