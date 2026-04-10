@@ -192,21 +192,21 @@ export default function HeroSection({ dark }: Props) {
               marginBottom: 28,
             }}
           >
-            Jinju Park
+            Design Engineer&nbsp;&nbsp;·&nbsp;&nbsp;NJ → NYC
           </p>
 
           <h1
             style={{
               fontFamily: "'Gloock', Georgia, serif",
-              fontSize: "clamp(72px, 11vw, 158px)",
+              fontSize: "clamp(30px, 6.5vw, 104px)",
               fontWeight: 400,
-              lineHeight: 1.0,
-              letterSpacing: "clamp(-0.015em, -0.02em, -0.025em)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
               color: "var(--text-primary)",
               margin: 0,
             }}
           >
-            Senior<br />UX Engineer.
+            Building interfaces<br />for the difficult cases.
           </h1>
         </motion.div>
 
@@ -241,70 +241,21 @@ export default function HeroSection({ dark }: Props) {
           <p
             style={{
               fontFamily: "'Red Hat Text', system-ui, sans-serif",
-              fontSize: "clamp(17px, 2vw, 20px)",
+              fontSize: "clamp(16px, 1.8vw, 19px)",
               fontWeight: 400,
               lineHeight: 1.55,
               color: "var(--text-secondary)",
+              margin: 0,
             }}
           >
-            Architecting systems for high-density data.
+            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Dense data.</span>{" "}
+            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Global localization.</span>{" "}
+            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Regulated industries.</span>
             <br />
-            <span style={{ fontSize: "clamp(14px, 1.6vw, 16px)", color: "var(--text-secondary)", display: "inline-block", marginTop: 8 }}>
-              I engineer the technical infrastructure for complex digital products — end-to-end design systems
-              and data-intelligence tools that transform massive datasets into intuitive, high-performance interfaces.
-            </span>
-            <br />
-            <span style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--text-tertiary)", display: "inline-block", marginTop: 8 }}>
-              From governing global UI systems for 200M+ users at{" "}
-              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>Netflix</span> and{" "}
-              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>Disney+</span>
-              {" "}to crafting motion-rich mobile experiences for{" "}
-              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>StoryCorps</span> with NPR —
-              currently building data-intelligence tools at{" "}
-              <span style={{ color: "var(--text-secondary)", fontWeight: 500 }}>JUST Capital</span>.
+            <span style={{ fontSize: "clamp(14px, 1.5vw, 16px)", color: "var(--text-tertiary)", display: "inline-block", marginTop: 10 }}>
+              I design the system. Then I ship the code that runs it.
             </span>
           </p>
-
-          {/* Metrics bar */}
-          <div
-            style={{
-              display: "flex",
-              gap: 32,
-              marginTop: 32,
-              flexWrap: "wrap",
-            }}
-          >
-            {[
-              { value: "7+", label: "Years Senior Experience" },
-              { value: "1,000+", label: "Data-Point Visualizations" },
-              { value: "50+", label: "Global Languages Shipped" },
-            ].map((m) => (
-              <div key={m.label} style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 18,
-                    fontWeight: 600,
-                    color: "var(--accent)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {m.value}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 10,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.12em",
-                    color: "var(--text-tertiary)",
-                  }}
-                >
-                  {m.label}
-                </span>
-              </div>
-            ))}
-          </div>
 
           <div className="hero-ctas" style={{ marginTop: 32, display: "flex", gap: 16 }}>
             <a
