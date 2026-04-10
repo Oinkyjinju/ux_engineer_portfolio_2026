@@ -155,23 +155,20 @@ export default function AboutSection({ dark }: Props) {
                 color: "var(--text-secondary)", marginBottom: 20,
               }}
             >
-              I specialize in the architecture of unified design-to-code infrastructure — turning
-              high-density information into scalable, interactive systems without sacrificing
-              performance or accessibility. I don&apos;t just build components; I engineer the standards
-              that allow cross-functional teams to ship faster and more consistently. Whether
-              architecting a zero-to-one design system or optimizing real-time AI data streams,
-              I act as a strategic force multiplier — ensuring design intent is perfectly
-              translated into technical reality. Based in New Jersey, shipping in NYC.
+              Most design engineers lean one way — stronger in Figma or stronger in code.
+              My seven years have been split evenly across both, which is why I ship systems
+              end-to-end instead of handing them off halfway. Design systems, data visualization,
+              OTT localization in 7 languages, and mobile apps.
             </p>
             <p
               style={{
-                fontFamily: sans, fontSize: 18, lineHeight: 1.6,
-                color: "var(--text-primary)", marginBottom: 36,
-                fontStyle: "italic", borderLeft: "2px solid var(--accent)",
-                paddingLeft: 16, marginLeft: 0,
+                fontFamily: sans, fontSize: 16, lineHeight: 1.7,
+                color: "var(--text-secondary)", marginBottom: 36,
               }}
             >
-              Korean-fluent. CJK-literate. The through-line: end-to-end ownership — I architect it, engineer it, and ship it.
+              Off-hours: movie and coffee lover. Also: Instagram storytelling, Etsy product
+              concepts, logo designs, and hunting for new learnings every day. Based in
+              New Jersey, shipping in NYC.
             </p>
 
             {/* Scale strip — proof behind the pull quote */}
