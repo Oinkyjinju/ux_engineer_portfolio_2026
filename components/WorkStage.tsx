@@ -287,62 +287,6 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
 
 interface Props { dark: boolean; }
 
-function ThreadOfExecution() {
-  const threadRef = useRef<HTMLDivElement>(null);
-  const fillRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const thread = threadRef.current;
-    const fill = fillRef.current;
-    if (!thread || !fill) return;
-
-    const onScroll = () => {
-      const rect = thread.getBoundingClientRect();
-      const viewH = window.innerHeight;
-      // How far through the thread the viewport center is
-      const center = viewH / 2;
-      const progress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
-      fill.style.transform = `scaleY(${progress})`;
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <div
-      ref={threadRef}
-      aria-hidden
-      style={{
-        position: "absolute",
-        left: 10,
-        top: 0,
-        bottom: 0,
-        width: 1,
-        background: "var(--border)",
-        zIndex: 1,
-        pointerEvents: "none",
-      }}
-    >
-      <div
-        ref={fillRef}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          background: "var(--accent)",
-          transformOrigin: "top",
-          transform: "scaleY(0)",
-          transition: "transform 0.1s linear",
-        }}
-      />
-    </div>
-  );
-}
-
 export default function WorkStage({ dark }: Props) {
   const [openId, setOpenId] = useState<string>(projects[0].id);
   const mono = "'JetBrains Mono', monospace";
@@ -364,19 +308,16 @@ export default function WorkStage({ dark }: Props) {
         </p>
       </ScrollReveal>
 
-      <div style={{ position: "relative" }}>
-        <ThreadOfExecution />
-        <div style={{ paddingLeft: 28 }}>
-          {projects.map((project, i) => (
-            <WorkAccordionItem
-              key={project.id}
-              project={project}
-              index={i}
-              isOpen={openId === project.id}
-              onToggle={() => toggle(project.id)}
-            />
-          ))}
-        </div>
+      <div>
+        {projects.map((project, i) => (
+          <WorkAccordionItem
+            key={project.id}
+            project={project}
+            index={i}
+            isOpen={openId === project.id}
+            onToggle={() => toggle(project.id)}
+          />
+        ))}
       </div>
     </section>
   );

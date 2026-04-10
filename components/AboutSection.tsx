@@ -174,6 +174,58 @@ export default function AboutSection({ dark }: Props) {
               Korean-fluent. CJK-literate. The through-line: end-to-end ownership — I architect it, engineer it, and ship it.
             </p>
 
+            {/* Scale strip — proof behind the pull quote */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 0,
+                borderTop: "1px solid var(--border)",
+                borderBottom: "1px solid var(--border)",
+                marginBottom: 44,
+              }}
+            >
+              {[
+                { value: "7+", label: "Years Senior" },
+                { value: "1,000+", label: "Data-Point Viz" },
+                { value: "50+", label: "Languages Shipped" },
+              ].map((m, i) => (
+                <div
+                  key={m.label}
+                  style={{
+                    padding: "20px 0",
+                    borderRight: i < 2 ? "1px solid var(--border)" : "none",
+                    paddingLeft: i === 0 ? 0 : 20,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: mono,
+                      fontSize: 24,
+                      fontWeight: 600,
+                      color: "var(--accent)",
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1,
+                      marginBottom: 6,
+                    }}
+                  >
+                    {m.value}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: mono,
+                      fontSize: 9,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.14em",
+                      color: "var(--text-tertiary)",
+                    }}
+                  >
+                    {m.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Skill tabs */}
             <div>
               <div style={{ display: "flex", gap: 6, marginBottom: 20 }}>
