@@ -69,98 +69,53 @@ export default function ContactSection({ dark }: Props) {
             <br />
             design and engineering share a wall.
           </h2>
-          <p
-            style={{
-              fontFamily: sans,
-              fontSize: 16,
-              lineHeight: 1.65,
-              color: "var(--text-secondary)",
-              marginBottom: 20,
-              maxWidth: 560,
-            }}
-          >
-            I&apos;m looking for Senior or Staff IC opportunities where I can lead the
-            intersection of design systems, front-end architecture, and product strategy.
-            My ideal environment is a product-led team building high-density tools where
-            the interface is the primary technical challenge.
-          </p>
-          <p
-            style={{
-              fontFamily: sans,
-              fontSize: 16,
-              lineHeight: 1.65,
-              color: "var(--text-secondary)",
-              marginBottom: 40,
-              maxWidth: 560,
-            }}
-          >
-            Beyond full-time engineering, I am available for part-time UX/UI design
-            projects and strategic design system consulting.
-          </p>
+          <div style={{ marginBottom: 44 }} />
         </ScrollReveal>
 
         <ScrollReveal delay={0.16}>
-          {/* Availability badge */}
-          <div
+          {/* Availability — subtle mono line */}
+          <p
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 9,
-              border: "1px solid var(--border)",
-              borderRadius: 20,
-              padding: "7px 14px",
-              marginBottom: 36,
-              background: "var(--card-bg)",
+              fontFamily: mono,
+              fontSize: 12,
+              letterSpacing: "0.04em",
+              color: "var(--text-secondary)",
+              marginBottom: 32,
+              marginTop: 0,
             }}
           >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#28CA41",
-                display: "inline-block",
-                animation: "pulse-dot 2s ease-in-out infinite",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
-                textTransform: "uppercase", color: "var(--text-secondary)",
-              }}
-            >
-              Available for senior roles &amp; consulting
-            </span>
-          </div>
+            <span style={{ color: "var(--accent)" }}>→</span>&nbsp;&nbsp;Available for Senior &amp; Staff IC roles
+          </p>
 
           {/* Email copy button */}
           <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
             <button
               className="contact-email-btn"
               onClick={handleCopy}
+              aria-label={copied ? "Email copied" : "Copy email to clipboard"}
               style={{
                 fontFamily: mono,
-                fontSize: 14,
+                fontSize: 12,
                 letterSpacing: "0.02em",
                 color: copied ? (dark ? "#09090E" : "#F8F7F2") : "var(--text-primary)",
                 background: copied ? "var(--accent)" : "var(--card-bg)",
                 border: `1px solid ${copied ? "var(--accent)" : "var(--border)"}`,
-                borderRadius: 8,
-                padding: "12px 20px",
+                borderRadius: 6,
+                padding: "7px 12px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
-                gap: 10,
+                gap: 8,
                 transition: "all 0.25s ease",
               }}
             >
               {EMAIL}
-              <span style={{ fontSize: 12, opacity: 0.7 }}>
-                {copied ? "✓ copied" : "↗ copy"}
-              </span>
+              {copied && (
+                <span style={{ fontSize: 11, opacity: 0.85 }}>✓</span>
+              )}
             </button>
 
-            <div style={{ display: "flex", gap: 12 }}>
+            <div style={{ display: "flex", gap: 10 }}>
               {[
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/jinjuparkoinky/" },
                 { label: "GitHub",   href: "https://github.com/Oinkyjinju/ux_engineer_portfolio_2026" },
@@ -172,12 +127,12 @@ export default function ContactSection({ dark }: Props) {
                   rel="noreferrer"
                   style={{
                     fontFamily: sans,
-                    fontSize: 14,
+                    fontSize: 12,
                     color: "var(--text-secondary)",
                     textDecoration: "none",
                     border: "1px solid var(--border)",
-                    borderRadius: 8,
-                    padding: "12px 18px",
+                    borderRadius: 6,
+                    padding: "7px 12px",
                     transition: "color 0.2s, border-color 0.2s",
                   }}
                   onMouseEnter={(e) => {
