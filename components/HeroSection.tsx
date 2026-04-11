@@ -192,7 +192,7 @@ export default function HeroSection({ dark }: Props) {
               marginBottom: 28,
             }}
           >
-            Design Engineer&nbsp;&nbsp;·&nbsp;&nbsp;NJ → NYC
+            Design Engineer&nbsp;&nbsp;based in NJ / NYC
           </p>
 
           <h1
@@ -200,7 +200,7 @@ export default function HeroSection({ dark }: Props) {
               fontFamily: "'Gloock', Georgia, serif",
               fontSize: "clamp(30px, 6.5vw, 104px)",
               fontWeight: 400,
-              lineHeight: 1.15,
+              lineHeight: 1.5,
               letterSpacing: "-0.02em",
               color: "var(--text-primary)",
               margin: 0,
@@ -248,12 +248,11 @@ export default function HeroSection({ dark }: Props) {
               margin: 0,
             }}
           >
-            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Dense data.</span>{" "}
-            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Global localization.</span>{" "}
-            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Regulated industries.</span>
+            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Unlocking data-dense complexity.</span>{" "}
+            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Scaling global UI infrastructure.</span>
             <br />
             <span style={{ fontSize: "clamp(14px, 1.5vw, 16px)", color: "var(--text-tertiary)", display: "inline-block", marginTop: 10 }}>
-              I design the system. Then I ship the code that runs it.
+              I architect the vision, then I engineer the reality.
             </span>
           </p>
 
@@ -270,10 +269,19 @@ export default function HeroSection({ dark }: Props) {
                 borderRadius: 8,
                 textDecoration: "none",
                 letterSpacing: "0.01em",
-                transition: "opacity 0.2s",
+                border: "1px solid var(--accent)",
+                transition: "background 0.2s, color 0.2s",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "transparent";
+                el.style.color = "var(--code-blue)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "var(--accent)";
+                el.style.color = dark ? "#09090E" : "#F8F7F2";
+              }}
             >
               See my work
             </a>
@@ -292,8 +300,8 @@ export default function HeroSection({ dark }: Props) {
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.color = "var(--text-primary)";
-                el.style.borderColor = "var(--accent)";
+                el.style.color = "var(--code-blue)";
+                el.style.borderColor = "var(--code-blue)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;

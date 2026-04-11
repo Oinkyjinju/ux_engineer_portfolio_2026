@@ -106,6 +106,22 @@ body {
   }
 }
 
+/* ── View Case Study link: arrow slides on hover ────────────────────────── */
+.view-case-study-link {
+  transition: opacity 0.2s ease;
+}
+.view-case-study-link .view-case-study-arrow {
+  display: inline-block;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+.view-case-study-link:hover .view-case-study-arrow {
+  transform: translateX(6px);
+}
+.view-case-study-link:hover {
+  opacity: 0.85;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    RESPONSIVE OVERRIDES — mobile (640px), tablet (768px), narrow (400px)
    Components use inline styles, so !important is needed to override.

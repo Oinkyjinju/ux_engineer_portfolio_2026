@@ -177,21 +177,24 @@ export default function Portfolio() {
         </Link>
 
         <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: 28 }}>
-          {["Work", "Lab", "About", "Contact"].map((label) => (
-            <a
-              key={label}
-              href={`#${label.toLowerCase()}`}
-              style={{
-                fontFamily: mono, fontSize: 11, letterSpacing: "0.07em",
-                textTransform: "uppercase", color: "var(--text-tertiary)",
-                textDecoration: "none", transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
-              onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--text-tertiary)"; }}
-            >
-              {label}
-            </a>
-          ))}
+          {["Work", "Lab", "About", "Contact"].map((label) => {
+            const navLinkColor = dark ? "#7A7873" : "var(--text-tertiary)";
+            return (
+              <a
+                key={label}
+                href={`#${label.toLowerCase()}`}
+                style={{
+                  fontFamily: mono, fontSize: 11, letterSpacing: "0.07em",
+                  textTransform: "uppercase", color: navLinkColor,
+                  textDecoration: "none", transition: "color 0.2s",
+                }}
+                onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--accent)"; }}
+                onMouseLeave={(e) => { (e.target as HTMLElement).style.color = navLinkColor; }}
+              >
+                {label}
+              </a>
+            );
+          })}
 
           <button
             onClick={handleToggle}

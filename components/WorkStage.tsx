@@ -165,10 +165,28 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
         </div>
 
         <div className="accordion-header-meta" style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
-          <span className="accordion-company" style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)" }}>
+          <span
+            className="accordion-company"
+            style={{
+              fontFamily: mono,
+              fontSize: 11,
+              color: active ? "var(--text-secondary)" : "var(--text-tertiary)",
+              fontWeight: active ? 600 : 400,
+              transition: "color 0.3s, font-weight 0.3s",
+            }}
+          >
             {project.company}
           </span>
-          <span className="accordion-year" style={{ fontFamily: mono, fontSize: 11, color: "var(--text-tertiary)" }}>
+          <span
+            className="accordion-year"
+            style={{
+              fontFamily: mono,
+              fontSize: 11,
+              color: active ? "var(--text-secondary)" : "var(--text-tertiary)",
+              fontWeight: active ? 600 : 400,
+              transition: "color 0.3s, font-weight 0.3s",
+            }}
+          >
             {project.year}
           </span>
           <span
@@ -258,17 +276,17 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
 
                 <a
                   href={`/work/${project.id}`}
+                  className="view-case-study-link"
                   style={{
                     display: "inline-flex", alignItems: "center", gap: 8,
                     fontFamily: sans, fontSize: 14, fontWeight: 500,
                     color: "var(--accent)", textDecoration: "none",
                     borderBottom: "1px solid var(--accent)",
-                    paddingBottom: 2, transition: "opacity 0.2s",
+                    paddingBottom: 2,
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
                 >
-                  View Case Study →
+                  <span>View Case Study</span>
+                  <span className="view-case-study-arrow" aria-hidden>→</span>
                 </a>
               </div>
 
