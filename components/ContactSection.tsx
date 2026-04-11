@@ -75,15 +75,27 @@ export default function ContactSection({ dark }: Props) {
               fontSize: 16,
               lineHeight: 1.65,
               color: "var(--text-secondary)",
-              marginBottom: 40,
-              maxWidth: 500,
+              marginBottom: 20,
+              maxWidth: 560,
             }}
           >
-            Looking for senior IC or staff roles where design systems, front-end
-            engineering, and product thinking are treated as one job — not three.
-            Ideal fit: product-led teams building tools, infrastructure, or consumer
-            products where the interface is the product. Also available for design
-            systems consulting and front-end engineering engagements.
+            I&apos;m looking for Senior or Staff IC opportunities where I can lead the
+            intersection of design systems, front-end architecture, and product strategy.
+            My ideal environment is a product-led team building high-density tools where
+            the interface is the primary technical challenge.
+          </p>
+          <p
+            style={{
+              fontFamily: sans,
+              fontSize: 16,
+              lineHeight: 1.65,
+              color: "var(--text-secondary)",
+              marginBottom: 40,
+              maxWidth: 560,
+            }}
+          >
+            Beyond full-time engineering, I am available for part-time UX/UI design
+            projects and strategic design system consulting.
           </p>
         </ScrollReveal>
 

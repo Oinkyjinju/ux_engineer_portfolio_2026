@@ -6,34 +6,32 @@ import ScrollReveal from "./ScrollReveal";
 const STEPS = [
   {
     num: "01",
-    title: "Discover",
+    title: "Audit & Strategy",
     items: [
-      "Interview users and engineers in the same week",
-      "Heuristic audits with annotated Figma files",
-      "Competitive teardowns that inform design tokens",
-      "Alignment docs developers actually read",
+      "Conducting cross-functional stakeholder interviews to align technical constraints with user needs.",
+      "Performing systemic heuristic audits to identify UX debt and architectural inconsistencies.",
+      "Market analysis focused on token-driven scalability and design-to-code parity.",
     ],
     icon: "◎",
   },
   {
     num: "02",
-    title: "Design",
+    title: "Systemic Design",
     items: [
-      "Components designed to be coded, not described",
-      "Figma tokens synced 1:1 with CSS variables",
-      "Motion specs with working browser prototypes",
-      "Design reviews I run in the browser, not slides",
+      "Engineering-first component logic that prioritizes programmatic state over static mockups.",
+      "Architecting automated design-to-code pipelines using semantic token structures.",
+      "Defining motion choreography through high-fidelity, code-based interactive prototypes.",
     ],
     icon: "◈",
   },
   {
     num: "03",
-    title: "Ship",
+    title: "Technical Delivery",
     items: [
-      "I write the PR — not just the redlines",
-      "axe-core + VoiceOver, not just Lighthouse",
-      "Bundle size awareness from day one",
-      "I stay in the codebase after launch",
+      "Executing production-ready pull requests, bridging the gap between design spec and deployment.",
+      "Enforcing rigorous accessibility standards through automated testing and manual assistive tech audits.",
+      "Optimizing runtime performance and asset delivery for high-density applications.",
+      "Post-launch governance to ensure system integrity and long-term component health.",
     ],
     icon: "◆",
   },
@@ -88,6 +86,17 @@ export default function ProcessSection({ dark }: Props) {
       pausedRef.current = false;
       startTimer();
     }, 5000);
+  };
+
+  const handleStepHover = (i: number) => {
+    pausedRef.current = true;
+    if (timerRef.current) clearInterval(timerRef.current);
+    setActiveStep(i);
+  };
+
+  const handleStepLeave = () => {
+    pausedRef.current = false;
+    startTimer();
   };
 
   const mono  = "'JetBrains Mono', monospace";
@@ -149,12 +158,15 @@ export default function ProcessSection({ dark }: Props) {
           return (
             <div
               key={step.num}
+              onMouseEnter={() => handleStepHover(i)}
+              onMouseLeave={handleStepLeave}
               style={{
                 position: "relative",
                 zIndex: 1,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`,
+                cursor: "pointer",
               }}
             >
               {/* Clickable dot + number — centered in column so connector line aligns */}

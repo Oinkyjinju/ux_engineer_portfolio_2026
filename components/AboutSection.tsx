@@ -5,16 +5,16 @@ import ScrollReveal from "./ScrollReveal";
 
 const SKILL_CLUSTERS = {
   Design: [
-    "Figma", "Design Systems", "Interaction Design",
-    "UX Research", "Prototyping", "UX Interview", "Design Tokens",
+    "Figma", "Systemic Design", "High-Fidelity",
+    "UX Research", "Prototyping", "System Audits", "Design Tokens",
   ],
   Code: [
-    "React", "Next.js", "TypeScript", "CSS / Sass",
-    "PHP / WordPress", "D3",
+    "React", "Next.js", "TypeScript", "CSS",
+    "PHP / WordPress", "D3", "Data Flow",
   ],
   Process: [
     "Design Ops", "Cross-cultural UX", "Team Leadership",
-    "Accessibility", "Figma Tokens",
+    "Accessibility",
   ],
 } as const;
 
@@ -155,10 +155,20 @@ export default function AboutSection({ dark }: Props) {
                 color: "var(--text-secondary)", marginBottom: 20,
               }}
             >
-              Most design engineers lean one way — stronger in Figma or stronger in code.
-              My seven years have been split evenly across both, which is why I ship systems
-              end-to-end instead of handing them off halfway. Design systems, data visualization,
-              OTT localization in 7 languages, and mobile apps.
+              Most design engineers favor either the canvas or the codebase. My career is
+              built at the exact intersection of both. I don&apos;t just hand off specs; I
+              architect the system and engineer the production code.
+            </p>
+            <p
+              style={{
+                fontFamily: sans, fontSize: 16, lineHeight: 1.7,
+                color: "var(--text-secondary)", marginBottom: 20,
+              }}
+            >
+              I build infrastructure for high-stakes environments, ranging from global UI
+              frameworks supporting 7 languages to data-dense research tools for institutional
+              market analysis. Whether establishing scalable design tokens or executing complex
+              mobile motion, I close the gap between visual vision and technical execution.
             </p>
             <p
               style={{
@@ -183,9 +193,9 @@ export default function AboutSection({ dark }: Props) {
               }}
             >
               {[
-                { value: "7+", label: "Years Senior" },
-                { value: "1,000+", label: "Data-Point Viz" },
-                { value: "50+", label: "Languages Shipped" },
+                { value: "8+", label: "Years Bridging Design & Engineering" },
+                { value: "50+", label: "Data-Driven Components" },
+                { value: "Scalable", label: "UI Infrastructure" },
               ].map((m, i) => (
                 <div
                   key={m.label}
@@ -226,27 +236,42 @@ export default function AboutSection({ dark }: Props) {
             {/* Skill tabs */}
             <div>
               <div style={{ display: "flex", gap: 6, marginBottom: 20 }}>
-                {(Object.keys(SKILL_CLUSTERS) as Tab[]).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    style={{
-                      fontFamily: mono,
-                      fontSize: 11,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "6px 14px",
-                      borderRadius: 20,
-                      border: `1px solid ${activeTab === tab ? "var(--accent)" : "var(--border)"}`,
-                      background: activeTab === tab ? "var(--accent-muted)" : "transparent",
-                      color: activeTab === tab ? "var(--accent)" : "var(--text-tertiary)",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                    }}
-                  >
-                    {tab}
-                  </button>
-                ))}
+                {(Object.keys(SKILL_CLUSTERS) as Tab[]).map((tab) => {
+                  const isActive = activeTab === tab;
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      style={{
+                        fontFamily: mono,
+                        fontSize: 11,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase",
+                        padding: "6px 14px",
+                        borderRadius: 20,
+                        border: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
+                        background: isActive ? "var(--accent-muted)" : "transparent",
+                        color: isActive ? "var(--accent)" : "var(--text-tertiary)",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (isActive) return;
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.color = "var(--accent)";
+                        el.style.borderColor = "var(--accent)";
+                      }}
+                      onMouseLeave={(e) => {
+                        if (isActive) return;
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.color = "var(--text-tertiary)";
+                        el.style.borderColor = "var(--border)";
+                      }}
+                    >
+                      {tab}
+                    </button>
+                  );
+                })}
               </div>
 
               <div

@@ -14,35 +14,35 @@ const LAB_ITEMS = [
   {
     title: "Physics Sandbox",
     tech: "Three.js · React",
-    desc: "Draggable 3D objects with deterministic choreography.",
+    desc: "This portfolio itself — particle systems, amber cursor glow, and deterministic motion baked into the landing page.",
     rdNote: "Exploring deterministic physics engines for branded, high-performance UI motion.",
     href: "/",
   },
   {
     title: "Micro-Interactions",
     tech: "Framer Motion · Web APIs",
-    desc: "Four production-ready interactions. No extra libraries.",
+    desc: "Linear/industrial minimalism meets developer-centric brutalism — four production-ready interactions in one playground.",
     rdNote: "Testing Framer Motion spring configs that feel premium at 60fps on low-end devices.",
     href: "/micro",
   },
   {
     title: "Graph Demo",
     tech: "D3.js · Next.js",
-    desc: "Force-directed data visualization, interactive.",
+    desc: "Force-directed node graph you can drag — every item is physically connected, and moving one ripples through the network.",
     rdNote: "Experimenting with WebGL-accelerated force layouts for high-density ESG data viz.",
     href: "/graph",
   },
   {
     title: "OS Dashboard",
     tech: "React · CSS",
-    desc: "Desktop-style UI with draggable windows.",
+    desc: "Game-engine UI meets tactile skeuomorphism and command-line aesthetics — draggable windows, terminal panels, and retro chrome.",
     rdNote: "Prototyping windowed UI patterns for multi-panel analyst dashboards.",
     href: "/os",
   },
   {
     title: "Betjeman & Barton",
     tech: "HTML · CSS · JS",
-    desc: "Luxury tea house e-commerce concept — cursor-follow previews, dropdown nav, product hover overlays.",
+    desc: "Luxury tea house e-commerce — cursor-follow previews, dropdown nav, product hover overlays.",
     rdNote: "Cursor-driven interaction models for high-end e-commerce — no framework dependencies.",
     href: "/betjeman",
   },
@@ -250,7 +250,7 @@ export default function Portfolio() {
             marginBottom: 36, maxWidth: 400,
           }}
         >
-          Where logic meets play. Generative physics sandboxes, WebGL explorations, and experimental interaction models for complex data sets.
+          High-fidelity chaos and experimental interaction. My personal playground for what production won&apos;t let me do — yet.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
@@ -290,7 +290,7 @@ export default function Portfolio() {
                   borderTop: "1px solid var(--border)",
                   fontStyle: "italic", opacity: 0.7,
                 }}>
-                  R&amp;D: {item.rdNote}
+                  {item.rdNote}
                 </p>
               )}
             </a>
