@@ -109,7 +109,8 @@ export default function ProcessSection({ dark }: Props) {
       id="process"
       ref={sectionRef}
       style={{
-        padding: "80px clamp(24px, 5vw, 64px) 100px",
+        padding: "80px clamp(24px, 6vw, 96px) 100px",
+        maxWidth: 1160,
         margin: "0 auto",
         position: "relative",
         zIndex: 2,
