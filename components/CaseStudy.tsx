@@ -1542,7 +1542,7 @@ export default function CaseStudy({ project }: Props) {
               lineHeight: 1.0,
               letterSpacing: "-0.02em",
               color: "#EDEAE3",
-              marginBottom: 12,
+              marginBottom: 24,
             }}
           >
             {project.title}
@@ -1587,12 +1587,13 @@ export default function CaseStudy({ project }: Props) {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
             gap: 1,
+            borderTop: "1px solid var(--border)",
             borderBottom: "1px solid var(--border)",
             marginBottom: 80,
           }}
         >
           {metaItems.map((item) => (
-            <div key={item.label} style={{ padding: "28px 0 28px", borderRight: "1px solid var(--border)" }}>
+            <div key={item.label} style={{ padding: "28px 24px", borderRight: "1px solid var(--border)" }}>
               <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
                 {item.label}
               </p>
