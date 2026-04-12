@@ -49,8 +49,9 @@ export interface CaseStudyData {
   leadVisualId?: string;
   leadVisualHeader?: string;
   role: string;
-  team: string;
+  team?: string;
   snapshot?: {
+    company?: string;
     timeline?: string;
     tools?: string;
   };
@@ -194,19 +195,14 @@ export const caseStudies: Record<string, CaseStudyData> = {
     seoDescription:
       "Redesigned JUST Capital's flagship data platform with AI-powered search, live stakeholder treemaps, and peer comparison tools — driven by real user usage patterns and a full visual rebrand.",
     heroIntro:
-      "40% of analyst sessions ended in a CSV export. The platform was a data source — not a decision tool.\n\nI architected the transformation from a once-a-year audit portal into a daily decision-support utility for S&P 500 analysts. 12 user sessions, full workflow audit, and a redesign built around the patterns analysts were already improvising outside the system. Same dataset. Same 240+ weighted indicators. Entirely different behavioral relationship between user and platform.",
-    role: "Lead Product Designer & Front-End Engineer",
-    team: "2 designers · 4 engineers · 1 PM",
+      "Led the UX strategy and front-end development for the Just Intelligence v2 ecosystem. In collaboration with backend engineering, I translated complex LLM outputs into intuitive, conversational interfaces and engineered the supporting data-to-code infrastructure. My work focused on auditing divergent user flows to transform the platform from a static data source into a high-utility decision tool. By rebuilding the UI around real-world analyst behaviors, I replaced manual CSV-heavy workflows with native peer-benchmarking and scenario-modeling features that drive daily strategic engagement. I also sole-engineered the entire front-end codebase, from component architecture to production deployment.",
+    role: "Lead Product Designer & Sole Front-End Engineer",
     snapshot: {
-      timeline: "2026",
-      tools: "React, TypeScript, D3, Figma, OpenAI API, Design Tokens",
+      company: "Just Capital",
+      timeline: "2025–2026",
+      tools: "TypeScript, JavaScript, D3, Figma, Design Tokens",
     },
-    specSheet: [
-      { label: "Primary Stack", value: "React · TypeScript · D3 · OpenAI API" },
-      { label: "Accessibility", value: "WCAG 2.1 AA · axe-core · keyboard nav across 5 treemap levels" },
-      { label: "Engineering Impact", value: "~50% CSV export reduction · <30s time-to-insight" },
-      { label: "Scale", value: "S&P 500 analysts · 240+ weighted indicators · 1,000 companies" },
-    ],
+    specSheet: [],
     whatIDid:
       "Owned product design and front-end engineering. Ran 12 user sessions. Designed the information architecture in Figma. Specced the D3 treemap. Shipped the AI search interface. Led the rebrand migration — remapping every token and component while keeping the platform live for analysts throughout.",
     challenge:

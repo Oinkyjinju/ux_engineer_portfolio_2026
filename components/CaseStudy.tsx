@@ -1040,8 +1040,8 @@ export default function CaseStudy({ project }: Props) {
 
   const metaItems = [
     { label: "Role",     value: data.role ?? "" },
-    { label: "Team",     value: data.team ?? "" },
-    { label: "Company",  value: project.company },
+    ...(data.team ? [{ label: "Team", value: data.team }] : []),
+    { label: "Company",  value: data.snapshot?.company ?? project.company },
     { label: "Timeline", value: data.snapshot?.timeline ?? project.year },
     ...(data.snapshot?.tools ? [{ label: "Tools", value: data.snapshot.tools }] : []),
   ];
