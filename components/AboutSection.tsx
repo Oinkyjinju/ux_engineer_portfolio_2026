@@ -6,10 +6,10 @@ import ScrollReveal from "./ScrollReveal";
 const SKILL_CLUSTERS = {
   Design: [
     "Figma", "Systemic Design", "High-Fidelity",
-    "UX Research", "Prototyping", "System Audits", "Design Tokens",
+    "UX Research", "Prototyping", "System Audits",
   ],
   Code: [
-    "React", "Next.js", "TypeScript", "CSS",
+    "Next.js", "TypeScript", "CSS",
     "PHP / WordPress", "D3", "Data Flow",
   ],
   Process: [
@@ -122,6 +122,27 @@ export default function AboutSection({ dark }: Props) {
         </p>
       </ScrollReveal>
 
+      {/* Full-width headline */}
+      <ScrollReveal>
+        <h2
+          style={{
+            fontFamily: serif,
+            fontSize: "clamp(32px, 5vw, 56px)",
+            fontWeight: 400,
+            lineHeight: 1.15,
+            letterSpacing: "-0.015em",
+            color: "var(--text-primary)",
+            marginBottom: 56,
+            maxWidth: 900,
+          }}
+        >
+          Complexity is the baseline.
+          <br />
+          Clarity is the achievement.
+        </h2>
+      </ScrollReveal>
+
+      {/* 2-col: prose + code card */}
       <div
         className="about-grid"
         style={{
@@ -129,30 +150,15 @@ export default function AboutSection({ dark }: Props) {
           gridTemplateColumns: "1fr 1fr",
           gap: "clamp(40px, 6vw, 96px)",
           alignItems: "start",
+          marginBottom: 56,
         }}
       >
-        {/* Left — prose */}
         <ScrollReveal>
           <div>
-            <h2
-              style={{
-                fontFamily: serif,
-                fontSize: "clamp(28px, 4vw, 44px)",
-                fontWeight: 400,
-                lineHeight: 1.15,
-                letterSpacing: "-0.015em",
-                color: "var(--text-primary)",
-                marginBottom: 24,
-              }}
-            >
-              Complexity is the baseline.
-              <br />
-              Clarity is the achievement.
-            </h2>
             <p
               style={{
                 fontFamily: sans, fontSize: 16, lineHeight: 1.7,
-                color: "var(--text-secondary)", marginBottom: 20,
+                color: "var(--text-secondary)", marginBottom: 20, marginTop: 0,
               }}
             >
               Most design engineers favor either the canvas or the codebase. My career is
@@ -173,139 +179,13 @@ export default function AboutSection({ dark }: Props) {
             <p
               style={{
                 fontFamily: sans, fontSize: 16, lineHeight: 1.7,
-                color: "var(--text-secondary)", marginBottom: 36,
+                color: "var(--text-secondary)", margin: 0,
               }}
             >
               Off-hours: movie and coffee lover. Also: Instagram storytelling, Etsy product
               concepts, logo designs, and hunting for new learnings every day. Based in
               New Jersey, shipping in NYC.
             </p>
-
-            {/* Scale strip — proof behind the pull quote */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 0,
-                borderTop: "1px solid var(--border)",
-                borderBottom: "1px solid var(--border)",
-                marginBottom: 44,
-              }}
-            >
-              {[
-                { value: "8+", label: "Years Bridging Design & Engineering" },
-                { value: "50+", label: "Data-Driven Components" },
-                { value: "Scalable", label: "UI Infrastructure" },
-              ].map((m, i) => (
-                <div
-                  key={m.label}
-                  style={{
-                    padding: "20px 0",
-                    borderRight: i < 2 ? "1px solid var(--border)" : "none",
-                    paddingLeft: i === 0 ? 0 : 20,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: mono,
-                      fontSize: 24,
-                      fontWeight: 600,
-                      color: "var(--accent)",
-                      letterSpacing: "-0.02em",
-                      lineHeight: 1,
-                      marginBottom: 6,
-                    }}
-                  >
-                    {m.value}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: mono,
-                      fontSize: 9,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.14em",
-                      color: "var(--text-tertiary)",
-                    }}
-                  >
-                    {m.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Skill tabs */}
-            <div>
-              <div style={{ display: "flex", gap: 6, marginBottom: 20 }}>
-                {(Object.keys(SKILL_CLUSTERS) as Tab[]).map((tab) => {
-                  const isActive = activeTab === tab;
-                  return (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      style={{
-                        fontFamily: mono,
-                        fontSize: 11,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
-                        padding: "6px 14px",
-                        borderRadius: 20,
-                        border: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
-                        background: isActive ? "var(--accent-muted)" : "transparent",
-                        color: isActive ? "var(--accent)" : "var(--text-tertiary)",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (isActive) return;
-                        const el = e.currentTarget as HTMLElement;
-                        el.style.color = "var(--accent)";
-                        el.style.borderColor = "var(--accent)";
-                      }}
-                      onMouseLeave={(e) => {
-                        if (isActive) return;
-                        const el = e.currentTarget as HTMLElement;
-                        el.style.color = "var(--text-tertiary)";
-                        el.style.borderColor = "var(--border)";
-                      }}
-                    >
-                      {tab}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 8,
-                  minHeight: 80,
-                }}
-              >
-                {SKILL_CLUSTERS[activeTab].map((skill) => (
-                  <span
-                    key={skill}
-                    style={{
-                      fontFamily: sans,
-                      fontSize: 13,
-                      padding: "5px 13px",
-                      borderRadius: 6,
-                      border: "1px solid var(--border)",
-                      color: "var(--text-secondary)",
-                      background: "var(--card-bg)",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      height: 34,
-                      opacity: visibleSkills.includes(skill) ? 1 : 0,
-                      transform: visibleSkills.includes(skill) ? "translateY(0)" : "translateY(8px)",
-                      transition: "opacity 0.3s ease, transform 0.3s ease",
-                    }}
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
         </ScrollReveal>
 
@@ -348,6 +228,136 @@ export default function AboutSection({ dark }: Props) {
           </div>
         </ScrollReveal>
       </div>
+
+      {/* Full-width: scale strip */}
+      <ScrollReveal>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 0,
+            borderTop: "1px solid var(--border)",
+            borderBottom: "1px solid var(--border)",
+            marginBottom: 56,
+          }}
+        >
+          {[
+            { value: "8+", label: "Years Bridging Design & Engineering" },
+            { value: "50+", label: "Data-Driven Components" },
+            { value: "Scalable", label: "UI Infrastructure" },
+          ].map((m, i) => (
+            <div
+              key={m.label}
+              style={{
+                padding: "24px 0",
+                borderRight: i < 2 ? "1px solid var(--border)" : "none",
+                paddingLeft: i === 0 ? 0 : 24,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: mono,
+                  fontSize: 28,
+                  fontWeight: 600,
+                  color: "var(--accent)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1,
+                  marginBottom: 8,
+                }}
+              >
+                {m.value}
+              </div>
+              <div
+                style={{
+                  fontFamily: mono,
+                  fontSize: 9,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.14em",
+                  color: "var(--text-tertiary)",
+                }}
+              >
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </ScrollReveal>
+
+      {/* Full-width: skill tabs */}
+      <ScrollReveal>
+        <div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 20 }}>
+            {(Object.keys(SKILL_CLUSTERS) as Tab[]).map((tab) => {
+              const isActive = activeTab === tab;
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    fontFamily: mono,
+                    fontSize: 11,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    padding: "6px 14px",
+                    borderRadius: 20,
+                    border: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
+                    background: isActive ? "var(--accent-muted)" : "transparent",
+                    color: isActive ? "var(--accent)" : "var(--text-tertiary)",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (isActive) return;
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.color = "var(--accent)";
+                    el.style.borderColor = "var(--accent)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (isActive) return;
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.color = "var(--text-tertiary)";
+                    el.style.borderColor = "var(--border)";
+                  }}
+                >
+                  {tab}
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 8,
+              minHeight: 80,
+            }}
+          >
+            {SKILL_CLUSTERS[activeTab].map((skill) => (
+              <span
+                key={skill}
+                style={{
+                  fontFamily: sans,
+                  fontSize: 13,
+                  padding: "5px 13px",
+                  borderRadius: 6,
+                  border: "1px solid var(--border)",
+                  color: "var(--text-secondary)",
+                  background: "var(--card-bg)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  height: 34,
+                  opacity: visibleSkills.includes(skill) ? 1 : 0,
+                  transform: visibleSkills.includes(skill) ? "translateY(0)" : "translateY(8px)",
+                  transition: "opacity 0.3s ease, transform 0.3s ease",
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </ScrollReveal>
     </section>
   );
 }

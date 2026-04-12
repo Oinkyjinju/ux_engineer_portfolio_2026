@@ -12,8 +12,8 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "just-intelligence-v2",
-    title: "JUST Intelligence v2",
-    subtitle: "Platform Redesign · AI Features · Rebrand",
+    title: "Just Intelligence v2",
+    subtitle: "Architecting the v2 evolution of the Just Intelligence AI platform. In partnership with backend LLM engineering, I lead the design-to-code infrastructure and the integration of generative features, transforming complex datasets into conversational, intelligence-driven interfaces.",
     tags: ["Product Design", "AI / ML", "Front-End Dev"],
     year: "present",
     company: "AI Platform",
@@ -23,7 +23,7 @@ export const projects: Project[] = [
   {
     id: "netflix-disney",
     title: "Netflix & Disney+",
-    subtitle: "Multilingual Design Operations",
+    subtitle: "Leading Design Operations for global interfaces and I architect the multilingual frameworks required to maintain visual integrity across 7 key markets, bridging brand standards.",
     tags: ["Design Ops", "Typography", "Team Leadership"],
     year: "2018–present",
     company: "Netflix / Disney+",
@@ -33,8 +33,8 @@ export const projects: Project[] = [
   {
     id: "storycorps",
     title: "StoryCorps",
-    subtitle: "iOS & Android Redesign · NPR Partnership",
-    tags: ["Mobile Design", "iOS & Android", "React Native"],
+    subtitle: "Sole product designer for the end-to-end mobile ecosystem redesign, partnering with NPR and agency leadership to translate brand vision into functional technical specs. I architected the cross-platform component library for React Native and overhauled the onboarding logic to streamline the user experience, ensuring 1:1 visual parity across iOS and Android.",
+    tags: ["Product Design", "Cross-Platform Architecture", "Systems Strategy"],
     year: "2021",
     company: "StoryCorps",
     accent: "#EF553F",
@@ -42,9 +42,9 @@ export const projects: Project[] = [
   },
   {
     id: "just-rebrand",
-    title: "JUST Capital Website",
-    subtitle: "Front-End Engineering · WordPress CMS · 35 Custom Modules",
-    tags: ["Front-End Dev", "WordPress CMS", "Design Systems"],
+    title: "Just Capital Website",
+    subtitle: "Engineered a modular, component-based WordPress infrastructure to facilitate high-velocity content publishing. Developed a custom library of 35+ reusable modules, bridging a complex design system into a flexible, performant CMS environment with 1:1 visual fidelity.",
+    tags: ["Front-End Dev", "WordPress CMS", "Design Systems", "Performance Optimization"],
     year: "2026",
     company: "CMS Engineering",
     accent: "#E07820",
@@ -52,8 +52,8 @@ export const projects: Project[] = [
   },
   {
     id: "just-intelligence",
-    title: "JUST Intelligence",
-    subtitle: "Corporate Accountability Data Platform",
+    title: "Just Intelligence",
+    subtitle: "Designing and engineering the primary interface for institutional market analysis. Bridging the gap between raw data sets and intuitive, interactive visualization systems.",
     tags: ["Product Design", "Data Visualization", "Front-End Dev"],
     year: "2025",
     company: "Data Platform",

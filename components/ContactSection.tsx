@@ -28,8 +28,7 @@ export default function ContactSection({ dark }: Props) {
     <section
       id="contact"
       style={{
-        padding: "100px clamp(24px, 6vw, 96px) 80px",
-        maxWidth: 1160,
+        padding: "100px clamp(24px, 5vw, 64px) 80px",
         margin: "0 auto",
         position: "relative",
         zIndex: 2,
@@ -58,16 +57,13 @@ export default function ContactSection({ dark }: Props) {
               fontFamily: serif,
               fontSize: "clamp(36px, 6vw, 72px)",
               fontWeight: 400,
-              lineHeight: 1.1,
+              lineHeight: 1.15,
               letterSpacing: "-0.02em",
               color: "var(--text-primary)",
               marginBottom: 20,
-              maxWidth: 680,
             }}
           >
-            The right role is one where
-            <br />
-            design and engineering share a wall.
+            The right role is one where design and engineering share a wall.
           </h2>
           <div style={{ marginBottom: 44 }} />
         </ScrollReveal>

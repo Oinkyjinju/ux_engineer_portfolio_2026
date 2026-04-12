@@ -7,19 +7,16 @@ import { ProjectThumbnail } from "./ProjectThumbnails";
 
 const METRICS: Record<string, { value: string; label: string }[]> = {
   "just-intelligence": [
-    { value: "7+",  label: "years in production" },
-    { value: "3M+", label: "users reached" },
-    { value: "30+", label: "components shipped" },
+    { value: "R1k",          label: "Companies Tracked" },
+    { value: "High-Density", label: "Data Visualization" },
   ],
-  "just-wordpress": [
-    { value: "30+",  label: "Figma components" },
-    { value: "800+", label: "hardcoded values replaced" },
-    { value: "3",    label: "dev teams onboarded" },
+  "just-rebrand": [
+    { value: "35+", label: "Custom Modules" },
+    { value: "1:1", label: "Design-to-Code" },
   ],
   "netflix-disney": [
-    { value: "50+", label: "languages" },
-    { value: "2",   label: "global studios" },
-    { value: "8+",  label: "years" },
+    { value: "7+",       label: "Global Markets" },
+    { value: "Pre-Prod", label: "Typography" },
   ],
   iata: [
     { value: "100%", label: "WeChat-native patterns" },
@@ -27,24 +24,26 @@ const METRICS: Record<string, { value: string; label: string }[]> = {
   ],
   storycorps: [
     { value: "4.6★", label: "App Store rating" },
-    { value: "3",    label: "onboarding steps (from 7)" },
-    { value: "2",    label: "platforms shipped" },
+    { value: "Sole", label: "Product Designer" },
   ],
 };
 
-// Count-up — fires once when `run` becomes true
+// Count-up — fires once when `run` becomes true.
+// Only animates plain numeric values (e.g. "35", "7+", "100%").
+// Non-standard tokens like "R1k", "1:1", "Pre-Prod", "High-Density" display as-is.
+const COUNTABLE = /^(\d+)([+%]?)$/;
+
 function useCountUp(target: string, run: boolean) {
   const [display, setDisplay] = useState("—");
   const started = useRef(false);
 
   useEffect(() => {
     if (!run || started.current) return;
-    // Skip count-up for decimals (e.g. "4.6★") — display as-is
-    if (/\d+\.\d+/.test(target)) { setDisplay(target); return; }
-    const num = parseInt(target.replace(/\D/g, ""), 10);
-    if (isNaN(num)) { setDisplay(target); return; }
+    const match = target.match(COUNTABLE);
+    if (!match) { setDisplay(target); return; }
     started.current = true;
-    const suffix = target.replace(/[0-9]/g, "");
+    const num    = parseInt(match[1], 10);
+    const suffix = match[2];
     let cur = 0;
     const interval = setInterval(() => {
       cur = Math.min(cur + Math.ceil(num / 28), num);

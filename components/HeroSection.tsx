@@ -214,7 +214,7 @@ export default function HeroSection({ dark }: Props) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginTop: 32, maxWidth: 520 }}
+          style={{ marginTop: 32, maxWidth: 760 }}
         >
           {/* Dual-role callout — makes the "UX Engineer" title explicit at a glance */}
           <div
@@ -239,17 +239,17 @@ export default function HeroSection({ dark }: Props) {
           </div>
 
           <p
+            className="hero-primary-line"
             style={{
               fontFamily: "'Red Hat Text', system-ui, sans-serif",
-              fontSize: "clamp(16px, 1.8vw, 19px)",
+              fontSize: "clamp(16px, 1.6vw, 18px)",
               fontWeight: 400,
               lineHeight: 1.55,
               color: "var(--text-secondary)",
               margin: 0,
             }}
           >
-            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Unlocking data-dense complexity.</span>{" "}
-            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Scaling global UI infrastructure.</span>
+            <span style={{ color: "var(--text-primary)", fontWeight: 500 }}>Unlocking data-dense complexity. Scaling global UI infrastructure.</span>
             <br />
             <span style={{ fontSize: "clamp(14px, 1.5vw, 16px)", color: "var(--text-tertiary)", display: "inline-block", marginTop: 10 }}>
               I architect the vision, then I engineer the reality.

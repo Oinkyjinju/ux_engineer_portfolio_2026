@@ -14,36 +14,36 @@ const LAB_ITEMS = [
   {
     title: "Physics Sandbox",
     tech: "Three.js · React",
-    desc: "This portfolio itself — particle systems, amber cursor glow, and deterministic motion baked into the landing page.",
+    desc: "This portfolio itself. Particle systems, amber cursor glow, and deterministic motion baked into the landing page.",
     rdNote: "Exploring deterministic physics engines for branded, high-performance UI motion.",
     href: "/",
   },
   {
     title: "Micro-Interactions",
     tech: "Framer Motion · Web APIs",
-    desc: "Linear/industrial minimalism meets developer-centric brutalism — four production-ready interactions in one playground.",
+    desc: "Linear-style industrial minimalism meets developer-centric brutalism. Four production-ready interactions in one playground.",
     rdNote: "Testing Framer Motion spring configs that feel premium at 60fps on low-end devices.",
     href: "/micro",
   },
   {
     title: "Graph Demo",
     tech: "D3.js · Next.js",
-    desc: "Force-directed node graph you can drag — every item is physically connected, and moving one ripples through the network.",
+    desc: "Force-directed node graph you can drag. Every item is physically connected, and moving one ripples through the network.",
     rdNote: "Experimenting with WebGL-accelerated force layouts for high-density ESG data viz.",
     href: "/graph",
   },
   {
     title: "OS Dashboard",
     tech: "React · CSS",
-    desc: "Game-engine UI meets tactile skeuomorphism and command-line aesthetics — draggable windows, terminal panels, and retro chrome.",
+    desc: "Game-engine UI meets tactile skeuomorphism and command-line aesthetics. Draggable windows, terminal panels, retro chrome.",
     rdNote: "Prototyping windowed UI patterns for multi-panel analyst dashboards.",
     href: "/os",
   },
   {
     title: "Betjeman & Barton",
     tech: "HTML · CSS · JS",
-    desc: "Luxury tea house e-commerce — cursor-follow previews, dropdown nav, product hover overlays.",
-    rdNote: "Cursor-driven interaction models for high-end e-commerce — no framework dependencies.",
+    desc: "Luxury tea house e-commerce. Cursor-follow previews, dropdown nav, product hover overlays.",
+    rdNote: "Cursor-driven interaction models for high-end e-commerce. No framework dependencies.",
     href: "/betjeman",
   },
 ];
@@ -245,12 +245,13 @@ export default function Portfolio() {
           The Interaction Laboratory
         </p>
         <p
+          className="lab-intro"
           style={{
             fontFamily: sans, fontSize: 15, color: "var(--text-secondary)",
-            marginBottom: 36, maxWidth: 400,
+            marginBottom: 36, maxWidth: 720,
           }}
         >
-          High-fidelity chaos and experimental interaction. My personal playground for what production won&apos;t let me do — yet.
+          High-fidelity chaos and experimental interaction. My personal playground for what production won&apos;t let me do, yet.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
