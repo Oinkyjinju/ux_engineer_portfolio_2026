@@ -321,7 +321,7 @@ export default function WorkStage({ dark }: Props) {
     >
       <ScrollReveal>
         <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 48 }}>
-          Selected Work
+          Case Studies
         </p>
       </ScrollReveal>
 
