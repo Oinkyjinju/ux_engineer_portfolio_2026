@@ -217,7 +217,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     processTitles: {
       discover: "System Architecture & Tokens",
       design: "Brand Extrapolation",
-      ship: "Closing Workflow Gaps",
+      ship: "Closing Product Gaps",
     },
     process: {
       discover: [
@@ -227,7 +227,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         "Translated the parent company\u2019s high-level marketing guidelines into an accessible, high-density visual language optimized for complex data visualization and D3 components.",
       ],
       ship: [
-        "Integrated critical enterprise feedback from the initial launch to overhaul the conversational AI search UX and engineer new, high-value native workflows (like the \u201CDisclose Now\u201D feature).",
+        "Upgraded the AI search interface and engineered new, highly-requested features. This directly addressed the biggest friction points reported by users after the initial launch, keeping them inside the platform instead of forcing them to work externally.",
       ],
     },
     keyDecisions: [
