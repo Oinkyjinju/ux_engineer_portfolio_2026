@@ -202,7 +202,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
     snapshot: {
       company: "Just Capital",
       timeline: "2025–2026",
-      tools: "TypeScript, JavaScript, D3, Figma, Design Tokens",
+      tools: "TypeScript, JavaScript, D3, PHP, HTML, CSS Custom Properties, Figma, Design Tokens",
     },
     specSheet: [],
     whatIDid:
@@ -653,7 +653,7 @@ $universe_types = [
       { value: "0", label: "days of analyst downtime during full rebrand" },
       { value: "#2", label: "most-used feature within 6 weeks of launch" },
     ],
-    tech: ["TypeScript", "D3", "PHP", "CSS Custom Properties", "Figma", "Design Tokens"],
+    tech: [],
     reflection:
       "The hardest part of a Phase 2 isn't building new features — it's governing what stays. Seven years of muscle memory is architectural capital, not technical debt. Every v2 decision ran through one filter: does this accelerate the analyst without forcing them to relearn? Nothing was replaced. The gaps were filled. That restraint was the strategy.",
     ctaText: "If you're transforming a product that people already depend on — I've architected that transition without breaking the trust that took years to build.",
