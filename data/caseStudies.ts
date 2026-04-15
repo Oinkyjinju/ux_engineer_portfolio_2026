@@ -231,9 +231,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
       ],
     },
     keyDecisions: [
-      "AI as accelerator, not replacement — Every AI answer includes source citations. Analysts who don't trust it can ignore it entirely. The feature earns trust through transparency, not by being mandatory.",
-      "Treemap over table — v1 showed 1,000 companies in a sorted list. v2 encodes weight as area, performance as color — two dimensions at a glance. One visualization replaced three table views.",
-      "Evolution over revolution — Ran redesigned views past 6 power users before shipping. Could they complete standard workflows without guidance? Same IA, same navigation. What changed: density of insight per view.",
+      "Technical Debt vs. Velocity — Transitioning to a semantic CSS token system required a massive front-end refactor. The tradeoff was deciding between a complete \u201Cstop-the-world\u201D rewrite of the legacy codebase or an incremental adoption. I chose an incremental approach, wrapping legacy components in the new token architecture where possible. This created temporary technical debt in the styling layer, but it allowed us to ship the new corporate rebrand and new features without halting product momentum.",
+      "Modernization vs. Workflow Continuity — Upgrading a platform used daily by enterprise analysts means battling ingrained habits. When redesigning the core workflows, the tradeoff was deciding how aggressively to modernize the UX without breaking the users\u2019 established muscle memory. We intentionally retained several legacy layout patterns and information hierarchies, even if they were not the most \u201Cmodern\u201D design choices, to ensure a seamless transition for active users relying on the platform for daily modeling.",
     ],
     keyDecisionsLabel: "Key Tradeoffs",
     outcomes: [
