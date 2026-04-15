@@ -275,7 +275,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         layout: "before-after",
         beforeSrc: "/just/just-ji-stk-dpcard-old.svg",
         afterSrc: "/just/ji-explorer-dpcard.png",
-        caption: "v1: static value, no peer context. v2: distribution donut charts, YoY comparison, methodology links, disclosure prompt. Dead-end data point → self-contained research view.",
+        caption: "V1: A dense research view containing legacy tables and charts but lacking actionable next steps. V2: Applied a complete visual overhaul to the existing charts and tables to improve legibility. The core challenge was integrating new workflows like the \u201CPeer Comparison\u201D and \u201CDisclose Now\u201D buttons into this highly constrained space. I engineered a harmonious layout that balances the dense data with these new primary actions without causing visual clutter.",
       },
       {
         id: "peer-comparison",
