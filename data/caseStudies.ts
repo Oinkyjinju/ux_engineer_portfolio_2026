@@ -282,7 +282,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         layout: "before-after",
         beforeSrc: "/just/just-ji-pc-dp-old.png",
         afterSrc: "/just/just-ji-pc-dp.png",
-        caption: "v1: two companies, tooltip values. v2: 6+ companies in a structured table with search, industry tags, and direct link to Scenario Analysis — the feature behind the 50% CSV export drop.",
+        caption: "V1: Legacy peer benchmarking relying on constrained views and tooltips. V2: Upgraded to a highly legible, structured format. The critical UX enhancement is the new direct path to Scenario Analysis. Users can now compare against peers and immediately run predictive models in a single, continuous research flow.",
       },
       {
         id: "scenario-before-after",
