@@ -1700,13 +1700,18 @@ export default function CaseStudy({ project }: Props) {
         {(() => {
           const challengeText = data.challenge;
           const isNetflix = project.id === "netflix-disney";
-          const firstSentenceEnd = challengeText.search(/(?<=[.!?])\s/);
-          const pullQuote = firstSentenceEnd > 0
-            ? challengeText.slice(0, firstSentenceEnd + 1)
-            : challengeText;
-          const remainingText = firstSentenceEnd > 0
-            ? challengeText.slice(firstSentenceEnd + 1).trim()
-            : "";
+          const pullQuote = data.challengeQuote
+            ? data.challengeQuote
+            : (() => {
+                const end = challengeText.search(/(?<=[.!?])\s/);
+                return end > 0 ? challengeText.slice(0, end + 1) : challengeText;
+              })();
+          const remainingText = data.challengeQuote
+            ? challengeText
+            : (() => {
+                const end = challengeText.search(/(?<=[.!?])\s/);
+                return end > 0 ? challengeText.slice(end + 1).trim() : "";
+              })();
 
           // Netflix & Disney+ — "The Disconnect" two-column layout
           if (isNetflix) {

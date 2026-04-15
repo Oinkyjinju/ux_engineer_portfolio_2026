@@ -55,6 +55,7 @@ export interface CaseStudyData {
     timeline?: string;
     tools?: string;
   };
+  challengeQuote?: string;
   challenge: string;
   approach: string;
   whatIDid?: string;
@@ -204,7 +205,8 @@ export const caseStudies: Record<string, CaseStudyData> = {
     },
     specSheet: [],
     whatIDid:
-      "I engineered the transition from rigid V1 styling to a scalable, semantic CSS token structure across the entire front-end. I extrapolated the parent company\u2019s marketing brand guidelines to create a high-fidelity visual system specifically optimized for dense data interfaces. I implemented critical UI enhancements and new workflows, including the corporate disclosure features, based directly on user feedback from the initial launch. I also redesigned the conversational UX for the AI search interface to improve usability for an upcoming production release.",
+      "I owned the full front-end refactor from V1\u2019s rigid styling to a scalable, semantic CSS token structure \u2014 the architectural foundation the upcoming rebrand required. From there, I extrapolated the parent company\u2019s marketing brand into a specialized visual language built for dense data interfaces, then carried that system through to production: implementing disclosure workflows surfaced by user feedback, refining micro-interactions across the UI, and redesigning the conversational UX for the AI search interface ahead of its live release.",
+    challengeQuote: "Focusing on the V2 evolution, the new CSS architecture, and integrating V1 feedback.",
     challenge:
       "Following a successful initial launch, Phase 2 required maturing the platform from an early-stage product into a scalable enterprise system. The functional challenge involved integrating critical user feedback from the V1 launch, adding new workflows like a \u201Cdisclose now\u201D feature, and refining micro-interactions across the UI.\n\nThe technical challenge was rooted in technical debt. Phase 1 was built without a semantic design system because the framework boundaries were still being defined during early research and development. The V2 mandate required entirely refactoring the front-end CSS architecture into a strict semantic token structure to ensure future scalability and support a massive upcoming visual overhaul.",
     approach:
