@@ -477,7 +477,7 @@ interface TimelineStep {
   items: string[];
 }
 
-function ProcessTimeline({ steps, reduce }: { steps: TimelineStep[]; reduce: boolean }) {
+function ProcessTimeline({ steps, reduce, thematic = false }: { steps: TimelineStep[]; reduce: boolean; thematic?: boolean }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeCount, setActiveCount] = useState(0);
 
@@ -604,20 +604,22 @@ function ProcessTimeline({ steps, reduce }: { steps: TimelineStep[]; reduce: boo
               animate={isActive ? { opacity: 1, y: 0 } : reduce ? {} : { opacity: 0, y: 16 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             >
-              {/* Step header: number + title */}
+              {/* Step header: number (or thematic marker) + title */}
               <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginBottom: 16 }}>
-                <span
-                  style={{
-                    fontFamily: mono,
-                    fontSize: 11,
-                    letterSpacing: "0.1em",
-                    color: isActive ? "var(--accent)" : "var(--text-tertiary)",
-                    transition: "color 0.4s",
-                    flexShrink: 0,
-                  }}
-                >
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
+                {!thematic && (
+                  <span
+                    style={{
+                      fontFamily: mono,
+                      fontSize: 11,
+                      letterSpacing: "0.1em",
+                      color: isActive ? "var(--accent)" : "var(--text-tertiary)",
+                      transition: "color 0.4s",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                )}
                 <h3
                   style={{
                     fontFamily: serif,
@@ -1919,8 +1921,9 @@ export default function CaseStudy({ project }: Props) {
 
         {/* ── Process — scroll-linked vertical timeline ── */}
         <div style={{ marginBottom: 100 }}>
-          <h2 style={sectionLabelStyle(40)}>How It Got Built</h2>
+          <h2 style={sectionLabelStyle(40)}>{data.processHeader ?? "How It Got Built"}</h2>
           <ProcessTimeline
+            thematic={data.processLayout === "thematic"}
             steps={[
               { key: "discover", title: (data.processTitles?.discover ?? "Discover"), icon: "◎", items: data.process?.discover ?? [] },
               { key: "design",   title: (data.processTitles?.design   ?? "Design"),   icon: "◈", items: data.process?.design   ?? [] },

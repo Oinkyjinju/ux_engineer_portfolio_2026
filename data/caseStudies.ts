@@ -44,7 +44,7 @@ export interface CaseStudyData {
   heroLede?: string;
   heroIntro?: string;
   layout?: "standard" | "narrative";
-  processLayout?: "columns" | "stacked";
+  processLayout?: "columns" | "stacked" | "thematic";
   keyDecisionsLayout?: "grid" | "stacked";
   leadVisualId?: string;
   leadVisualHeader?: string;
@@ -65,6 +65,7 @@ export interface CaseStudyData {
     ship: string[];
     govern?: string[];
   };
+  processHeader?: string;
   processTitles?: {
     discover?: string;
     design?: string;
@@ -211,23 +212,22 @@ export const caseStudies: Record<string, CaseStudyData> = {
       "Following a successful initial launch, Phase 2 required maturing the platform from an early-stage product into a scalable enterprise system. The functional challenge involved integrating critical user feedback from the V1 launch, adding new workflows like a \u201Cdisclose now\u201D feature, and refining micro-interactions across the UI.\n\nThe technical challenge was rooted in technical debt. Phase 1 was built without a semantic design system because the framework boundaries were still being defined during early research and development. The V2 mandate required entirely refactoring the front-end CSS architecture into a strict semantic token structure to ensure future scalability and support a massive upcoming visual overhaul.",
     approach:
       "The core strategic hurdle was the rebrand. The new corporate branding was designed exclusively for the parent company\u2019s marketing presence, not for a dense, data-heavy intelligence platform. I led the effort to extrapolate and upgrade these brand guidelines, creating a specialized visual language that supported complex data visualization without losing the core brand identity.\n\nBecause the underlying information architecture was already validated in Phase 1, my focus was on UX strategy with the front-end execution and CSS migration. I updated the entire front-end to utilize the new semantic token structure and refined the UX for the conversational AI search interface, establishing a highly polished design foundation prepared for future live deployment.",
+    processLayout: "thematic",
+    processHeader: "The Execution",
+    processTitles: {
+      discover: "System Architecture & Tokens",
+      design: "Brand Extrapolation",
+      ship: "Closing Workflow Gaps",
+    },
     process: {
       discover: [
-        "40% of sessions ended in CSV export — the platform was a data source, not a decision tool",
-        "12 user sessions across institutional analysts, ESG researchers, and corporate clients. Universal top request: peer comparison without leaving the platform",
-        "Rebrand audit mapped every component and token. Separated safe visual changes from those that would break analyst mental models",
+        "Refactored the rigid V1 front-end into a strict semantic CSS token system, establishing the technical foundation required for scalable, enterprise-level theming.",
       ],
       design: [
-        "AI Ask Me Anything — natural language search with source citations. Every answer links back to underlying data so analysts verify before trusting",
-        "D3 treemap — area encodes weight, color encodes performance band. Five drill-down levels replaced v1's flat composite score",
-        "Peer Comparison — side-by-side across 6+ companies. Deprioritized collaborative annotation (analyst workflows are solo; it would add complexity without matching usage)",
-        "Custom keyboard navigation across five treemap levels — axe-core compliant focus management at every depth",
+        "Translated the parent company\u2019s high-level marketing guidelines into an accessible, high-density visual language optimized for complex data visualization and D3 components.",
       ],
       ship: [
-        "Rebrand shipped with zero analyst downtime — token alias layer absorbed the entire visual change",
-        "AI search: 4+ min manual filtering → under 30 seconds",
-        "CSV exports dropped ~50% in the first quarter post-launch",
-        "One treemap replaced three separate table views",
+        "Integrated critical enterprise feedback from the initial launch to overhaul the conversational AI search UX and engineer new, high-value native workflows (like the \u201CDisclose Now\u201D feature).",
       ],
     },
     keyDecisions: [
