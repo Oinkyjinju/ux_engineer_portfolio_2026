@@ -261,7 +261,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         layout: "before-after",
         beforeSrc: "/just/just-ji-treemap-old.svg",
         afterSrc: "/just/ji-performance-explorer-treemap.png",
-        caption: "v1: single-dimension drill-down, no performance encoding. v2: area = weight, color = quintile band. Two variables, one visualization. Five zoom levels from Overall → Datapoint.",
+        caption: "Engineered a dynamic hierarchy locator. This solves navigation friction by keeping general users oriented across all 5 drill-down levels.",
       },
       {
         id: "performance-highlights",
