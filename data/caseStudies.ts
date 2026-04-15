@@ -289,7 +289,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         layout: "before-after",
         beforeSrc: "/just/just-ji-scenario-old.png",
         afterSrc: "/just/ji-scenario-analysis-create_new.png",
-        caption: "v1: scenario creation buried in results, no entry point. v2: Create and Find as distinct cards, structured sidebar, inline industry stats. What-if modeling as a first-class workflow.",
+        caption: "Workflow Unification: V1: Scenario creation and results were fragmented across multiple separate pages, creating a disjointed user loop. V2: Unified the modeling workflow into a single dynamic workspace. By anchoring the layout with distinct \u201CCreate\u201D and \u201CFind\u201D cards, I consolidated multiple legacy views into interchangeable modules on a single screen. During scenario creation, company data is intentionally restricted to just core rankings to eliminate visual noise and keep the user entirely focused on their inputs.",
       },
     ],
     codeBlocksHeader: "The System in Code",
