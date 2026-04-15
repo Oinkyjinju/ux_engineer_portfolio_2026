@@ -235,11 +235,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
       "Modernization vs. Workflow Continuity — Upgrading a platform used daily by enterprise analysts means battling ingrained habits. When redesigning the core workflows, the tradeoff was deciding how aggressively to modernize the UX without breaking the users\u2019 established muscle memory. We intentionally retained several legacy layout patterns and information hierarchies, even if they were not the most \u201Cmodern\u201D design choices, to ensure a seamless transition for active users relying on the platform for daily modeling.",
     ],
     keyDecisionsLabel: "Key Tradeoffs",
-    outcomes: [
-      "~50% drop in CSV exports QoQ — analysts stopped exporting because the platform finally handled comparisons natively. Behavioral transformation from data source to decision tool.",
-      "Zero analyst downtime during full rebrand — token architecture absorbed the entire visual change as designed. Architectural resilience validated.",
-      "Peer comparison: #2 most-used feature within 6 weeks of launch — the workflow analysts were improvising in Excel, now native to the platform.",
-    ],
+    outcomes: [],
     visualBlocksHeader: "v1 → v2",
     visualBlocks: [
       {
