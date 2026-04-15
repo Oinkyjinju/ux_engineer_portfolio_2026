@@ -1970,6 +1970,9 @@ export default function CaseStudy({ project }: Props) {
                 <h2 style={sectionLabelStyle(32)}>{data.keyDecisionsLabel ?? "Key Design Decisions"}</h2>
                 <div>
                   {data.keyDecisions!.map((decision, i) => {
+                    const dashIdx = decision.indexOf(" — ");
+                    const decisionTitle = dashIdx > 0 ? decision.slice(0, dashIdx) : decision;
+                    const decisionBody = dashIdx > 0 ? decision.slice(dashIdx + 3) : "";
                     const isOpen = expandedIdx === i;
                     const isHoveredItem = hoveredIdx === i;
                     const panelId = `decision-panel-${i}`;
@@ -2036,7 +2039,7 @@ export default function CaseStudy({ project }: Props) {
                             {String(i + 1).padStart(2, "0")}
                           </span>
 
-                          {/* Preview text (truncated when closed) — CSS transition to prevent scroll flash */}
+                          {/* Preview text — title only */}
                           <span style={{ flex: 1, minWidth: 0 }}>
                             <span
                               style={{
@@ -2046,14 +2049,14 @@ export default function CaseStudy({ project }: Props) {
                                 display: "block",
                                 color: isOpen ? "var(--text-primary)" : isHoveredItem ? "var(--text-primary)" : "var(--text-secondary)",
                                 transition: "color 0.2s ease",
-                                ...(isOpen ? {} : {
+                                ...(isOpen || decisionBody ? {} : {
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                   whiteSpace: "nowrap",
                                 }),
                               }}
                             >
-                              {decision}
+                              {decisionTitle}
                             </span>
                           </span>
 
@@ -2100,7 +2103,7 @@ export default function CaseStudy({ project }: Props) {
                               color: "var(--text-primary)",
                               margin: 0,
                             }}>
-                              {decision}
+                              {decisionBody || decision}
                             </p>
                           </div>
                         </motion.div>
