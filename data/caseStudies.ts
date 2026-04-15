@@ -237,7 +237,6 @@ export const caseStudies: Record<string, CaseStudyData> = {
     keyDecisionsLabel: "Key Tradeoffs",
     outcomes: [
       "~50% drop in CSV exports QoQ — analysts stopped exporting because the platform finally handled comparisons natively. Behavioral transformation from data source to decision tool.",
-      "AI search: 4+ min manual filtering → <30s time-to-insight. 8-week post-launch data confirmed the shift from keyword lookup to natural language exploration.",
       "Zero analyst downtime during full rebrand — token architecture absorbed the entire visual change as designed. Architectural resilience validated.",
       "Peer comparison: #2 most-used feature within 6 weeks of launch — the workflow analysts were improvising in Excel, now native to the platform.",
     ],
