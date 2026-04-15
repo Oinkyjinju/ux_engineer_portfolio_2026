@@ -268,7 +268,7 @@ export const caseStudies: Record<string, CaseStudyData> = {
         layout: "before-after",
         beforeSrc: "/just/just-ji-highlight-old.svg",
         afterSrc: "/just/ji-performance-highlights.png",
-        caption: "The scan layer before drilling. Highest and lowest metrics surface with rank, tie count, and universe size — 78 dimensions, zero filter clicks.",
+        caption: "V1: Required navigating away to a hidden page just to view performance summaries. V2: Eliminated this friction. Users now see a brief, immediate summary of their top and worst 5 metrics alongside total industry size without a single click.",
       },
       {
         id: "explorer-before-after",
