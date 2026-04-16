@@ -366,7 +366,7 @@ function MagneticCTA({ ctaText, shouldReduceMotion, dark, projectId }: { ctaText
       {ctaText !== "" && <motion.div aria-hidden="true" initial={shouldReduceMotion ? {} : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ width: 60, height: 1, background: "var(--border)", margin: "0 auto 48px", transformOrigin: "center" }} />}
       {(ctaText !== "") && (
         <motion.p initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "'Gloock', Georgia, serif", fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 32, fontWeight: 400, letterSpacing: "-0.01em" }}>
-          {ctaText ?? "I build the things between design and engineering. If that gap is costing your team, let\u2019s talk."}
+          {ctaText ?? "Looking for a freelance UX/UI designer for your next project?"}
         </motion.p>
       )}
       <motion.div animate={{ x: btnOffset.x, y: btnOffset.y }} transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }} style={{ display: "inline-block" }}>
@@ -1594,9 +1594,11 @@ export default function CaseStudy({ project }: Props) {
           >
             {project.title}
           </motion.h1>
-          <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.78)", marginBottom: (data.heroLede || data.heroIntro) ? 28 : 0 }}>
-            {project.subtitle}
-          </motion.p>
+          {!data.heroIntro && (
+            <motion.p variants={heroItem(shouldReduceMotion)} style={{ fontFamily: sans, fontSize: 18, color: "rgba(237,234,227,0.78)", marginBottom: (data.heroLede || data.heroIntro) ? 28 : 0 }}>
+              {project.subtitle}
+            </motion.p>
+          )}
           {/* heroLede — punchy 1-sentence opener, display-weight Gloock at near-full opacity */}
           {data.heroLede && (
             <motion.p

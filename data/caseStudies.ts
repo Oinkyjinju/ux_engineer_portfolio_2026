@@ -2694,8 +2694,6 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       company: "StoryCorps",
       timeline: "6 weeks / 2021",
       tools: "Figma \u00B7 WCAG 2.1 AA Audits",
-      productImpact: "7 \u2192 3 step onboarding",
-      scale: "National NPR Partnership \u00B7 2 Platforms \u00B7 1 Shared Design System",
     },
     specSheet: [],
     challengeQuote: "From Functional Utility to Human-Centric Product.",
