@@ -2503,7 +2503,7 @@ export default function CaseStudy({ project }: Props) {
                       <p style={{
                         fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
                         textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: 8,
-                      }}>Before — 7 steps</p>
+                      }}>Before</p>
                       <div style={{
                         maxWidth: 220, margin: "0 auto",
                         filter: "saturate(0.4) opacity(0.8)",

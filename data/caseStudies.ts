@@ -2726,18 +2726,13 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       "Persistent Session State over Minimalist UI — Prioritized visual reassurance and recovery paths over a simplified recording screen.\n\nThe Trade-off: A slightly denser interface in exchange for absolute session resilience.\n\nThe ROI: A lost story is a total loss of trust; architectural resilience was chosen over aesthetic minimalism to ensure data integrity for every user.",
       "Unified Design System over Platform-Native UI — Standardized a single source of truth for both iOS and Android rather than maintaining two divergent sets of native components.\n\nThe Trade-off: Accepted minor platform deviations to ensure deployment velocity.\n\nThe ROI: Created a scalable, language-agnostic framework that allowed for a 1:1 consistent experience across a fragmented device landscape.",
     ],
-    outcomes: [
-      "Onboarding: 7 steps → 3. Users reach first recording without creating an account",
-      "4.6★ App Store rating held through NPR launch — user volume tripled, rating didn't drop",
-      "Lost recordings eliminated as top App Store complaint — the dominant issue before redesign, architected out rather than patched",
-      "Single component library shipped both platforms — zero divergence debt from day one",
-    ],
+    outcomes: [],
     visualBlocksHeader: "What Got Redesigned",
     visualBlocks: [
       {
         id: "onboarding",
         layout: "before-after",
-        label: "Onboarding",
+        label: "Onboarding/Register",
         caption: "The old flow asked users to create an account before hearing a single word of their own voice. This one doesn't. Three steps to recording, zero friction gates.",
         beforeSrc: "/storycorps/onboarding-before.png",
         afterSrc: "/storycorps/onboarding-after.png",
@@ -2754,7 +2749,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         id: "recording",
         layout: "before-after",
         label: "Recording Screen",
-        caption: "A dropped call used to mean a lost story. Persistent session state means interruption is recoverable — designed that way from the first wireframe, not patched in QA.",
+        caption: "A dropped call used to mean a lost story. The redesign solved this by transforming a fragile audio utility into a resilient, guided multimedia archive. By integrating question preparation and photo prompts directly into a persistent, auto-saving session, the architecture protects the entire storytelling process. Interruptions are now recoverable by default\u2014ensuring the focus stays on the narrative, not the technology.",
         beforeSrc: "/storycorps/recording-before.png",
         afterSrc: "/storycorps/recording-after.png",
         afterScreens: [
@@ -2772,7 +2767,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       {
         id: "listen-feed",
         layout: "screen-grid",
-        caption: "Discovery was an afterthought in v1. Inline playback, full transcripts, and filters by language, location, and community made the Listen feed the second reason people opened the app.",
+        caption: "The original app treated content discovery as a secondary feature. I redesigned the Listen Feed into a dynamic, social-style interface to surface community-shared recordings. By integrating inline playback, synchronized transcripts, and a comprehensive filtering architecture (indexing by date, keyword, community, location, and language), the platform evolved from a personal recording utility into a highly discoverable public archive.",
         screens: [
           { src: "/storycorps/feed-01-player.png", label: "Listen Feed" },
           { src: "/storycorps/feed-02-transcript.png", label: "Read Transcript" },
@@ -2791,14 +2786,12 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       },
     ],
     metrics: [
-      { value: "4.6★", label: "iOS App Store rating held through NPR launch — user volume tripled, rating didn't drop" },
+      { value: "4.6\u2605", label: "iOS App Store rating held through NPR launch, user volume tripled" },
       { value: "3",    label: "onboarding steps (from 7)" },
       { value: "2",    label: "platforms, 1 shared component system" },
     ],
     tech: [],
-    reflection:
-      "StoryCorps redefined what 'done' means for me. Reliability isn't the 95% that works — it's architecting the recovery path for the 5% that doesn't. Every session-state decision was really a question about what happens when things go wrong, and that recovery had to be engineered, not assumed.",
-    ctaText:
-      "I architect and ship — close enough to the code to catch edge cases, close enough to the user to know which ones matter. If your next product needs both, let's talk.",
+    reflection: "",
+    ctaText: "",
   },
 };
