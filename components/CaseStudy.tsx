@@ -178,7 +178,7 @@ function Phase2Briefing({ teaser, url, shouldReduceMotion }: { teaser: string; u
 }
 
 // ── Approach — scroll-linked word emphasis (extracted to avoid inline useState remount) ──
-function ApproachReveal({ approach, shouldReduceMotion, sectionLabelStyle }: { approach: string; shouldReduceMotion: boolean | null; sectionLabelStyle: (mb: number) => React.CSSProperties }) {
+function ApproachReveal({ approach, approachHeader, shouldReduceMotion, sectionLabelStyle }: { approach: string; approachHeader?: string; shouldReduceMotion: boolean | null; sectionLabelStyle: (mb: number) => React.CSSProperties }) {
   const elRef = useRef<HTMLDivElement>(null);
   const [scrollProg, setScrollProg] = useState(0);
   const approachWords = approach.split(/(\s+)/);
@@ -200,7 +200,7 @@ function ApproachReveal({ approach, shouldReduceMotion, sectionLabelStyle }: { a
 
   return (
     <div ref={elRef} style={{ maxWidth: 760, margin: "0 auto 80px" }}>
-      <h2 style={sectionLabelStyle(20)}>The Thinking</h2>
+      <h2 style={sectionLabelStyle(20)}>{approachHeader ?? "The Thinking"}</h2>
       <p style={{
         fontFamily: sans,
         fontSize: "clamp(16px, 1.4vw, 18px)",
@@ -228,7 +228,41 @@ function ApproachReveal({ approach, shouldReduceMotion, sectionLabelStyle }: { a
 }
 
 // ── Reflection — typewriter reveal (extracted to avoid inline useState remount) ──
-function ReflectionReveal({ reflection, shouldReduceMotion, sectionLabelStyle }: { reflection: string; shouldReduceMotion: boolean | null; sectionLabelStyle: (mb: number) => React.CSSProperties }) {
+
+function PipelineVisual({ caption, mono, sans }: { caption: string; mono: string; sans: string }) {
+  const TEAL = "#1A6678";
+  type PStep = { num: string; title: string; sub: string; highlight?: boolean };
+  const steps: PStep[] = [
+    { num: "01", title: "Agency Figma",       sub: "High-fidelity layouts + design tokens" },
+    { num: "02", title: "Semantic Token Map",  sub: "Primitives to aliases, 1:1 agency naming" },
+    { num: "03", title: "Custom PHP Modules",  sub: "35 reusable blocks, HTML + vanilla JS" },
+    { num: "04", title: "ACF Schema",          sub: "Field validation, editor-safe content API" },
+    { num: "05", title: "WordPress CMS",       sub: "Marketing-owned publishing layer" },
+    { num: "06", title: "Live Production",     sub: "justcapital.com, fully responsive", highlight: true },
+  ];
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "stretch", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden" }}>
+        {steps.map((step, i) => (
+          <div key={step.num} style={{ display: "flex", flex: 1, minWidth: 120, position: "relative" }}>
+            <div style={{ flex: 1, padding: "20px 16px", background: step.highlight ? TEAL : "var(--card-bg)", display: "flex", flexDirection: "column", gap: 6, borderRight: i < steps.length - 1 ? "1px solid var(--border)" : "none" }}>
+              <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.1em", color: step.highlight ? "rgba(255,255,255,0.5)" : TEAL }}>{step.num}</span>
+              <span style={{ fontFamily: sans, fontSize: 12, fontWeight: 600, color: step.highlight ? "#fff" : "var(--text-primary)", lineHeight: 1.3 }}>{step.title}</span>
+              <span style={{ fontFamily: sans, fontSize: 11, color: step.highlight ? "rgba(255,255,255,0.6)" : "var(--text-tertiary)", lineHeight: 1.5 }}>{step.sub}</span>
+            </div>
+            {i < steps.length - 1 && (
+              <div style={{ position: "absolute", right: -10, top: "50%", transform: "translateY(-50%)", width: 20, height: 20, borderRadius: "50%", background: "var(--bg)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: TEAL, fontWeight: 700, zIndex: 2 }}>&#8594;</div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.06em", color: "var(--text-tertiary)", marginTop: 10, textAlign: "center" }}>8-week accelerated delivery · zero post-launch engineering tickets</p>
+      <p style={{ fontFamily: mono, fontSize: 12, lineHeight: 1.6, color: "var(--text-secondary)", marginTop: 10, letterSpacing: "0.01em" }}>{caption}</p>
+    </div>
+  );
+}
+
+function ReflectionReveal({ reflection, reflectionHeader, shouldReduceMotion, sectionLabelStyle }: { reflection: string; reflectionHeader?: string; shouldReduceMotion: boolean | null; sectionLabelStyle: (mb: number) => React.CSSProperties }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const words = reflection.split(/(\s+)/);
@@ -254,7 +288,7 @@ function ReflectionReveal({ reflection, shouldReduceMotion, sectionLabelStyle }:
 
   return (
     <div ref={containerRef} style={{ maxWidth: 760, margin: "0 auto 100px" }}>
-      <h2 style={sectionLabelStyle(28)}>Reflection</h2>
+      <h2 style={sectionLabelStyle(28)}>{reflectionHeader ?? "Reflection"}</h2>
       <div style={{ position: "relative" }}>
         <p style={{
           fontFamily: "'Gloock', Georgia, serif",
@@ -868,8 +902,11 @@ export default function CaseStudy({ project }: Props) {
           </p>
         )}
 
-        {/* ── before-after ── */}
-        {block.layout === "before-after" ? (
+        {/* ── pipeline ── */}
+        {block.layout === "pipeline" && <PipelineVisual caption={block.caption} mono={mono} sans={sans} />}
+
+        {/* ── before-after / screen-grid / side-by-side / wide ── */}
+        {block.layout !== "pipeline" && (block.layout === "before-after" ? (
           <>
             {block.phoneScroll ? (
               /* Scrollable phone mockups */
@@ -997,6 +1034,7 @@ export default function CaseStudy({ project }: Props) {
           </div>
 
         ) : (
+
           /* Wide / full-bleed — or phone mockup */
           <>
             {block.phoneScroll && block.imageSrc ? (
@@ -1035,13 +1073,16 @@ export default function CaseStudy({ project }: Props) {
             )}
             <Caption text={block.caption} />
           </>
-        )}
+        ))}
       </motion.div>
     );
   };
 
+
+
   const metaItems = [
     { label: "Role",     value: data.role ?? "" },
+    ...(data.snapshot?.discipline ? [{ label: "Discipline", value: data.snapshot.discipline }] : []),
     ...(data.team ? [{ label: "Team", value: data.team }] : []),
     { label: "Company",  value: data.snapshot?.company ?? project.company },
     { label: "Timeline", value: data.snapshot?.timeline ?? project.year },
@@ -1895,12 +1936,12 @@ export default function CaseStudy({ project }: Props) {
         )}
 
         {/* Approach — scroll-linked word emphasis */}
-        <ApproachReveal approach={data.approach} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />
+        <ApproachReveal approach={data.approach} approachHeader={data.approachHeader} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />
 
         {/* What I Was Responsible For */}
         {data.whatIDid && (
           <div style={{ maxWidth: 760, margin: "0 auto 80px" }}>
-            <h2 style={sectionLabelStyle(20)}>What I Was Responsible For</h2>
+            <h2 style={sectionLabelStyle(20)}>{data.whatIDidHeader ?? "What I Was Responsible For"}</h2>
             <p style={{ fontFamily: sans, fontSize: 17, lineHeight: 1.75, color: "var(--text-secondary)" }}>
               {data.whatIDid}
             </p>
@@ -2118,9 +2159,7 @@ export default function CaseStudy({ project }: Props) {
         })()}
 
         {/* ── Per-case supplement after keyDecisions ── */}
-        {project.id === "just-intelligence" && (
-          <TokenDepthViz />
-        )}
+        {/* TokenDepthViz removed for just-intelligence */}
         {project.id === "storycorps" && (
           <div style={{ maxWidth: 760, margin: "0 auto" }}>
             <RecoveryFlowchart accent="#B5441A" />
@@ -2837,7 +2876,7 @@ export default function CaseStudy({ project }: Props) {
         {data.metrics && data.metrics.length > 0 && (
           <div style={{ marginBottom: 100 }}>
             <h2 style={sectionLabelStyle(32)}>
-              {project.id === "netflix-disney" ? "The Scale" : "What Shipped"}
+              {data.metricsHeader ?? (project.id === "netflix-disney" ? "The Scale" : "What Shipped")}
             </h2>
             {/* netflix-disney: centered 4-column dramatic grid */}
             {project.id === "netflix-disney" ? (
@@ -2897,51 +2936,57 @@ export default function CaseStudy({ project }: Props) {
             ) : (
               <div className="sc-metrics-grid" style={{
                 display: "grid",
-                gridTemplateColumns: `repeat(${Math.min(data.metrics.length, 3)}, 1fr)`,
+                gridTemplateColumns: `repeat(${Math.min(data.metrics.length, data.metrics.length <= 4 ? 4 : 3)}, 1fr)`,
                 gap: 0,
                 borderTop: "1px solid var(--border)",
                 borderBottom: "1px solid var(--border)",
               }}>
-                {data.metrics.map((m, idx) => (
-                  <motion.div
-                    key={m.label}
-                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px 0px" }}
-                    transition={{
-                      duration: 0.5,
-                      ease: [0.16, 1, 0.3, 1],
-                      delay: shouldReduceMotion ? 0 : idx * 0.08,
-                    }}
-                    style={{
-                      textAlign: "center",
-                      padding: "32px 16px",
-                      borderRight: idx < data.metrics!.length - 1 ? "1px solid var(--border)" : "none",
-                    }}
-                  >
-                    <span style={{
-                      fontFamily: serif,
-                      fontSize: "clamp(36px, 5vw, 56px)",
-                      lineHeight: 1,
-                      color: "var(--accent)",
-                      fontWeight: 400,
-                      display: "block",
-                      marginBottom: 12,
-                    }}>
-                      {m.value}
-                    </span>
-                    <span style={{
-                      fontFamily: mono,
-                      fontSize: 11,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.5,
-                    }}>
-                      {m.label}
-                    </span>
-                  </motion.div>
-                ))}
+                {data.metrics.map((m, idx) => {
+                  const cols = Math.min(data.metrics!.length, data.metrics!.length <= 4 ? 4 : 3);
+                  const isLastRow = idx >= data.metrics!.length - (data.metrics!.length % cols || cols);
+                  const isRowEnd = (idx + 1) % cols === 0 || idx === data.metrics!.length - 1;
+                  return (
+                    <motion.div
+                      key={m.label}
+                      initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px 0px" }}
+                      transition={{
+                        duration: 0.5,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: shouldReduceMotion ? 0 : idx * 0.08,
+                      }}
+                      style={{
+                        textAlign: "center",
+                        padding: "36px 16px",
+                        borderRight: isRowEnd ? "none" : "1px solid var(--border)",
+                        borderBottom: isLastRow ? "none" : "1px solid var(--border)",
+                      }}
+                    >
+                      <span style={{
+                        fontFamily: serif,
+                        fontSize: "clamp(36px, 5vw, 56px)",
+                        lineHeight: 1,
+                        color: "var(--accent)",
+                        fontWeight: 400,
+                        display: "block",
+                        marginBottom: 12,
+                      }}>
+                        {m.value}
+                      </span>
+                      <span style={{
+                        fontFamily: mono,
+                        fontSize: 11,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase",
+                        color: "var(--text-secondary)",
+                        lineHeight: 1.5,
+                      }}>
+                        {m.label}
+                      </span>
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -2951,39 +2996,50 @@ export default function CaseStudy({ project }: Props) {
         {data.outcomes && data.outcomes.length > 0 && (
           <div style={{ maxWidth: 760, margin: "0 auto 100px" }}>
             <h2 style={sectionLabelStyle(24)}>
-              {project.id === "netflix-disney" ? "What Standardized" : "What Changed"}
+              {data.outcomesHeader ?? (project.id === "netflix-disney" ? "What Standardized" : "What Changed")}
             </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }} role="list">
-              {data.outcomes.map((outcome, i) => (
-                <motion.li
-                  key={`outcome-${i}`}
-                  initial={shouldReduceMotion ? {} : { opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-30px 0px" }}
-                  transition={{
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1],
-                    delay: shouldReduceMotion ? 0 : i * 0.06,
-                  }}
-                  style={{
-                    display: "flex", alignItems: "flex-start", gap: 14,
-                    padding: "16px 0", borderBottom: "1px solid var(--border)",
-                    fontFamily: sans, fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.7,
-                  }}
-                >
-                  {/* Accent dash marker */}
-                  <span
-                    aria-hidden="true"
-                    style={{
-                      width: 16, height: 1,
-                      background: "var(--accent)",
-                      marginTop: 12,
-                      flexShrink: 0,
+              {data.outcomes.map((outcome, i) => {
+                const parts = outcome.split("\n");
+                const hasTitle = parts.length > 1;
+                return (
+                  <motion.li
+                    key={`outcome-${i}`}
+                    initial={shouldReduceMotion ? {} : { opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-30px 0px" }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: shouldReduceMotion ? 0 : i * 0.06,
                     }}
-                  />
-                  {outcome}
-                </motion.li>
-              ))}
+                    style={{
+                      display: "flex", alignItems: "flex-start", gap: 14,
+                      padding: "16px 0", borderBottom: "1px solid var(--border)",
+                      fontFamily: sans, fontSize: 16, color: "var(--text-secondary)", lineHeight: 1.7,
+                    }}
+                  >
+                    {/* Accent dash marker */}
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        width: 16, height: 1,
+                        background: "var(--accent)",
+                        marginTop: 12,
+                        flexShrink: 0,
+                      }}
+                    />
+                    {hasTitle ? (
+                      <div>
+                        <strong style={{ color: "var(--text-primary)", display: "block", marginBottom: 4 }}>
+                          {parts[0]}
+                        </strong>
+                        {parts.slice(1).join("\n")}
+                      </div>
+                    ) : outcome}
+                  </motion.li>
+                );
+              })}
             </ul>
           </div>
         )}
@@ -2992,8 +3048,8 @@ export default function CaseStudy({ project }: Props) {
         {data.codeBlocks && data.codeBlocks.length > 0 && (
           <div style={{ marginBottom: 80 }}>
             <p style={sectionLabelStyle(32)}>{data.codeBlocksHeader ?? "In Code"}</p>
-            <p style={{ fontFamily: sans, fontSize: 13, color: "var(--text-tertiary)", lineHeight: 1.5, marginBottom: 32, maxWidth: 640, opacity: 0.7 }}>
-              Previews are simplified reproductions — not pixel-perfect mirrors of the live product. They illustrate how complex data problems were reduced to clear interface patterns and how the underlying code was structured.
+            <p style={{ fontFamily: sans, fontSize: data.codeBlocksDescription ? 16 : 13, color: data.codeBlocksDescription ? "var(--text-secondary)" : "var(--text-tertiary)", lineHeight: data.codeBlocksDescription ? 1.75 : 1.5, marginBottom: 32, maxWidth: data.codeBlocksDescription ? 760 : 640, opacity: data.codeBlocksDescription ? 1 : 0.7 }}>
+              {data.codeBlocksDescription ?? "Previews are simplified reproductions — not pixel-perfect mirrors of the live product. They illustrate how complex data problems were reduced to clear interface patterns and how the underlying code was structured."}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
               {data.codeBlocks.map((block) => (
@@ -3224,7 +3280,7 @@ export default function CaseStudy({ project }: Props) {
           }
 
           // Default — typewriter reveal
-          return <ReflectionReveal reflection={data.reflection!} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />;
+          return <ReflectionReveal reflection={data.reflection!} reflectionHeader={data.reflectionHeader} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />;
         })()}
 
         {/* Phase 2 teaser moved to top of content, before Challenge */}

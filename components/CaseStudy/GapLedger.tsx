@@ -14,29 +14,19 @@ const serif = "'Gloock', Georgia, serif";
 
 const ROWS = [
   {
-    gap: "Mobile-first responsive design",
-    agency: "Delivered desktop comps only",
-    built:  "Full breakpoint system (320px→1920px+)",
+    gap: "Fluid Responsive Architecture",
+    agency: "Delivered static desktop comps only",
+    built:  "Architected a fluid breakpoint system scaling seamlessly from 320px mobile to 1920px+ ultrawide displays.",
   },
   {
-    gap: "State design — hover / active / focus",
-    agency: "Static mockups, no interactive states",
-    built:  "All 4 interactive states per component",
+    gap: "Interactive UI States",
+    agency: "Static mockups with no interactive feedback.",
+    built:  "Programmed all interactive states (Hover, Active, Focus, Disabled) per component to ensure complete keyboard accessibility.",
   },
   {
-    gap: "Dark-mode neutrals at scale",
-    agency: "Brand palette for white backgrounds",
-    built:  "35 ACF block variants in dark mode",
-  },
-  {
-    gap: "Data visualisation (D3) design",
-    agency: "Concept page only — no specs",
-    built:  "Pixel-level D3 layout + animation spec",
-  },
-  {
-    gap: "WCAG 2.1 AA colour contrast",
-    agency: "Not audited",
-    built:  "All text passes AA (≥ 4.5:1)",
+    gap: "Data Visualisation (D3) Translation",
+    agency: "High-level concept pages with no developer specifications.",
+    built:  "Bridged the gap between concept and execution by engineering pixel-level layouts and animation specs for the D3 charts.",
   },
 ];
 
@@ -70,14 +60,13 @@ export function GapLedger() {
         textTransform: "uppercase", color: TEAL, marginBottom: 16,
         fontWeight: 400,
       }}>
-        Design Gaps → Engineer Solutions
+        Design Gaps → Engineered Solutions
       </p>
       <p style={{
         fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
         marginBottom: 24, maxWidth: 600, lineHeight: 1.6,
       }}>
-        The agency delivered static desktop mockups. The engineering work
-        went far beyond — filling gaps the design never specified.
+        The external agency delivered beautiful, static desktop mockups. My role as a front-end architect was to go beyond the canvas—filling the crucial interactive, responsive, and accessible gaps the static design never specified.
       </p>
 
       {/* Table */}
@@ -100,7 +89,7 @@ export function GapLedger() {
             borderBottom: "1px solid var(--border)",
           }}
         >
-          {["Gap", "Agency", "Built"].map((h) => (
+          {["Gap", "The Agency Gap", "The Engineered Solution"].map((h) => (
             <div
               key={h}
               role="columnheader"
@@ -109,7 +98,7 @@ export function GapLedger() {
                 fontFamily: mono, fontSize: 9,
                 letterSpacing: "0.1em", textTransform: "uppercase",
                 color: "var(--text-secondary)",
-                borderRight: h !== "Built" ? "1px solid var(--border)" : undefined,
+                borderRight: h !== "The Engineered Solution" ? "1px solid var(--border)" : undefined,
               }}
             >
               {h}

@@ -1,7 +1,7 @@
 export interface VisualBlock {
   id: string;
   caption: string;
-  layout: "before-after" | "wide" | "side-by-side" | "screen-grid";
+  layout: "before-after" | "wide" | "side-by-side" | "screen-grid" | "pipeline";
   label?: string;
   phoneScroll?: boolean;   // wrap image(s) in scrollable phone mockup frame
   blendMode?: string;      // CSS mix-blend-mode (e.g. "multiply" for white-bg PNGs on dark backgrounds)
@@ -54,11 +54,14 @@ export interface CaseStudyData {
     company?: string;
     timeline?: string;
     tools?: string;
+    discipline?: string;
   };
   challengeQuote?: string;
   challenge: string;
   approach: string;
+  approachHeader?: string;
   whatIDid?: string;
+  whatIDidHeader?: string;
   process: {
     discover: string[];
     design: string[];
@@ -75,14 +78,18 @@ export interface CaseStudyData {
   keyDecisions?: string[];
   keyDecisionsLabel?: string;
   outcomes?: string[];
+  outcomesHeader?: string;
   visualBlocks?: VisualBlock[];
   visualBlocksHeader?: string;
   visualBlocksColumns?: 2;  // render wide blocks in a 2-column grid
   codeBlocks?: CodeBlock[];  // code + preview pairs shown in the case study
   codeBlocksHeader?: string;
+  codeBlocksDescription?: string;
   metrics: { value: string; label: string }[];
+  metricsHeader?: string;
   tech: string[];
   reflection?: string;
+  reflectionHeader?: string;
   ctaText?: string;
   liveSiteUrl?: string;
   phase2Teaser?: string;
@@ -93,101 +100,86 @@ export interface CaseStudyData {
 export const caseStudies: Record<string, CaseStudyData> = {
   "just-intelligence": {
     id: "just-intelligence",
-    seoTitle: "JUST Intelligence — Corporate Accountability Data Platform | Jinju Park",
+    seoTitle: "Just Intelligence: Corporate Accountability Data Platform | Jinju Park",
     seoDescription:
-      "7 years designing and building JUST Capital's flagship data platform — from research sessions with financial analysts to 30+ production React components, serving 3M+ users across institutional investors and the general public.",
+      "7 years designing and building Just Capital's flagship data platform, from research sessions with financial analysts to 30+ production React components, serving 3M+ users across institutional investors and the general public.",
     heroIntro:
-      "240+ weighted indicators. 1,000 public companies. Users who live in Bloomberg terminals.\n\nI've been the lead product designer and front-end engineer on this platform for seven years — architecting the information architecture, the D3 visualization system, the React component library, and the design token infrastructure. The first component and the thirtieth were built from the same abstraction model. Both survived two full rebrands without a rewrite. That's not luck — that's architecture.",
+      "Just Intelligence bridges the gap between raw datasets and interactive visualizations. Tracking the Russell 1000 across 240+ weighted indicators, the platform is engineered specifically for financial analysts and institutional researchers.\n\nAs Lead Product Designer and Front-End Engineer, I architected the design token infrastructure, React component library, and custom D3.js visualization system. At this scale, longevity is the ultimate metric. By building every component from a strict abstraction model and rigorously decoupling the logic from the visual layer, the platform survived two corporate rebrands without a single codebase rewrite. That isn't luck\u2014that is architecture.",
     role: "Lead Product Designer & Front-End Engineer",
-    team: "2 designers · 4 engineers · 1 PM",
     snapshot: {
-      timeline: "2017–present",
-      tools: "React, TypeScript, D3, Figma, Design Tokens, axe-core",
+      company: "Just Capital",
+      timeline: "2025\u20132026",
+      tools: "TypeScript, D3.js, Figma, HTML, PHP, CSS",
     },
-    specSheet: [
-      { label: "Primary Stack", value: "React · TypeScript · D3 · CSS Custom Properties" },
-      { label: "Accessibility", value: "WCAG 2.1 AA · axe-core in every PR" },
-      { label: "Engineering Impact", value: "0 component rewrites across 2 full rebrands" },
-      { label: "Scale", value: "3M+ users · 7 years in production" },
-    ],
+    specSheet: [],
+    challengeQuote: "Engineering for Institutional Rigor",
+    approachHeader: "The Philosophy",
     challenge:
-      "The constraint wasn't data complexity — it was cognitive trust. Financial analysts apply deep skepticism to any metric they didn't model themselves. If a visualization implies a ranking gap that doesn't exist in the underlying data, trust is lost permanently. 240+ weighted indicators across 1,000+ companies, consumed by users who benchmark everything against Bloomberg. Making density navigable while maintaining data integrity — that was the architectural problem.",
+      "The primary challenge was balancing immense data density with the high standard of accuracy required in institutional finance. Professional analysts require total transparency to reconcile platform metrics with their own internal models, while general users need an intuitive entry point into complex corporate performance data. With 240+ weighted indicators across the Russell 1000, the architectural goal was to deliver mathematical precision for expert audit and visual clarity for public consumption.",
     approach:
-      "I embedded with engineering from day one — running user research, translating sessions directly into Figma components, then writing the React that shipped them. No handoff document. No translation layer. I owned the spec and the PR. When an analyst session surfaced a new pattern, I was in the codebase the same week. Zero gap between design intent and production reality.",
-    whatIDid:
-      "Sole designer embedded full-time with engineering. Owned every visual decision — the token system, the component library, D3 visualization specs, and the accessibility audit framework. When Figma changed, CSS custom properties changed the same day. Design-to-code parity enforced by proximity, not process.",
+      "I embedded with the engineering team to ensure the interface could scale across various levels of data literacy. By operating as the direct link between user research and the UI layer, I eliminated the typical friction of design handoff. I translated research insights directly into Figma components and then implemented them into the production code. This created a \"zero-gap\" environment where every component was built with a deep understanding of the underlying data architecture, ensuring the design remained a faithful representation of production reality.",
+    processTitles: {
+      discover: "Mapping Data Utility",
+      design: "Foundational Architecture",
+      ship: "Fidelity and Hierarchy",
+    },
     process: {
       discover: [
-        "12 user sessions surfaced the core tension: analysts trusted the methodology but couldn't navigate density fast enough — time-to-comparison was 4x Bloomberg tolerance",
-        "47 annotated heuristic issues, prioritized by impact vs. cost. Top finding: ranking view made #3 and #8 look equivalent — ordinal position without score distance",
-        "Query latency constraints ruled out real-time filtering on full dataset — progressive disclosure became an architectural requirement",
-        "3 firm types (asset managers, ESG researchers, corporates) with fundamentally different entry points — modular IA or nothing",
+        "The Trust Gap: User sessions revealed a core tension. While users trusted the data methodology, they struggled to navigate the high-density environment at the speed required for professional analysis.",
+        "Persona-Driven Prioritization: I evaluated specific persona requirements to determine how different users extract value from the data. I prioritized features and tools based on these distinct user goals, ensuring the interface served the most critical tasks for each group.",
+        "Technical Constraints: Latency limitations ruled out real-time filtering of the full dataset. This turned progressive disclosure into a strict architectural requirement to maintain performance.",
+        "User Segmentation: I identified three distinct user groups: Asset Managers, Market Researchers, and Corporates. These groups had different entry points, which required a modular Information Architecture that could adapt to varying data needs.",
       ],
       design: [
-        "Token architecture first: 150+ CSS custom properties in three layers (global → semantic → component). The decision that made two future rebrands possible without rewrites",
-        "D3 visualization system from first principles — every chart encodes score distance, not ordinal rank. A 0.4-point gap between #3 and #8 is the analyst's decision input",
-        "1:1 Figma-to-React component library — matching names, props, and variant structure. Zero translation layer between design intent and shipped code",
-        "WCAG AA from wireframe: axe-core in every PR, keyboard navigation through 1,000-row datasets, contrast ratios on data-dense tables",
+        "Token Infrastructure: I engineered a CSS variable system that mirrored Figma variables 1:1. This established a unified visual language between the design files and the production code from the start.",
+        "D3 Visualization: I used D3.js logic to visually simplify complex data tables. By adding visual cues and patterns to the rows and columns, I enabled users to scan the Russell 1K and identify key trends much faster than reading raw text.",
+        "Abstraction Model: I built every UI component from a centralized abstraction model. This ensured that the layout remained consistent and easy to manage as the scale of the data increased.",
       ],
       ship: [
-        "React + TypeScript front-end built alongside Figma — no handoff phase. Analyst session to codebase in the same week",
-        "D3 progressive disclosure: Overall → Stakeholder → Issue → Metric → Datapoint. Five levels, each reducing cognitive load by ~80%",
-        "AI-powered search with source citations — natural language queries grounded in proprietary data so analysts verify before trusting",
-        "30+ components maintained 7 years — token architecture absorbed two rebrands by changing only the alias layer",
+        "Integrated Workflow: I developed the UI layer and CSS alongside the engineering team. This proximity allowed for a zero-handoff environment where research insights were moved into production within the same deployment cycle.",
+        "Information Hierarchy: I implemented a five-level drill-down structure to manage the 240+ indicators. This allows users to navigate logically from a high level Overview, to Stakeholder groups, then down to specific Issues, Metrics, and finally individual Data Points.",
+        "Design Fidelity: I ensured that every interaction in the final product maintained 1:1 parity with the design intent. This resulted in a high-fidelity interface that remained a faithful representation of the underlying data.",
       ],
     },
     keyDecisions: [
-      "Tokens before features — first month on infrastructure, not UI. 150+ CSS custom properties in three layers. Two rebrands later: only the alias layer changed. Zero component rewrites. The compound ROI of right abstractions, validated over seven years.",
-      "Distance over rank — no pre-built chart library encoded what analysts actually needed: score proximity, not ordinal position. Built every D3 visualization from scratch. The treemap encodes weight as area and performance as color — two dimensions, one view.",
-      "Accessibility as architecture — axe-core in every PR from day one. On a platform where analysts keyboard-navigate 1,000-row tables, WCAG AA isn't a compliance checkbox — it's a component API requirement.",
+      "Research before UI — The first month of the project was dedicated to user research and defining the specific tools needed. By prioritizing persona requirements before building, I ensured the tools we created were actually useful for the audience.",
+      "Custom Scannability over Defaults — Standard table libraries couldn't handle the Russell 1000 dataset efficiently. I collaborated with the CTO to build custom D3 logic that focused on visual scanning. We prioritized showing patterns and gaps in the data so users could retrieve information much faster than reading raw text.",
+      "User Flow over Technical Complexity — To handle back-end latency, I advocated for a progressive disclosure model. Instead of trying to show everything at once, I designed the flow to reveal data in logical layers. This kept the platform fast and ensured a stable experience for the user.",
     ],
     keyDecisionsLabel: "Key Tradeoffs",
-    outcomes: [
-      "30+ components, 7 years, zero forks — a component library that both design and engineering owned from the same source of truth",
-      "Two full rebrands absorbed by token alias swaps — zero component rewrites. Architectural resilience validated at production scale.",
-      "3M+ users across institutional investors, ESG researchers, and the general public",
-      "WCAG AA compliance at institutional scale — accessible data visualization engineered from the first wireframe, not retrofitted",
-    ],
+    outcomes: [],
     visualBlocksHeader: "What Got Built",
     visualBlocks: [
       {
         id: "hero",
         layout: "wide",
         imageSrc: "/just/just-ji-hero.png",
-        caption: "The hierarchy problem: 240+ weighted indicators needed to collapse into a single company score without destroying analyst trust in the number. Every visual layer is a decision about what to surface immediately and what to earn with a click.",
+        caption: "The Scenario Analysis tool moves beyond static data by allowing users to modify specific indicator weights and observe the direct impact on final company scores. By simulating different performance scenarios, researchers can conduct hypothesis-based analysis grounded in adjustable and valid datasets.",
       },
       {
         id: "explorer-results",
-        layout: "side-by-side",
+        layout: "wide",
         imageSrc: "/just/just-ji-explorer.png",
-        caption: "Company Explorer — the entry point for analysts who know what they're looking for. Filter logic built to match how analysts actually query: sector first, then metric weight, then score band.",
-        imageSrc2: "/just/just-ji-results.png",
-        caption2: "Search results ranked by JUST Score with inline metric previews. The scan pattern was designed for analysts running 20+ company comparisons per session — the critical data visible without opening a single company.",
+        caption: "The View Scenario Result page provides a focused analysis by highlighting only the specific stakeholders, issues, and metrics affected by ranking adjustments. By isolating these variables from the broader dataset, the interface allows users to concentrate on the direct outcomes of their modifications. The page also explicitly displays the value changes made relative to the original data, ensuring transparency in how custom inputs influence both overall and industry-level rankings.",
       },
       {
         id: "ranking",
         layout: "wide",
         imageSrc: "/just/just-ji-ranking.png",
-        caption: "A sorted list of 1,000 companies makes rank #3 and rank #8 look equivalent. What matters is the score gap between them. The distribution model shows where a company sits relative to its peers — not just its ordinal position.",
-      },
-      {
-        id: "scenario",
-        layout: "wide",
-        imageSrc: "/just/just-ji-scenario-old.png",
-        caption: "Scenario Analysis — adjust metric weights to model hypothetical scoring outcomes. Built for ESG analysts who need to stress-test weighting assumptions before publishing a portfolio thesis.",
+        caption: "The Performance Explorer consolidates overall and industry rankings into a horizontal view, allowing for simultaneous comparison of current and previous year data across every stakeholder. By displaying ranking weights and year-over-year shifts in a single layout, the interface enables users to evaluate performance trends without the need for multiple navigation steps. High-contrast color indicators are applied to categorize rankings into tiers, providing a visual shorthand that helps users quickly identify their standing and navigate the complexities of the stakeholder landscape.",
       },
     ],
     metrics: [
-      { value: "3M+", label: "users served — institutional investors, ESG researchers, and public" },
-      { value: "7+",  label: "years in production with zero component forks across 3 teams" },
-      { value: "0",   label: "component rewrites during 2 full visual rebrands" },
-      { value: "4x",  label: "faster time-to-comparison vs. analyst benchmark (user sessions)" },
+      { value: "Market Launch",    label: "Delivered 6 tools within the first production platform for institutional investors." },
+      { value: "Scalable Core",    label: "Durable CSS infrastructure that handled massive data growth without requiring rewrites." },
+      { value: "1:1 Fidelity",     label: "1:1 parity between Figma and code to ensure the visual precision required by analysts." },
+      { value: "Data Speed",       label: "Simplified dense datasets into a scannable tool using D3 and a 5-level hierarchy." },
     ],
-    tech: ["React", "TypeScript", "D3", "CSS Custom Properties", "Figma", "Design Tokens", "axe-core"],
+    tech: [],
     reflection:
-      "Seven years on one product taught me what shorter engagements can't: bad abstractions compound. A token system that's slightly wrong in year one becomes a migration project in year three. A component API that skips edge cases forks by year two. These components are still in production because the abstractions were right — not clever, just right.",
-    ctaText: "I architect products meant to outlast the team that shipped them. If your abstractions need to be right the first time, I want to hear about it.",
-    phase2Teaser: "Phase 2 — redesigned the platform as JUST Capital rebranded, introducing new features driven by real user usage patterns and fresh stakeholder feedback to improve the analyst experience end-to-end.",
+      "Designing Just Intelligence proved that professional UX is about mastering data density, not avoiding it. When analysts navigate hundreds of metrics, the interface must prioritize mental speed and structural clarity. I learned that the real value of a design is measured by how quickly it helps a user reach a decision. A successful tool does more than look clean; it turns complex data into actionable confidence.",
+    ctaText: "I build products designed to last. If you need a foundation that works right the first time, let's talk.",
+    phase2Teaser: "Phase 2: redesigned the platform as Just Capital rebranded, introducing new features driven by real user usage patterns and fresh stakeholder feedback to improve the analyst experience end-to-end.",
     phase2Url: "/work/just-intelligence-v2",
   },
 
@@ -288,368 +280,51 @@ export const caseStudies: Record<string, CaseStudyData> = {
       },
     ],
     codeBlocksHeader: "The System in Code",
+    codeBlocksDescription: "The token architecture that powered the V2 migration. A single semantic layer that connected brand identity, data visualization, and accessibility compliance — so every component spoke the same language from day one.",
     codeBlocks: [
       {
-        id: "stakeholder-scorecard",
-        title: "Stakeholder Scorecard — Quintile Ranking with Universe Toggle",
-        description: "Five stakeholder categories ranked against full universe or industry peers via radio toggle. Dynamic quintile thresholds. Expandable bar charts with universe avg and top performer. Live Index Concept return color-coded by sign. Business case studies filtered by stakeholder slug, gated behind entitlement checks.",
-        language: "php",
-        liveUrl: "https://justcapital.com",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:auto;overflow:hidden;}
-body{font-family:-apple-system,'Helvetica Neue','Segoe UI',sans-serif;background:#fff;padding:16px 20px;color:#111;font-size:12px;}
-.sc-wrap{max-width:680px;margin:0 auto;}
-.sc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
-.sc-updated{display:inline-flex;align-items:center;gap:5px;font-size:8px;color:#E07820;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
-.sc-updated .dot{width:6px;height:6px;border-radius:50%;background:#E07820;}
-.sc-title{font-size:22px;font-weight:900;letter-spacing:-.01em;color:#111;text-transform:uppercase;}
-.sc-legend{display:flex;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
-.sc-legend-item{display:flex;align-items:center;gap:4px;font-size:8px;color:#555;}
-.sc-legend-dot{width:8px;height:8px;border-radius:50%;}
-.sc-legend-dot.t5{background:#15803d;}.sc-legend-dot.t25{background:#86efac;}.sc-legend-dot.m50{background:#d1d5db;border:1px solid #9ca3af;}.sc-legend-dot.b25{background:#fbbf24;}.sc-legend-dot.b5{background:#dc2626;}
-.sc-toggle{display:flex;background:#f0f0f0;border-radius:20px;overflow:hidden;font-size:9px;font-weight:600;}
-.sc-toggle span{padding:6px 16px;cursor:default;color:#888;transition:all .2s;}
-.sc-toggle span.active{background:#1D4E5C;color:#fff;border-radius:20px;}
-.sc-count{font-size:10px;color:#555;margin-bottom:14px;text-align:center;}
-.sc-count strong{color:#1D4E5C;font-weight:700;}
-.sc-count a{color:#1D4E5C;text-decoration:underline;}
-.sc-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px;}
-.sc-card{background:#fff;border-radius:10px;padding:12px 10px;border:1px solid #e5e7eb;display:flex;flex-direction:column;gap:6px;cursor:default;position:relative;}
-.sc-card.top{border-color:#15803d;border-width:1.5px;}
-.sc-card-badge{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:6px;font-weight:700;padding:2px 8px;border-radius:8px;white-space:nowrap;letter-spacing:.03em;background:#dcfce7;color:#15803d;}
-.sc-card-name{font-size:10px;font-weight:700;color:#111;line-height:1.3;}
-.sc-card-weight{font-size:8px;color:#888;display:flex;justify-content:space-between;align-items:center;}
-.sc-card-weight strong{color:#1D4E5C;font-size:9px;}
-.sc-card hr{border:none;border-top:1px solid #e5e7eb;margin:0;}
-.sc-card-perf{display:flex;justify-content:space-between;align-items:center;}
-.sc-card-perf-label{font-size:7px;color:#888;}
-.sc-card-perf-val{font-size:8px;font-weight:700;padding:3px 8px;border-radius:10px;letter-spacing:.02em;}
-.sc-card-perf-val.t5{background:#dcfce7;color:#15803d;}
-.sc-card-perf-val.t25{background:#f0fdf4;color:#16a34a;}
-.sc-card-perf-val.m50{background:#f3f4f6;color:#6b7280;}
-.sc-detail{background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e7eb;margin-bottom:14px;display:grid;grid-template-columns:1.2fr 1fr;gap:16px;}
-.sc-detail-left{border-right:1px solid #e5e7eb;padding-right:16px;}
-.sc-detail-right{}
-.sc-perf-note{font-size:6.5px;color:#999;line-height:1.4;margin-bottom:10px;font-style:italic;}
-.sc-legend-bar{display:flex;gap:12px;margin-bottom:10px;}
-.sc-legend-bar-item{display:flex;align-items:center;gap:4px;font-size:7px;color:#555;}
-.sc-legend-bar-item .swatch{width:12px;height:3px;border-radius:2px;}
-.sc-bar-wrap{margin-bottom:4px;}
-.sc-bar-track{height:110px;background:#f3f4f6;border-radius:4px;position:relative;display:flex;align-items:flex-end;padding:0 20px;}
-.sc-bar-col{display:flex;flex-direction:column;align-items:center;flex:1;}
-.sc-bar-rect{width:60px;border-radius:3px 3px 0 0;}
-.sc-bar-val{font-size:9px;font-weight:700;color:#1D4E5C;margin-bottom:3px;}
-.sc-bar-label-x{font-size:6px;color:#999;margin-top:4px;}
-.sc-bar-axis{display:flex;justify-content:space-between;font-size:6px;color:#aaa;margin-bottom:4px;}
-.sc-live{display:flex;align-items:center;gap:5px;font-size:8px;color:#22c55e;font-weight:600;margin-bottom:8px;}
-.sc-live .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.sc-workers-q{font-size:11px;font-weight:700;color:#111;margin-bottom:4px;}
-.sc-workers-q span{font-size:10px;font-weight:400;color:#555;}
-.sc-index-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.sc-index-label{font-size:8px;color:#555;}
-.sc-index-val{font-size:11px;font-weight:700;color:#15803d;}
-.sc-explore{font-size:8px;color:#1D4E5C;font-weight:600;text-decoration:none;}
-.sc-bcs-title{font-size:10px;font-weight:700;color:#111;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e5e7eb;}
-.sc-bcs-item{margin-bottom:6px;}
-.sc-bcs-source{font-size:7px;color:#1D4E5C;font-weight:600;}
-.sc-bcs-desc{font-size:7.5px;color:#555;line-height:1.3;}
-.sc-cta-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #e5e7eb;}
-.sc-cta-btn{background:#1D4E5C;color:#fff;padding:8px 18px;border-radius:6px;font-size:8px;font-weight:600;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;}
-.sc-cta-link{font-size:8px;color:#1D4E5C;font-weight:600;text-decoration:none;}
-.sc-bottom-cta{display:flex;justify-content:center;margin-top:14px;}
-.sc-bottom-cta a{background:#1D4E5C;color:#fff;padding:8px 20px;border-radius:6px;font-size:9px;font-weight:600;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;}
-</style></head><body>
-<div class="sc-wrap">
-  <div class="sc-header">
-    <div>
-      <div class="sc-updated"><span class="dot"></span> Updated Mar 3rd, 2026</div>
-      <div class="sc-title">Stakeholder Performance</div>
-      <div class="sc-legend">
-        <div class="sc-legend-item"><span class="sc-legend-dot t5"></span>Top 5%</div>
-        <div class="sc-legend-item"><span class="sc-legend-dot t25"></span>Top 25%</div>
-        <div class="sc-legend-item"><span class="sc-legend-dot m50"></span>Middle 50%</div>
-        <div class="sc-legend-item"><span class="sc-legend-dot b25"></span>Bottom 25%</div>
-        <div class="sc-legend-item"><span class="sc-legend-dot b5"></span>Bottom 5%</div>
-      </div>
-    </div>
-    <div class="sc-toggle"><span>All Companies</span><span class="active">Industry</span></div>
-  </div>
-  <div class="sc-count"><strong>132</strong> Companies in <a>Technology</a> Industry</div>
-  <div class="sc-cards">
-    <div class="sc-card"><div class="sc-card-name">Workers</div><div class="sc-card-weight">weight&ensp;<strong>40.26%</strong></div><hr><div class="sc-card-perf"><span class="sc-card-perf-label">Overall Performance</span><span class="sc-card-perf-val m50">Mid 50%</span></div></div>
-    <div class="sc-card top"><div class="sc-card-badge">Top-performing Stakeholder</div><div class="sc-card-name">Customers</div><div class="sc-card-weight">weight&ensp;<strong>25.88%</strong></div><hr><div class="sc-card-perf"><span class="sc-card-perf-label">Overall Performance</span><span class="sc-card-perf-val t5">Top 5%</span></div></div>
-    <div class="sc-card"><div class="sc-card-name">Shareholders &amp; Governance</div><div class="sc-card-weight">weight&ensp;<strong>13.63%</strong></div><hr><div class="sc-card-perf"><span class="sc-card-perf-label">Overall Performance</span><span class="sc-card-perf-val t25">Top 25%</span></div></div>
-    <div class="sc-card"><div class="sc-card-name">Communities</div><div class="sc-card-weight">weight&ensp;<strong>12.27%</strong></div><hr><div class="sc-card-perf"><span class="sc-card-perf-label">Overall Performance</span><span class="sc-card-perf-val t25">Top 25%</span></div></div>
-    <div class="sc-card top"><div class="sc-card-badge">Top-performing Stakeholder</div><div class="sc-card-name">Environment</div><div class="sc-card-weight">weight&ensp;<strong>7.97%</strong></div><hr><div class="sc-card-perf"><span class="sc-card-perf-label">Overall Performance</span><span class="sc-card-perf-val t5">Top 5%</span></div></div>
-  </div>
-  <div class="sc-detail">
-    <div class="sc-detail-left">
-      <div class="sc-perf-note">* Performance Scores range from 0 to 100, with 100 representing the leading company(s). Scores reflect proportional performance relative to the leader (e.g., 80 = 80% of leader performance).</div>
-      <div class="sc-legend-bar">
-        <div class="sc-legend-bar-item"><span class="swatch" style="background:#c8d5da"></span>Your Company Performance</div>
-        <div class="sc-legend-bar-item"><span class="swatch" style="background:#E07820"></span>Industry Avg</div>
-        <div class="sc-legend-bar-item"><span class="swatch" style="background:#15803d"></span>Highest Industry Performer</div>
-      </div>
-      <div class="sc-bar-track">
-        <div style="display:flex;align-items:flex-end;gap:20px;width:100%;justify-content:center;padding-bottom:6px;">
-          <div class="sc-bar-col"><span class="sc-bar-val">44</span><div class="sc-bar-rect" style="height:48px;background:#c8d5da;width:50px;"></div></div>
-          <div class="sc-bar-col"><span class="sc-bar-val" style="color:#E07820">50</span><div class="sc-bar-rect" style="height:55px;background:#E07820;width:8px;"></div></div>
-          <div class="sc-bar-col"><span class="sc-bar-val" style="color:#15803d">89</span><div class="sc-bar-rect" style="height:97px;background:#15803d;width:8px;"></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="sc-detail-right">
-      <div class="sc-live"><span class="dot"></span> LIVE DATA</div>
-      <div class="sc-workers-q"><strong>Workers:</strong> <span>Why performance matter?</span> <span style="float:right;font-size:10px;cursor:default;">&#9660;</span></div>
-      <div class="sc-index-row">
-        <span class="sc-index-label">Leaders outperformed Russell 1000 EQ by</span>
-        <span class="sc-index-val">30.05%</span>
-        <a class="sc-explore" href="#">Explore &rarr;</a>
-      </div>
-      <div class="sc-bcs-title">Business Case Studies: Workers</div>
-      <div class="sc-bcs-item"><div class="sc-bcs-source">JUST Capital</div><div class="sc-bcs-desc">Living wage leaders show higher ROA; underpayment raises financing risk</div></div>
-      <div class="sc-bcs-item"><div class="sc-bcs-source">ResearchGate</div><div class="sc-bcs-desc">Living Wages as a Strategic Lever: How Fair Compensation Strengthens Business Performance</div></div>
-      <div class="sc-bcs-item"><div class="sc-bcs-source">Business Fights Poverty, University of Cambridge Institute for Sustainability Leadership, Shift</div><div class="sc-bcs-desc">Leaders see living wages as an opportunity instead of a challenge</div></div>
-      <div class="sc-bcs-item"><div class="sc-bcs-source">Organisation for Economic Co-operation and Development</div><div class="sc-bcs-desc">Training Subsidies Boost Firm Productivity and Growth</div></div>
-    </div>
-  </div>
-  <div class="sc-cta-row">
-    <a class="sc-cta-btn" href="#">Compare Data Against Peers</a>
-    <a class="sc-cta-link" href="#">More Business Case Studies &rarr;</a>
-  </div>
-  <div class="sc-bottom-cta"><a href="#">View Underlying Metrics</a></div>
-</div>
-</body></html>`,
-        code: `<?php
-/**
- * stakeholder_scorecard.php — JUST Capital (JUST Intelligence)
- * Production source from justcapital.com
- *
- * Company performance across 5 stakeholder categories,
- * ranked against full universe or industry peers via radio toggle.
- *
- * Key patterns:
- * - Dynamic quintile thresholds (top/bottom 5% get special wrappers)
- * - Universe toggle (overall vs. industry) with namespaced radio groups
- * - Bar chart with company score, universe avg, and max — all server-rendered
- * - Index Concept returns color-coded by sign (green/red)
- * - Business case studies filtered by stakeholder slug
- * - Entitlement gating with blur fallback for non-paid users
- */
+        id: "css-token-system",
+        title: "CSS Custom Properties Architecture",
+        description: "The three-layer token system: global definitions, component application, and accessibility compliance — all governed by a single source of truth.",
+        code: `/* 1. Global Token System (The Architecture) */
+:root {
+  /* Brand Typography with System Fallbacks */
+  --font-primary: 'Nexa', system-ui, sans-serif;
 
-// ── Universe types — drives the overall/industry toggle ─────────
-$universe_types = [
-    'overall'  => ['size' => $this->current_universe_count,
-                   'label' => 'Overall',
-                   'label_description' => 'the JUST Capital Universe'],
-    'industry' => ['size' => $this->current_industry_count,
-                   'label' => 'Industry',
-                   'label_description' => $this->company_obj['industry_name']],
-];
-?>
+  /* Core Brand & Accessible Surfaces */
+  --surface-primary-dark: #00426a;
+  --action-primary-blue: #006298;
 
-<div class="skteholder_container">
-  <div class="header">
-    <div class="header_left">
-      <div class="sub_title">
-        <div class="status_pill">
-          <span class="status_dot"></span>
-          Updated <?php echo date("M jS, Y",
-            $this->last_updated_timestamp); ?>
-        </div>
-        Stakeholder Performance
-      </div>
-      <div class="performance_legend">
-        <span class="dot top_5"></span> Top 5%
-        <span class="dot top_25"></span> Top 25%
-        <span class="dot mid_50"></span> Middle 50%
-        <span class="dot bottom_25"></span> Bottom 25%
-        <span class="dot bottom_5"></span> Bottom 5%
-      </div>
-    </div>
+  /* Semantic Data Scale (Performance Quintiles) */
+  --data-tier-top-5: #93C47D;
+  --data-tier-bottom-5: #E95858;
+}
 
-    <?php // ── Universe toggle — radio group ──────────────────── ?>
-    <div class="toggle_container">
-      <div class="switch-toggle">
-        <input type="radio" name="universeStakeholder"
-          id="toggle-overall"
-          onclick="com.justcapital.ji_home
-            .switch_universe('overall');">
-        <label for="toggle-overall">All Companies</label>
-        <input type="radio" name="universeStakeholder"
-          id="toggle-industry" checked
-          onclick="com.justcapital.ji_home
-            .switch_universe('industry');">
-        <label for="toggle-industry">Industry</label>
-        <span class="slider"></span>
-      </div>
-    </div>
-  </div>
+/* 2. Component Application (The Execution) */
+.data-table-cell[data-rank="top-5"] {
+  /* Enterprise best practice: providing a hardcoded fallback */
+  background-color: var(--data-tier-top-5, #93C47D);
+  color: var(--surface-primary-dark);
+}
 
-  <?php // ── Stakeholder cards — one per category ─────────────── ?>
-  <?php foreach ($universe_types as $universe_key => $universe_obj): ?>
-    <div class="<?= $universe_key ?>_tog_content
-                 stakeholder_cards_container">
+.company-switch-dropdown {
+  background-color: var(--surface-primary-dark);
+  font-family: var(--font-primary);
+}
 
-      <?php foreach ($this->taxonomy_tree_obj['children']
-                     as $skey => $stakeholder_obj): ?>
-        <?php
-          // ── Dynamic quintile threshold ──────────────────────
-          $rank_type  = $universe_key . "_rank";
-          $rank       = $this->current_ranks
-                          [$stakeholder_obj['perm_id']][$rank_type];
-          $count      = $universe_obj['size'];
-          $is_top     = $rank <= (5/100) * $count;
-          $is_bottom  = $rank >= (95/100) * $count;
-          $perf_label = ucwords(
-            get_range_based_text($rank, $count));
-          $class_name = get_range_based_class_name($rank, $count);
-        ?>
-
-        <?php if ($is_top): ?>
-          <div class="top_perform">
-            <div class="top_perform_label">
-              Top-performing Stakeholder</div>
-        <?php elseif ($is_bottom): ?>
-          <div class="bottom_perform">
-            <div class="bottom_perform_label">
-              Bottom-performing Stakeholder</div>
-        <?php endif; ?>
-
-          <div class="stakeholder_card"
-               onclick="com.justcapital.ji_home
-                 .show_stakeholder_details(
-                   '<?= $stakeholder_obj['slug'] ?>',
-                   '<?= $universe_key ?>')">
-            <div class="stakeholder_name">
-              <?= $stakeholder_obj['name'] ?></div>
-            <div class="stakeholder_weight">weight
-              <span class="weight_value">
-                <?= round($this->current_ranks
-                  [$stakeholder_obj['perm_id']]['weight'], 2) ?>%
-              </span>
-            </div>
-            <hr>
-            <div class="quintile">
-              <span class="performance">Overall Performance</span>
-              <div class="temp <?= $class_name ?>">
-                <?= $perf_label ?>%</div>
-            </div>
-          </div>
-
-        <?php if ($is_top || $is_bottom): ?>
-          </div>
-        <?php endif; ?>
-      <?php endforeach; ?>
-    </div>
-  <?php endforeach; ?>
-
-  <?php // ── Expanded detail: bar chart + index concept ──────── ?>
-  <?php foreach ($this->taxonomy_tree_obj['children']
-                 as $skey => $stakeholder_obj): ?>
-    <?php foreach ($universe_types
-                   as $universe_key => $universe_obj): ?>
-      <?php
-        $company_score = round($this->current_scores
-          [$stakeholder_obj['perm_id']]['value']);
-        $uni_avg = round($this->current_scores
-          [$stakeholder_obj['perm_id']][$universe_key.'_mean']);
-        $uni_max = round($this->current_scores
-          [$stakeholder_obj['perm_id']][$universe_key.'_max']);
-        $index_return = round($this->index_concept_returns
-          [$stakeholder_obj['slug']], 2);
-      ?>
-
-      <div class="<?= $universe_key ?>_tog_content
-                   stakeholder_tog_content">
-        <div class="graph_container">
-          <?php // ── Bar chart — widths are server-rendered ──── ?>
-          <div class="bar_chart"
-               style="width: <?= $company_score ?>%">
-            <span class="company_socre">
-              <?= $company_score ?></span>
-          </div>
-          <div class="chart_marker_container">
-            <div class="chart_marker" id="industry_avg"
-                 style="left: <?= $uni_avg ?>%"></div>
-            <div class="chart_marker" id="industry_best"
-                 style="left: <?= $uni_max ?>%"></div>
-          </div>
-        </div>
-
-        <?php // ── Index Concept return — color by sign ──────── ?>
-        <div class="index_concept">
-          <div class="live_pill">
-            <span class="live_dot"></span> Live Data
-          </div>
-          <div class="data_box_container">
-            <div class="russell_wrap">
-              <span>Leaders
-                <?php print_if($index_return >= 0,
-                  'outperformed', 'underperformed'); ?>
-                Russell 1000 EQ by</span>
-              <span class="index_data" style="
-                background: <?php print_if($index_return >= 0,
-                  '#eef9e9', '#f4cccc'); ?>;
-                color: var(<?php print_if($index_return >= 0,
-                  '--color-top-5', '--color-bottom-5'); ?>);">
-                <?= $index_return ?>%
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <?php // ── Business case studies — gated by entitlement ── ?>
-        <div class="business_case">
-          <div class="sub_title">Business Case Studies:
-            <span><?= $stakeholder_obj['name'] ?></span></div>
-          <ul>
-            <?php $counter = 0; ?>
-            <?php foreach ($this->content_library
-                           as $cl_obj): ?>
-              <?php if ($counter < 4
-                && $cl_obj['stakeholder_slug']
-                   == $stakeholder_obj['slug']): ?>
-                <li class="article_container">
-                  <span id="category"
-                    class="<?php print_if(
-                      !has_paid_entitlements(),
-                      'blur_info', ''); ?>">
-                    <?php if (!has_paid_entitlements()):
-                      echo str_repeat("X",
-                        strlen($cl_obj['source']));
-                    else:
-                      echo $cl_obj['source'];
-                    endif; ?>
-                  </span>
-                  <a href="/ji/business_case_studies?redir=
-                    <?= $cl_obj['id'] ?>"
-                     class="article_title" target="_blank">
-                    <?= $cl_obj['headline'] ?>
-                  </a>
-                </li>
-                <?php $counter++; ?>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          </ul>
-        </div>
-      </div>
-    <?php endforeach; ?>
-  <?php endforeach; ?>
-</div>`,
+/* 3. Accessibility (Proving WCAG AA Compliance) */
+.company-switch-dropdown:focus-visible {
+  outline: 2px solid var(--data-tier-top-5);
+  outline-offset: 2px;
+}`,
+        language: "css",
       },
     ],
-    metrics: [
-      { value: "~50%", label: "drop in CSV exports quarter-over-quarter" },
-      { value: "<30s", label: "AI search time vs. 4+ min manual filtering" },
-      { value: "0", label: "days of analyst downtime during full rebrand" },
-      { value: "#2", label: "most-used feature within 6 weeks of launch" },
-    ],
+    metrics: [],
     tech: [],
+    reflectionHeader: "Bridging the Gap Between Canvas and Code",
     reflection:
-      "The hardest part of a Phase 2 isn't building new features — it's governing what stays. Seven years of muscle memory is architectural capital, not technical debt. Every v2 decision ran through one filter: does this accelerate the analyst without forcing them to relearn? Nothing was replaced. The gaps were filled. That restraint was the strategy.",
+      "Phase 2 was a masterclass in full-stack design. It validated that the most effective way to ship enterprise-grade UI is to own the pipeline from the initial wireframes straight through to the front-end CSS. Speaking the language of both user experience and technical architecture allowed me to seamlessly integrate complex workflows while maintaining absolute control over the final visual fidelity.",
     ctaText: "If you're transforming a product that people already depend on — I've architected that transition without breaking the trust that took years to build.",
   },
 
@@ -778,7 +453,7 @@ $universe_types = [
     <div class="label">variant: standard</div>
     <blockquote class="c-quote c-quote--standard">
       <p class="c-quote__text">"The data doesn't lie — corporations that invest in their workers outperform those that don't."</p>
-      <cite class="c-quote__cite">Martin Whittaker<span class="c-quote__role">CEO, JUST Capital</span></cite>
+      <cite class="c-quote__cite">Martin Whittaker<span class="c-quote__role">CEO, Just Capital</span></cite>
     </blockquote>
   </div>
   <div>
@@ -2318,7 +1993,7 @@ cite{display:block;margin-top:12px;font-size:13px;font-weight:700;color:#1D356C;
     <div class="open-mark">"</div>
     <p>The data doesn't lie — corporations that invest in their workers outperform those that don't, and the evidence only grows stronger every year.</p>
     <cite>Martin Whittaker</cite>
-    <span class="affiliation">CEO, JUST Capital</span>
+    <span class="affiliation">CEO, Just Capital</span>
   </div>
 </blockquote>
 </body></html>`,
@@ -2666,75 +2341,61 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     seoDescription:
       "Built 35 custom WordPress blocks from an agency rebrand — full front-end engineering in PHP, HTML, CSS, and JavaScript, shipped in 8 weeks while simultaneously leading JUST Intelligence Phase 2.",
     heroIntro:
-      "35 custom modules. 8 weeks. Zero post-launch dev dependency.\n\nI engineered JUST Capital's full marketing site rebuild while simultaneously leading JUST Intelligence Phase 2. Agency delivered the visual design; I architected the production WordPress system — token-based CSS, modular PHP/Twig components, and a CMS architecture sturdy enough that the marketing team owned it completely from day one. The constraint wasn't complexity. It was building something that wouldn't need me the moment it launched.",
+      "While simultaneously leading Phase 2 of JUST Intelligence, I engineered the front-end infrastructure for JUST Capital's massive marketing site rebuild in just 8 weeks. An external agency delivered the visual design, and my role was to bridge that system into a flexible, high-velocity WordPress CMS environment.",
     layout: "narrative",
     processLayout: "stacked",
     keyDecisionsLayout: "stacked",
     leadVisualId: "just-rebrand-home",
     leadVisualHeader: "Shipped Output",
-    role: "Front-End Engineer",
-    team: "1 front-end developer (me) · 1 back-end developer (CTO) · Marketing team (CMO) · 1 external agency (design)",
+    role: "Lead Front-End Engineer",
+    team: "Solo Front-End Engineer, partnering directly with the CTO, CMO, and an External Design Agency",
     snapshot: {
-      timeline: "2026 (8 weeks crunch)",
-      tools: "PHP, Twig, WordPress, ACF Pro, HTML, CSS, JavaScript (ES6), CSS Custom Properties",
+      company: "Just Capital",
+      timeline: "8 Weeks (Accelerated Timeline)",
+      tools: "WordPress, Custom PHP, HTML5, ACF Pro, JavaScript, Semantic CSS",
+      discipline: "Front-End Architecture & CMS Development",
     },
-    specSheet: [
-      { label: "Primary Stack", value: "PHP · Twig · WordPress · ACF Pro · CSS Custom Properties" },
-      { label: "Accessibility", value: "WCAG 2.1 AA · responsive across all 35 modules" },
-      { label: "Engineering Impact", value: "Zero engineering tickets post-launch · 8-week delivery" },
-      { label: "Scale", value: "35 custom modules · CMS autonomy for marketing from day one" },
-    ],
+    specSheet: [],
     challenge:
-      "Full marketing site rebuild around an agency-delivered visual identity — in parallel with JUST Intelligence Phase 2. Twofold constraint: ship 35 modules in 8 weeks under real capacity pressure, and architect a CMS that marketing owns independently from launch day. Zero dev-dependency for content updates. Zero fragile templates requiring engineering support.",
+      "The external agency delivered a beautiful, highly complex visual system. The true challenge wasn't just executing the code. It was translating that massive Figma file into a flexible, production-ready WordPress infrastructure in exactly 8 weeks. The business required a system that achieved 1:1 visual fidelity on the front-end, while remaining simple enough on the backend that the marketing team could build and publish custom pages without ever touching a line of code.",
+    challengeQuote: "Translating Static Design into a Living CMS",
     approach:
-      "Mapped agency designs to WordPress block architecture before writing code. The question wasn't 'how do I build this' — it was 'how do I structure this so marketing never needs engineering after launch.'\n\nACF custom blocks: full authoring freedom for marketing, complete markup control for engineering. Token system derived directly from brand guidelines — future design updates as token swaps, not codebase audits. Parallel capacity with JI Phase 2 enforced conservative decisions: fewer custom patterns, shorter dependency chains, zero clever abstractions.",
+      "Instead of hard-coding static templates, I approached the build as an enterprise UI kit. Every section of the site was engineered as an independent, reusable block. By combining semantic CSS variables with dynamic PHP logic, I decoupled the visual design from the content.\n\nIf the CMO wanted to spin up a new campaign landing page, they didn't need a developer. They simply opened WordPress, selected the modules they needed, filled in the ACF text fields, and the front-end architecture automatically handled the spacing, typography, and responsive breakpoints.",
+    processHeader: "The 8-Week Architecture Pipeline",
     whatIDid:
-      "Owned all front-end engineering: HTML, CSS token system, PHP/Twig templates, and vanilla JS. Registered 35 custom WordPress blocks via ACF Pro. Architected the CSS token system from agency brand guidelines. Coordinated with CTO on back-end integration. Migrated legacy content. Shipped fully responsive — reconciled screen by screen against agency deliverables.",
+      "Front-End Architecture: Engineered the global design system into a scalable, token-based CSS architecture.\n\nComponent Library Development: Programmed 35+ reusable UI modules using custom PHP, HTML5, and Vanilla JS.\n\nCMS Integration: Architected the backend authoring experience by mapping complex ACF Pro data fields directly to the front-end templates, enabling true \"lego-block\" page building for the marketing team.\n\nTechnical Liaison: Partnered directly with the CTO and CMO to ensure the technical infrastructure mapped to their aggressive marketing roadmap.",
+    whatIDidHeader: "Core Responsibilities",
     process: {
       discover: [
-        "Deconstructed agency Figma into system inventory: component families, token families, and content patterns that must survive real CMS usage",
-        "Engineering constraints locked with Marketing + CTO: editor autonomy, performance targets, accessibility baseline, zero post-launch dev dependency",
-        "Every layout mapped to WordPress content model — editor controls vs. fixed structure, field names aligned to marketing vocabulary",
-        "Legacy content audit: migration risk, image ratios, and edge cases that would break modules",
-        "Release QA scope defined upfront — breakpoints, CMS safety, accessibility — so build decisions validated early",
+        "I deconstructed the agency's Figma files into a strict system inventory, identifying the component and token families required for the build. Before writing a line of code, I mapped every layout to the WordPress content model and partnered with the CTO and Marketing team to lock in hard constraints: absolute editor autonomy, strict accessibility baselines, and zero post-launch dev dependency.",
       ],
       design: [
-        "Token architecture: primitives → semantic aliases → component tokens, matching agency naming 1:1 to eliminate translation layers",
-        "ACF schemas per module: field types, defaults, validation, CMS safety constraints preventing layout breakage",
-        "Module API contracts (props, variants, responsive behavior) authored before templating — design-to-code parity by contract",
-        "Performance and accessibility guardrails: every module had to satisfy both at build time, not QA time",
-        "Marketing handoff artifacts: authoring rules, fallback behavior, and content constraints per module",
+        "To eliminate translation layers, I built a CSS token architecture that mapped 1:1 with the agency's naming conventions. I then engineered strict ACF (Advanced Custom Fields) schemas for all 35 modules. By defining validation rules, default states, and editor constraints at the schema level, I guaranteed the UI would never break, regardless of what content the marketing team inputted.",
       ],
       ship: [
-        "35 Twig/PHP modules integrated with ACF fields — front-end output wired to live CMS data",
-        "Legacy content migrated and validated page-by-page against module constraints and token usage",
-        "Release QA: responsive fidelity, WCAG AA, CMS safety, cross-browser — all 35 modules",
-        "Marketing handoff completed — full CMS autonomy from day one. Zero engineering tickets post-launch.",
+        "I programmed the 35 reusable UI modules using custom PHP, HTML, and vanilla JS, wiring the front-end architecture directly to the live CMS data. Performance and WCAG AA accessibility guardrails were baked directly into the build process, ensuring responsive fidelity across all modules as legacy content was migrated.",
       ],
       govern: [
-        "Post-launch maintenance architecture: token updates, module versioning, schema change rules",
-        "Performance budget targets and monitoring ownership established",
-        "Ongoing QA checklist for new pages and module variants",
-        "Escalation paths documented — marketing resolves edge cases without engineering intervention",
+        "The project concluded with a complete transfer of ownership. To guarantee true autonomy, I authored a comprehensive internal documentation guide for the marketing team, detailing the specific use cases, constraints, and authoring rules for all 35 modules. By pairing bulletproof code with clear operational playbooks, I empowered them to manage the CMS independently from day one, resulting in exactly zero post-launch engineering tickets.",
       ],
     },
     processTitles: {
-      discover: "Scope",
-      design: "Architect",
-      ship: "Build",
-      govern: "Govern",
+      discover: "Scope & Deconstruction",
+      design: "Systems Architecture",
+      ship: "Component Build",
+      govern: "Documentation & Handoff",
     },
-    keyDecisionsLabel: "Key Front-End Decisions",
+    keyDecisionsLabel: "Key Architectural Decisions",
     keyDecisions: [
-      "ACF blocks over page builders — Elementor/Divi hand marketing a CSS hammer: every override lives inline, outside the token system, accumulating specificity debt per edit. ACF gave the same authoring freedom while I retained complete markup control. Autonomy for marketing, architectural integrity for engineering.",
-      "Token system matched agency naming 1:1, then extended — agency's 'brand-primary' became --color-brand-primary. Zero translation layer. Then added component-level tokens (--btn-bg-primary) so templates reach for semantic values, not primitive chains. Simpler callouts, easier maintenance.",
-      "Handoff as success criterion — parallel JI Phase 2 meant zero capacity for post-launch support. The system had to not need me: plain-English authoring guides, sensible defaults on every optional field, CMS configuration intuitive enough for marketing from day one. The handoff wasn't an event — it was the requirement the architecture was built against.",
+      "ACF Architecture over Page Builders — Visual builders like Elementor hand marketing teams a \"CSS hammer.\" Every manual override lives inline, accumulating massive specificity debt. By architecting strict ACF schemas instead, I provided the exact same authoring freedom while retaining centralized control over the HTML markup. Absolute autonomy for marketing; strict architectural integrity for engineering.",
+      "1:1 Semantic Token Mapping — To eliminate the translation layer between design and development, I mapped the CSS token system directly to the agency's naming conventions (brand-primary became --color-brand-primary). I then extended the architecture by engineering component-level semantic tokens (e.g., --btn-bg-primary). This decoupled UI components from the global palette, making future theme maintenance effortless.",
+      "Engineering \"Defensive\" Defaults — Because I was simultaneously leading Phase 2 of JUST Intelligence, I had zero capacity for post-launch support. Therefore, the handoff wasn't just an event. It was the core requirement the entire architecture was built against. I engineered the CMS defensively, programming sensible fallback defaults on every single optional field to guarantee the UI would never break, even if the content team missed a step.",
     ],
+    outcomesHeader: "The Business Impact",
     outcomes: [
-      "35 modules in production — marketing team manages all content independently, zero engineering tickets post-launch",
-      "Shipped on schedule: 8 weeks, in parallel with JUST Intelligence Phase 2",
-      "Token architecture positioned for future brand updates as token swaps, not codebase rewrites",
-      "Fully responsive across mobile, tablet, desktop — all 35 modules, 100% design-to-code parity against agency deliverables",
+      "Marketing Autonomy Achieved\nThe system handoff was a complete success. The marketing team now manages all content independently from day one, resulting in exactly zero engineering support tickets post-launch.",
+      "Future-Proofed Architecture\nBuilt for longevity, not just a launch date. The global CSS token system ensures that any future brand updates or re-theming will only require simple token swaps, completely avoiding expensive and risky codebase rewrites.",
+      "Uncompromised Visual Fidelity\nTranslated the agency's complex static deliverables into a fully fluid, responsive system (scaling seamlessly from mobile to desktop) while achieving 100% design-to-code parity.",
     ],
     visualBlocksHeader: "System Architecture & QA Proof",
     visualBlocks: [
@@ -2746,703 +2407,22 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       },
       {
         id: "just-rebrand-architecture",
-        layout: "wide",
-        imageSrc: "/just-rebrand/system-architecture.svg",
-        caption: "Architecture summary: agency Figma → token map → Twig/PHP modules → ACF schema → WordPress CMS → live site.",
-      },
-      {
-        id: "just-rebrand-qa",
-        layout: "wide",
-        imageSrc: "/just-rebrand/release-qa-checklist.svg",
-        caption: "Release QA checklist template covering accessibility, responsive fidelity, CMS safety, and cross-browser checks.",
-      },
-      {
-        id: "just-rebrand-performance",
-        layout: "wide",
-        imageSrc: "/just-rebrand/performance-budget.svg",
-        caption: "Performance budget targets for launch readiness [unverified].",
+        layout: "pipeline",
+        caption: "",
       },
     ],
-    codeBlocksHeader: "The System in Code",
-    codeBlocks: [
-      {
-        id: "homepage-hero",
-        title: "Homepage Hero — Variadic CTA Builder",
-        description: "The hero accepts an unlimited number of CTAs without a code change — editors add numbered ACF fields in WordPress and the loop picks them up automatically. Logo carousel speed is physics-derived: (170px × logo count) ÷ 50px·s⁻¹, keeping scroll velocity constant regardless of how many logos the CMS holds. The news panel queries WordPress via JSON-configured args stored in ACF, so editors can override taxonomy rules without a deploy.",
-        language: "php",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Segoe UI',sans-serif;background:#f0ede8;padding:16px;font-size:12px;color:#333;}
-.grid{display:grid;grid-template-columns:1fr 48px 1fr;gap:10px;align-items:center;}
-.panel{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);}
-.ph{background:#1D4E5C;padding:7px 11px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);}
-.fields{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
-.fr{display:flex;gap:5px;align-items:center;}
-.num{width:14px;height:14px;background:#1D4E5C;color:#fff;border-radius:3px;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.fname{font-size:7.5px;color:#888;width:82px;flex-shrink:0;font-family:monospace;}
-.fval{flex:1;background:#f8f7f4;border:1px solid #ddd;border-radius:3px;padding:2px 5px;font-size:7.5px;color:#333;}
-.arrow-col{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.al{font-size:7px;color:#888;text-align:center;font-family:monospace;line-height:1.4;}
-.ai{font-size:18px;color:#1D4E5C;}
-.out{padding:10px 11px;}
-.btns{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px;}
-.bp{background:#E07820;color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:9px;font-weight:600;}
-.bo{background:transparent;color:#1D4E5C;border:2px solid #1D4E5C;padding:5px 13px;border-radius:100px;font-size:9px;font-weight:600;}
-.formula{background:#f0f7f9;border-radius:5px;padding:5px 8px;}
-.fl{font-size:7px;color:#aaa;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
-.fc{font-family:monospace;font-size:8px;color:#1D4E5C;}
-</style></head><body>
-<div class="grid">
-  <div class="panel">
-    <div class="ph">ACF Fields → WordPress CMS</div>
-    <div class="fields">
-      <div class="fr"><span class="num">1</span><span class="fname">main_cta_text_1</span><input class="fval" value="Sign In Now" readonly></div>
-      <div class="fr"><span class="num">1</span><span class="fname">main_cta_class_1</span><input class="fval" value="btn-primary" readonly></div>
-      <div class="fr"><span class="num">2</span><span class="fname">main_cta_text_2</span><input class="fval" value="Learn More" readonly></div>
-      <div class="fr"><span class="num">2</span><span class="fname">main_cta_class_2</span><input class="fval" value="btn-outline" readonly></div>
-      <div class="fr"><span class="num" style="background:#ddd;color:#aaa">…</span><span class="fname" style="color:#ccc">main_cta_*_N</span><input class="fval" style="color:#ccc" value="no deploy needed" readonly></div>
-    </div>
-  </div>
-  <div class="arrow-col">
-    <div class="al">for i=1<br>to 99</div>
-    <div class="ai">→</div>
-  </div>
-  <div class="panel">
-    <div class="ph">Rendered Output</div>
-    <div class="out">
-      <div class="btns">
-        <button class="bp">Sign In Now</button>
-        <button class="bo">Learn More</button>
-      </div>
-      <div class="formula">
-        <div class="fl">Carousel Duration</div>
-        <div class="fc">(170 × 8 logos) ÷ 50 = 27.2s</div>
-      </div>
-    </div>
-  </div>
-</div>
-</body></html>`,
-        code: `<?php
-/**
- * homepage_hero.php — JUST Capital
- *
- * Pattern 1 — Variadic CTA builder
- * Reads numbered ACF fields (main_cta_text_1, main_cta_link_1 … up to _99)
- * so editors can add CTAs from the WordPress CMS without a code change.
- *
- * Pattern 2 — Physics-aware logo carousel
- * Duration scales with logo count so visual scroll speed stays
- * constant regardless of how many logos live in the CMS.
- * Formula: (170px × count) ÷ 50px·s⁻¹ = seconds to traverse full strip.
- *
- * Pattern 3 — JSON-configured WP_Query
- * Query args are stored in an ACF field so taxonomy overrides
- * (e.g. exclude 'Polling' category) don't require a deploy.
- */
-
-// ── Variadic CTA builder ─────────────────────────────────────────
-$main_ctas             = [];
-$main_ctas_field_types = ['main_cta_text', 'main_cta_link', 'main_cta_class', 'is_new_tab'];
-
-for ($i = 1; $i <= 99; $i++) {
-    $item = [];
-    foreach ($main_ctas_field_types as $field_type) {
-        $key = $field_type . '_' . $i;
-        if (isset($$key)) {
-            $item[$field_type] = $$key;
-        }
-    }
-    if (!empty($item)) {
-        $main_ctas[] = $item;
-    } else {
-        break; // stop at first empty numbered group
-    }
-}
-
-// ── Physics-aware carousel duration ─────────────────────────────
-$carousel_duration = (170 * count($logos)) / 50;
-?>
-
-<div class="logo-carousel"
-     style="animation-duration: <?= $carousel_duration ?>s;">
-
-    <?php // Logos rendered twice — second copy creates the seamless wrap ?>
-    <?php foreach ($logos as $logo): ?>
-        <img src="<?= esc_url($logo['url']) ?>"
-             alt="<?= esc_attr($logo['alt']) ?>" loading="lazy">
-    <?php endforeach; ?>
-    <?php foreach ($logos as $logo): ?>
-        <img src="<?= esc_url($logo['url']) ?>"
-             alt="<?= esc_attr($logo['alt']) ?>" loading="lazy">
-    <?php endforeach; ?>
-
-</div>
-
-<?php
-// ── JSON-configured WP_Query ─────────────────────────────────────
-// Stored in ACF so editors can change taxonomy rules without a deploy.
-// Default: exclude 'Polling' posts from the hero news panel.
-$wp_query_args = json_decode('{
-    "post_type":      "post",
-    "posts_per_page": 5,
-    "tax_query": [{
-        "taxonomy": "post_tag",
-        "field":    "slug",
-        "terms":    ["Polling"],
-        "operator": "NOT IN"
-    }]
-}', true);
-
-$news_query = new WP_Query($wp_query_args);`,
-      },
-      {
-        id: "rankings-module",
-        title: "Rankings Module — URL State & Multi-Instance Safety",
-        description: "Filter state lives in the URL — every selection is shareable and survives a page reload. JSON data is cache-busted by a git revision token injected at deploy time, so the CDN always serves fresh rankings without a manual cache purge. uniqid() scopes every DOM selector and event listener to its instance, making the module safe to embed multiple times on one page. On mobile (≤768px), the entire ranking row becomes a tap target; on desktop, only the arrow link is.",
-        liveUrl: "https://justcapital.com/rankings/",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#fff;padding:20px 22px;}
-h1{font-size:22px;font-weight:800;margin-bottom:18px;letter-spacing:-.02em;color:#111;}
-.rows{display:flex;flex-direction:column;gap:6px;}
-.row{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 5px;background:#f4f4f4;border-radius:50px;}
-.rk{background:#1D4E5C;color:#fff;font-size:10px;font-weight:700;padding:5px 10px;border-radius:50px;white-space:nowrap;flex-shrink:0;text-align:center;}
-.ph{width:32px;height:32px;border-radius:50%;background:#e2ecef;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#1D4E5C;flex-shrink:0;letter-spacing:0;}
-.nm{flex:1;font-size:11px;font-weight:700;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.in{font-size:9.5px;color:#777;white-space:nowrap;padding:0 4px;flex-shrink:0;}
-.seals{display:flex;gap:3px;flex-shrink:0;}
-.ar{width:28px;height:28px;background:#E07820;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-</style></head><body>
-<svg style="display:none"><symbol id="s" viewBox="0 0 25 25"><circle cx="12.5" cy="12.5" r="12.5" fill="#1a3a6b"/><circle cx="12.5" cy="12.5" r="9" fill="#fff"/><text x="12.5" y="9.5" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">AMERICA'S MOST</text><text x="12.5" y="15" font-size="5.5" text-anchor="middle" fill="#1a3a6b" font-weight="900" font-family="sans-serif">JUST</text><text x="12.5" y="19" font-size="2.8" text-anchor="middle" fill="#1a3a6b" font-weight="700" font-family="sans-serif">COMPANIES</text></symbol>
-<symbol id="arr" viewBox="0 0 12 12"><line x1="1.5" y1="6" x2="10" y2="6" stroke="white" stroke-width="1.6" stroke-linecap="round"/><polyline points="6.5,2.5 10,6 6.5,9.5" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
-<h1>2025 Rankings</h1>
-<div class="rows">
-  <div class="row"><span class="rk">1st</span><div class="ph">HE</div><span class="nm">Hewlett Packard Enterprise Company</span><span class="in">Computer Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-  <div class="row"><span class="rk">2nd</span><div class="ph">HP</div><span class="nm">HP Inc</span><span class="in">Technology Hardware</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-  <div class="row"><span class="rk">3rd</span><div class="ph">BA</div><span class="nm">Bank of America Corporation</span><span class="in">Banks</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-  <div class="row"><span class="rk">4th</span><div class="ph">UP</div><span class="nm">Union Pacific Corp</span><span class="in">Transportation</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-  <div class="row"><span class="rk">5th</span><div class="ph">AC</div><span class="nm">Accenture plc</span><span class="in">Commercial Support Services</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-  <div class="row"><span class="rk">6th</span><div class="ph">TR</div><span class="nm">Trane Technologies</span><span class="in">Building Materials &amp; Construction</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-  <div class="row"><span class="rk">7th</span><div class="ph">EV</div><span class="nm">Eversource Energy</span><span class="in">Utilities</span><div class="seals"><svg width="25" height="25"><use href="#s"/></svg><svg width="25" height="25"><use href="#s"/></svg></div><div class="ar"><svg width="12" height="12"><use href="#arr"/></svg></div></div>
-</div>
-</body></html>`,
-      },
-      {
-        id: "featured-listing",
-        title: "Featured Listing — Carousel Module with uniqid() Scoping",
-        description: "A content module combining a featured hero report card with a Materialize CSS carousel of smaller cards. Each instance gets a unique DOM scope via PHP uniqid() — preventing selector collisions when the module appears multiple times on one page. The featured card pulls its background image from ACF, while the carousel loops through numbered post_url fields (1–99) with automatic break on empty. Tag pills use :first-child accent styling. Responsive: desktop carousel with arrow/dot navigation → mobile horizontal scroll.",
-        language: "php",
-        liveUrl: "https://justcapital.com",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Helvetica Neue','Segoe UI',sans-serif;background:#fff;padding:20px;color:#111;}
-.fl-wrap{max-width:520px;margin:0 auto;}
-.fl-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;}
-.fl-title{font-size:18px;font-weight:800;letter-spacing:-.02em;color:#111;}
-.fl-link{font-size:10px;font-weight:600;color:#1D4E5C;text-decoration:none;letter-spacing:.03em;}
-.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.fl-hero{grid-column:1/-1;border-radius:10px;overflow:hidden;position:relative;background:#1D4E5C;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;}
-.fl-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1D4E5C 0%,#0e3340 100%);opacity:.85;}
-.fl-hero-content{position:relative;z-index:1;}
-.fl-hero-tags{display:flex;gap:5px;margin-bottom:8px;}
-.fl-tag{padding:3px 9px;border-radius:100px;font-size:7.5px;font-weight:600;letter-spacing:.03em;}
-.fl-tag:first-child{background:#E07820;color:#fff;}
-.fl-tag:not(:first-child){background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);}
-.fl-hero-title{font-size:13px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:4px;}
-.fl-hero-date{font-size:8px;color:rgba(255,255,255,.6);}
-.fl-card{background:#f8f7f2;border-radius:8px;overflow:hidden;border:1px solid #ede9e2;}
-.fl-card-img{width:100%;height:72px;background:linear-gradient(135deg,#e2ecef,#cce8e4);display:flex;align-items:center;justify-content:center;}
-.fl-card-img span{font-size:8px;color:#1D4E5C;font-weight:600;opacity:.5;}
-.fl-card-body{padding:9px 10px;}
-.fl-card-tags{display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;}
-.fl-card-tag{padding:2px 7px;border-radius:100px;font-size:6.5px;font-weight:600;}
-.fl-card-tag:first-child{background:#E07820;color:#fff;}
-.fl-card-tag:not(:first-child){background:#e2ecef;color:#1D4E5C;}
-.fl-card-title{font-size:9.5px;font-weight:600;color:#111;line-height:1.4;margin-bottom:3px;}
-.fl-card-date{font-size:7px;color:#999;}
-.fl-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;}
-.fl-arrow{width:24px;height:24px;border-radius:50%;background:#1D4E5C;color:#fff;border:none;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:default;}
-.fl-dots{display:flex;gap:4px;}
-.fl-dot{width:6px;height:6px;border-radius:50%;background:#ddd;}
-.fl-dot.active{background:#1D4E5C;}
-.fl-scope{margin-top:14px;background:#f0f7f9;border-radius:6px;padding:7px 10px;display:flex;align-items:center;gap:8px;}
-.fl-scope-label{font-size:7px;color:#888;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
-.fl-scope-code{font-family:'Courier New',monospace;font-size:7.5px;color:#1D4E5C;}
-</style></head><body>
-<div class="fl-wrap">
-  <div class="fl-header">
-    <span class="fl-title">Featured Reports</span>
-    <span class="fl-link">View All →</span>
-  </div>
-  <div class="fl-grid">
-    <div class="fl-hero">
-      <div class="fl-hero-bg"></div>
-      <div class="fl-hero-content">
-        <div class="fl-hero-tags"><span class="fl-tag">Rankings</span><span class="fl-tag">ESG Data</span></div>
-        <div class="fl-hero-title">2025 Rankings: America's Most JUST Companies</div>
-        <div class="fl-hero-date">January 14, 2025</div>
-      </div>
-    </div>
-    <div class="fl-card">
-      <div class="fl-card-img"><span>Report Cover</span></div>
-      <div class="fl-card-body">
-        <div class="fl-card-tags"><span class="fl-card-tag">Workers</span><span class="fl-card-tag">Research</span></div>
-        <div class="fl-card-title">Corporate Workforce Investment Tracker</div>
-        <div class="fl-card-date">Dec 12, 2024</div>
-      </div>
-    </div>
-    <div class="fl-card">
-      <div class="fl-card-img"><span>Report Cover</span></div>
-      <div class="fl-card-body">
-        <div class="fl-card-tags"><span class="fl-card-tag">Climate</span><span class="fl-card-tag">Policy</span></div>
-        <div class="fl-card-title">Climate & Communities Brief</div>
-        <div class="fl-card-date">Nov 5, 2024</div>
-      </div>
-    </div>
-  </div>
-  <div class="fl-nav">
-    <button class="fl-arrow">‹</button>
-    <div class="fl-dots"><div class="fl-dot active"></div><div class="fl-dot"></div><div class="fl-dot"></div></div>
-    <button class="fl-arrow">›</button>
-  </div>
-  <div class="fl-scope">
-    <span class="fl-scope-label">DOM Scoping</span>
-    <span class="fl-scope-code">uniqid() → #carousel-6627a3f1e… — prevents multi-instance collisions</span>
-  </div>
-</div>
-</body></html>`,
-        code: `<?php
-/**
- * featured_listing.php — JUST Capital
- * Production source from justcapital.com
- *
- * Featured content carousel: hero report card + Materialize carousel
- * of smaller cards. uniqid() scopes every DOM selector to prevent
- * collisions when the module appears multiple times on a single page.
- *
- * ACF fields loop through post_url_1 → post_url_99, breaking on
- * first empty — editors add content without code changes.
- */
-
-// ── Collect post URLs from numbered ACF fields ──────────────────
-$post_urls = array();
-for ($i = 1; $i <= 99; $i++) {
-    $var_name = 'post_url_' . $i;
-    if (!empty($$var_name)) {
-        $post_urls[] = $$var_name;
-    } else {
-        break;
-    }
-}
-
-// ── uniqid() scoping — each instance gets unique DOM selectors ──
-$uid = uniqid();
-?>
-
-<?php if (!empty($post_urls)): ?>
-<div class="content-with-image featured-listing" id="fl-<?= $uid ?>">
-  <div class="row">
-    <div class="col s12">
-      <div class="section-header-flex">
-        <h2><?= $header ?></h2>
-        <?php if (!empty($view_all_link)): ?>
-          <a href="<?= $view_all_link ?>" class="cta-link">
-            <?= $view_all_text ?? 'View All' ?>
-          </a>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-
-  <?php
-  // ── Featured hero card (first post) ─────────────────────────
-  $featured_post = get_post(url_to_postid($post_urls[0]));
-  $featured_img  = get_the_post_thumbnail_url($featured_post->ID, 'large');
-  $featured_tags = get_the_terms($featured_post->ID, 'post_tag');
-  ?>
-
-  <div class="row">
-    <div class="col s12 m6 featured-card"
-         style="background-image: url('<?= esc_url($featured_img) ?>');">
-      <div class="featured-card-content">
-        <?php if ($featured_tags): ?>
-          <div class="tag-pills">
-            <?php foreach ($featured_tags as $tag): ?>
-              <span class="tag-pill"><?= esc_html($tag->name) ?></span>
-            <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
-        <h3><a href="<?= esc_url($post_urls[0]) ?>">
-          <?= esc_html($featured_post->post_title) ?>
-        </a></h3>
-        <span class="date">
-          <?= get_the_date('F j, Y', $featured_post->ID) ?>
-        </span>
-      </div>
-    </div>
-
-    <?php
-    // ── Carousel of remaining cards ───────────────────────────
-    $carousel_posts = array_slice($post_urls, 1);
-    ?>
-
-    <div class="col s12 m6">
-      <div class="carousel carousel-slider" id="carousel-<?= $uid ?>">
-        <?php foreach (array_chunk($carousel_posts, 2) as $chunk): ?>
-          <div class="carousel-item">
-            <?php foreach ($chunk as $url):
-              $post = get_post(url_to_postid($url));
-              $thumb = get_the_post_thumbnail_url($post->ID, 'medium');
-              $tags  = get_the_terms($post->ID, 'post_tag');
-            ?>
-              <div class="listing-card">
-                <div class="card-image"
-                     style="background-image: url('<?= esc_url($thumb) ?>');">
-                </div>
-                <div class="card-content">
-                  <?php if ($tags): ?>
-                    <div class="tag-pills">
-                      <?php foreach ($tags as $tag): ?>
-                        <span class="tag-pill">
-                          <?= esc_html($tag->name) ?>
-                        </span>
-                      <?php endforeach; ?>
-                    </div>
-                  <?php endif; ?>
-                  <h4><a href="<?= esc_url($url) ?>">
-                    <?= esc_html($post->post_title) ?>
-                  </a></h4>
-                  <span class="date">
-                    <?= get_the_date('F j, Y', $post->ID) ?>
-                  </span>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          </div>
-        <?php endforeach; ?>
-      </div>
-
-      <?php // ── Carousel controls — scoped to this instance ────── ?>
-      <div class="carousel-controls" id="controls-<?= $uid ?>">
-        <button class="prev" onclick="
-          document.querySelector('#carousel-<?= $uid ?>')
-            .M_Carousel.prev()">‹</button>
-        <div class="carousel-dots" id="dots-<?= $uid ?>"></div>
-        <button class="next" onclick="
-          document.querySelector('#carousel-<?= $uid ?>')
-            .M_Carousel.next()">›</button>
-      </div>
-    </div>
-  </div>
-</div>
-<?php endif; ?>
-
-<style>
-/* ── Featured Listing — justcapital.com production CSS ────────── */
-.featured-listing .section-header-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-.featured-listing .section-header-flex h2 {
-  font-size: var(--type-h2);
-  font-weight: 800;
-  color: var(--color-primary-black);
-}
-.featured-listing .cta-link {
-  font-size: var(--type-label-title);
-  font-weight: 600;
-  color: var(--color-primary-justblue);
-  text-decoration: none;
-}
-
-/* ── Featured hero card ──────────────────────────────────────── */
-.featured-card {
-  border-radius: 12px;
-  background-size: cover;
-  background-position: center;
-  min-height: 320px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-.featured-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,.65) 0%,
-    rgba(0,0,0,.1) 60%,
-    transparent 100%
-  );
-}
-.featured-card-content {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Tag pills — :first-child accent pattern ─────────────────── */
-.tag-pills {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.tag-pill {
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: var(--type-p-sm);
-  font-weight: 600;
-  letter-spacing: .03em;
-}
-.tag-pill:first-child {
-  background: var(--color-secondary-saffron-orange);
-  color: var(--color-primary-white);
-}
-.tag-pill:not(:first-child) {
-  background: rgba(255,255,255,.15);
-  color: rgba(255,255,255,.85);
-}
-
-/* ── Listing cards ───────────────────────────────────────────── */
-.listing-card {
-  background: var(--color-primary-white);
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #ede9e2;
-}
-.listing-card .card-image {
-  height: 120px;
-  background-size: cover;
-  background-position: center;
-}
-.listing-card .card-content {
-  padding: 12px 14px;
-}
-.listing-card h4 a {
-  font-size: var(--type-card-title-sm);
-  font-weight: 600;
-  color: var(--color-primary-black);
-  text-decoration: none;
-}
-.listing-card h4 a:hover {
-  text-decoration: underline;
-}
-.listing-card .date {
-  font-size: var(--type-p-sm);
-  color: #999;
-}
-
-/* ── Carousel controls ───────────────────────────────────────── */
-.carousel-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 16px;
-}
-.carousel-controls button {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--color-primary-justblue);
-  color: var(--color-primary-white);
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-}
-.carousel-dots .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ddd;
-  display: inline-block;
-  margin: 0 3px;
-}
-.carousel-dots .dot.active {
-  background: var(--color-primary-justblue);
-}
-
-/* ── Responsive ──────────────────────────────────────────────── */
-@media only screen and (max-width: 992px) {
-  .featured-card { min-height: 260px; }
-}
-@media only screen and (max-width: 600px) {
-  .featured-card { min-height: 200px; padding: 16px; }
-  .carousel-slider { overflow-x: auto; display: flex; gap: 12px; }
-  .carousel-controls { display: none; }
-}
-</style>`,
-      },
-      {
-        id: "d3-performance-chart",
-        title: "Investment Performance Chart — D3 Focus + Context",
-        description: "Built in collaboration with the CTO (back-end data pipeline) and an ex-D3 engineering manager (chart architecture). Jinju's contributions: the PHP/ACF layer that server-renders all chart data into data-* attributes — zero client-side XHR on page load — the CSS responsive viewBox wrapper, and WordPress integration. The chart is a D3 v4 focus + context pattern: the top panel shows a zoomable detail view, the bottom shows the full time range with a draggable brush. Brush and zoom are bidirectionally synced with loop-prevention guards, and a binary bisect tooltip snaps to the nearest data point in O(log n) time.",
-        liveUrl: "https://justcapital.com/just-capital-index-series/",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,'Helvetica Neue',sans-serif;background:#cce8e4;padding:14px;color:#111;}
-.rtitle{font-size:13px;font-weight:700;text-align:center;margin-bottom:10px;}
-table{width:100%;border-collapse:collapse;border-radius:6px;overflow:hidden;margin-bottom:12px;}
-thead th{background:#1D4E5C;color:#fff;padding:7px 10px;font-size:9px;font-weight:600;text-align:center;border-right:1px solid rgba(255,255,255,.2);}
-thead th:last-child{border-right:none;}
-tbody td{background:#cce8e4;padding:7px 10px;font-size:11px;text-align:center;border-right:1px solid rgba(0,0,0,.08);}
-tbody td:last-child{border-right:none;}
-.card{background:#fff;border-radius:8px;padding:12px 14px;}
-.ctitle{font-size:13px;font-weight:700;text-align:center;margin-bottom:7px;}
-.legend{display:flex;gap:16px;justify-content:center;margin-bottom:8px;}
-.leg{display:flex;align-items:center;gap:5px;font-size:8px;}
-.lline{width:20px;height:2.5px;border-radius:2px;}
-</style></head><body>
-<div class="rtitle">Cumulative Returns since Dec 31 2021</div>
-<table>
-  <thead><tr><th>As Of</th><th>Workforce Advancement Leaders</th><th>Russell 1000 Equal Weighted Index</th></tr></thead>
-  <tbody><tr><td>03-13-2026</td><td>45.66%</td><td>25.88%</td></tr></tbody>
-</table>
-<div class="card">
-  <div class="ctitle">Performance</div>
-  <div class="legend">
-    <div class="leg"><div class="lline" style="background:#2563eb"></div><span style="color:#2563eb">Workforce Advancement Leaders</span></div>
-    <div class="leg"><div class="lline" style="background:#ea580c"></div><span style="color:#ea580c">Russell 1000 Equal Weighted Index</span></div>
-  </div>
-  <svg viewBox="0 0 360 185" style="width:100%;height:auto;">
-    <text x="10" y="100" font-size="8" fill="#999" transform="rotate(-90,10,100)" text-anchor="middle" font-family="sans-serif">Returns</text>
-    <text x="39" y="13" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">50%</text>
-    <text x="39" y="37" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">40%</text>
-    <text x="39" y="61" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">30%</text>
-    <text x="39" y="85" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">20%</text>
-    <text x="39" y="109" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">10%</text>
-    <text x="39" y="133" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">0%</text>
-    <text x="39" y="157" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">-10%</text>
-    <text x="39" y="181" font-size="7.5" fill="#bbb" text-anchor="end" font-family="sans-serif">-20%</text>
-    <line x1="42" y1="9" x2="356" y2="9" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="33" x2="356" y2="33" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="57" x2="356" y2="57" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="81" x2="356" y2="81" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="105" x2="356" y2="105" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="129" x2="356" y2="129" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="153" x2="356" y2="153" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="177" x2="356" y2="177" stroke="#e5e7eb" stroke-width="1"/>
-    <line x1="42" y1="129" x2="356" y2="129" stroke="#999" stroke-width="0.8"/>
-    <polyline fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      points="50,129 76,138 103,153 129,177 155,160 182,143 208,118 234,93 261,81 287,57 313,41 339,26 356,19"/>
-    <polyline fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      points="50,129 76,135 103,150 129,177 155,168 182,150 208,129 234,118 261,110 287,93 313,87 339,77 356,67"/>
-  </svg>
-</div>
-</body></html>`,
-      },
-      {
-        id: "design-tokens",
-        title: "CSS Token Architecture",
-        description: "Token naming matched the agency's Figma variables exactly — no translation layer between design and code. Primitive values at the root, semantic aliases map meaning to primitives, component tokens consume semantic aliases. A brand update touches only the primitive layer.",
-        language: "css",
-        previewHtml: `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-size:11px;}
-.section-label{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:8px;}
-.group{margin-bottom:16px;}
-.swatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:4px;}
-.swatch-row{background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e5e3de;display:flex;}
-.sw{width:34px;flex-shrink:0;}
-.si{padding:5px 9px;flex:1;}
-.sn{font-size:8px;color:#444;letter-spacing:.03em;}
-.sv{font-size:8px;color:#888;margin-top:1px;}
-.alias-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
-.tok{background:#fff;border:1.5px solid #1D4E5C;color:#1D4E5C;border-radius:4px;padding:3px 7px;font-size:8px;letter-spacing:.03em;}
-.tok.gray{border-color:#bbb;color:#888;}
-.arr{color:#bbb;font-size:10px;}
-</style></head><body>
-<div class="group">
-  <div class="section-label">1 · Primitives</div>
-  <div class="swatch-grid">
-    <div class="swatch-row"><div class="sw" style="background:#1D4E5C"></div><div class="si"><div class="sn">--color-teal-800</div><div class="sv">#1D4E5C</div></div></div>
-    <div class="swatch-row"><div class="sw" style="background:#E07820"></div><div class="si"><div class="sn">--color-amber-600</div><div class="sv">#E07820</div></div></div>
-    <div class="swatch-row"><div class="sw" style="background:#f8f7f2;border-right:1px solid #e5e3de"></div><div class="si"><div class="sn">--color-neutral-50</div><div class="sv">#f8f7f2</div></div></div>
-    <div class="swatch-row"><div class="sw" style="background:#111"></div><div class="si"><div class="sn">--color-neutral-950</div><div class="sv">#111111</div></div></div>
-  </div>
-</div>
-<div class="group">
-  <div class="section-label">2 · Semantic aliases</div>
-  <div class="alias-row"><span class="tok">--color-brand</span><span class="arr">→</span><span class="tok gray">--color-teal-800</span></div>
-  <div class="alias-row"><span class="tok">--color-accent</span><span class="arr">→</span><span class="tok gray">--color-amber-600</span></div>
-  <div class="alias-row"><span class="tok">--color-surface</span><span class="arr">→</span><span class="tok gray">--color-neutral-50</span></div>
-</div>
-<div class="group">
-  <div class="section-label">3 · Component tokens — rendered</div>
-  <div style="display:flex;flex-direction:column;gap:7px;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <button style="background:#E07820;color:#fff;border:none;padding:6px 16px;border-radius:100px;font-size:9px;font-weight:600;font-family:sans-serif;cursor:default;flex-shrink:0;">Sign In Now</button>
-      <span style="font-family:monospace;font-size:7.5px;color:#1D4E5C;letter-spacing:.03em;">--btn-bg-primary</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="background:#f8f7f2;border:1px solid #ede9e2;border-radius:6px;padding:5px 12px;font-size:8px;color:#888;font-family:sans-serif;flex-shrink:0;white-space:nowrap;">Content card surface</div>
-      <span style="font-family:monospace;font-size:7.5px;color:#1D4E5C;letter-spacing:.03em;">--card-bg</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="background:#f8f7f2;border:1px solid #ede9e2;border-radius:4px;padding:4px 10px;font-size:8px;font-weight:600;font-family:sans-serif;display:flex;gap:10px;color:#333;flex-shrink:0;white-space:nowrap;"><span>JUST Capital</span><span>Rankings</span><span>Reports</span></div>
-      <span style="font-family:monospace;font-size:7.5px;color:#1D4E5C;letter-spacing:.03em;">--nav-bg</span>
-    </div>
-  </div>
-</div>
-</body></html>`,
-        code: `/* ─── 1. Primitives ─────────────────────────────────────────── */
-:root {
-  --color-teal-900: #0e3340;
-  --color-teal-800: #1D4E5C;
-  --color-teal-600: #2a7a8c;
-
-  --color-amber-600: #E07820;
-  --color-amber-400: #F4A340;
-
-  --color-neutral-50:  #f8f7f2;
-  --color-neutral-100: #ede9e2;
-  --color-neutral-950: #111111;
-
-  /* ─── 2. Semantic aliases (names match agency Figma tokens) ─── */
-  --color-brand:        var(--color-teal-800);
-  --color-brand-dark:   var(--color-teal-900);
-  --color-accent:       var(--color-amber-600);
-  --color-surface:      var(--color-neutral-50);
-  --color-text:         var(--color-neutral-950);
-  --color-text-inverse: #ffffff;
-
-  /* ─── 3. Component tokens ──────────────────────────────────── */
-  --btn-bg-primary:       var(--color-accent);
-  --btn-bg-primary-hover: var(--color-amber-400);
-  --btn-text-primary:     var(--color-text-inverse);
-  --card-bg:              var(--color-surface);
-  --card-radius:          16px;
-  --nav-bg:               var(--color-surface);
-
-  /* ─── Spacing scale ─────────────────────────────────────────── */
-  --space-xs:        8px;
-  --space-sm:        12px;
-  --space-md:        20px;
-  --space-lg:        32px;
-  --space-xl:        48px;
-  --space-section:   64px;
-  --space-container: 80px;
-
-  --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.18);
-}`,
-      },
-    ],
+    codeBlocks: [],
+    metricsHeader: "The Outcomes",
     metrics: [
-      { value: "35",   label: "custom WordPress modules registered" },
-      { value: "3×",   label: "projects in parallel — shipped on schedule" },
-      { value: "8 wks", label: "delivery crunch from kickoff to launch" },
-      { value: "0",    label: "open visual QA tickets at launch" },
-      { value: "<2.5s", label: "LCP target [unverified]" },
-      { value: "AA",    label: "accessibility baseline [unverified]" },
+      { value: "35",       label: "Custom WordPress Modules Engineered" },
+      { value: "8 Weeks",  label: "Accelerated Delivery Timeline" },
+      { value: "0",        label: "Open Visual QA Tickets at Launch" },
+      { value: "3x",       label: "Parallel Engineering Tracks Managed" },
+      { value: "WCAG AA",  label: "Accessibility Baseline Engineered" },
     ],
-    tech: ["PHP", "Twig", "WordPress", "ACF Pro", "HTML", "CSS", "JavaScript (ES6)", "CSS Custom Properties"],
+    tech: [],
     reflection:
-      "My job wasn't invention; it was fidelity and durability. Implementation is interpretation: every spacing edge case I resolved, every interaction I filled in where the spec was silent, every CMS field I named so a non-engineer would understand it — those were all decisions about the design intent.\n\nThe 8-week crunch and parallel capacity constraint pushed that further. I couldn't afford to be clever. I had to build systems that explained themselves — simple enough to hand off, tight enough to hold up. That constraint made the codebase better than it would have been with unlimited time.",
+      "My job wasn't invention; it was fidelity and durability.\n\nImplementation is interpretation. Every spacing edge case I resolved, every interactive state I programmed where the static design was silent, and every CMS field I named so a non-technical team could understand it\u2014those were all decisions actively protecting the original design intent.\n\nThe accelerated 8-week timeline and parallel engineering tracks pushed that philosophy even further. I couldn't afford to be 'clever'; I had to build systems that explained themselves. The architecture had to be simple enough to hand off, yet sturdy enough to hold up. Ultimately, those strict constraints forced me to engineer a significantly better, more resilient codebase than I would have with unlimited time.",
     ctaText: "If your team is about to receive a design handoff and needs someone who can build the architecture behind it — not just the UI on top of it — let's talk.",
     liveSiteUrl: "https://justcapital.com",
   },
@@ -3460,12 +2440,7 @@ body{font-family:'Courier New',monospace;background:#f0ede8;padding:18px;font-si
       timeline: "8+ years · ongoing",
       tools: "Adobe CC (Photoshop, Illustrator), Cinema 4D, Figma, cross-studio QA framework",
     },
-    specSheet: [
-      { label: "Primary Stack", value: "Figma · Adobe CC · Cinema 4D · Cross-studio QA framework" },
-      { label: "Accessibility", value: "Language-agnostic QA across 6 script families" },
-      { label: "Engineering Impact", value: "Zero library forks over 8 years · 100% brand parity" },
-      { label: "Scale", value: "50+ languages · 2 global studios · 25+ concurrent projects" },
-    ],
+    specSheet: [],
     challenge:
       "Two studios making localization decisions in isolation. A title treatment could clear QA at one studio and fail at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. Text expansion, directional logic, and character density variance across 50+ languages — with launch windows that don't move.",
     approach:
