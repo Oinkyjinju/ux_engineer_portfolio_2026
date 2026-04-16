@@ -914,14 +914,14 @@ export default function CaseStudy({ project }: Props) {
               /* Scrollable phone mockups */
               <div className="sc-phone-frames">
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{block.beforeLabel ?? "Before"}</p>
                   {block.beforeSrc
                     ? <PhoneFrame src={block.beforeSrc} alt={`${block.label ?? "Before"} — Before`} priority={priority} />
                     : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>Before</span></div>
                   }
                 </div>
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>{block.afterLabel ?? "After"}</p>
                   {block.afterSrc
                     ? <PhoneFrame src={block.afterSrc} alt={`${block.label ?? "After"} — After`} />
                     : <div style={{ width: 248, height: 480, borderRadius: 22, border: "1px dashed var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontFamily: mono, fontSize: 11, color: "var(--text-secondary)", opacity: 0.4 }}>After</span></div>
@@ -933,7 +933,7 @@ export default function CaseStudy({ project }: Props) {
               <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
                 {/* Before */}
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Before</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{block.beforeLabel ?? "Before"}</p>
                   <div style={{ ...imgClip, ...(block.beforeSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.beforeSrc ? (
                       <Image src={block.beforeSrc} alt={`${block.label ?? block.caption} — Before`}
@@ -946,7 +946,7 @@ export default function CaseStudy({ project }: Props) {
                 </div>
                 {/* After */}
                 <div>
-                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>After</p>
+                  <p style={{ fontFamily: mono, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 10 }}>{block.afterLabel ?? "After"}</p>
                   <div style={{ ...imgClip, ...(block.afterSrc ? {} : { minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }) }}>
                     {block.afterSrc ? (
                       <Image src={block.afterSrc} alt={`${block.label ?? block.caption} — After`}
@@ -2124,11 +2124,6 @@ export default function CaseStudy({ project }: Props) {
         {project.id === "storycorps" && (
           <div style={{ maxWidth: 760, margin: "0 auto" }}>
             <RecoveryFlowchart accent="#B5441A" />
-          </div>
-        )}
-        {project.id === "iata" && (
-          <div style={{ maxWidth: 760, margin: "0 auto" }}>
-            <BeforeAfterReveal />
           </div>
         )}
 

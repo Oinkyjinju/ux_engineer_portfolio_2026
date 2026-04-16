@@ -38,8 +38,8 @@ export function WeChatPrimer() {
         marginBottom: 20, maxWidth: 580, lineHeight: 1.6,
       }}>
         Designing for WeChat means designing inside an ecosystem that assumes none of
-        what Western mobile design assumes. These constraints were documented before
-        a single Figma frame was opened.
+        what Western mobile design assumes. These constraints were documented and integrated before
+        a single screen was built.
       </p>
 
       <div

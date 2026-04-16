@@ -8,6 +8,8 @@ export interface VisualBlock {
   noContainer?: boolean;   // render image with no card background/border (for logo/hero images)
   beforeSrc?: string;
   afterSrc?: string;
+  beforeLabel?: string;
+  afterLabel?: string;
   afterScreens?: Array<{ src: string; label: string }>;
   imageSrc?: string;
   // side-by-side: second image + its caption
@@ -2583,55 +2585,41 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     seoDescription:
       "I designed IATA's aviation training platform for WeChat — building native Chinese UI patterns from the ground up, with bilingual Figma specs for a China-based engineering team.",
     heroIntro:
-      "No URL bar. No browser back button. No assumption that Western interaction patterns apply.\n\nI architected IATA's aviation training platform for WeChat — an ecosystem where the design conventions, technical constraints, and user expectations are fundamentally different from anything in the Western mobile playbook. 350+ courses, a China-based engineering team, and bilingual specs that had to eliminate ambiguity across a language barrier.",
+      "Lead UX Designer for the architectural localization of IATA's aviation training platform into WeChat. Operating within an ecosystem where Western mobile playbooks fail, I architected a platform-native experience for 350+ courses. By engineering bilingual design specs and validating directly in WeChat DevTools, I bridged a cross-continental language barrier and delivered zero design-to-implementation discrepancies.",
     role: "Lead UX Designer — Cross-Platform & Localization",
-    team: "Wordbank → IATA · Cross-functional · China-based dev team",
+    team: "Wordbank → IATA · Cross-functional",
     snapshot: {
       timeline: "2023",
       tools: "Figma, WeChat DevTools, bilingual spec annotations",
     },
-    specSheet: [
-      { label: "Primary Stack", value: "Figma · WeChat DevTools · Bilingual (EN/ZH) specs" },
-      { label: "Accessibility", value: "WeChat-native interaction patterns · PingFang SC/Heiti SC" },
-      { label: "Engineering Impact", value: "Zero QA rework across cross-continental handoff" },
-      { label: "Scale", value: "350+ courses · China-based dev team · WeChat ecosystem" },
-    ],
+    specSheet: [],
+    challengeQuote: "Navigating a Closed Ecosystem.",
     challenge:
-      "Delivering aviation training to Chinese professionals through WeChat — an ecosystem with its own design conventions, technical constraints, and user expectations entirely different from Western mobile. Two failure modes: wrong UI patterns (product feels foreign), wrong spec language (implementation diverges from intent). Either one means the product ships but practically fails.",
+      "Delivering aviation training to Chinese professionals required building inside WeChat, an ecosystem that fundamentally rejects Western mobile conventions. I identified two critical failure modes for this launch: designing the wrong UI patterns (the product feels foreign) or providing ambiguous specs (the implementation diverges from intent). Failing at either meant shipping a product the market would reject.",
+    approachHeader: "Architecture Before Pixels.",
     approach:
-      "Platform research before pixels. I spent two weeks in WeChat DevTools before opening Figma — designing from Western assumptions would have produced something that works in Figma and fails in production. The architectural constraint: Chinese aviation professionals open this inside an app they trust completely. The only acceptable outcome was something that felt native.",
-    whatIDid:
-      "Sole designer — owned the full pipeline from WeChat platform research through bilingual Figma handoff. Every platform decision, every cultural assumption, every bilingual annotation made without a second opinion. The design-to-implementation bridge for a cross-continental, cross-lingual engineering workflow.",
+      "Designing from Western assumptions guarantees a product that looks great in a mockup but fails in production. As the sole designer, I spent two weeks auditing WeChat DevTools to define the technical boundaries before drawing a single screen. Instead of relying on Western design software, I architected the UI directly within a native Chinese microsite builder. I owned the complete pipeline\u2014from platform research to bilingual handoff\u2014functioning as the single design-to-implementation bridge for a cross-continental engineering team.",
+    whatIDid: "",
     process: {
       discover: [
-        "WeChat Mini-Program guidelines documented as Figma constraints before any UI work — platform-first, not design-first",
-        "IATA content audit: module structure, Chinese-market course prioritization, credential recognition requirements",
-        "Chinese mobile behavior research: WeChat navigation conventions, QR code flows, long-press menus, absence of browser back",
-        "WeChat DevTools environment testing: layout constraints, 2MB subpackage ceiling, system font rendering (PingFang SC / Heiti SC only)",
+        "Platform-First Definition: Documented WeChat Mini-Program guidelines as strict architectural constraints before any UI work began—ensuring the design was platform-native from day one.",
+        "Ecosystem Mapping: Audited Chinese mobile behavior to replace invalid Western assumptions, mapping out WeChat-specific navigation (QR flows, long-press menus, app-internal routing).",
+        "Content Architecture: Audited the existing training structure and credential recognition requirements to align with Chinese market expectations.",
       ],
       design: [
-        "WeChat-native navigation: bottom tab bar, flat hierarchy, QR code integration — not Western patterns adapted to fit",
-        "Progress tracking and quiz interfaces engineered within WeChat's viewport and interaction constraints",
-        "Chinese-first typography with system font constraints — WeChat restricts custom typefaces to whitelisted CDN fonts",
-        "Cross-cultural iconography audit: Western icons with ambiguous Chinese meanings flagged and replaced with WeChat-familiar equivalents",
+        "Native Tooling Adoption: Architected the interface entirely within a native Chinese microsite builder to guarantee 1:1 component translation for the engineering team.",
+        "Brand Localization: Adapted IATA's global brand identity to fit within the rigid constraints of the WeChat ecosystem, ensuring international brand trust remained intact for Chinese users.",
+        "Daily Engagement Loop: Designed the UI flows and templates for \"daily posts,\" creating a recurring content architecture tailored to how Chinese professionals consume media natively inside WeChat.",
+        "Native Navigation Stack: Engineered a WeChat-native navigation flow (bottom tabs, flat hierarchy) rather than adapting Western browser-based patterns.",
       ],
       ship: [
-        "Bilingual Figma specs (EN + ZH) — eliminated implementation ambiguity across a cross-continental language barrier",
-        "QA in WeChat DevTools, not browser DevTools — the rendering engine behaves differently and browser testing is insufficient",
-        "Full handoff to China-based engineering team with zero design-implementation discrepancies in QA",
-        "Live in WeChat — 350+ courses accessible to Chinese aviation professionals with no external browser dependency",
+        "Bilingual Engineering Specs: Delivered 100% of architectural annotations in both English and Simplified Chinese, explicitly removing implementation ambiguity across the language barrier.",
+        "Cross-Continental Handoff: Executed a flawless handoff to the China-based engineering team, resulting in zero design-to-implementation discrepancies and zero QA rework.",
+        "Live in WeChat: Successfully launched the localized training platform directly into the WeChat ecosystem, eliminating the need for any external browser dependencies.",
       ],
     },
-    keyDecisions: [
-      "Bilingual specs over English-only — doubled annotation time, eliminated an entire category of implementation ambiguity. The ROI was zero QA rework across a cross-continental handoff.",
-      "WeChat-native patterns over adapted Western patterns — higher research cost upfront, near-zero rework downstream. Course icons, bottom nav, modal flows all follow WeChat conventions, not iOS/Android norms.",
-    ],
-    outcomes: [
-      "350+ IATA courses now accessible inside WeChat — previously required a browser or external app. Delivered to where Chinese aviation professionals already spend their working day.",
-      "Zero design-implementation discrepancies in QA — bilingual specs eliminated the ambiguity that typically plagues cross-continental handoffs",
-      "WeChat-native interaction patterns throughout — no Western patterns adapted to fit, no user confusion",
-      "Live in WeChat across China — no external browser dependency, no app install friction",
-    ],
+    keyDecisions: [],
+    outcomes: [],
     visualBlocksHeader: "What Got Designed",
     visualBlocks: [
       {
@@ -2639,9 +2627,9 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         layout: "side-by-side",
         label: "Campaign Localization",
         imageSrc: "/iata/social-original.png",
-        caption: "Western original — discount-led hierarchy, English reading patterns. The brand is secondary to the offer.",
+        caption: "The Global Baseline: IATA's standard international marketing relies on a discount-led visual hierarchy and left-to-right English reading patterns, which underperforms in the Chinese digital ecosystem.",
         imageSrc2: "/iata/social-localized.png",
-        caption2: "Chinese localization — the hierarchy changed, not just the language. Chinese market reading patterns required a fundamentally different visual logic, not a translation.",
+        caption2: "The Localized Architecture: The hierarchy was entirely reconstructed, not just translated. I redesigned the visual logic to align with Chinese market reading patterns and WeChat's high-density information expectations, placing the brand and the value proposition in a localized context.",
       },
       {
         id: "landing",
@@ -2649,7 +2637,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         phoneScroll: true,
         label: "Landing Page",
         imageSrc: "/iata/landing-final.png",
-        caption: "The landing page had one job: feel like it belonged inside WeChat. IATA branding adapted to Simplified Chinese, bottom tab bar following WeChat's native navigation convention — not Western mobile patterns adjusted to fit.",
+        caption: "WeChat-Native Architecture: The platform was built from the ground up for the Chinese ecosystem. By abandoning Western mobile patterns in favor of native bottom-tab navigation and CJK-optimized typography, the platform feels inherently local—protecting IATA's global brand equity without forcing foreign UX on the user.",
       },
       {
         id: "course",
@@ -2657,7 +2645,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         phoneScroll: true,
         label: "Course Detail",
         imageSrc: "/iata/course-final.png",
-        caption: "Chinese interface, English course name — because the user needs to recognize the credential. Every element here was a deliberate choice, not a translation default.",
+        caption: "Credential Recognition Strategy: The interface is fully localized, but the course titles intentionally remain in English to preserve their international credential value. Every element on this screen is a deliberate architectural choice prioritizing user trust over a default 1:1 translation.",
       },
       {
         id: "about",
@@ -2666,19 +2654,18 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         label: "About Page",
         beforeSrc: "/iata/about-wireframe.png",
         afterSrc: "/iata/about-final.png",
-        caption: "Wireframe to final — the bilingual spec annotations that made this handoff work are not visible here. But they are why this shipped to a China-based team, across a language barrier, without QA rework.",
+        caption: "Bilingual Engineering Specs: What looks like a standard wireframe is actually the foundation of a zero-rework handoff. By delivering 100% of the architectural annotations natively in Simplified Chinese, I eliminated the translation ambiguity that typically breaks cross-continental engineering workflows.",
       },
     ],
     metrics: [
-      { value: "350+", label: "IATA courses now accessible inside WeChat — previously required a browser or external app" },
-      { value: "0",    label: "design-to-implementation discrepancies in QA — bilingual specs eliminated ambiguity" },
-      { value: "2",    label: "weeks in WeChat DevTools before opening Figma — platform research, not overhead" },
+      { value: "100%", label: "Native WeChat architecture — built exclusively within Chinese microsite tooling, zero Western software used" },
+      { value: "0",    label: "Design-to-implementation discrepancies in QA — native bilingual specs eliminated all cross-continental ambiguity" },
+      { value: "2",    label: "Weeks in WeChat DevTools defining technical constraints before building — platform research, not overhead" },
     ],
-    tech: ["Figma", "WeChat Mini-Programs", "Cross-cultural UX", "Mobile Design", "Localization"],
-    reflection:
-      "Designing for WeChat isn't translating — it's arriving. The platform has already made hundreds of decisions about how users move through digital space. My job was to understand those architectural decisions before making any of my own. Two weeks in WeChat DevTools wasn't research overhead — it was the work that made zero QA rework possible.",
+    tech: [],
+    reflection: "",
     ctaText:
-      "I architect products that feel native in markets your team has never shipped to. If you're expanding into a platform that plays by different rules, I know what that actually requires.",
+      "I help teams build for markets and platforms that play by fundamentally different rules.",
   },
 
   "storycorps": {
