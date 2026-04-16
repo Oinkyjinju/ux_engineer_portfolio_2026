@@ -1089,6 +1089,8 @@ export default function CaseStudy({ project }: Props) {
     { label: "Company",  value: data.snapshot?.company ?? project.company },
     { label: "Timeline", value: data.snapshot?.timeline ?? project.year },
     ...(data.snapshot?.tools ? [{ label: "Tools", value: data.snapshot.tools }] : []),
+    ...(data.snapshot?.productImpact ? [{ label: "Product Impact", value: data.snapshot.productImpact }] : []),
+    ...(data.snapshot?.scale ? [{ label: "Scale", value: data.snapshot.scale }] : []),
   ];
 
   return (

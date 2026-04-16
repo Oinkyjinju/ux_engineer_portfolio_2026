@@ -55,6 +55,8 @@ export interface CaseStudyData {
     timeline?: string;
     tools?: string;
     discipline?: string;
+    productImpact?: string;
+    scale?: string;
   };
   challengeQuote?: string;
   challenge: string;
@@ -2685,47 +2687,44 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     seoDescription:
       "I led UX and visual design for StoryCorps on iOS and Android, reducing onboarding friction and improving recording reliability for real families preserving oral history.",
     heroIntro:
-      "The app crashed mid-recording. No recovery path. A family's story — gone.\n\nI led the mobile UX engineering for a national digital archive, redesigning the iOS and Android experience so the technology disappears and the conversation stays. Solo designer, two platforms, one shared component system — shipped in 6 weeks ahead of an NPR partnership that tripled the user base.",
-    role: "Lead Mobile Designer (iOS + Android)",
-    team: "Solo designer · 1 director · 2 engineers · NPR stakeholders",
+      "Sole UX/UI Designer for a national mobile ecosystem redesign in partnership with NPR. The project was catalyzed by a critical architectural failure: the recording flow lacked a robust recovery path, resulting in data loss for a digital archive. I overhauled the end-to-end recording experience to implement zero-loss session recovery and collapsed a 7-step onboarding friction point into a streamlined, high-conversion flow. By architecting for \"forgiveness by design,\" I delivered a stable, accessible experience that maintained a 4.6\u2605 App Store rating through the surge of a national launch.",
+    role: "Sole UX/UI Designer",
+    team: "1 Design Director \u00B7 NPR Stakeholders",
     snapshot: {
+      company: "StoryCorps",
       timeline: "6 weeks / 2021",
-      tools: "Figma, React Native specs, WCAG AA checks",
+      tools: "Figma \u00B7 WCAG 2.1 AA Audits",
+      productImpact: "7 \u2192 3 step onboarding",
+      scale: "National NPR Partnership \u00B7 2 Platforms \u00B7 1 Shared Design System",
     },
-    specSheet: [
-      { label: "Primary Stack", value: "Figma · React Native · VoiceOver · TalkBack" },
-      { label: "Accessibility", value: "WCAG 2.1 AA · 44px touch targets · screen reader optimized" },
-      { label: "Engineering Impact", value: "7 → 3 step onboarding · 4.6★ rating held through 3x scale" },
-      { label: "Scale", value: "100k+ users · 2 platforms · 1 shared component system" },
-    ],
+    specSheet: [],
+    challengeQuote: "From Functional Utility to Human-Centric Product.",
     challenge:
-      "An NPR partnership was about to triple the user base — and the recording flow failed silently. No recovery path. A dropped call meant a lost story. At that scale, that was a reputational risk, not a UX bug. Onboarding was 7 steps deep, and iOS/Android had diverged into two different products.",
+      "The existing application functioned as a technical utility without an established UX framework. This lack of design infrastructure resulted in a high-friction onboarding process and a recording flow that offered no protection against common mobile interruptions. With a national NPR partnership approaching, the challenge was to architect a cohesive user experience from the ground up\u2014one that could withstand a massive surge in volume while ensuring the technology remained invisible to the user.",
+    approachHeader: "Architecting Forgiveness.",
     approach:
-      "Solo designer owning every decision from IA to component specs. I engineered UX and visual design for both platforms through one shared React Native component system, speccing against real implementation constraints in real time. The architectural constraint: this app is used by grandparents, not power users. Every interaction had to be forgiving by default.",
+      "As the sole designer, I established the first formal UX standards for the platform. The strategy was \"Reliability as a Core Brand Value.\" Since the app serves a wide demographic, including non-power users, the interface needed to be \"forgiving\" by default. I prioritized the engineering of a persistent session state, ensuring that backgrounding or accidental closures\u2014which previously resulted in total data loss\u2014became non-events for the user.",
     process: {
       discover: [
-        "150+ App Store reviews analyzed — lost recordings with no recovery path was the dominant complaint. That finding shaped every architectural decision",
-        "Storyteller interviews surfaced the friction gap: 'I want to record my grandmother' → actually pressing record was too many steps apart",
-        "Competitor audit (Rev, Otter, Voice Memos): session recovery was table stakes everywhere except StoryCorps",
-        "NPR brand alignment: defined how two identities coexist without confusing a new user segment",
+        "Audit & Sentiment: Analyzed 150+ App Store reviews. Confirmed that \"silent failures\" and data loss were the primary drivers of user churn and negative sentiment.",
+        "Friction Mapping: Visualized the gap between user intent and action, identifying that the original 7-step onboarding was the single largest barrier to session starts.",
+        "NPR Brand Alignment: Defined the visual hierarchy for how the StoryCorps and NPR identities coexist, ensuring brand credibility for a national audience.",
       ],
       design: [
-        "Engineered session recovery first — local draft auto-save on pause, backgrounding, and interruption. Non-negotiable architectural decision",
-        "Removed the account gate before first recording — users capture immediately, create account to save. Trade-off: delayed retention data",
-        "Standardized iOS and Android through one React Native component system — annotated every platform divergence with explicit interrupt handlers",
-        "NPR co-brand integration without redesigning core identity — accessibility and warmth over visual refresh",
+        "Recovery-First Architecture: Established session resilience as the core UX requirement\u2014incorporating local auto-saving and backgrounding logic into the initial wireframes.",
+        "Strategic Friction Removal: Relocated the account gate to the post-recording phase, allowing users to experience the product's value before being asked for data.",
+        "Unified Design Language: Standardized a single source of truth for both platforms, providing explicit documentation for interrupt handling and state changes.",
       ],
       ship: [
-        "Embedded with React Native engineers — adapted specs in real time as platform constraints emerged",
-        "WCAG AA compliance: contrast ratios, 44px touch targets, VoiceOver/TalkBack labels — critical for an older user base",
-        "Owned launch QA and final sign-off across both platforms before release to 100k+ users",
-        "Post-launch: tracked App Store reviews to validate session recovery held under real conditions",
+        "Cross-Functional Collaboration: Partnered directly with the engineering team to adapt design logic in real-time as platform-specific constraints surfaced.",
+        "Inclusive Design Standards: Executed a full accessibility audit (WCAG 2.1 AA), enforcing 44px touch targets and optimized screen-reader paths for an older demographic.",
+        "Final Quality Assurance: Owned the visual and functional sign-off for both platforms, ensuring the experience remained stable through the national launch.",
       ],
     },
     keyDecisions: [
-      "Removed the account gate — users record immediately, create account to save. Trade-off: delayed retention data. ROI: eliminated the highest-friction drop-off point in the funnel.",
-      "Persistent session state over simplified recording — prioritized recovery over simplicity. A lost story is worse than a busier screen. Architectural resilience over aesthetic minimalism.",
-      "Single React Native component system over platform-native — accepted minor platform deviation for deployment velocity and a single source of truth across iOS and Android.",
+      "Removed the Account Gate — Users record their stories immediately and create an account only when they are ready to save.\n\nThe Trade-off: Delayed user retention data in exchange for immediate product value.\n\nThe ROI: Eliminated the highest-friction drop-off point in the funnel and prioritized the \"intent-to-record\" moment.",
+      "Persistent Session State over Minimalist UI — Prioritized visual reassurance and recovery paths over a simplified recording screen.\n\nThe Trade-off: A slightly denser interface in exchange for absolute session resilience.\n\nThe ROI: A lost story is a total loss of trust; architectural resilience was chosen over aesthetic minimalism to ensure data integrity for every user.",
+      "Unified Design System over Platform-Native UI — Standardized a single source of truth for both iOS and Android rather than maintaining two divergent sets of native components.\n\nThe Trade-off: Accepted minor platform deviations to ensure deployment velocity.\n\nThe ROI: Created a scalable, language-agnostic framework that allowed for a 1:1 consistent experience across a fragmented device landscape.",
     ],
     outcomes: [
       "Onboarding: 7 steps → 3. Users reach first recording without creating an account",
@@ -2796,7 +2795,7 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       { value: "3",    label: "onboarding steps (from 7)" },
       { value: "2",    label: "platforms, 1 shared component system" },
     ],
-    tech: ["Figma", "iOS", "Android", "React Native specs", "WCAG AA", "Design Systems"],
+    tech: [],
     reflection:
       "StoryCorps redefined what 'done' means for me. Reliability isn't the 95% that works — it's architecting the recovery path for the 5% that doesn't. Every session-state decision was really a question about what happens when things go wrong, and that recovery had to be engineered, not assumed.",
     ctaText:
