@@ -2491,37 +2491,37 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         id: "diecisiete",
         layout: "wide",
         imageSrc: "/netflix/tt-diecisiete-ko.png",
-        caption: "Diecisiete (Spanish) \u2192 \uC5F4\uC77C\uACF1 (Korean) \u2014 three iterations before approval. V1 direct-translated the weight; V2 referenced an existing Korean title; V3 found the right expressive equivalent. Design thinking made visible.",
+        caption: "Adapting Diecisiete required precise calibration across three iterations. A direct translation of optical weight failed to capture the film's tone. The final asset was engineered to find the exact expressive equivalent, balancing the original Spanish intent with native Korean typographic standards.",
       },
       {
         id: "context",
         layout: "wide",
         imageSrc: "/netflix/context-poster.jpg",
-        caption: "Title treatment in context \u2014 the Korean localization of Diecisiete in its final poster composition. The work isn't a type specimen; it's a shipped product.",
+        caption: "The Korean localization of Diecisiete integrated into its final production art. The typographic framework must perform within a shipped composition, not just as an isolated asset.",
       },
       {
         id: "runway",
         layout: "wide",
         imageSrc: "/netflix/tt-smile-runway-en.png",
-        caption: "The Japanese original was calligraphic \u2014 hand-gestural, kinetic. English has no equivalent script category. The adaptation required finding the expressive equivalent of brushstroke energy in a Latin typeface. That is not a font decision. It is a design decision.",
+        caption: "The original English typography relied on distinct, rounded letterforms. Translating that structural softness into Hangul required precise calibration\u2014preserving the geometric roundness of the brand identity without compromising the structural integrity and legibility of the Hangul characters.",
       },
       {
         id: "naruto",
         layout: "wide",
         imageSrc: "/netflix/tt-naruto-jp.png",
-        caption: "English to Japanese. The katakana subtitle was not a translation decision \u2014 it was a weight-matching decision. Stroke contrast, visual density, spatial rhythm: these had to read as the same title, not a translation of it.",
+        caption: "This asset required a reverse adaptation. Although the property originates in Japan, the design mandate was to inherit the English brand architecture. The primary logotype was retained in English by request, while the Kanji and Katakana subtitles were engineered to mirror its exact brushstrokes and serif styling. The technical challenge was matching the stroke contrast and visual density of the English asset without compromising the structural rules of the Japanese script.",
       },
       {
         id: "hospital",
         layout: "wide",
         imageSrc: "/netflix/tt-hospital-playlist-ro.png",
-        caption: "The stencil cuts into the original Korean title design \u2014 that treatment is the brand. In Romanian, the string is 40% longer. Both constraints had to be solved simultaneously, not sequentially.",
+        caption: "Although the original IP is ko, this localization was anchored to the en studio asset. Because English and Romanian share the same Latin script architecture, inheriting the English visual logic was the most structurally sound choice.",
       },
       {
         id: "history",
         layout: "wide",
         imageSrc: "/netflix/tt-history101-ko.png",
-        caption: "The same localization, two contexts. Dark and light backgrounds impose different optical weight requirements \u2014 what reads as balanced against a black background often appears too heavy on white. Both had to clear QA.",
+        caption: "Adapting the ja visual identity into en required translating an expressive aesthetic across structurally incompatible scripts. A direct typographic translation left the Latin letterforms feeling visually empty, failing to deliver the expressive weight of the original. By engineering custom typographic curves into the primary capitals (S, D, R), the title achieved the necessary optical volume and kinetic presence without forcing unnatural structural similarities onto the English characters.",
       },
       {
         id: "moscraciun",
@@ -2543,10 +2543,10 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       },
     ],
     metrics: [
-      { value: "50+", label: "languages" },
+      { value: "7",   label: "markets" },
       { value: "2",   label: "global studios" },
       { value: "8+",  label: "years partnership" },
-      { value: "6+",  label: "script families" },
+      { value: "2",   label: "script systems" },
     ],
     tech: [],
     languagesSection: {
@@ -2571,9 +2571,8 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       ],
     },
     reflection:
-      "Most of my Netflix and Disney+ work was in languages I don't speak. That became the discipline: evaluating visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can govern a Korean title treatment without reading Korean, you've built a system that scales beyond any individual's linguistic knowledge.",
-    ctaText:
-      "I architect design infrastructure that scales beyond the person who built it. If your team is governing quality across languages, markets, or studios — let's talk.",
+      "Most of my localization work was in languages I do not speak. That became the discipline: evaluating visual rhythm, typographic color, and structural balance as abstract architectural qualities rather than linguistic meaning. When you can govern a Korean title treatment without reading Korean, you have built a framework that scales beyond any individual's knowledge.",
+    ctaText: "",
   },
 
   "iata": {

@@ -287,8 +287,7 @@ function ReflectionReveal({ reflection, reflectionHeader, shouldReduceMotion, se
   const visibleCount = Math.ceil(progress * words.length);
 
   return (
-    <div ref={containerRef} style={{ maxWidth: 760, margin: "0 auto 100px" }}>
-      <h2 style={sectionLabelStyle(28)}>{reflectionHeader ?? "Reflection"}</h2>
+    <div ref={containerRef} style={{ maxWidth: 760, margin: "0 auto 40px" }}>
       <div style={{ position: "relative" }}>
         <p style={{
           fontFamily: "'Gloock', Georgia, serif",
@@ -343,6 +342,7 @@ function ReflectionReveal({ reflection, reflectionHeader, shouldReduceMotion, se
             transition: "width 0.1s linear",
           }} />
         </div>
+        <h2 style={{ ...sectionLabelStyle(0), marginTop: 16 }}>{reflectionHeader ?? "Reflection"}</h2>
       </div>
     </div>
   );
@@ -362,11 +362,13 @@ function MagneticCTA({ ctaText, shouldReduceMotion, dark, projectId }: { ctaText
   };
   const handleMouseLeave = () => { setBtnOffset({ x: 0, y: 0 }); setIsHovered(false); };
   return (
-    <div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ textAlign: "center", padding: "100px 0 120px", position: "relative" }}>
-      <motion.div aria-hidden="true" initial={shouldReduceMotion ? {} : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ width: 60, height: 1, background: "var(--border)", margin: "0 auto 48px", transformOrigin: "center" }} />
-      <motion.p initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "'Gloock', Georgia, serif", fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 32, fontWeight: 400, letterSpacing: "-0.01em" }}>
-        {ctaText ?? "I build the things between design and engineering. If that gap is costing your team, let\u2019s talk."}
-      </motion.p>
+    <div onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ textAlign: "center", padding: ctaText === "" ? "40px 0 120px" : "100px 0 120px", position: "relative" }}>
+      {ctaText !== "" && <motion.div aria-hidden="true" initial={shouldReduceMotion ? {} : { scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ width: 60, height: 1, background: "var(--border)", margin: "0 auto 48px", transformOrigin: "center" }} />}
+      {(ctaText !== "") && (
+        <motion.p initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "'Gloock', Georgia, serif", fontSize: "clamp(24px, 3.5vw, 40px)", color: "var(--text-primary)", marginBottom: 32, fontWeight: 400, letterSpacing: "-0.01em" }}>
+          {ctaText ?? "I build the things between design and engineering. If that gap is costing your team, let\u2019s talk."}
+        </motion.p>
+      )}
       <motion.div animate={{ x: btnOffset.x, y: btnOffset.y }} transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }} style={{ display: "inline-block" }}>
         <Link ref={btnRef} href="/#contact" onMouseEnter={() => setIsHovered(true)} style={{
           display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase",
@@ -2264,8 +2266,8 @@ export default function CaseStudy({ project }: Props) {
             {/* Group B: Script Translation — Runway + Naruto (2-up) */}
             {(() => {
               const pairs: Array<{ id: string; tag: string }> = [
-                { id: "runway", tag: "Calligraphic → Latin" },
-                { id: "naruto", tag: "Latin → Katakana + Kanji" },
+                { id: "runway", tag: "EN → KO" },
+                { id: "naruto", tag: "EN → JA" },
               ];
               return (
                 <div style={{ marginBottom: 48 }}>
@@ -2330,8 +2332,8 @@ export default function CaseStudy({ project }: Props) {
             {/* Group C: String Length + Brand Constraints — Hospital + History (2-up) */}
             {(() => {
               const pairs: Array<{ id: string; tag: string }> = [
-                { id: "hospital", tag: "KO → RO" },
-                { id: "history", tag: "EN → KO" },
+                { id: "hospital", tag: "KO → EN → RO" },
+                { id: "history", tag: "JA → EN" },
               ];
               return (
                 <div style={{ marginBottom: 60 }}>
@@ -2461,9 +2463,7 @@ export default function CaseStudy({ project }: Props) {
                     fontFamily: mono, fontSize: 13, lineHeight: 1.65,
                     color: "rgba(237,234,227,0.72)", margin: "16px 0 0",
                   }}>
-                    Illustrated, embossed, and textural type — when letterforms are drawn rather than set,
-                    a font swap is not an option. Each required re-engineering the brand&apos;s visual identity
-                    at a different string length.
+                    When title treatments rely on 3D extrusion, custom textures, or complex embossing, localization becomes an exercise in technical reconstruction rather than cultural adaptation. Because these letterforms are illustrated and engineered rather than typeset, a simple font swap is impossible. Each adaptation requires rebuilding the entire dimensional layer stack from the ground up, re-engineering the brand&apos;s tactile identity to accommodate entirely different string lengths without compromising visual fidelity.
                   </p>
                 </motion.div>
               );
@@ -3196,7 +3196,7 @@ export default function CaseStudy({ project }: Props) {
           // Netflix & Disney+ — editorial centered quote, no typewriter
           if (project.id === "netflix-disney") {
             return (
-              <div style={{ margin: "0 auto 100px", textAlign: "center", maxWidth: 900, padding: "0 24px" }}>
+              <div style={{ margin: "0 auto 0", textAlign: "center", maxWidth: 900, padding: "0 24px" }}>
                 <motion.div
                   initial={shouldReduceMotion ? {} : { opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -3206,8 +3206,15 @@ export default function CaseStudy({ project }: Props) {
                   {/* Thin rule */}
                   <div aria-hidden="true" style={{
                     width: 40, height: 1, background: "#E50914",
-                    margin: "0 auto 32px",
+                    margin: "0 auto 12px",
                   }} />
+                  <span style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
+                    textTransform: "uppercase", color: "var(--text-tertiary)",
+                    display: "inline-block", marginBottom: 32,
+                  }}>
+                    Reflection
+                  </span>
                   <p style={{
                     fontFamily: serif,
                     fontSize: "clamp(22px, 2.8vw, 36px)",
@@ -3215,17 +3222,11 @@ export default function CaseStudy({ project }: Props) {
                     letterSpacing: "-0.02em",
                     color: "var(--text-primary)",
                     fontWeight: 400,
-                    margin: "0 0 24px",
+                    margin: 0,
                     fontStyle: "italic",
                   }}>
                     {data.reflection}
                   </p>
-                  <span style={{
-                    fontFamily: mono, fontSize: 10, letterSpacing: "0.12em",
-                    textTransform: "uppercase", color: "var(--text-tertiary)",
-                  }}>
-                    Reflection
-                  </span>
                 </motion.div>
               </div>
             );
