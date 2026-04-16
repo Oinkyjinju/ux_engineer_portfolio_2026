@@ -84,9 +84,10 @@ interface ItemProps {
   index: number;
   isOpen: boolean;
   onToggle: () => void;
+  dark: boolean;
 }
 
-function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
+function WorkAccordionItem({ project, index, isOpen, onToggle, dark }: ItemProps) {
   const num     = String(index + 1).padStart(2, "0");
   const metrics = METRICS[project.id] ?? [];
   const mono    = "'JetBrains Mono', monospace";
@@ -291,7 +292,7 @@ function WorkAccordionItem({ project, index, isOpen, onToggle }: ItemProps) {
 
               {/* Right — rich project thumbnail */}
               <div style={{ display: "flex", justifyContent: "flex-end", overflow: "hidden" }}>
-                <ProjectThumbnail project={project} />
+                <ProjectThumbnail project={project} dark={dark} />
               </div>
             </div>
           </div>
@@ -333,6 +334,7 @@ export default function WorkStage({ dark }: Props) {
             index={i}
             isOpen={openId === project.id}
             onToggle={() => toggle(project.id)}
+            dark={dark}
           />
         ))}
       </div>

@@ -2,7 +2,7 @@
 
 import type { Project } from "@/data/projects";
 
-// ─── Palette helper — derives a full dark-card color set from any hex accent ──
+// ─── Palette helpers — dark and light variants ────────────────────────────────
 function ap(hex: string) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -11,32 +11,51 @@ function ap(hex: string) {
   const d = (v: number, f: number)   => Math.floor(v * f);
   return {
     hex,
-    // Very-dark tinted background
     bg:         `linear-gradient(140deg, rgb(${d(r,.11)},${d(g,.11)},${d(b,.13)}) 0%, rgb(${d(r,.20)},${d(g,.20)},${d(b,.22)}) 60%, rgb(${d(r,.14)},${d(g,.14)},${d(b,.16)}) 100%)`,
     border:     `rgba(${r},${g},${b},0.32)`,
     borderHi:   `rgba(${r},${g},${b},0.55)`,
     shadow:     `0 20px 60px rgba(${r},${g},${b},0.18), 0 40px 80px rgba(0,0,0,0.6)`,
     glow:       `radial-gradient(circle, rgba(${r},${g},${b},0.15) 0%, transparent 70%)`,
-    // Text – brightened so it reads on the dark bg
     bright:     `rgba(${l(r,90)},${l(g,90)},${l(b,90)},0.88)`,
     mid:        `rgba(${l(r,90)},${l(g,90)},${l(b,90)},0.55)`,
     dim:        `rgba(${l(r,90)},${l(g,90)},${l(b,90)},0.32)`,
-    // Data bars – four variants for visual variety
     bar1:       `rgba(${l(r,90)},${l(g,90)},${l(b,90)},0.85)`,
     bar2:       `rgba(${l(r,70)},${l(g,70)},${l(b,70)},0.70)`,
     bar3:       `rgba(${l(r,110)},${l(g,110)},${l(b,110)},0.60)`,
     bar4:       `rgba(${l(r,50)},${l(g,50)},${l(b,50)},0.75)`,
-    // Component item cards
     itemBg:     `rgba(${r},${g},${b},0.09)`,
     itemBorder: `rgba(${r},${g},${b},0.20)`,
-    // Top accent rule
+    topLine:    `linear-gradient(90deg, transparent, ${hex} 30%, ${hex} 70%, transparent)`,
+  };
+}
+
+function apLight(hex: string) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return {
+    hex,
+    bg:         `#f8f7f4`,
+    border:     `rgba(0,0,0,0.08)`,
+    borderHi:   `rgba(0,0,0,0.14)`,
+    shadow:     `0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05)`,
+    glow:       `radial-gradient(circle, rgba(${r},${g},${b},0.08) 0%, transparent 70%)`,
+    bright:     `rgba(20,20,24,0.85)`,
+    mid:        `rgba(20,20,24,0.55)`,
+    dim:        `rgba(20,20,24,0.32)`,
+    bar1:       `rgba(${r},${g},${b},0.7)`,
+    bar2:       `rgba(${r},${g},${b},0.5)`,
+    bar3:       `rgba(${r},${g},${b},0.35)`,
+    bar4:       `rgba(${r},${g},${b},0.6)`,
+    itemBg:     `rgba(${r},${g},${b},0.08)`,
+    itemBorder: `rgba(${r},${g},${b},0.22)`,
     topLine:    `linear-gradient(90deg, transparent, ${hex} 30%, ${hex} 70%, transparent)`,
   };
 }
 
 // ── Netflix & Disney+ ─────────────────────────────────────────────────────────
-function NetflixThumbnail({ project }: { project: Project }) {
-  const p = ap(project.accent);
+function NetflixThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
+  const p = dark ? ap(project.accent) : apLight(project.accent);
   const langs = [
     { text: "한국어",   left: "7%",  top: "7%",  rot: -8 },
     { text: "Español",  left: "54%", top: "4%",  rot:  4 },
@@ -58,14 +77,14 @@ function NetflixThumbnail({ project }: { project: Project }) {
       {/* Ambient glow */}
       <div style={{ position: "absolute", width: 300, height: 300, borderRadius: "50%", background: p.glow, top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
 
-      {/* Scan-line overlay */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 8, pointerEvents: "none", background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,0.10) 3px, rgba(0,0,0,0.10) 4px)" }} />
+      {/* Scan-line overlay — dark mode only */}
+      {dark && <div style={{ position: "absolute", inset: 0, zIndex: 8, pointerEvents: "none", background: "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,0.10) 3px, rgba(0,0,0,0.10) 4px)" }} />}
 
       {/* Language bubbles */}
       {langs.map((l) => (
         <div key={l.text} style={{
           position: "absolute", left: l.left, top: l.top,
-          background: p.itemBg, border: `1px solid ${p.border}`,
+          background: p.itemBg, border: `1px solid ${p.itemBorder}`,
           borderRadius: 5, padding: "2px 7px",
           fontSize: 9.5, color: p.bright,
           transform: `rotate(${l.rot}deg)`,
@@ -80,10 +99,14 @@ function NetflixThumbnail({ project }: { project: Project }) {
         position: "absolute", top: "50%", left: "50%",
         width: 152, height: 96,
         transform: "translate(-50%,-50%) perspective(500px) rotateX(10deg) rotateY(-6deg)",
-        background: `rgb(${Math.floor(parseInt(project.accent.slice(1,3),16)*0.06)},${Math.floor(parseInt(project.accent.slice(3,5),16)*0.04)},${Math.floor(parseInt(project.accent.slice(5,7),16)*0.04)})`,
+        background: dark
+          ? `rgb(${Math.floor(parseInt(project.accent.slice(1,3),16)*0.06)},${Math.floor(parseInt(project.accent.slice(3,5),16)*0.04)},${Math.floor(parseInt(project.accent.slice(5,7),16)*0.04)})`
+          : "#ffffff",
         border: `2px solid ${project.accent}`,
         borderRadius: 8,
-        boxShadow: `0 0 28px ${project.accent}88, 0 0 70px ${project.accent}33, inset 0 0 18px ${project.accent}0a`,
+        boxShadow: dark
+          ? `0 0 28px ${project.accent}88, 0 0 70px ${project.accent}33, inset 0 0 18px ${project.accent}0a`
+          : `0 4px 20px rgba(0,0,0,0.10), 0 0 0 1px ${project.accent}33`,
         zIndex: 4, overflow: "hidden",
       }}>
         {/* Header bar */}
@@ -95,7 +118,7 @@ function NetflixThumbnail({ project }: { project: Project }) {
         {/* Content placeholders */}
         <div style={{ padding: "4px 5px", display: "flex", gap: 3 }}>
           {[p.bar1, p.bar2, p.bar3].map((bg, i) => (
-            <div key={i} style={{ flex: 1, height: 40, background: bg.replace(/0\.\d+\)$/, "0.12)"), borderRadius: 3, border: `1px solid ${p.border}` }} />
+            <div key={i} style={{ flex: 1, height: 40, background: dark ? bg.replace(/0\.\d+\)$/, "0.12)") : bg.replace(/[\d.]+\)$/, "0.12)"), borderRadius: 3, border: `1px solid ${p.border}` }} />
           ))}
         </div>
         {/* Progress lines */}
@@ -105,16 +128,10 @@ function NetflixThumbnail({ project }: { project: Project }) {
         </div>
       </div>
 
-      {/* Stat */}
-      <div style={{ position: "absolute", bottom: 16, left: 16, zIndex: 6 }}>
-        <p style={{ margin: 0, color: project.accent, fontSize: 24, fontWeight: 900, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>50+</p>
-        <p style={{ margin: 0, color: p.dim, fontSize: 8, letterSpacing: "0.16em", textTransform: "uppercase" }}>languages</p>
-      </div>
-
       {/* Film strip */}
-      <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 22, background: `rgb(${Math.floor(parseInt(project.accent.slice(1,3),16)*0.04)},0,0)`, borderLeft: `1px solid ${p.border}`, display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 3, gap: 2, zIndex: 5, overflow: "hidden" }}>
+      <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 22, background: dark ? `rgb(${Math.floor(parseInt(project.accent.slice(1,3),16)*0.04)},0,0)` : `rgba(0,0,0,0.04)`, borderLeft: `1px solid ${p.border}`, display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 3, gap: 2, zIndex: 5, overflow: "hidden" }}>
         {Array.from({ length: 15 }).map((_, i) => (
-          <div key={i} style={{ width: 13, height: 9, borderRadius: 1.5, flexShrink: 0, background: i % 2 === 0 ? p.border : "rgba(255,255,255,0.04)" }} />
+          <div key={i} style={{ width: 13, height: 9, borderRadius: 1.5, flexShrink: 0, background: i % 2 === 0 ? p.border : (dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)") }} />
         ))}
       </div>
 
@@ -131,8 +148,8 @@ function NetflixThumbnail({ project }: { project: Project }) {
 }
 
 // ── JUST Intelligence ─────────────────────────────────────────────────────────
-function JustIntelligenceThumbnail({ project }: { project: Project }) {
-  const p = ap(project.accent);
+function JustIntelligenceThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
+  const p = dark ? ap(project.accent) : apLight(project.accent);
   const rows = [
     { label: "ESG Score",  val: "87.4", bar: 0.87, col: p.bar1 },
     { label: "Workers",    val: "94.1", bar: 0.94, col: p.bar2 },
@@ -196,8 +213,8 @@ function JustIntelligenceThumbnail({ project }: { project: Project }) {
 }
 
 // ── Component System ──────────────────────────────────────────────────────────
-function ComponentSystemThumbnail({ project }: { project: Project }) {
-  const p = ap(project.accent);
+function ComponentSystemThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
+  const p = dark ? ap(project.accent) : apLight(project.accent);
   const components = [
     { name: "Button",  w: 2, icon: "□" },
     { name: "Card",    w: 1, icon: "▤" },
@@ -254,8 +271,8 @@ function ComponentSystemThumbnail({ project }: { project: Project }) {
 }
 
 // ── IATA Training ─────────────────────────────────────────────────────────────
-function IATAThumbnail({ project }: { project: Project }) {
-  const p = ap(project.accent);
+function IATAThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
+  const p = dark ? ap(project.accent) : apLight(project.accent);
   const messages = [
     { text: "航空训练课程", from: "left",  lang: "ZH" },
     { text: "Aviation Training", from: "right", lang: "EN" },
@@ -322,8 +339,8 @@ function IATAThumbnail({ project }: { project: Project }) {
 }
 
 // ── StoryCorps ────────────────────────────────────────────────────────────────
-function StoryCorpsThumbnail({ project }: { project: Project }) {
-  const p = ap(project.accent);
+function StoryCorpsThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
+  const p = dark ? ap(project.accent) : apLight(project.accent);
   const bars = [18, 32, 45, 28, 55, 40, 62, 35, 48, 30, 58, 42, 36, 52, 24, 44, 60, 38, 50, 26, 48, 34, 56, 40, 30, 50, 44, 22, 46, 38];
 
   return (
@@ -383,8 +400,8 @@ function StoryCorpsThumbnail({ project }: { project: Project }) {
 }
 
 // ── JUST Capital Website Rebrand ──────────────────────────────────────────────
-function JustWebsiteThumbnail({ project }: { project: Project }) {
-  const p = ap("#1D4E5C"); // JUST Capital brand teal — not the card accent (amber)
+function JustWebsiteThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
+  const p = dark ? ap("#1D4E5C") : apLight("#1D4E5C"); // JUST Capital brand teal — not the card accent (amber)
 
   return (
     <div className="project-thumbnail" style={{
@@ -446,7 +463,7 @@ function JustWebsiteThumbnail({ project }: { project: Project }) {
             <span key={t} style={{ padding: "2px 6px", borderRadius: 10, background: p.itemBg, border: `1px solid ${p.itemBorder}`, fontSize: 7, color: p.bright, fontFamily: "monospace" }}>{t}</span>
           ))}
         </div>
-        <span style={{ fontSize: 7, color: p.dim }}>8 wks · 2025</span>
+        <span style={{ fontSize: 7, color: p.dim }}>8 wks · 2026</span>
       </div>
 
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1.5, background: p.topLine }} />
@@ -455,14 +472,14 @@ function JustWebsiteThumbnail({ project }: { project: Project }) {
 }
 
 // ── Thumbnail router ──────────────────────────────────────────────────────────
-export function ProjectThumbnail({ project }: { project: Project }) {
+export function ProjectThumbnail({ project, dark = true }: { project: Project; dark?: boolean }) {
   switch (project.id) {
-    case "netflix-disney":    return <NetflixThumbnail project={project} />;
-    case "just-intelligence": return <JustIntelligenceThumbnail project={project} />;
-    case "just-wordpress":    return <ComponentSystemThumbnail project={project} />;
-    case "iata":              return <IATAThumbnail project={project} />;
-    case "storycorps":        return <StoryCorpsThumbnail project={project} />;
-    case "just-rebrand":      return <JustWebsiteThumbnail project={project} />;
+    case "netflix-disney":    return <NetflixThumbnail project={project} dark={dark} />;
+    case "just-intelligence": return <JustIntelligenceThumbnail project={project} dark={dark} />;
+    case "just-wordpress":    return <ComponentSystemThumbnail project={project} dark={dark} />;
+    case "iata":              return <IATAThumbnail project={project} dark={dark} />;
+    case "storycorps":        return <StoryCorpsThumbnail project={project} dark={dark} />;
+    case "just-rebrand":      return <JustWebsiteThumbnail project={project} dark={dark} />;
     default:                  return null;
   }
 }
