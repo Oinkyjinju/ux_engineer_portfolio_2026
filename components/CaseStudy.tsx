@@ -1776,9 +1776,9 @@ export default function CaseStudy({ project }: Props) {
                   }}
                 >
                   {[
-                    { step: "01", label: "Title clears review", detail: "One studio approves based on brand guidelines written for Latin." },
-                    { step: "02", label: "Same title, second studio", detail: "Reviewer evaluates a script they cannot read, against criteria that don\u2019t exist." },
-                    { step: "03", label: "QA fails", detail: "No shared standard. No shared language for what \u2018correct\u2019 means across scripts." },
+                    { step: "01", label: "Primary Approval", detail: "One studio approves designs based on brand guidelines written specifically for the original source language." },
+                    { step: "02", label: "Secondary Review", detail: "A second studio evaluates the same localized script against undefined criteria, often in languages the reviewer cannot read." },
+                    { step: "03", label: "QA Fragmentation", detail: "No shared standard for \u201Ccorrectness\u201D across regions, leading to inconsistent quality and avoidable rework." },
                   ].map((item, idx) => (
                     <motion.div
                       key={item.step}
@@ -1885,58 +1885,13 @@ export default function CaseStudy({ project }: Props) {
           );
         })()}
 
-        {/* Netflix — Script Families showcase band */}
+        {/* ── Languages Worked On (Netflix) — moved after challenge for context ── */}
         {project.id === "netflix-disney" && (
-          <div style={{
-            margin: "0 0 80px",
-            padding: "48px 0",
-            borderTop: "1px solid var(--border)",
-            borderBottom: "1px solid var(--border)",
-          }}>
-            <div style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
-              flexWrap: "wrap",
-              gap: "24px 40px",
-            }}>
-              {[
-                { script: "English (Original)", sample: "Stranger Things", font: serif },
-                { script: "한국어", sample: "기묘한 이야기", font: "system-ui" },
-                { script: "日本語", sample: "ストレンジャー", font: "system-ui" },
-              ].map((s, i) => (
-                <motion.div
-                  key={s.script}
-                  initial={shouldReduceMotion ? {} : { opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : i * 0.06 }}
-                  style={{ textAlign: "center", flex: "1 1 auto", minWidth: 100 }}
-                >
-                  <p style={{
-                    fontFamily: s.font,
-                    fontSize: 20,
-                    color: "var(--text-primary)",
-                    margin: "0 0 6px",
-                    lineHeight: 1.4,
-                    opacity: 0.7,
-                  }}>
-                    {s.sample}
-                  </p>
-                  <span style={{
-                    fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
-                    textTransform: "uppercase", color: "#E50914",
-                  }}>
-                    {s.script}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <SpecimenGrid />
         )}
 
         {/* Approach — scroll-linked word emphasis */}
-        <ApproachReveal approach={data.approach} approachHeader={data.approachHeader} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />
+        {data.approach && <ApproachReveal approach={data.approach} approachHeader={data.approachHeader} shouldReduceMotion={shouldReduceMotion} sectionLabelStyle={sectionLabelStyle} />}
 
         {/* What I Was Responsible For */}
         {data.whatIDid && (
@@ -2165,9 +2120,6 @@ export default function CaseStudy({ project }: Props) {
             <RecoveryFlowchart accent="#B5441A" />
           </div>
         )}
-        {project.id === "netflix-disney" && (
-          <SpecimenGrid />
-        )}
         {project.id === "iata" && (
           <div style={{ maxWidth: 760, margin: "0 auto" }}>
             <BeforeAfterReveal />
@@ -2216,73 +2168,7 @@ export default function CaseStudy({ project }: Props) {
 
             {/* ─── ACT 2: THE CRAFT — paired + solo images ─── */}
 
-            {/* Group A: Script Translation — Runway + Naruto (2-up) */}
-            {(() => {
-              const pairs: Array<{ id: string; tag: string }> = [
-                { id: "runway", tag: "Calligraphic → Latin" },
-                { id: "naruto", tag: "Latin → Katakana + Kanji" },
-              ];
-              return (
-                <div style={{ marginBottom: 48 }}>
-                  <p style={{
-                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
-                    textTransform: "uppercase", color: "#E50914", marginBottom: 16,
-                  }}>
-                    Script Translation as Design Decision
-                  </p>
-                  <div className="sc-netflix-specimens" style={{
-                    display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20,
-                  }}>
-                    {pairs.map(({ id, tag }) => {
-                      const block = visualBlocksMain.find(b => b.id === id);
-                      if (!block?.imageSrc) return null;
-                      return (
-                        <motion.div
-                          key={id}
-                          initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, margin: "-60px 0px" }}
-                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                          style={{
-                            background: "rgba(237,234,227,0.03)",
-                            border: "1px solid rgba(237,234,227,0.08)",
-                            borderRadius: 10, overflow: "hidden",
-                          }}
-                        >
-                          <Image
-                            src={block.imageSrc}
-                            alt={block.caption}
-                            width={0} height={0}
-                            sizes="(max-width: 700px) 100vw, 330px"
-                            style={{ width: "100%", height: "auto", display: "block" }}
-                          />
-                          <div style={{ padding: "14px 16px" }}>
-                            <span style={{
-                              fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
-                              textTransform: "uppercase", color: "#E50914",
-                              background: "rgba(229,9,20,0.1)",
-                              border: "1px solid rgba(229,9,20,0.2)",
-                              borderRadius: 3, padding: "2px 7px",
-                              display: "inline-block", marginBottom: 10,
-                            }}>
-                              {tag}
-                            </span>
-                            <p style={{
-                              fontFamily: mono, fontSize: 13, lineHeight: 1.65,
-                              color: "rgba(237,234,227,0.72)", margin: 0,
-                            }}>
-                              {block.caption}
-                            </p>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Group B: Design Iteration — Diecisiete + Context Poster (paired) */}
+            {/* Group A: Design Iteration — Diecisiete + Context Poster (paired) */}
             {(() => {
               const diecisiete = visualBlocksMain.find(b => b.id === "diecisiete");
               const poster = visualBlocksMain.find(b => b.id === "context");
@@ -2370,6 +2256,72 @@ export default function CaseStudy({ project }: Props) {
                         </p>
                       </motion.div>
                     )}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Group B: Script Translation — Runway + Naruto (2-up) */}
+            {(() => {
+              const pairs: Array<{ id: string; tag: string }> = [
+                { id: "runway", tag: "Calligraphic → Latin" },
+                { id: "naruto", tag: "Latin → Katakana + Kanji" },
+              ];
+              return (
+                <div style={{ marginBottom: 48 }}>
+                  <p style={{
+                    fontFamily: mono, fontSize: 10, letterSpacing: "0.14em",
+                    textTransform: "uppercase", color: "#E50914", marginBottom: 16,
+                  }}>
+                    Script Translation as Design Decision
+                  </p>
+                  <div className="sc-netflix-specimens" style={{
+                    display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20,
+                  }}>
+                    {pairs.map(({ id, tag }) => {
+                      const block = visualBlocksMain.find(b => b.id === id);
+                      if (!block?.imageSrc) return null;
+                      return (
+                        <motion.div
+                          key={id}
+                          initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: "-60px 0px" }}
+                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                          style={{
+                            background: "rgba(237,234,227,0.03)",
+                            border: "1px solid rgba(237,234,227,0.08)",
+                            borderRadius: 10, overflow: "hidden",
+                          }}
+                        >
+                          <Image
+                            src={block.imageSrc}
+                            alt={block.caption}
+                            width={0} height={0}
+                            sizes="(max-width: 700px) 100vw, 330px"
+                            style={{ width: "100%", height: "auto", display: "block" }}
+                          />
+                          <div style={{ padding: "14px 16px" }}>
+                            <span style={{
+                              fontFamily: mono, fontSize: 11, letterSpacing: "0.12em",
+                              textTransform: "uppercase", color: "#E50914",
+                              background: "rgba(229,9,20,0.1)",
+                              border: "1px solid rgba(229,9,20,0.2)",
+                              borderRadius: 3, padding: "2px 7px",
+                              display: "inline-block", marginBottom: 10,
+                            }}>
+                              {tag}
+                            </span>
+                            <p style={{
+                              fontFamily: mono, fontSize: 13, lineHeight: 1.65,
+                              color: "rgba(237,234,227,0.72)", margin: 0,
+                            }}>
+                              {block.caption}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </div>
               );

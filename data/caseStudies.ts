@@ -88,6 +88,15 @@ export interface CaseStudyData {
   metrics: { value: string; label: string }[];
   metricsHeader?: string;
   tech: string[];
+  languagesSection?: {
+    header: string;
+    description: string;
+    groups: {
+      title: string;
+      focus: string;
+      constraints: string;
+    }[];
+  };
   reflection?: string;
   reflectionHeader?: string;
   ctaText?: string;
@@ -2433,52 +2442,42 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
     seoDescription:
       "8 years building the design ops infrastructure for Netflix and Disney+ across 50+ languages, 2 global studios, and every major script system — Latin, CJK, Arabic, Cyrillic, Hebrew.",
     heroIntro:
-      "50+ languages. Two global studios. Zero shared standards when I started.\n\nI engineered the design ops infrastructure that made multilingual scalability possible — the typography framework, the cross-studio component library, and the QA process that both studios still operate on eight years later. Every script family rebuilt from first principles, not adjusted from Latin defaults.",
+      "I lead Design Operations for global interfaces across 7 key markets. Now I continue this work via one of Creative Agency as a freelancer, bridging brand standards with technical execution.\n\nI established the systems that allowed two global studios to maintain visual consistency\u2014including a unified typography framework, a shared component library, and a specialized QA process that has remained in production for over eight years. By moving away from fragmented workflows, I ensured that every interface maintains brand integrity across all supported regions.",
     role: "Lead Design Technologist & DesignOps Architect",
-    team: "Cross-studio · Wordbank → Unfold",
     snapshot: {
-      timeline: "8+ years · ongoing",
-      tools: "Adobe CC (Photoshop, Illustrator), Cinema 4D, Figma, cross-studio QA framework",
+      company: "Netflix / Disney+",
+      timeline: "8+ Years \u00b7 Ongoing Freelance",
+      tools: "Figma, Adobe CC, Cinema 4D, Custom QA Framework",
     },
+    team: "Partners",
     specSheet: [],
     challenge:
-      "Two studios making localization decisions in isolation. A title treatment could clear QA at one studio and fail at the other — evaluated by someone who couldn't read the script, against criteria that didn't exist. Text expansion, directional logic, and character density variance across 50+ languages — with launch windows that don't move.",
-    approach:
-      "I architected the design ops infrastructure from scratch — token-based typography systems for Arabic, Japanese, and Hebrew, a cross-studio review process that scaled across time zones, and a Figma component library as the single source of truth. Each script demanded independent decisions about line-height, container behavior, and optical weight. A font swap was never an option.",
-    whatIDid:
-      "Owned the design infrastructure of the localization pipeline — typography systems, title treatment QA, cross-studio review processes, and the shared Figma library. The operational architecture that let two studios converge on a shared standard was mine to build and maintain.",
+      "Two global studios operated in isolation, making localization decisions without a unified framework. A title treatment could clear review at one studio and fail at the other\u2014evaluated against criteria that were never built for that specific market. With fixed launch windows and significant density variance across 7 global languages, the lack of a shared system created a critical bottleneck for visual integrity.",
+    approach: "",
     process: {
       discover: [
-        "Typography audit across 50+ language families — cataloguing text expansion ratios, character density, and directional requirements per script",
-        "Cross-studio workflow analysis — surfaced the architectural gap: no shared framework, no shared criteria, no shared vocabulary",
-        "RTL, CJK, and Arabic layout research documented as Figma constraints with explicit component variants",
-        "Brand guideline analysis for both platforms — mapping where visual identity rules conflicted with script requirements",
+        "Market Audit: Audited the visual and spatial requirements for 7 key markets to understand exactly how different languages changed the layout of title treatments.",
+        "Workflow Analysis: Identified a major operational gap: two studios were trying to localize assets without shared QA criteria or a consistent review framework.",
+        "Guideline Mapping: Analyzed brand rules for both platforms to map exactly where the original language guidelines conflicted with the reality of localized text.",
       ],
       design: [
-        "Token-based typography system across 6 script families (Latin, CJK, Arabic, Cyrillic, Hebrew, Devanagari) — dynamically scaled by language-specific character density",
-        "RTL layout architecture for Arabic and Hebrew with explicit directional component variants",
-        "Language-agnostic QA framework — evaluation criteria based on visual weight, stroke contrast, and spatial rhythm rather than linguistic meaning",
-        "Cross-studio review cadence: async annotation rounds, live critique only for unresolved decisions",
+        "Typography Systems: Established clear design systems for Latin and CJK scripts to ensure title treatments kept their original visual impact, regardless of the language length or density.",
+        "Comprehensive QA Logic: Developed a visual evaluation framework that went beyond just aesthetics. It included strict standards for file structuring, layer organization, and overall asset quality.",
+        "Global Standards: Created the shared Adobe and Cinema 4D asset structures and review standards used to train 21 overseas designers.",
       ],
       ship: [
-        "Handoff packages with script-agnostic annotations and per-language variant frames",
-        "Owned title treatment QA and sign-off across all language variants before every launch",
-        "Scaled the Figma component library across both studios — zero library forks over 8 years",
-        "Review process became the cross-studio localization standard, still the operating framework eight years later",
+        "Framework Launch: Delivered handoff packages with clear annotations and standardized production files for all regional variants.",
+        "Asset Consistency: Maintained strict quality control over shared Adobe and Cinema 4D working files, preventing asset divergence between the two studios over 8 years.",
+        "Operating Standard: The review and QA process became the official cross-studio standard for the 7 markets I managed, and it remains the operating framework today.",
       ],
     },
     keyDecisions: [
-      "Language-agnostic QA over linguistic review — criteria based on visual weight, stroke contrast, and spatial rhythm. No single reviewer reads 50+ languages; the framework had to work without that assumption.",
-      "Async-first review cadence across time zones — annotation rounds async, live critique reserved for unresolved decisions. Eliminated the coordination tax.",
-      "Single library, not per-studio forks — extending one Figma component library per script family added overhead upfront but prevented divergence as the system scaled. Zero forks over 8 years validated the architectural bet.",
+      "Visual-First QA \u2014 Evaluation criteria centered on visual balance and strict file structuring rather than linguistic review. This allowed for high-fidelity quality control without assuming the reviewer could read the specific language.",
+      "Standardized Asset Pipeline \u2014 Instead of letting studios build their own files from scratch, I enforced a single, standardized structure for all Adobe and Cinema 4D files. This prevented the studios from drifting apart visually as the project scaled.",
+      "Strategic Training \u2014 Instead of acting as a bottleneck by reviewing every single asset myself, I trained 21 designers on the core system. This shifted the pipeline from manual QA to a scalable production model.",
     ],
-    outcomes: [
-      "Typography system rebuilt from first principles across 6 script families — architected for extensibility, which is why it still works for languages added years after it was built",
-      "Cross-studio localization standard still the operating framework eight years later — no successor process has been needed",
-      "Language-agnostic QA enabled script review without linguistic knowledge — a force multiplier for a team that couldn't hire native readers for every language",
-      "Two global studios, 50+ languages, zero library forks — architectural resilience at scale",
-    ],
-    visualBlocksHeader: "What Got Built",
+    outcomes: [],
+    visualBlocksHeader: "The Framework",
     visualBlocksColumns: 2,
     visualBlocks: [
       {
@@ -2486,61 +2485,61 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
         layout: "wide",
         imageSrc: "/netflix/hero-logos.png",
         noContainer: true,
-        caption: "Two global studios, one shared design standard — the brief that defined 8 years of multilingual design operations.",
-      },
-      {
-        id: "runway",
-        layout: "wide",
-        imageSrc: "/netflix/tt-smile-runway-en.png",
-        caption: "The Japanese original was calligraphic — hand-gestural, kinetic. English has no equivalent script category. The adaptation required finding the expressive equivalent of brushstroke energy in a Latin typeface. That is not a font decision. It is a design decision.",
+        caption: "Two global studios. One shared design standard. The foundation that has defined eight years of multilingual design operations.",
       },
       {
         id: "diecisiete",
         layout: "wide",
         imageSrc: "/netflix/tt-diecisiete-ko.png",
-        caption: "Diecisiete (Spanish) → 열일곱 (Korean) — three iterations before approval. V1 direct-translated the weight; V2 referenced an existing Korean title; V3 found the right expressive equivalent. Design thinking made visible.",
-      },
-      {
-        id: "naruto",
-        layout: "wide",
-        imageSrc: "/netflix/tt-naruto-jp.png",
-        caption: "English to Japanese. The katakana subtitle was not a translation decision — it was a weight-matching decision. Stroke contrast, visual density, spatial rhythm: these had to read as the same title, not a translation of it.",
-      },
-      {
-        id: "hospital",
-        layout: "wide",
-        imageSrc: "/netflix/tt-hospital-playlist-ro.png",
-        caption: "The stencil cuts into the original Korean title design — that treatment is the brand. In Romanian, the string is 40% longer. Both constraints had to be solved simultaneously, not sequentially.",
-      },
-      {
-        id: "history",
-        layout: "wide",
-        imageSrc: "/netflix/tt-history101-ko.png",
-        caption: "The same localization, two contexts. Dark and light backgrounds impose different optical weight requirements — what reads as balanced against a black background often appears too heavy on white. Both had to clear QA.",
-      },
-      {
-        id: "moscraciun",
-        layout: "wide",
-        imageSrc: "/netflix/tt-mos-craciun-en.png",
-        caption: "Localization in reverse — Romanian original, English adaptation. The dimensional embossing and circular lock-up of the original could not be re-lettered; they had to be re-engineered at the new string length. The English version is shorter. That asymmetry is harder to solve than it appears.",
-      },
-      {
-        id: "captainunderpants",
-        layout: "wide",
-        imageSrc: "/netflix/tt-captain-underpants-ro.png",
-        caption: "Animated content, illustrated letterforms — the rules are different. When the type is drawn, not set, a font swap is not an option. The Romanian string is significantly longer. Both constraints had to be solved while keeping the cartoonish structural weight that defines the brand: the oversized caps, the stacked hierarchy, the chaos-as-system.",
-      },
-      {
-        id: "brews",
-        layout: "wide",
-        imageSrc: "/netflix/tt-brews-ro.png",
-        caption: "Distressed, textural type — the worn letterforms are the brand identity. The Romanian localization had to preserve that weathered quality while fitting a different string length into the same visual space.",
+        caption: "Diecisiete (Spanish) \u2192 \uC5F4\uC77C\uACF1 (Korean) \u2014 three iterations before approval. V1 direct-translated the weight; V2 referenced an existing Korean title; V3 found the right expressive equivalent. Design thinking made visible.",
       },
       {
         id: "context",
         layout: "wide",
         imageSrc: "/netflix/context-poster.jpg",
-        caption: "Title treatment in context — the Korean localization of Diecisiete in its final poster composition. The work isn't a type specimen; it's a shipped product.",
+        caption: "Title treatment in context \u2014 the Korean localization of Diecisiete in its final poster composition. The work isn't a type specimen; it's a shipped product.",
+      },
+      {
+        id: "runway",
+        layout: "wide",
+        imageSrc: "/netflix/tt-smile-runway-en.png",
+        caption: "The Japanese original was calligraphic \u2014 hand-gestural, kinetic. English has no equivalent script category. The adaptation required finding the expressive equivalent of brushstroke energy in a Latin typeface. That is not a font decision. It is a design decision.",
+      },
+      {
+        id: "naruto",
+        layout: "wide",
+        imageSrc: "/netflix/tt-naruto-jp.png",
+        caption: "English to Japanese. The katakana subtitle was not a translation decision \u2014 it was a weight-matching decision. Stroke contrast, visual density, spatial rhythm: these had to read as the same title, not a translation of it.",
+      },
+      {
+        id: "hospital",
+        layout: "wide",
+        imageSrc: "/netflix/tt-hospital-playlist-ro.png",
+        caption: "The stencil cuts into the original Korean title design \u2014 that treatment is the brand. In Romanian, the string is 40% longer. Both constraints had to be solved simultaneously, not sequentially.",
+      },
+      {
+        id: "history",
+        layout: "wide",
+        imageSrc: "/netflix/tt-history101-ko.png",
+        caption: "The same localization, two contexts. Dark and light backgrounds impose different optical weight requirements \u2014 what reads as balanced against a black background often appears too heavy on white. Both had to clear QA.",
+      },
+      {
+        id: "moscraciun",
+        layout: "wide",
+        imageSrc: "/netflix/tt-mos-craciun-en.png",
+        caption: "Localization in reverse \u2014 Romanian original, English adaptation. The dimensional embossing and circular lock-up of the original could not be re-lettered; they had to be re-engineered at the new string length. The English version is shorter. That asymmetry is harder to solve than it appears.",
+      },
+      {
+        id: "captainunderpants",
+        layout: "wide",
+        imageSrc: "/netflix/tt-captain-underpants-ro.png",
+        caption: "Animated content, illustrated letterforms \u2014 the rules are different. When the type is drawn, not set, a font swap is not an option. The Romanian string is significantly longer. Both constraints had to be solved while keeping the cartoonish structural weight that defines the brand: the oversized caps, the stacked hierarchy, the chaos-as-system.",
+      },
+      {
+        id: "brews",
+        layout: "wide",
+        imageSrc: "/netflix/tt-brews-ro.png",
+        caption: "Distressed, textural type \u2014 the worn letterforms are the brand identity. The Romanian localization had to preserve that weathered quality while fitting a different string length into the same visual space.",
       },
     ],
     metrics: [
@@ -2549,7 +2548,28 @@ h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em;color:#111;paddi
       { value: "8+",  label: "years partnership" },
       { value: "6+",  label: "script families" },
     ],
-    tech: ["Adobe Photoshop", "Adobe Illustrator", "Cinema 4D", "Figma", "Multilingual Typography", "RTL Component Architecture", "CJK Type Systems", "Cross-studio QA"],
+    tech: [],
+    languagesSection: {
+      header: "Languages Worked On",
+      description: "Localization across 7 markets and 2 script systems. Because Latin defaults do not transfer, each market required independent typographic architecture and a first-principles rebuild.",
+      groups: [
+        {
+          title: "Latin Script (5 Markets)\nFrench (fr), Canadian French (fr-CA), Danish (da), Norwegian Bokm\u00E5l (nb), Romanian (ro)",
+          focus: "Established a unified Latin baseline optimized for optical margin alignment and variable title card widths.",
+          constraints: "Engineered precise diacritic clearance for regional characters (\u00E9, \u00E0, \u00E2, \u00F8, \u0103, \u0219).",
+        },
+        {
+          title: "Japanese (ja)",
+          focus: "Orchestrated mixed-script composition to achieve visual balance between Katakana and Kanji characters.",
+          constraints: "Recalibrated vertical rhythm (adjusting line-height to 1.9 vs. the Latin 1.4) and renegotiated title card height contracts with engineering.",
+        },
+        {
+          title: "Korean (ko)",
+          focus: "Architected layouts around the Hangul grid, enforcing square character frames and custom word-spacing overrides where standard Latin kerning pairs fail.",
+          constraints: "Implemented strict minimum height requirements for title cards on a per-component basis.",
+        },
+      ],
+    },
     reflection:
       "Most of my Netflix and Disney+ work was in languages I don't speak. That became the discipline: evaluating visual rhythm, typographic color, and structural balance as abstract qualities — separate from meaning. When you can govern a Korean title treatment without reading Korean, you've built a system that scales beyond any individual's linguistic knowledge.",
     ctaText:

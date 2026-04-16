@@ -27,7 +27,7 @@ const SCRIPTS = [
       { code: "nb",    name: "Norwegian Bokmål", sample: "Stranger Things" },
       { code: "ro",    name: "Romanian",         sample: "Stranger Things" },
     ],
-    typNote: "Latin baseline — optical margin alignment, variable title card widths, diacritic clearance for é à â ø ă ș",
+    typNote: "Established a unified Latin baseline optimized for optical margin alignment and variable title card widths. Engineered precise diacritic clearance for regional characters (é, à, â, ø, ă, ș).",
     color: RED,
     fontSize: 22,
     fontFamily: serif,
@@ -39,7 +39,7 @@ const SCRIPTS = [
     languages: [
       { code: "ja", name: "Japanese", sample: "ストレンジャー・シングス" },
     ],
-    typNote: "Mixed-script composition — katakana + kanji. Vertical rhythm adjusted: line-height 1.9 (vs Latin 1.4). Title card height contract renegotiated with dev.",
+    typNote: "Orchestrated mixed-script composition to achieve visual balance between Katakana and Kanji characters. Recalibrated vertical rhythm (adjusting line-height to 1.9 vs. the Latin 1.4) and renegotiated title card height contracts with engineering.",
     color: "#E50914",
     fontSize: 20,
     fontFamily: "system-ui, sans-serif",
@@ -51,7 +51,7 @@ const SCRIPTS = [
     languages: [
       { code: "ko", name: "Korean", sample: "기묘한 이야기" },
     ],
-    typNote: "Hangul grid — square character frame, word-spacing override, title card min-height set per component. No Latin kerning pairs apply.",
+    typNote: "Architected layouts around the Hangul grid, enforcing square character frames and custom word-spacing overrides where standard Latin kerning pairs fail. Implemented strict minimum height requirements for title cards on a per-component basis.",
     color: "#E50914",
     fontSize: 20,
     fontFamily: "system-ui, sans-serif",
@@ -76,8 +76,7 @@ export function SpecimenGrid() {
         fontFamily: sans, fontSize: 14, color: "var(--text-secondary)",
         marginBottom: 24, maxWidth: 600, lineHeight: 1.6,
       }}>
-        7 markets across 2 script families — each requiring independent typographic
-        decisions. Latin defaults don&apos;t transfer. Every market is a first-principles rebuild.
+        Localization across 7 markets and 2 script systems. Because Latin defaults do not transfer, each market required independent typographic architecture and a first-principles rebuild.
       </p>
 
       {/* Cards */}
