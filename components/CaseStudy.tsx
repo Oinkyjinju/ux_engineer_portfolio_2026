@@ -1222,21 +1222,11 @@ export default function CaseStudy({ project }: Props) {
         .sc-netflix-trirow { grid-template-columns: 1fr !important; }
       }
 
-      /* ── Netflix & Disney+ — forced dark, editorial type specimen feel ── */
+      /* ── Netflix & Disney+ — accent + typography overrides (theme-agnostic) ── */
       .cs-netflix-page {
-        --bg: #0a0a0f !important;
-        --text-primary: #EDEAE3 !important;
-        --text-secondary: rgba(237,234,227,0.65) !important;
-        --text-tertiary: rgba(237,234,227,0.38) !important;
-        --border: rgba(237,234,227,0.1) !important;
-        --card-bg: rgba(237,234,227,0.04) !important;
         --accent: #E50914 !important;
         --accent-muted: rgba(229,9,20,0.12) !important;
-        --nav-bg-scrolled: rgba(10,10,15,0.92) !important;
-        background-color: #0a0a0f !important;
-        color: #EDEAE3 !important;
       }
-      .cs-netflix-page nav { border-bottom-color: rgba(237,234,227,0.06) !important; }
       /* Netflix section headings — override ALL h2s to large editorial serif */
       .cs-netflix-page h2 {
         font-family: 'Gloock', Georgia, serif !important;
@@ -1244,7 +1234,7 @@ export default function CaseStudy({ project }: Props) {
         font-weight: 400 !important;
         letter-spacing: -0.015em !important;
         text-transform: none !important;
-        color: #EDEAE3 !important;
+        color: var(--text-primary) !important;
         line-height: 1.2 !important;
       }
       .cs-netflix-page h2::before {
@@ -1255,11 +1245,8 @@ export default function CaseStudy({ project }: Props) {
         background: #E50914;
         margin-bottom: 14px;
       }
-      /* Netflix meta strip — no rounded card, clean dark grid */
+      /* Netflix meta strip — accent color for labels */
       .cs-netflix-page .sc-meta-row span:first-child { color: #E50914 !important; }
-      /* Netflix link colors */
-      .cs-netflix-page a { color: rgba(237,234,227,0.72) !important; }
-      .cs-netflix-page a:hover { color: #EDEAE3 !important; }
       /* Netflix trirow — 3-up at larger, 1-col on small */
     ` }} />
     <div
@@ -2159,7 +2146,7 @@ export default function CaseStudy({ project }: Props) {
                   </div>
                   <p style={{
                     fontFamily: mono, fontSize: 13, lineHeight: 1.65,
-                    color: "rgba(237,234,227,0.72)", margin: "16px 0 0", textAlign: "left",
+                    color: "var(--text-secondary)", margin: "16px 0 0", textAlign: "left",
                   }}>
                     {logos.caption}
                   </p>
@@ -2220,7 +2207,7 @@ export default function CaseStudy({ project }: Props) {
                         </span>
                         <p style={{
                           fontFamily: mono, fontSize: 13, lineHeight: 1.65,
-                          color: "rgba(237,234,227,0.72)", margin: 0,
+                          color: "var(--text-secondary)", margin: 0,
                         }}>
                           {diecisiete.caption}
                         </p>
@@ -2250,7 +2237,7 @@ export default function CaseStudy({ project }: Props) {
                         </div>
                         <p style={{
                           fontFamily: serif, fontSize: 14, lineHeight: 1.6,
-                          color: "rgba(237,234,227,0.72)", margin: "12px 0 0",
+                          color: "var(--text-secondary)", margin: "12px 0 0",
                           fontStyle: "italic", flexShrink: 0,
                         }}>
                           {poster.caption}
@@ -2290,8 +2277,8 @@ export default function CaseStudy({ project }: Props) {
                           viewport={{ once: true, margin: "-60px 0px" }}
                           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                           style={{
-                            background: "rgba(237,234,227,0.03)",
-                            border: "1px solid rgba(237,234,227,0.08)",
+                            background: "var(--card-bg)",
+                            border: "1px solid var(--border)",
                             borderRadius: 10, overflow: "hidden",
                           }}
                         >
@@ -2315,7 +2302,7 @@ export default function CaseStudy({ project }: Props) {
                             </span>
                             <p style={{
                               fontFamily: mono, fontSize: 13, lineHeight: 1.65,
-                              color: "rgba(237,234,227,0.72)", margin: 0,
+                              color: "var(--text-secondary)", margin: 0,
                             }}>
                               {block.caption}
                             </p>
@@ -2356,8 +2343,8 @@ export default function CaseStudy({ project }: Props) {
                           viewport={{ once: true, margin: "-60px 0px" }}
                           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                           style={{
-                            background: "rgba(237,234,227,0.03)",
-                            border: "1px solid rgba(237,234,227,0.08)",
+                            background: "var(--card-bg)",
+                            border: "1px solid var(--border)",
                             borderRadius: 10, overflow: "hidden",
                           }}
                         >
@@ -2381,7 +2368,7 @@ export default function CaseStudy({ project }: Props) {
                             </span>
                             <p style={{
                               fontFamily: mono, fontSize: 13, lineHeight: 1.65,
-                              color: "rgba(237,234,227,0.72)", margin: 0,
+                              color: "var(--text-secondary)", margin: 0,
                             }}>
                               {block.caption}
                             </p>
@@ -2428,8 +2415,8 @@ export default function CaseStudy({ project }: Props) {
                         key={block.id}
                         style={{
                           borderRadius: 8, overflow: "hidden",
-                          border: "1px solid rgba(237,234,227,0.08)",
-                          background: "rgba(237,234,227,0.03)",
+                          border: "1px solid var(--border)",
+                          background: "var(--card-bg)",
                           position: "relative",
                         }}
                       >
@@ -2448,7 +2435,7 @@ export default function CaseStudy({ project }: Props) {
                           position: "absolute", bottom: 8, left: 8,
                           fontFamily: mono, fontSize: 11, letterSpacing: "0.1em",
                           color: "#E50914",
-                          background: "rgba(10,10,15,0.85)",
+                          background: "var(--card-bg)",
                           border: "1px solid rgba(229,9,20,0.3)",
                           borderRadius: 3, padding: "2px 6px",
                         }}>
@@ -2460,7 +2447,7 @@ export default function CaseStudy({ project }: Props) {
                   {/* Shared group caption */}
                   <p style={{
                     fontFamily: mono, fontSize: 13, lineHeight: 1.65,
-                    color: "rgba(237,234,227,0.72)", margin: "16px 0 0",
+                    color: "var(--text-secondary)", margin: "16px 0 0",
                   }}>
                     When title treatments rely on 3D extrusion, custom textures, or complex embossing, localization becomes an exercise in technical reconstruction rather than cultural adaptation. Because these letterforms are illustrated and engineered rather than typeset, a simple font swap is impossible. Each adaptation requires rebuilding the entire dimensional layer stack from the ground up, re-engineering the brand&apos;s tactile identity to accommodate entirely different string lengths without compromising visual fidelity.
                   </p>
