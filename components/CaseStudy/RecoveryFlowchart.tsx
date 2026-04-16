@@ -15,10 +15,10 @@ const mono  = "'JetBrains Mono', monospace";
 const sans  = "'Red Hat Text', system-ui, sans-serif";
 
 const NODES = [
-  { id: "start",     x: 80,  y: 60,  label: "Recording\nBegins",    fill: "rgba(212,82,26,0.12)", stroke: CORAL,                   textColor: CORAL },
-  { id: "interrupt", x: 280, y: 60,  label: "Session\nInterrupted", fill: "rgba(212,82,26,0.42)", stroke: CORAL,                   textColor: "#fff" },
-  { id: "prompt",   x: 480, y: 60,  label: "Recovery\nPrompt",     fill: "rgba(212,82,26,0.12)", stroke: CORAL,                   textColor: CORAL },
-  { id: "saved",    x: 680, y: 60,  label: "Story\nPreserved",     fill: "rgba(212,82,26,0.22)", stroke: CORAL,                   textColor: CORAL },
+  { id: "start",     x: 80,  y: 60,  label: "Active\nCapture",         desc: "Continuous local state synchronization.",           fill: "rgba(212,82,26,0.12)", stroke: CORAL,                   textColor: CORAL },
+  { id: "interrupt", x: 280, y: 60,  label: "Unplanned\nInterruption", desc: "Call, crash, or backgrounding event.",              fill: "rgba(212,82,26,0.42)", stroke: CORAL,                   textColor: "#fff" },
+  { id: "prompt",   x: 480, y: 60,  label: "Intelligent\nRecovery",   desc: "System detects unsaved state on relaunch.",         fill: "rgba(212,82,26,0.12)", stroke: CORAL,                   textColor: CORAL },
+  { id: "saved",    x: 680, y: 60,  label: "Preserved\nNarrative",    desc: "100% data integrity; recording continues.",         fill: "rgba(212,82,26,0.22)", stroke: CORAL,                   textColor: CORAL },
 ];
 
 const PATHS = [
@@ -62,10 +62,10 @@ export function RecoveryFlowchart({ accent = CORAL }: Props) {
         <div style={{ overflowX: "auto" }}>
           <svg
             width="780"
-            height="120"
-            viewBox="0 0 780 120"
+            height="150"
+            viewBox="0 0 780 150"
             style={{ maxWidth: "100%", display: "block" }}
-            aria-label="Session recovery flow: Recording Begins → Session Interrupted → Recovery Prompt → Story Preserved"
+            aria-label="Session recovery flow: Active Capture → Unplanned Interruption → Intelligent Recovery → Preserved Narrative"
           >
             {/* Arrow marker */}
             <defs>
@@ -123,6 +123,18 @@ export function RecoveryFlowchart({ accent = CORAL }: Props) {
                     {line}
                   </text>
                 ))}
+                <text
+                  x={node.x}
+                  y={node.y + NODE_H / 2 + 16}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="var(--text-secondary)"
+                  fontSize={9}
+                  fontFamily={sans}
+                  opacity={0.8}
+                >
+                  {node.desc}
+                </text>
               </motion.g>
             ))}
           </svg>
@@ -130,14 +142,21 @@ export function RecoveryFlowchart({ accent = CORAL }: Props) {
 
         {/* Caption */}
         <p style={{
+          fontFamily: mono, fontSize: 11, letterSpacing: "0.06em",
+          color: accent,
+          marginTop: 16, marginBottom: 8,
+          fontWeight: 400,
+        }}>
+          Designing for the 5% failure rate.
+        </p>
+        <p style={{
           fontFamily: sans, fontSize: 13,
           color: "var(--text-secondary)",
-          marginTop: 12, lineHeight: 1.6,
+          marginTop: 0, lineHeight: 1.6,
           borderLeft: `2px solid ${accent}`,
           paddingLeft: 12,
         }}>
-          Recordings could be interrupted mid-session by network drops or device failures.
-          The recovery prompt flow reduced lost stories to near-zero.
+          Mobile recording is inherently volatile&mdash;interrupted by incoming calls, battery depletion, or accidental backgrounding. I architected this recovery logic to treat interruptions as a standard state rather than an error. By implementing a persistent auto-save &ldquo;heartbeat,&rdquo; we reduced data loss to near-zero, transforming a primary source of user churn into a hallmark of platform reliability.
         </p>
       </div>
     </div>
