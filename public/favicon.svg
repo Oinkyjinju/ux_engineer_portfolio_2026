@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <!-- Neutral pearl — for dark browser UI -->
+    <radialGradient id="ng" cx="40%" cy="36%" r="62%" fx="32%" fy="28%">
+      <stop offset="0%"   stop-color="#ffffff"/>
+      <stop offset="14%"  stop-color="#f0f0f0"/>
+      <stop offset="42%"  stop-color="#a8a8a8"/>
+      <stop offset="72%"  stop-color="#484848"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </radialGradient>
+    <radialGradient id="ns" cx="30%" cy="25%" r="18%" fx="30%" fy="25%">
+      <stop offset="0%"   stop-color="rgba(255,255,255,1)"/>
+      <stop offset="50%"  stop-color="rgba(255,255,255,0.7)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <radialGradient id="ns2" cx="36%" cy="30%" r="40%">
+      <stop offset="0%"   stop-color="rgba(255,255,255,0.35)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+
+    <!-- Black pearl — for light browser UI -->
+    <radialGradient id="bg" cx="40%" cy="36%" r="62%" fx="32%" fy="28%">
+      <stop offset="0%"   stop-color="#9090a8"/>
+      <stop offset="16%"  stop-color="#545468"/>
+      <stop offset="44%"  stop-color="#1e1e2e"/>
+      <stop offset="72%"  stop-color="#0a0a14"/>
+      <stop offset="100%" stop-color="#000004"/>
+    </radialGradient>
+    <radialGradient id="bs" cx="30%" cy="25%" r="18%" fx="30%" fy="25%">
+      <stop offset="0%"   stop-color="rgba(220,225,255,1)"/>
+      <stop offset="50%"  stop-color="rgba(220,225,255,0.6)"/>
+      <stop offset="100%" stop-color="rgba(220,225,255,0)"/>
+    </radialGradient>
+    <radialGradient id="br1" cx="72%" cy="70%" r="32%">
+      <stop offset="0%"   stop-color="rgba(60,210,220,0.25)"/>
+      <stop offset="100%" stop-color="rgba(60,210,220,0)"/>
+    </radialGradient>
+    <radialGradient id="br2" cx="18%" cy="78%" r="26%">
+      <stop offset="0%"   stop-color="rgba(150,90,230,0.2)"/>
+      <stop offset="100%" stop-color="rgba(150,90,230,0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark OS mode: neutral pearl -->
+  <g class="np">
+    <circle cx="16" cy="16" r="15" fill="url(#ng)"/>
+    <circle cx="16" cy="16" r="15" fill="url(#ns2)"/>
+    <ellipse cx="11" cy="9" rx="5.5" ry="3" fill="url(#ns)"/>
+    <ellipse cx="9"  cy="7" rx="2"   ry="1" fill="rgba(255,255,255,0.9)"/>
+  </g>
+
+  <!-- Light OS mode: black pearl -->
+  <g class="bp">
+    <circle cx="16" cy="16" r="15" fill="url(#bg)"/>
+    <circle cx="16" cy="16" r="15" fill="url(#br1)"/>
+    <circle cx="16" cy="16" r="15" fill="url(#br2)"/>
+    <ellipse cx="11" cy="9" rx="5.5" ry="3" fill="url(#bs)"/>
+    <ellipse cx="9"  cy="7" rx="2"   ry="1" fill="rgba(230,232,255,0.85)"/>
+  </g>
+
+  <style>
+    .np { display: block; }
+    .bp { display: none; }
+    @media (prefers-color-scheme: light) {
+      .np { display: none; }
+      .bp { display: block; }
+    }
+  </style>
+</svg>

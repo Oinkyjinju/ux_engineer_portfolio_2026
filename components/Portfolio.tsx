@@ -9,6 +9,7 @@ import AboutSection       from "./AboutSection";
 import WorkStage          from "./WorkStage";
 import ProcessSection     from "./ProcessSection";
 import ContactSection     from "./ContactSection";
+import PearlLogo          from "./PearlLogo";
 
 const LAB_ITEMS = [
   {
@@ -169,11 +170,14 @@ export default function Portfolio() {
         <Link
           href="/"
           style={{
-            fontFamily: serif, fontSize: 17, fontWeight: 400,
-            color: "var(--text-primary)", textDecoration: "none", letterSpacing: "-0.01em",
+            display: "flex", alignItems: "center", gap: 10,
+            textDecoration: "none",
           }}
         >
-          Jinju Park
+          <PearlLogo dark={dark} size={26} />
+          <span style={{ fontFamily: serif, fontSize: 17, fontWeight: 400, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
+            Jinju Park
+          </span>
         </Link>
 
         <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: 28 }}>
