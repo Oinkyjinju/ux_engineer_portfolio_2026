@@ -20,7 +20,7 @@ const LAB_ITEMS = [
     href: "/archive",
   },
   {
-    title: "Physics Sandbox",
+    title: "Particle Engine",
     tech: "Three.js · Rapier",
     desc: "Five case studies rendered as physics bodies in 3D space. Drag, throw, and collide — click any object to open the work inside.",
     rdNote: "Testing Rapier WASM as a portfolio navigation layer — no menus, just objects you can touch.",
