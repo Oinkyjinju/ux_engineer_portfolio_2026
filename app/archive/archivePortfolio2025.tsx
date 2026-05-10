@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Portfolio from "@/components/archive2025/ArchivePortfolio2025";
-
-const SESSION_KEY = "archive_auth";
 
 export default function ArchiveClient() {
   const [authed,  setAuthed]  = useState(false);
@@ -12,11 +10,6 @@ export default function ArchiveClient() {
   const [shake,   setShake]   = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef              = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY) === "1") setAuthed(true);
-    else inputRef.current?.focus();
-  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +22,6 @@ export default function ArchiveClient() {
     const { correct } = await res.json();
     setLoading(false);
     if (correct) {
-      sessionStorage.setItem(SESSION_KEY, "1");
       setAuthed(true);
     } else {
       setError(true);
