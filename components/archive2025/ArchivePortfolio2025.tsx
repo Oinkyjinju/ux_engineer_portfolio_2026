@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import AnimatedBackground from "./AnimatedBackground";
-import HeroSection        from "./HeroSection";
-import AboutSection       from "./AboutSection";
-import WorkStage          from "./WorkStage";
-import ProcessSection     from "./ProcessSection";
-import ContactSection     from "./ContactSection";
-import PearlLogo          from "./PearlLogo";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import HeroSection        from "@/components/HeroSection";
+import AboutSection       from "@/components/AboutSection";
+import WorkStage          from "@/components/archive2025/WorkStage2025";
+import ProcessSection     from "@/components/ProcessSection";
+import ContactSection     from "@/components/ContactSection";
+import PearlLogo          from "@/components/PearlLogo";
 
 const LAB_ITEMS = [
   {
@@ -156,11 +156,48 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
 
+      {/* Archive back strip */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0, left: 0, right: 0,
+          zIndex: 101,
+          height: 32,
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: "clamp(24px, 5vw, 64px)",
+          backgroundColor: dark ? "rgba(9,9,14,0.95)" : "rgba(248,247,242,0.95)",
+          borderBottom: "1px solid var(--border)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            fontFamily: mono,
+            fontSize: 10,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--accent)",
+            textDecoration: "none",
+            opacity: 0.85,
+            transition: "opacity 0.2s",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
+        >
+          ← Live Site
+        </Link>
+      </div>
+
       {/* NAV */}
       <nav
         style={{
           position: "fixed",
-          top: 0, left: 0, right: 0, zIndex: 100,
+          top: 32, left: 0, right: 0, zIndex: 100,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
