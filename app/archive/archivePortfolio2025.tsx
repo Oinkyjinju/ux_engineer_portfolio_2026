@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Portfolio from "@/components/archive2025/ArchivePortfolio2025";
-import { checkArchivePassword } from "./actions";
 
 const SESSION_KEY = "archive_auth";
 
@@ -22,7 +21,12 @@ export default function ArchiveClient() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const correct = await checkArchivePassword(input);
+    const res = await fetch("/api/archive", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: input }),
+    });
+    const { correct } = await res.json();
     setLoading(false);
     if (correct) {
       sessionStorage.setItem(SESSION_KEY, "1");
